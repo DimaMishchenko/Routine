@@ -1,7 +1,7 @@
 import ProjectDescription
 
 extension TargetAction {
-  static var swiftlint: TargetAction {
+  public static var swiftlint: TargetAction {
     .post(
       script: """
         if which swiftlint >/dev/null; then

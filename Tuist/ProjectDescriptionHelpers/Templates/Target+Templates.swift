@@ -6,7 +6,7 @@ extension Target {
       name: "Routine",
       platform: .iOS,
       product: .app,
-      bundleId: "com.dm.routine",
+      bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
       deploymentTarget: .iOS(
         targetVersion: "13.0",
         devices: [.iphone]
@@ -16,13 +16,15 @@ extension Target {
           "CFBundleShortVersionString": "0.0.1",
           "CFBundleVersion": "1",
           "UIMainStoryboardFile": "",
-          "UILaunchStoryboardName": "LaunchScreen"
+          "UILaunchStoryboardName": "LaunchScreen",
+          "ENVIRONMENT": "${ENVIRONMENT}"
         ]
       ),
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
       actions: [.swiftlint],
-      dependencies: dependencies
+      dependencies: dependencies,
+      settings: Settings(configurations: CustomConfiguration.routine)
     )
   }
   
@@ -36,8 +38,8 @@ extension Target {
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
         .target(name: "Routine"),
-        .xcFramework(path: "Tuist/Dependencies/Carthage/Quick.xcframework"),
-        .xcFramework(path: "Tuist/Dependencies/Carthage/Nimble.xcframework")
+        .carthage(.quick),
+        .carthage(.nimble)
       ]
     )
   }
