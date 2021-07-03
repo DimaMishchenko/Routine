@@ -4,11 +4,12 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Routine",
   organizationName: "D&M",
+  packages: SPMDependency.allCases.map { $0.package },
   settings: Settings(configurations: CustomConfiguration.project),
   targets: [
     .routineApp(
       dependencies: [
-        .carthage(.pinLayout)
+        .package(.pinLayout)
       ]
     ),
     .routineAppTests()

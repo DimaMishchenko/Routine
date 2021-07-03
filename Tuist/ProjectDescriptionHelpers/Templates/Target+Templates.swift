@@ -38,8 +38,8 @@ extension Target {
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
         .target(name: "Routine"),
-        .carthage(.quick),
-        .carthage(.nimble)
+        .package(.quick),
+        .package(.nimble)
       ]
     )
   }

@@ -3,5 +3,5 @@ init:
 	tuist up
 
 gen: 
-	tuist dependencies update
 	tuist generate
+	open Routine.xcworkspace
