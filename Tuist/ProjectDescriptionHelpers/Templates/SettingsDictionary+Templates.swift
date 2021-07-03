@@ -9,7 +9,9 @@ extension SettingsDictionary {
   
   public static func routine(for environment: Environment) -> SettingsDictionary {
     [
-      "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment))
+      "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment)),
+      "GOOGLE_SERVICE_INFO_NAME": .string(routineGoogleInfoName(for: environment)),
+      "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
     ]
   }
   
@@ -20,6 +22,13 @@ extension SettingsDictionary {
     switch environment {
     case .dev:  return base + "." + "dev"
     case .prod: return base
+    }
+  }
+  
+  private static func routineGoogleInfoName(for environment: Environment) -> String {
+    switch environment {
+    case .dev:  return "Routine-Dev-GoogleService-Info"
+    case .prod: return "Routine-Prod-GoogleService-Info"
     }
   }
 }

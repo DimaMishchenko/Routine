@@ -5,6 +5,8 @@ public enum SPMDependency: CaseIterable {
   case quick
   case nimble
   
+  public static var packages: [Package] { allCases.map { $0.package } }
+  
   public var name: String {
     switch self {
     case .pinLayout:  return "PinLayout"

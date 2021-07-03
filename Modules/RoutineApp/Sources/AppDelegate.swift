@@ -1,3 +1,4 @@
+import Firebase
 import UIKit
 
 @main
@@ -10,11 +11,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    FirebaseConfigureImpl().configure()
+    
     window = UIWindow(frame: UIScreen.main.bounds)
     let viewController = UIViewController()
     viewController.view.backgroundColor = .green
     window?.rootViewController = viewController
     window?.makeKeyAndVisible()
+    
     return true
   }
 }

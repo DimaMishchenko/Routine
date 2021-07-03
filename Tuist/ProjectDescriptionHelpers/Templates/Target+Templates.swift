@@ -22,7 +22,10 @@ extension Target {
       ),
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
-      actions: [.swiftlint],
+      actions: [
+        .swiftlint,
+        .crashlytics
+      ],
       dependencies: dependencies,
       settings: Settings(configurations: CustomConfiguration.routine)
     )
