@@ -10,11 +10,13 @@ let project = Project(
     .routineApp(
       dependencies: [
         .package(.pinLayout),
+        .package(.sfSafeSymbols),
         .cocoapods(path: ".")
       ]
     ),
     .routineAppTests()
   ],
   schemes: Scheme.routine,
+  fileHeaderTemplate: "",
   resourceSynthesizers: .default
 )

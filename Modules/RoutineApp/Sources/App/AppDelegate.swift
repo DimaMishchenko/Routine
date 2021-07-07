@@ -13,10 +13,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     FirebaseConfigureImpl().configure()
     
+    let assemblyFactory = AssemblyFactory(serviceFactory: ServiceFactory())
+    let tabBarVC = assemblyFactory.tabBarAssembly().controller()
+    
     window = UIWindow(frame: UIScreen.main.bounds)
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = .green
-    window?.rootViewController = viewController
+    window?.rootViewController = tabBarVC
     window?.makeKeyAndVisible()
     
     return true
