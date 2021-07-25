@@ -12,6 +12,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseConfigureImpl().configure()
+    Appearance.setup()
     
     let assemblyFactory = AssemblyFactory(serviceFactory: ServiceFactory())
     let tabBarVC = assemblyFactory.tabBarAssembly().controller()

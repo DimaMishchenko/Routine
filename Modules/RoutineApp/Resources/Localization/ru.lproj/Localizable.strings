@@ -1,0 +1,33 @@
+// MARK: - Alert
+"alert.ok" = "Ок";
+"alert.cancel" = "Отмена";
+
+// MARK: - TabBar
+"tabbar.tab.routines" = "Рутины";
+"tabbar.tab.settings" = "Настройки";
+
+// MARK: - Settings
+"settings.title" = "Настройки";
+
+"settings.section.app" = "Приложение";
+"settings.section.feedback" = "Обратная связь";
+"settings.section.more" = "Другое";
+
+"settings.row.language" = "Язык";
+"settings.row.notifications" = "Уведомления";
+"settings.row.reportBug" = "Сообщить об ошибке";
+"settings.row.suggestFeature" = "Предложить функцию";
+"settings.row.rateApp" = "Оценить приложение";
+"settings.row.shareApp" = "Поделиться";
+"settings.row.privacyPolicy" = "Privacy policy";
+"settings.row.termsOfUse" = "Terms of use";
+"settings.row.appVersion" = "Версия приложения";
+
+"settings.alert.language.title" = "Смена языка";
+"settings.alert.language.message" = "Чтобы изменить язык:\n\n1. Нажмите \"Продолжить\"\n2. Затем нажимте \"Язык\" и выберите нужный язык";
+"settings.alert.language.button.continue" = "Продолжить";
+
+"settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
+"settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
+"settings.mail.suggestFeature.subject" = "Routine предложение функции";
+"settings.mail.suggestFeature.message" = "Пожалуйста опишите Ваше предложение.";

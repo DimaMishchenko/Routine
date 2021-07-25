@@ -11,9 +11,13 @@ final class TabBarAssembly {
   
   // MARK: - Public
   func controller() -> UIViewController {
-    TabBarVC(
-      presenter: TabBarPresenterImpl(),
+    let presenter = TabBarPresenterImpl()
+    let vc = TabBarVC(
+      presenter: presenter,
       controllersFactory: TabBarControllersFactoryImpl(assemblyFactory: assemblyFactory)
     )
+    presenter.view = vc
+    
+    return vc
   }
 }

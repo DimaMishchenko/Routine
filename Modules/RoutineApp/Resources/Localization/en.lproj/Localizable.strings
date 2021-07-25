@@ -1,0 +1,33 @@
+// MARK: - Alert
+"alert.ok" = "Ok";
+"alert.cancel" = "Cancel";
+
+// MARK: - TabBar
+"tabbar.tab.routines" = "Routines";
+"tabbar.tab.settings" = "Settings";
+
+// MARK: - Settings
+"settings.title" = "Settings";
+
+"settings.section.app" = "App";
+"settings.section.feedback" = "Feedback";
+"settings.section.more" = "More";
+
+"settings.row.language" = "Language";
+"settings.row.notifications" = "Notifications";
+"settings.row.reportBug" = "Report a bug";
+"settings.row.suggestFeature" = "Suggest feature";
+"settings.row.rateApp" = "Rate app";
+"settings.row.shareApp" = "Share app";
+"settings.row.privacyPolicy" = "Privacy policy";
+"settings.row.termsOfUse" = "Terms of use";
+"settings.row.appVersion" = "App version";
+
+"settings.alert.language.title" = "Language change";
+"settings.alert.language.message" = "To change app language:\n\n1. Tap \"Continue\"\n2. Then tap \"Language\" and select language that you want";
+"settings.alert.language.button.continue" = "Continue";
+
+"settings.mail.reportBug.subject" = "Routine bug report";
+"settings.mail.reportBug.message" = "Please describe a bug.";
+"settings.mail.suggestFeature.subject" = "Routine feature suggestion.";
+"settings.mail.suggestFeature.message" = "Please describe your proposal.";

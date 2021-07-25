@@ -13,4 +13,16 @@ final class AssemblyFactory {
   func tabBarAssembly() -> TabBarAssembly {
     TabBarAssembly(assemblyFactory: self)
   }
+  
+  func settings() -> SettingsAssembly {
+    SettingsAssembly(assemblyFactory: self)
+  }
+  
+  func share() -> ShareAsembly {
+    ShareAsembly()
+  }
+  
+  func mail() -> MailAssembly {
+    MailAssembly()
+  }
 }

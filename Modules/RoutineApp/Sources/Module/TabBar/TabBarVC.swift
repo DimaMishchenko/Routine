@@ -1,5 +1,9 @@
 import UIKit
 
+protocol TabBarViewInterface: AnyObject {
+  func setup(with items: [TabBar.ItemVM])
+}
+
 final class TabBarVC: UITabBarController {
   // MARK: - Dependencies
   private let presenter: TabBarPresenter
@@ -19,17 +23,12 @@ final class TabBarVC: UITabBarController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: - Life Cycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setupItems()
-  }
-  
+}
+
+// MARK: - TabBarViewInterface
+extension TabBarVC: TabBarViewInterface {
   // MARK: - Private
-  private func setupItems() {
-    let items = presenter.itemViewModels()
-    
+  func setup(with items: [TabBar.ItemVM]) {
     viewControllers = items.enumerated().map {
       let vc = controllersFactory.controller(for: $0.element.type)
       vc.tabBarItem = .init(

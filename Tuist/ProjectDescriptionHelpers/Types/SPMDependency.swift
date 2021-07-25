@@ -5,6 +5,7 @@ public enum SPMDependency: CaseIterable {
   case quick
   case nimble
   case sfSafeSymbols
+  case deviceKit
   
   // MARK: - Public
   public static var packages: [Package] { allCases.map { $0.package } }
@@ -15,6 +16,7 @@ public enum SPMDependency: CaseIterable {
     case .quick:          return "Quick"
     case .nimble:         return "Nimble"
     case .sfSafeSymbols:  return "SFSafeSymbols"
+    case .deviceKit:      return "DeviceKit"
     }
   }
   
@@ -27,6 +29,7 @@ public enum SPMDependency: CaseIterable {
     case .quick:          return "https://github.com/Quick/Quick.git"
     case .nimble:         return "https://github.com/Quick/Nimble.git"
     case .sfSafeSymbols:  return "https://github.com/piknotech/SFSafeSymbols.git"
+    case .deviceKit:      return "https://github.com/devicekit/DeviceKit.git"
     }
   }
   
@@ -36,6 +39,7 @@ public enum SPMDependency: CaseIterable {
     case .quick:          return .upToNextMajor(from: "4.0.0")
     case .nimble:         return .upToNextMajor(from: "9.2.0")
     case .sfSafeSymbols:  return .upToNextMajor(from: "2.1.3")
+    case .deviceKit:      return .upToNextMajor(from: "4.0.0")
     }
   }
 }

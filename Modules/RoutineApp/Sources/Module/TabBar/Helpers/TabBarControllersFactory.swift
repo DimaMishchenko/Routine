@@ -14,9 +14,14 @@ final class TabBarControllersFactoryImpl: TabBarControllersFactory {
   }
    // MARK: - Public
   func controller(for type: TabBar.ItemType) -> UIViewController {
+    UINavigationController(rootViewController: viewController(for: type))
+  }
+  
+  // MARK: - Private
+  private func viewController(for type: TabBar.ItemType) -> UIViewController {
     switch type {
     case .routines: return UIViewController()
-    case .settings: return UIViewController()
+    case .settings: return assemblyFactory.settings().controller()
     }
   }
 }

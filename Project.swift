@@ -11,6 +11,7 @@ let project = Project(
       dependencies: [
         .package(.pinLayout),
         .package(.sfSafeSymbols),
+        .package(.deviceKit),
         .cocoapods(path: ".")
       ]
     ),

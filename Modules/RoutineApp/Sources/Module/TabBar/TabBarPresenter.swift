@@ -1,23 +1,28 @@
 import Foundation
 
-protocol TabBarPresenter {
-  func itemViewModels() -> [TabBar.ItemVM]
-}
+protocol TabBarPresenter: AnyObject {}
 
 final class TabBarPresenterImpl: TabBarPresenter {
-  // MARK: - Public
-  func itemViewModels() -> [TabBar.ItemVM] {
-    [
-      TabBar.ItemVM(
-        type: .routines,
-        title: "Routines",
-        sfSymbol: .star
-      ),
-      TabBar.ItemVM(
-        type: .settings,
-        title: "Settings",
-        sfSymbol: .gear
-      )
-    ]
+  // MARK: - Dependencies
+  weak var view: TabBarViewInterface? {
+    didSet { setup() }
+  }
+  
+  // MARK: - Private
+  private func setup() {
+    view?.setup(
+      with: [
+        TabBar.ItemVM(
+          type: .routines,
+          title: RoutineStrings.Tabbar.Tab.routines,
+          sfSymbol: .star
+        ),
+        TabBar.ItemVM(
+          type: .settings,
+          title: RoutineStrings.Tabbar.Tab.settings,
+          sfSymbol: .gear
+        )
+      ]
+    )
   }
 }
