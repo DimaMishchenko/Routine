@@ -18,29 +18,14 @@ final class SettingsAssembly {
     
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
     presenter.rateApp = { SKStoreReviewController.requestReview() }
+    presenter.telegramSupport = { ExternalLinksNavigator.telegramSupport() }
     
-    presenter.reportBug = { [weak assemblyFactory, weak vc] in
-      // TODO: - Add options (telegram)
+    presenter.mailSupport = { [weak assemblyFactory, weak vc] subject, message in
       let controllerProxy = assemblyFactory?.mail().controller(
-        subject: RoutineStrings.Settings.Mail.ReportBug.subject,
-        message: RoutineStrings.Settings.Mail.ReportBug.message,
+        subject: subject,
+        message: message,
         addDebugData: true,
-        onResult: { _, _ in
-          // TODO: - Analytics event
-        }
-      )
-      controllerProxy.flatMap { vc?.present($0.controller, animated: true) }
-    }
-    
-    presenter.suggestFeature = { [weak assemblyFactory, weak vc] in
-      // TODO: - Add options (telegram)
-      let controllerProxy = assemblyFactory?.mail().controller(
-        subject: RoutineStrings.Settings.Mail.SuggestFeature.subject,
-        message: RoutineStrings.Settings.Mail.SuggestFeature.message,
-        addDebugData: true,
-        onResult: { _, _ in
-          // TODO: - Analytics event
-        }
+        onResult: { _, _ in /* TODO: - Analytics event */ }
       )
       controllerProxy.flatMap { vc?.present($0.controller, animated: true) }
     }

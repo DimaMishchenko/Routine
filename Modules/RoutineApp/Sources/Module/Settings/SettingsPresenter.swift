@@ -11,8 +11,8 @@ final class SettingsPresenterImpl: SettingsPresenter {
   
   // MARK: - Properties
   var openSettings: (() -> Void)?
-  var reportBug: (() -> Void)?
-  var suggestFeature: (() -> Void)?
+  var mailSupport: ((String, String) -> Void)?
+  var telegramSupport: (() -> Void)?
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
   
@@ -38,8 +38,32 @@ final class SettingsPresenterImpl: SettingsPresenter {
           .init(
             section: .init(title: RoutineStrings.Settings.Section.feedback),
             rows: [
-              rowFactory.reportBugRow { [weak self] in self?.reportBug?() },
-              rowFactory.suggestFeatureRow { [weak self] in self?.suggestFeature?() },
+              rowFactory.reportBugRow { [weak self] in
+                guard let self = self else { return }
+                self.view?.showAlert(
+                  with: self.feedbackAlertVM(
+                    title: RoutineStrings.Settings.Alert.ReportBug.title,
+                    message: RoutineStrings.Settings.Alert.ReportBug.message,
+                    mailConfig: (
+                      subject: RoutineStrings.Settings.Mail.ReportBug.subject,
+                      message: RoutineStrings.Settings.Mail.ReportBug.message
+                    )
+                  )
+                )
+              },
+              rowFactory.suggestFeatureRow { [weak self] in
+                guard let self = self else { return }
+                self.view?.showAlert(
+                  with: self.feedbackAlertVM(
+                    title: RoutineStrings.Settings.Alert.SuggestFeature.title,
+                    message: RoutineStrings.Settings.Alert.SuggestFeature.message,
+                    mailConfig: (
+                      subject: RoutineStrings.Settings.Mail.SuggestFeature.subject,
+                      message: RoutineStrings.Settings.Mail.SuggestFeature.message
+                    )
+                  )
+                )
+              },
               rowFactory.rateAppRow { [weak self] in self?.rateApp?() },
               rowFactory.shareAppRow { [weak self] in self?.share?() }
             ]
@@ -74,6 +98,34 @@ final class SettingsPresenterImpl: SettingsPresenter {
     ) { [weak self] in
       guard case .custom(let action) = $0, action == continueAction else { return }
       self?.openSettings?()
+    }
+  }
+  
+  private func feedbackAlertVM(
+    title: String,
+    message: String,
+    mailConfig: (subject: String, message: String)
+  ) -> Alert.VM {
+    let emailAction = Alert.ActionType.Custom(
+      title: RoutineStrings.Common.email,
+      style: .default
+    )
+    let telegramAction = Alert.ActionType.Custom(
+      title: RoutineStrings.Common.telegram,
+      style: .default
+    )
+    
+    return .init(
+      title: title,
+      message: message,
+      actions: [.custom(emailAction), .custom(telegramAction), .cancel]
+    ) { [weak self] in
+      guard case .custom(let action) = $0 else { return }
+      switch action {
+      case emailAction: self?.mailSupport?(mailConfig.subject, mailConfig.message)
+      case telegramAction: self?.telegramSupport?()
+      default: return
+      }
     }
   }
 }

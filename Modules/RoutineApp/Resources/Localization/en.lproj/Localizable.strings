@@ -1,3 +1,7 @@
+// MARK: - Common
+"common.email" = "Email";
+"common.telegram" = "Telegram";
+
 // MARK: - Alert
 "alert.ok" = "Ok";
 "alert.cancel" = "Cancel";
@@ -16,7 +20,7 @@
 "settings.row.language" = "Language";
 "settings.row.notifications" = "Notifications";
 "settings.row.reportBug" = "Report a bug";
-"settings.row.suggestFeature" = "Suggest feature";
+"settings.row.suggestFeature" = "Suggest a feature";
 "settings.row.rateApp" = "Rate app";
 "settings.row.shareApp" = "Share app";
 "settings.row.privacyPolicy" = "Privacy policy";
@@ -26,6 +30,12 @@
 "settings.alert.language.title" = "Language change";
 "settings.alert.language.message" = "To change app language:\n\n1. Tap \"Continue\"\n2. Then tap \"Language\" and select language that you want";
 "settings.alert.language.button.continue" = "Continue";
+
+"settings.alert.reportBug.title" = "Report a bug";
+"settings.alert.reportBug.message" = "We have accounts on different networks. \nWhich one would you like to choose?";
+
+"settings.alert.suggestFeature.title" = "Suggest a feature";
+"settings.alert.suggestFeature.message" = "We have accounts on different networks. \nWhich one would you like to choose?";
 
 "settings.mail.reportBug.subject" = "Routine bug report";
 "settings.mail.reportBug.message" = "Please describe a bug.";

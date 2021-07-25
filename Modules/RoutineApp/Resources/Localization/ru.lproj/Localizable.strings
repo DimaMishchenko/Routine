@@ -1,3 +1,7 @@
+// MARK: - Common
+"common.email" = "Почта";
+"common.telegram" = "Telegram";
+
 // MARK: - Alert
 "alert.ok" = "Ок";
 "alert.cancel" = "Отмена";
@@ -26,6 +30,12 @@
 "settings.alert.language.title" = "Смена языка";
 "settings.alert.language.message" = "Чтобы изменить язык:\n\n1. Нажмите \"Продолжить\"\n2. Затем нажимте \"Язык\" и выберите нужный язык";
 "settings.alert.language.button.continue" = "Продолжить";
+
+"settings.alert.reportBug.title" = "Сообщить об ошибке";
+"settings.alert.reportBug.message" = "У нас есть аккаунты в разных сетях. \nКакой вариант Вы бы хотели использовать?";
+
+"settings.alert.suggestFeature.title" = "Предложить функцию";
+"settings.alert.suggestFeature.message" = "У нас есть аккаунты в разных сетях. \nКакой вариант Вы бы хотели использовать?";
 
 "settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
 "settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
