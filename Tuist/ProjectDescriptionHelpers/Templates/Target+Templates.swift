@@ -17,7 +17,9 @@ extension Target {
           "CFBundleVersion": "1",
           "UIMainStoryboardFile": "",
           "UILaunchStoryboardName": "LaunchScreen",
-          "ENVIRONMENT": "${ENVIRONMENT}"
+          "ENVIRONMENT": "${ENVIRONMENT}",
+          "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+          "LSApplicationQueriesSchemes": ["tg"]
         ]
       ),
       sources: "Modules/RoutineApp/Sources/**",

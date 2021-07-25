@@ -3,7 +3,8 @@ import ProjectDescription
 extension SettingsDictionary {
   public static func project(for environment: Environment) -> SettingsDictionary {
     [
-      "ENVIRONMENT": .string(environment.rawValue)
+      "ENVIRONMENT": .string(environment.rawValue),
+      "DEVELOPMENT_TEAM": "77X75EH6F4"
     ]
   }
   
