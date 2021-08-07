@@ -8,7 +8,7 @@ extension Target {
       product: .app,
       bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
       deploymentTarget: .iOS(
-        targetVersion: "13.0",
+        targetVersion: "14.0",
         devices: [.iphone]
       ),
       infoPlist: .extendingDefault(

@@ -1,5 +1,5 @@
-platform :ios, '13.0'
-use_frameworks! 
+platform :ios, '14.0'
+use_frameworks!
 
 # Use CocoaPods only if SPM is not available
 target 'Routine' do
@@ -35,8 +35,8 @@ post_install do |pi|
   pi.pods_project.targets.each do |target|
     target.build_configurations.each do |build_configuration|
       # Remove extra warnings from xcode
-      if build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 13.0
-        build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      if build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 14.0
+        build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
       end
       
       # fix for cocoapods targets, to support multiple xcode configurations setup

@@ -20,7 +20,7 @@ final class TabBarControllersFactoryImpl: TabBarControllersFactory {
   // MARK: - Private
   private func viewController(for type: TabBar.ItemType) -> UIViewController {
     switch type {
-    case .routines: return UIViewController()
+    case .routines: return assemblyFactory.routineList().controller()
     case .settings: return assemblyFactory.settings().controller()
     }
   }

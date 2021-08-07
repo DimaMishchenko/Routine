@@ -7,8 +7,13 @@
 "alert.cancel" = "Cancel";
 
 // MARK: - TabBar
-"tabbar.tab.routines" = "Routines";
+"tabbar.tab.routines" = "My Routines";
 "tabbar.tab.settings" = "Settings";
+
+// MARK: - RoutineList
+"routineList.title" = "My Routines";
+
+"routineList.row.empty.text" = "There are no routines yet.\nClick plus to fix it! 👇";
 
 // MARK: - Settings
 "settings.title" = "Settings";

@@ -17,7 +17,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     let code = Locale.preferredLanguages.first ?? .empty
     
     return .init(
-      .disclousre(
+      .value(
         .init(
           title: RoutineStrings.Settings.Row.language,
           value: Locale.current.localizedString(forLanguageCode: code)?.capitalized,
@@ -30,7 +30,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.reportBug, accessory: .disclosure)
       ),
       action: action
@@ -39,7 +39,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func suggestFeatureRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.suggestFeature, accessory: .disclosure)
       ),
       action: action
@@ -48,7 +48,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func rateAppRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.rateApp, accessory: .disclosure)
       ),
       action: action
@@ -57,7 +57,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.shareApp, accessory: .disclosure)
       ),
       action: action
@@ -66,7 +66,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.privacyPolicy, accessory: .disclosure)
       ),
       action: action
@@ -75,7 +75,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(title: RoutineStrings.Settings.Row.termsOfUse, accessory: .disclosure)
       ),
       action: action
@@ -84,7 +84,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   
   func appVersionRow() -> Settings.Row {
     .init(
-      .disclousre(
+      .value(
         .init(
           title: RoutineStrings.Settings.Row.appVersion,
           value: AppInfo.appVersion,

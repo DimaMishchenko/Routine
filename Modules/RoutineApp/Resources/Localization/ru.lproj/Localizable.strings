@@ -7,8 +7,13 @@
 "alert.cancel" = "Отмена";
 
 // MARK: - TabBar
-"tabbar.tab.routines" = "Рутины";
+"tabbar.tab.routines" = "Мои Рутины";
 "tabbar.tab.settings" = "Настройки";
+
+// MARK: - RoutineList
+"routineList.title" = "Мои Рутины";
+
+"routineList.row.empty.text" = "Пока нет рутин.\nНажмите плюс, чтобы исправить это! 👇";
 
 // MARK: - Settings
 "settings.title" = "Настройки";

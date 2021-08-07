@@ -6,7 +6,7 @@ final class SettingsView: UIView {
   private var initialLayout = Once()
   
   // MARK: - UI Properties
-  private lazy var tableView = createTableView()
+  private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
   
   // MARK: - Override
@@ -24,11 +24,11 @@ extension SettingsView {
   }
 }
 
-// MARK: - UITableViewDelegate
-extension SettingsView: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+// MARK: - UICollectionViewDelegate
+extension SettingsView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     dataSource.row(at: indexPath).action?()
-    tableView.deselectRow(at: indexPath, animated: true)
+    collectionView.deselectItem(at: indexPath, animated: true)
   }
 }
 
@@ -39,27 +39,40 @@ extension SettingsView {
   }
   
   private func updateLayout() {
-    tableView.pin.all()
+    collectionView.pin.all()
   }
   
-  private func createDataSource() -> TableDataSource<Settings.Section, Settings.Row> {
-    let dataSource = TableDataSource<Settings.Section, Settings.Row>(
-      tableView: tableView
-    ) { tableView, indexPath, row -> UITableViewCell? in
+  private func createDataSource() -> DataSource<Settings.Section, Settings.Row> {
+    let dataSource = DataSource<Settings.Section, Settings.Row>(
+      collectionView: collectionView
+    ) { collectionView, indexPath, row -> UICollectionViewCell? in
       switch row.type {
-      case .disclousre(let viewModel):
-        return tableView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
+      case .value(let viewModel):
+        return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
       }
     }
     
-    dataSource.titleForHeader = { $0.title }
+    dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, kind, indexPath in
+      guard
+        kind == UICollectionView.elementKindSectionHeader,
+        let model = dataSource?.section(at: indexPath.section).model
+      else { return nil }
+      
+      return collectionView.dequeue(GroupHeader.self, with: model, for: indexPath, kind: kind)
+    }
     
     return dataSource
   }
   
-  private func createTableView() -> UITableView {
-    with(UITableView(frame: .zero, style: .insetGrouped)) {
+  private func createCollectionView() -> UICollectionView {
+    let configuration = with(UICollectionLayoutListConfiguration(appearance: .insetGrouped)) {
+      $0.backgroundColor = Color.Background.default
+      $0.headerMode = .supplementary
+    }
+    
+    return with(UICollectionView(layout: .list(using: configuration))) {
       $0.delegate = self
+      $0.register(GroupHeader.self, kind: UICollectionView.elementKindSectionHeader)
       $0.register(ValueCell.self)
       addSubview($0)
     }

@@ -12,6 +12,7 @@ let project = Project(
         .package(.pinLayout),
         .package(.sfSafeSymbols),
         .package(.deviceKit),
+        .package(.snapKit),
         .cocoapods(path: ".")
       ]
     ),

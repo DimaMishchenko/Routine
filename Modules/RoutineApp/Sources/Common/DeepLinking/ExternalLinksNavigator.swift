@@ -6,6 +6,7 @@ enum ExternalLinksNavigator {
   }
   
   static func telegramSupport() {
+    // TODO: - Update contact url
     let tgAppLink = URL(string: "tg://resolve?domain=dimasik_karasik")
     
     if canOpen(tgAppLink) {

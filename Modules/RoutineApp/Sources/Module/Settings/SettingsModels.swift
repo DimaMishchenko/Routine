@@ -3,7 +3,7 @@ import Foundation
 enum Settings {
   // MARK: - Section
   struct Section: Hashable {
-    let title: String
+    let model: GroupHeaderVM
   }
   
   // MARK: - Row
@@ -21,7 +21,7 @@ enum Settings {
   }
   
   enum RowType: Hashable {
-    case disclousre(ValueCellVM)
+    case value(ValueCellVM)
   }
 }
 

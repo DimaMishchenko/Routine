@@ -1,7 +1,7 @@
 import PinLayout
 import UIKit
 
-final class ValueCell: UITableViewCell, ModelConfigurable {  
+final class ValueCell: UICollectionViewListCell, ModelConfigurable {
   // MARK: - UI Properties
   private lazy var titleLabel = createTitleLabel()
   private lazy var valueLabel = createValueLabel()
@@ -22,9 +22,9 @@ final class ValueCell: UITableViewCell, ModelConfigurable {
     
     switch model.accessory {
     case .none:
-      accessoryType = .none
+      accessories = []
     case .disclosure:
-      accessoryType = .disclosureIndicator
+      accessories = [.disclosureIndicator()]
     }
   }
   
@@ -39,7 +39,7 @@ final class ValueCell: UITableViewCell, ModelConfigurable {
     // value
     valueLabel.pin
       .vCenter()
-      .right(accessoryType == .none ? Inset.Side.default : Inset.Side.small)
+      .right(accessories.isEmpty ? Inset.Side.default : Inset.Side.small)
       .maxWidth(50%)
       .sizeToFit()
     

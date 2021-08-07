@@ -27,7 +27,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
       with: Snapshot(
         items: [
           .init(
-            section: .init(title: RoutineStrings.Settings.Section.app),
+            section: .init(model: .init(title: RoutineStrings.Settings.Section.app)),
             rows: [
               rowFactory.languageRow { [weak self] in
                 guard let self = self else { return }
@@ -36,7 +36,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
             ]
           ),
           .init(
-            section: .init(title: RoutineStrings.Settings.Section.feedback),
+            section: .init(model: .init(title: RoutineStrings.Settings.Section.feedback)),
             rows: [
               rowFactory.reportBugRow { [weak self] in
                 guard let self = self else { return }
@@ -69,7 +69,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
             ]
           ),
           .init(
-            section: .init(title: RoutineStrings.Settings.Section.more),
+            section: .init(model: .init(title: RoutineStrings.Settings.Section.more)),
             rows: [
               rowFactory.privacyPolicyRow {},
               rowFactory.termsOfUseRow {},

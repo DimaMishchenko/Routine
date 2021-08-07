@@ -17,8 +17,12 @@ final class SettingsAssembly {
     presenter.view = vc
     
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
-    presenter.rateApp = { SKStoreReviewController.requestReview() }
     presenter.telegramSupport = { ExternalLinksNavigator.telegramSupport() }
+    presenter.rateApp = {
+      UIApplication.shared.activeWindowScene.flatMap {
+        SKStoreReviewController.requestReview(in: $0)        
+      }
+    }
     
     presenter.mailSupport = { [weak assemblyFactory, weak vc] subject, message in
       let controllerProxy = assemblyFactory?.mail().controller(

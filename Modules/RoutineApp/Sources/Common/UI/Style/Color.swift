@@ -9,7 +9,8 @@ extension Color {
 }
 
 extension Color.Background {
-  static let `default`: UIColor = .systemBackground
+  static let `default`: UIColor = .systemGroupedBackground
+  static let secondary: UIColor = .secondarySystemGroupedBackground
 }
 
 // MARK: - Text
@@ -26,4 +27,15 @@ extension Color.Text {
   }
   
   static let value: UIColor = .systemGray
+  static let header: UIColor = .systemGray
+}
+
+
+// MARK: - Button
+extension Color {
+  enum Button {}
+}
+
+extension Color.Button {
+  static let `default`: UIColor = .systemBlue
 }

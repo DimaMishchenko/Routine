@@ -18,6 +18,10 @@ final class AssemblyFactory {
     SettingsAssembly(assemblyFactory: self)
   }
   
+  func routineList() -> RoutineListAssembly {
+    RoutineListAssembly()
+  }
+  
   func share() -> ShareAsembly {
     ShareAsembly()
   }

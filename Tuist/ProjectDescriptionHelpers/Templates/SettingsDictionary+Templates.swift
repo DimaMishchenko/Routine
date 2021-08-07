@@ -4,7 +4,8 @@ extension SettingsDictionary {
   public static func project(for environment: Environment) -> SettingsDictionary {
     [
       "ENVIRONMENT": .string(environment.rawValue),
-      "DEVELOPMENT_TEAM": "77X75EH6F4"
+      "DEVELOPMENT_TEAM": "77X75EH6F4",
+      "CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED": "YES"
     ]
   }
   

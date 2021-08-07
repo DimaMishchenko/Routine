@@ -15,7 +15,7 @@ final class TabBarPresenterImpl: TabBarPresenter {
         TabBar.ItemVM(
           type: .routines,
           title: RoutineStrings.Tabbar.Tab.routines,
-          sfSymbol: .star
+          sfSymbol: .rCircle
         ),
         TabBar.ItemVM(
           type: .settings,
