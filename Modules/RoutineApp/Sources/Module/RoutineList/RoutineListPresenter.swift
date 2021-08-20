@@ -22,7 +22,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
                 ),
                 open: true,
                 rows: [
-                  .init(.empty(.init(text: RoutineStrings.RoutineList.Row.Empty.text)))
+                  .init(.empty(.init(text: RoutineAppStrings.RoutineList.Row.Empty.text)))
                 ]
               )
             ]
@@ -35,9 +35,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
                   model: .init(title: "Weekly", accessory: .outlineDisclosure)
                 ),
                 rows: [
-                  .init(.value(.init(title: "4"))),
-                  .init(.value(.init(title: "5"))),
-                  .init(.value(.init(title: "6")))
+                  .init(.empty(.init(text: RoutineAppStrings.RoutineList.Row.Empty.text)))
                 ]
               )
             ]
@@ -50,9 +48,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
                   model: .init(title: "Monthly", accessory: .outlineDisclosure)
                 ),
                 rows: [
-                  .init(.value(.init(title: "7"))),
-                  .init(.value(.init(title: "8"))),
-                  .init(.value(.init(title: "9")))
+                  .init(.empty(.init(text: RoutineAppStrings.RoutineList.Row.Empty.text)))
                 ]
               )
             ]

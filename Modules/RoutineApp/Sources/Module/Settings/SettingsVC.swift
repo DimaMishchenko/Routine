@@ -30,7 +30,7 @@ final class SettingsVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineStrings.Settings.title
+    title = RoutineAppStrings.Settings.title
     presenter.viewDidLoad()
   }
 }

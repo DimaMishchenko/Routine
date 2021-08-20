@@ -8,8 +8,8 @@ extension Alert {
     
     var title: String {
       switch self {
-      case .ok:                 return RoutineStrings.Alert.ok
-      case .cancel:             return RoutineStrings.Alert.cancel
+      case .ok:                 return RoutineAppStrings.Alert.ok
+      case .cancel:             return RoutineAppStrings.Alert.cancel
       case .custom(let action): return action.title
       }
     }

@@ -30,7 +30,6 @@ extension Color.Text {
   static let header: UIColor = .systemGray
 }
 
-
 // MARK: - Button
 extension Color {
   enum Button {}

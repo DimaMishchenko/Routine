@@ -27,7 +27,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
       with: Snapshot(
         items: [
           .init(
-            section: .init(model: .init(title: RoutineStrings.Settings.Section.app)),
+            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),
             rows: [
               rowFactory.languageRow { [weak self] in
                 guard let self = self else { return }
@@ -36,17 +36,17 @@ final class SettingsPresenterImpl: SettingsPresenter {
             ]
           ),
           .init(
-            section: .init(model: .init(title: RoutineStrings.Settings.Section.feedback)),
+            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.feedback)),
             rows: [
               rowFactory.reportBugRow { [weak self] in
                 guard let self = self else { return }
                 self.view?.showAlert(
                   with: self.feedbackAlertVM(
-                    title: RoutineStrings.Settings.Alert.ReportBug.title,
-                    message: RoutineStrings.Settings.Alert.ReportBug.message,
+                    title: RoutineAppStrings.Settings.Alert.ReportBug.title,
+                    message: RoutineAppStrings.Settings.Alert.ReportBug.message,
                     mailConfig: (
-                      subject: RoutineStrings.Settings.Mail.ReportBug.subject,
-                      message: RoutineStrings.Settings.Mail.ReportBug.message
+                      subject: RoutineAppStrings.Settings.Mail.ReportBug.subject,
+                      message: RoutineAppStrings.Settings.Mail.ReportBug.message
                     )
                   )
                 )
@@ -55,11 +55,11 @@ final class SettingsPresenterImpl: SettingsPresenter {
                 guard let self = self else { return }
                 self.view?.showAlert(
                   with: self.feedbackAlertVM(
-                    title: RoutineStrings.Settings.Alert.SuggestFeature.title,
-                    message: RoutineStrings.Settings.Alert.SuggestFeature.message,
+                    title: RoutineAppStrings.Settings.Alert.SuggestFeature.title,
+                    message: RoutineAppStrings.Settings.Alert.SuggestFeature.message,
                     mailConfig: (
-                      subject: RoutineStrings.Settings.Mail.SuggestFeature.subject,
-                      message: RoutineStrings.Settings.Mail.SuggestFeature.message
+                      subject: RoutineAppStrings.Settings.Mail.SuggestFeature.subject,
+                      message: RoutineAppStrings.Settings.Mail.SuggestFeature.message
                     )
                   )
                 )
@@ -69,7 +69,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
             ]
           ),
           .init(
-            section: .init(model: .init(title: RoutineStrings.Settings.Section.more)),
+            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
             rows: [
               rowFactory.privacyPolicyRow {},
               rowFactory.termsOfUseRow {},
@@ -84,13 +84,13 @@ final class SettingsPresenterImpl: SettingsPresenter {
   // MARK: - Private
   private func languageAlertVM() -> Alert.VM {
     let continueAction = Alert.ActionType.Custom(
-      title: RoutineStrings.Settings.Alert.Language.Button.continue,
+      title: RoutineAppStrings.Settings.Alert.Language.Button.continue,
       style: .default
     )
     
     return .init(
-      title: RoutineStrings.Settings.Alert.Language.title,
-      message: RoutineStrings.Settings.Alert.Language.message,
+      title: RoutineAppStrings.Settings.Alert.Language.title,
+      message: RoutineAppStrings.Settings.Alert.Language.message,
       actions: [
         .custom(continueAction),
         .cancel
@@ -107,11 +107,11 @@ final class SettingsPresenterImpl: SettingsPresenter {
     mailConfig: (subject: String, message: String)
   ) -> Alert.VM {
     let emailAction = Alert.ActionType.Custom(
-      title: RoutineStrings.Common.email,
+      title: RoutineAppStrings.Common.email,
       style: .default
     )
     let telegramAction = Alert.ActionType.Custom(
-      title: RoutineStrings.Common.telegram,
+      title: RoutineAppStrings.Common.telegram,
       style: .default
     )
     

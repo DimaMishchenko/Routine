@@ -3,7 +3,7 @@ import ProjectDescription
 extension Target {
   public static func routineApp(dependencies: [TargetDependency] = []) -> Target {
     Target(
-      name: "Routine",
+      name: "RoutineApp",
       platform: .iOS,
       product: .app,
       bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
@@ -42,7 +42,7 @@ extension Target {
       infoPlist: .default,
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
-        .target(name: "Routine"),
+        .target(name: "RoutineApp"),
         .package(.quick),
         .package(.nimble)
       ]

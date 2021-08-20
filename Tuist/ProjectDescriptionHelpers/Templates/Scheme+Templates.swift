@@ -12,7 +12,7 @@ extension Scheme {
       release: CustomConfiguration.name(for: environment, type: .release)
     )
     
-    let targetName = "Routine"
+    let targetName = "RoutineApp"
     
     return Scheme(
       name: targetName + " " + environment.rawValue.capitalized,

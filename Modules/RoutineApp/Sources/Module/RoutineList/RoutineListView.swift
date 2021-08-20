@@ -56,8 +56,6 @@ extension RoutineListView {
         return collectionView.dequeue(GroupHeader.self, with: header.model, for: indexPath)
       case .row(let row):
         switch row.type {
-        case .value(let viewModel):
-          return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
         case .empty(let viewModel):
           return collectionView.dequeue(EmptyCell.self, with: viewModel, for: indexPath)
         }
@@ -75,7 +73,6 @@ extension RoutineListView {
     return with(UICollectionView(layout: .list(using: configuration))) {
       $0.delegate = self
       $0.register(EmptyCell.self)
-      $0.register(ValueCell.self)
       $0.register(GroupHeader.self)
       addSubview($0)
     }
@@ -84,7 +81,7 @@ extension RoutineListView {
   private func createAddButton() -> UIButton {
     with(UIButton()) {
       addSubview($0)
-      $0.setImage(RoutineAsset.add.image, for: .normal)
+      $0.setImage(RoutineAppAsset.Icon.add.image, for: .normal)
     }
   }
 }

@@ -29,11 +29,12 @@ final class RoutineListVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineStrings.RoutineList.title
+    title = RoutineAppStrings.RoutineList.title
     presenter.viewDidLoad()
   }
 }
 
+// MARK: - RoutineListViewInterface
 extension RoutineListVC: RoutineListViewInterface {
   func update(with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>) {
     contentView.update(with: snapshot)

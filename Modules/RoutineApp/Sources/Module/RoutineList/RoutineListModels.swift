@@ -28,7 +28,6 @@ enum RoutineList {
   }
   
   enum RowType: Hashable {
-    case value(ValueCellVM)
     case empty(EmptyCellVM)
   }
 }

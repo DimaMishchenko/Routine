@@ -2,7 +2,7 @@ platform :ios, '14.0'
 use_frameworks!
 
 # Use CocoaPods only if SPM is not available
-target 'Routine' do
+target 'RoutineApp' do
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   pod 'Firebase/Messaging'
   pod 'Firebase/Crashlytics'
