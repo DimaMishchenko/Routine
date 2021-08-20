@@ -19,7 +19,7 @@ extension SettingsDictionary {
   
   // MARK: - Private
   private static func routineBundleId(for environment: Environment) -> String {
-    let base = "com.dm.routine"
+    let base = "com.dm.routine.app"
     
     switch environment {
     case .dev:  return base + "." + "dev"

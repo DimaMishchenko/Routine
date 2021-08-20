@@ -1,0 +1,40 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Create app ids for RoutineApp"
+  lane :create_routine_app_ids do |options|
+    target_name = options[:target_name]
+    target_cage = options[:cage]
+
+    create_routine_app_id(
+      name: "RoutineApp",
+      bundle_id: "com.dm.routine.app"
+    )
+
+    create_routine_app_id(
+      name: "RoutineApp DEV",
+      bundle_id: "com.dm.routine.app.dev"
+    )
+  end
+
+  desc "Create app id for RoutineApp"
+  desc ""
+  desc "Parameters"
+  desc "- name(required) - app identifier"
+  desc "- bundle_id (required) - application bundle id"
+  private_lane :create_routine_app_id do |options|
+    bundle_id = options[:bundle_id]
+    name = options[:name]
+
+    produce(
+      app_name: name,
+      app_identifier: bundle_id,
+      enable_services: {
+        push_notification: "on"
+      },
+      language: "en-US",
+      skip_itc: true
+    )
+  end
+end
