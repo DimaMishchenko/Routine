@@ -2,11 +2,64 @@ default_platform(:ios)
 
 platform :ios do
 
-  desc "Create app ids for RoutineApp"
-  lane :create_routine_app_ids do |options|
-    target_name = options[:target_name]
-    target_cage = options[:cage]
+  # Public 
 
+  # Testflight
+  desc "Upload RoutineApp Dev to Testflight"
+  desc ""
+  desc "Parameters"
+  desc "- version(required) - build version"
+  lane :upload_tf_routine_dev do |options|
+    version = options[:version]
+    bundle_id = "com.dm.routine.app.dev"
+
+    if version.nil?
+      UI.user_error!("Version must be specified")
+    end
+
+    version_file_path = "Modules/RoutineApp/app-version"
+    Dir.chdir("..") do
+      File.open(version_file_path, 'w') { |file| file.write(version) }
+    end
+
+    build_file_path = "Modules/RoutineApp/app-build"
+    build_number = nil
+    Dir.chdir("..") do
+      current_build_number = File.read(build_file_path).to_i
+      build_number = current_build_number + 1
+      File.open(build_file_path, 'w') { |file| file.write("#{build_number}") }
+    end
+    
+    if build_number.nil?
+      UI.user_error!("Failed to update buld number")
+    end
+
+    generate_project()
+
+    increment_build_number(build_number: build_number.to_s)
+
+    setup_as_api_key()
+
+    match(type: "appstore", app_identifier: bundle_id)
+
+    gym(
+      scheme: "RoutineApp Dev"
+    )
+
+    testflight(
+      app_identifier: bundle_id
+    )
+
+    full_new_version = version + "-" + build_number.to_s
+
+    git_commit(path: [version_file_path, build_file_path], message: "Bump RoutineApp to version #{full_new_version}")
+    add_git_tag(tag: full_new_version)
+    push_to_git_remote()
+  end
+
+  # Identifiers creation
+  desc "Create app ids for RoutineApp"
+  lane :create_routine_app_ids do
     create_routine_app_id(
       name: "RoutineApp",
       bundle_id: "com.dm.routine.app"
@@ -18,6 +71,27 @@ platform :ios do
     )
   end
 
+  # Private 
+
+  # Setup AppStore Connect
+  desc "Setup AppStore connect API key"
+  private_lane :setup_as_api_key do 
+    app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: ENV.fetch("ASC_KEY_FILE"),
+    )
+  end
+
+  # Project generation
+  desc "Generate XCode project file and install dependencies"
+  private_lane :generate_project do
+    Dir.chdir("..") do
+      sh("make", "gen")
+    end
+  end
+
+  # Identifiers creation
   desc "Create app id for RoutineApp"
   desc ""
   desc "Parameters"

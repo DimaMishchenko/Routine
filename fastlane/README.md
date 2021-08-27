@@ -16,6 +16,17 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
+### ios upload_tf_routine_dev
+```
+fastlane ios upload_tf_routine_dev
+```
+Upload RoutineApp Dev to Testflight
+
+
+
+Parameters
+
+- version(required) - build version
 ### ios create_routine_app_ids
 ```
 fastlane ios create_routine_app_ids

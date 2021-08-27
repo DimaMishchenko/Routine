@@ -71,3 +71,9 @@ Tuist/Dependencies
 
 ### CocoaPods ###
 Pods/
+
+### Fastlane ###
+fastlane/report.xml
+*.dSYM.zip
+*.dSYM
+*.ipa

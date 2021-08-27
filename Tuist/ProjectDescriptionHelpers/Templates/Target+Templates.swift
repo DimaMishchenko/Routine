@@ -11,17 +11,7 @@ extension Target {
         targetVersion: "14.0",
         devices: [.iphone]
       ),
-      infoPlist: .extendingDefault(
-        with: [
-          "CFBundleShortVersionString": "0.0.1",
-          "CFBundleVersion": "1",
-          "UIMainStoryboardFile": "",
-          "UILaunchStoryboardName": "LaunchScreen",
-          "ENVIRONMENT": "${ENVIRONMENT}",
-          "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
-          "LSApplicationQueriesSchemes": ["tg"]
-        ]
-      ),
+      infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
       actions: [

@@ -5,4 +5,3 @@ init:
 
 gen: 
 	tuist generate
-	open Routine.xcworkspace
