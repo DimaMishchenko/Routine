@@ -13,6 +13,7 @@ extension SettingsDictionary {
     [
       "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment)),
       "GOOGLE_SERVICE_INFO_NAME": .string(routineGoogleInfoName(for: environment)),
+      "CODE_SIGN_ENTITLEMENTS": .string(routineEntitlementsPath(for: environment)),
       "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
     ]
   }
@@ -31,6 +32,13 @@ extension SettingsDictionary {
     switch environment {
     case .dev:  return "Routine-Dev-GoogleService-Info"
     case .prod: return "Routine-Prod-GoogleService-Info"
+    }
+  }
+  
+  private static func routineEntitlementsPath(for environment: Environment) -> String {
+    switch environment {
+    case .dev:  return "Modules/RoutineApp/Entitlements/RoutineAppDev.entitlements"
+    case .prod: return "Modules/RoutineApp/Entitlements/RoutineApp.entitlements"
     }
   }
 }

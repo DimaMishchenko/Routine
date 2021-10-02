@@ -19,7 +19,8 @@ extension Target {
         .crashlytics
       ],
       dependencies: dependencies,
-      settings: Settings(configurations: CustomConfiguration.routine)
+      settings: Settings(configurations: CustomConfiguration.routine),
+      coreDataModels: [.init("Modules/RoutineApp/CoreData/Routine.xcdatamodeld")]
     )
   }
   

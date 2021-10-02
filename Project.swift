@@ -20,5 +20,6 @@ let project = Project(
   ],
   schemes: Scheme.routine,
   fileHeaderTemplate: "",
+  additionalFiles: ["Modules/RoutineApp/Entitlements/**"],
   resourceSynthesizers: .default
 )
