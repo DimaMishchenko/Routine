@@ -20,7 +20,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Settings.Row.language,
-          value: Locale.current.localizedString(forLanguageCode: code)?.capitalized,
+          value: .text(Locale.current.localizedString(forLanguageCode: code)?.capitalized),
           accessory: .disclosure
         )
       ),
@@ -87,8 +87,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Settings.Row.appVersion,
-          value: AppInfo.appVersion,
-          valueStyle: .bold
+          value: .text(AppInfo.appVersion, style: .bold)
         )
       )
     )

@@ -8,6 +8,10 @@ struct Snapshot<Section: Hashable, Row: Hashable> {
   init(items: [Item]) {
     self.items = items
   }
+  
+  init(@SnapshotBuilder<Section, Row> builder: () -> [Item]) {
+    self.items = builder()
+  }
 }
 
 // MARK: - Item

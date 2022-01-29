@@ -4,10 +4,12 @@ enum Inset {}
 
 // MARK: - Side
 extension Inset {
-  enum Side {}
+  enum Padding {}
 }
 
-extension Inset.Side {
+extension Inset.Padding {
   static let `default`: CGFloat = 16
   static let small: CGFloat = 8
+  
+  static let smedium: CGFloat = 10
 }

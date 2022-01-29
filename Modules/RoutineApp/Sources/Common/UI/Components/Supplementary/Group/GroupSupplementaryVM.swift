@@ -1,6 +1,6 @@
 import Foundation
 
-struct GroupHeaderVM: Hashable {
+struct GroupSupplementaryVM: Hashable {
   let title: String
   let accessory: Accessory
   
@@ -14,7 +14,7 @@ struct GroupHeaderVM: Hashable {
 }
 
 // MARK: - Accessory
-extension GroupHeaderVM {
+extension GroupSupplementaryVM {
   enum Accessory {
     case none
     case outlineDisclosure

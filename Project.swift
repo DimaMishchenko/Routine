@@ -13,6 +13,8 @@ let project = Project(
         .package(.sfSafeSymbols),
         .package(.deviceKit),
         .package(.snapKit),
+        .package(.iqKeyboardManager),
+        .package(.actionSheetPicker),
         .cocoapods(path: ".")
       ]
     ),

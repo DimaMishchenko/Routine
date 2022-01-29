@@ -2,9 +2,18 @@
 "common.email" = "Email";
 "common.telegram" = "Telegram";
 
+// MARK: - Navigation Bar
+"navBar.save" = "Save";
+"navBar.cancel" = "Cancel";
+
 // MARK: - Alert
 "alert.ok" = "Ok";
 "alert.cancel" = "Cancel";
+
+// MARK: - Frequency
+"frequency.daily" = "Daily";
+"frequency.weekly" = "Weekly";
+"frequency.monthly" = "Monthly";
 
 // MARK: - TabBar
 "tabbar.tab.routines" = "My Routines";
@@ -14,6 +23,24 @@
 "routineList.title" = "My Routines";
 
 "routineList.row.empty.text" = "There are no routines yet.\nClick plus to fix it! 👇";
+
+// MARK: - RoutineEdit
+"routineEdit.title.create" = "Create a routine";
+"routineEdit.title.edit" = "Edit routine";
+
+"routineEdit.button.save" = "Save";
+"routineEdit.button.delete" = "Delete routine";
+
+"routineEdit.placeholder.name" = "Routine name";
+"routineEdit.placeholder.description" = "Description (optional)";
+
+"routineEdit.text.remindeMe" = "Remind me";
+"routineEdit.text.addReminder" = "+ Add reminder";
+"routineEdit.text.time" = "Time";
+"routineEdit.text.emoji" = "Emoji";
+"routineEdit.text.frequency" = "Frequency";
+"routineEdit.text.goal" = "Goal";
+"routineEdit.text.timePerDay" = "time per day";
 
 // MARK: - Settings
 "settings.title" = "Settings";

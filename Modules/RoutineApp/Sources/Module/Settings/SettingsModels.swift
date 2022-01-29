@@ -3,7 +3,7 @@ import Foundation
 enum Settings {
   // MARK: - Section
   struct Section: Hashable {
-    let model: GroupHeaderVM
+    let model: GroupSupplementaryVM
   }
   
   // MARK: - Row

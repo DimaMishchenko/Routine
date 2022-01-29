@@ -28,6 +28,9 @@ extension Color.Text {
   
   static let value: UIColor = .systemGray
   static let header: UIColor = .systemGray
+  static let placeholder: UIColor = .systemGray
+  
+  static let light: UIColor = .white
 }
 
 // MARK: - Button
@@ -37,4 +40,5 @@ extension Color {
 
 extension Color.Button {
   static let `default`: UIColor = .systemBlue
+  static let delete: UIColor = .systemRed
 }

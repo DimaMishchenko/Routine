@@ -1,12 +1,12 @@
 import SnapKit
 import UIKit
 
-final class GroupHeader: UICollectionViewListCell, ModelConfigurable {
+final class GroupSupplementary: UICollectionViewListCell, ModelConfigurable {
   // MARK: - UI Properties
   private lazy var titleLabel = createTitleLabel()
   
   // MARK: - Public
-  func update(with model: GroupHeaderVM) {
+  func update(with model: GroupSupplementaryVM) {
     titleLabel.text = model.title
     
     switch model.accessory {
@@ -26,7 +26,7 @@ final class GroupHeader: UICollectionViewListCell, ModelConfigurable {
       addSubview($0)
       
       $0.snp.makeConstraints {
-        $0.edges.equalToSuperview().inset(Inset.Side.small)
+        $0.edges.equalToSuperview().inset(Inset.Padding.small)
       }
     }
   }

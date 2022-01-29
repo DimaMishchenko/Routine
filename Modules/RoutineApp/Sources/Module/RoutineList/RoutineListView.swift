@@ -1,10 +1,14 @@
+import PinLayout
 import UIKit
 
 final class RoutineListView: UIView {
   // MARK: - Private Properties
   private var initialLayout = Once()
   
-  // MARK: - Properties
+  // MARK: - Public Properties
+  var onAdd: (() -> Void)?
+  
+  // MARK: - UI Properties
   private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
   private lazy var addButton = createAddButton()
@@ -44,7 +48,7 @@ extension RoutineListView {
       .size(CGSize(width: 44, height: 44))
       .bottom(pin.safeArea)
       .right(pin.safeArea)
-      .margin(Inset.Side.default)
+      .margin(Inset.Padding.default)
   }
   
   private func createDataSource() -> OutlineDataSource<RoutineList.Section, RoutineList.Header, RoutineList.Row> {
@@ -53,7 +57,7 @@ extension RoutineListView {
     ) { collectionView, indexPath, row -> UICollectionViewCell? in
       switch row {
       case .header(let header):
-        return collectionView.dequeue(GroupHeader.self, with: header.model, for: indexPath)
+        return collectionView.dequeue(GroupSupplementary.self, with: header.model, for: indexPath)
       case .row(let row):
         switch row.type {
         case .empty(let viewModel):
@@ -73,7 +77,7 @@ extension RoutineListView {
     return with(UICollectionView(layout: .list(using: configuration))) {
       $0.delegate = self
       $0.register(EmptyCell.self)
-      $0.register(GroupHeader.self)
+      $0.register(GroupSupplementary.self)
       addSubview($0)
     }
   }
@@ -82,6 +86,7 @@ extension RoutineListView {
     with(UIButton()) {
       addSubview($0)
       $0.setImage(RoutineAppAsset.Icon.add.image, for: .normal)
+      $0.on { [weak self] in self?.onAdd?() }
     }
   }
 }

@@ -1,4 +1,5 @@
 import Firebase
+import IQKeyboardManagerSwift
 import UIKit
 
 @main
@@ -12,6 +13,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseConfigureImpl().configure()
+    IQKeyboardManager.shared.enable = true
+    IQKeyboardManager.shared.shouldPlayInputClicks = false
     Appearance.setup()
     
     let assemblyFactory = AssemblyFactory(serviceFactory: ServiceFactory())

@@ -29,7 +29,7 @@ final class EmptyCell: UICollectionViewCell, ModelConfigurable {
       contentView.addSubview($0)
       
       $0.snp.makeConstraints {
-        $0.edges.equalToSuperview().inset(Inset.Side.default)
+        $0.edges.equalToSuperview().inset(Inset.Padding.default)
       }
     }
   }

@@ -29,8 +29,14 @@ final class RoutineListVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineAppStrings.RoutineList.title
+    setupUI()
     presenter.viewDidLoad()
+  }
+  
+  // MARK: - Private
+  private func setupUI() {
+    title = RoutineAppStrings.RoutineList.title
+    contentView.onAdd = { [weak self] in self?.presenter.addRoutine() }
   }
 }
 

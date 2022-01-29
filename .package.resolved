@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "ActionSheetPicker-3.0",
+        "repositoryURL": "https://github.com/skywinder/ActionSheetPicker-3.0",
+        "state": {
+          "branch": "develop",
+          "revision": "b747aa4a2a0a9ae8a3c745ead0ca3c19a3315a8e",
+          "version": null
+        }
+      },
+      {
         "package": "CwlCatchException",
         "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
         "state": {
@@ -26,6 +35,15 @@
           "branch": null,
           "revision": "70f1564e4218f0b68b73a4a795cb31aee5696f08",
           "version": "4.4.0"
+        }
+      },
+      {
+        "package": "IQKeyboardManagerSwift",
+        "repositoryURL": "https://github.com/hackiftekhar/IQKeyboardManager.git",
+        "state": {
+          "branch": null,
+          "revision": "b6bac3571ac50c9218a0bb5147ec04399ff66b44",
+          "version": "6.5.8"
         }
       },
       {

@@ -2,9 +2,18 @@
 "common.email" = "Почта";
 "common.telegram" = "Telegram";
 
+// MARK: - Navigation Bar
+"navBar.save" = "Сохранить";
+"navBar.cancel" = "Отмена";
+
 // MARK: - Alert
 "alert.ok" = "Ок";
 "alert.cancel" = "Отмена";
+
+// MARK: - Frequency
+"frequency.daily" = "Ежедневно";
+"frequency.weekly" = "Еженедельно";
+"frequency.monthly" = "Ежемесячно";
 
 // MARK: - TabBar
 "tabbar.tab.routines" = "Мои Рутины";
@@ -14,6 +23,25 @@
 "routineList.title" = "Мои Рутины";
 
 "routineList.row.empty.text" = "Пока нет рутин.\nНажмите плюс, чтобы исправить это! 👇";
+
+// MARK: - RoutineEdit
+"routineEdit.title.create" = "Создание рутины";
+"routineEdit.title.edit" = "Редактирование рутины";
+
+"routineEdit.button.save" = "Сохранить";
+"routineEdit.button.delete" = "Удалить рутину";
+
+"routineEdit.placeholder.name" = "Имя рутины";
+"routineEdit.placeholder.description" = "Описание (не обязательно)";
+
+"routineEdit.text.remindeMe" = "Напомнить мне";
+"routineEdit.text.addReminder" = "+ Добавить напоминание";
+"routineEdit.text.time" = "Время";
+"routineEdit.text.emoji" = "Эмодзи";
+"routineEdit.text.frequency" = "Частота";
+"routineEdit.text.goal" = "Цель";
+"routineEdit.text.timePerDay" = "раз в день";
+
 
 // MARK: - Settings
 "settings.title" = "Настройки";

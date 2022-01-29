@@ -10,7 +10,7 @@ enum RoutineList {
   
   // MARK: - Header
   struct Header: Hashable {
-    let model: GroupHeaderVM
+    let model: GroupSupplementaryVM
   }
   
   // MARK: - Row

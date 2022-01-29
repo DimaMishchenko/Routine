@@ -6,6 +6,7 @@ target 'RoutineApp' do
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   pod 'Firebase/Messaging'
   pod 'Firebase/Crashlytics'
+  pod 'EmojiPicker', '1.1'
 
   target 'RoutineTests' do end
 end

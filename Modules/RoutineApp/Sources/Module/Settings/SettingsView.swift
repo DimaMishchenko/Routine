@@ -58,7 +58,7 @@ extension SettingsView {
         let model = dataSource?.section(at: indexPath.section).model
       else { return nil }
       
-      return collectionView.dequeue(GroupHeader.self, with: model, for: indexPath, kind: kind)
+      return collectionView.dequeue(GroupSupplementary.self, with: model, for: indexPath, kind: kind)
     }
     
     return dataSource
@@ -72,7 +72,7 @@ extension SettingsView {
     
     return with(UICollectionView(layout: .list(using: configuration))) {
       $0.delegate = self
-      $0.register(GroupHeader.self, kind: UICollectionView.elementKindSectionHeader)
+      $0.register(GroupSupplementary.self, kind: UICollectionView.elementKindSectionHeader)
       $0.register(ValueCell.self)
       addSubview($0)
     }

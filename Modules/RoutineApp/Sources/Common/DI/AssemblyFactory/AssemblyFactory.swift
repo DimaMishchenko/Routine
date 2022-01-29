@@ -19,14 +19,18 @@ final class AssemblyFactory {
   }
   
   func routineList() -> RoutineListAssembly {
-    RoutineListAssembly()
+    RoutineListAssembly(assemblyFactory: self)
   }
   
-  func share() -> ShareAsembly {
-    ShareAsembly()
+  func share() -> ShareAssembly {
+    ShareAssembly()
   }
   
   func mail() -> MailAssembly {
     MailAssembly()
+  }
+  
+  func routineEdit() -> RoutineEditAssembly {
+    RoutineEditAssembly()
   }
 }

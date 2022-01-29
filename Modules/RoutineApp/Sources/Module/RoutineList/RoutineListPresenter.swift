@@ -2,11 +2,15 @@ import Foundation
 
 protocol RoutineListPresenter {
   func viewDidLoad()
+  func addRoutine()
 }
 
 final class RoutineListPresenterImpl: RoutineListPresenter {
   // MARK: - Dependencies
   weak var view: RoutineListViewInterface?
+  
+  // MARK: - Properties
+  var addNewRoutine: (() -> Void)?
   
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
@@ -56,5 +60,9 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
         ]
       )
     )
+  }
+  
+  func addRoutine() {
+    addNewRoutine?()
   }
 }
