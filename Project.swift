@@ -15,6 +15,7 @@ let project = Project(
         .package(.snapKit),
         .package(.iqKeyboardManager),
         .package(.actionSheetPicker),
+        .package(.swipeCellKit),
         .cocoapods(path: ".")
       ]
     ),

@@ -1,6 +1,6 @@
 import Foundation
 
-enum Frequency: Int, CaseIterable {
+enum Frequency: Int, Hashable, CaseIterable {
   case daily
   case weekly
   case monthly

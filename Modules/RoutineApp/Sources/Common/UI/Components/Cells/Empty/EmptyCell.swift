@@ -9,13 +9,13 @@ final class EmptyCell: UICollectionViewCell, ModelConfigurable {
   // MARK: - ModelConfigurable
   func update(with model: EmptyCellVM) {
     titleLabel.text = model.text
-    updateBackgorundConfiguration()
+    updateBackgroundConfiguration()
   }
   
   // MARK: - Private
-  private func updateBackgorundConfiguration() {
+  private func updateBackgroundConfiguration() {
     backgroundConfiguration = with(.clear()) {
-      $0?.cornerRadius = 12
+      $0?.cornerRadius = Size.CornerRadius.container
       $0?.backgroundColor = Color.Background.secondary
     }
   }

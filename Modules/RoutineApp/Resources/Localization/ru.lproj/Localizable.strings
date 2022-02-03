@@ -24,6 +24,10 @@
 
 "routineList.row.empty.text" = "Пока нет рутин.\nНажмите плюс, чтобы исправить это! 👇";
 
+"routineList.row.routine.goal.daily" = "СЕГОДНЯ";
+"routineList.row.routine.goal.weekly" = "ЭТА НЕДЕЛЯ";
+"routineList.row.routine.goal.monthly" = "ЭТОТ МЕСЯЦ";
+
 // MARK: - RoutineEdit
 "routineEdit.title.create" = "Создание рутины";
 "routineEdit.title.edit" = "Редактирование рутины";

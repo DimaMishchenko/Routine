@@ -41,4 +41,6 @@ extension Color {
 extension Color.Button {
   static let `default`: UIColor = .systemBlue
   static let delete: UIColor = .systemRed
+  
+  static let gray: UIColor = .systemGray
 }

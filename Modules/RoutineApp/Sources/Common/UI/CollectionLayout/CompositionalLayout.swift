@@ -1,6 +1,6 @@
 import UIKit
 
-final class GroupLayout: UICollectionViewCompositionalLayout {
+final class CompositionalLayout: UICollectionViewCompositionalLayout {
   // MARK: - Constants
   private enum Constants {
     static let backgroundKind = "groupLayoutSectionBackground"
@@ -8,21 +8,17 @@ final class GroupLayout: UICollectionViewCompositionalLayout {
   
   // MARK: - Init
   init(
+    itemContentInset: NSDirectionalEdgeInsets = .zero,
+    itemEdgeSpacing: NSCollectionLayoutEdgeSpacing? = nil,
     interSectionSpacing: CGFloat = Inset.Padding.default,
     applyGroupBackground: @escaping (Int) -> Bool = { _ in true },
     supplementaryItems: @escaping (Int) -> [NSCollectionLayoutBoundarySupplementaryItem] = { _ in [] }
   ) {
-    let contentInsets = NSDirectionalEdgeInsets(
-      top: .zero,
-      leading: Inset.Padding.default,
-      bottom: .zero,
-      trailing: Inset.Padding.default
-    )
-    
     let item = NSCollectionLayoutItem(
       layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(Size.View.cellDefault))
     )
-    item.contentInsets = contentInsets
+    item.contentInsets = itemContentInset
+    item.edgeSpacing = itemEdgeSpacing
     
     let group = NSCollectionLayoutGroup.vertical(
       layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(Size.View.cellDefault)),
@@ -30,10 +26,15 @@ final class GroupLayout: UICollectionViewCompositionalLayout {
     )
     
     let backgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: Constants.backgroundKind)
-    backgroundDecoration.contentInsets = contentInsets
+    backgroundDecoration.contentInsets = NSDirectionalEdgeInsets(
+      top: .zero,
+      leading: Inset.Padding.default,
+      bottom: .zero,
+      trailing: Inset.Padding.default
+    )
     
     let configuration = UICollectionViewCompositionalLayoutConfiguration()
-    configuration.interSectionSpacing = Inset.Padding.default
+    configuration.interSectionSpacing = interSectionSpacing
     
     super.init(
       sectionProvider: { index, _ in

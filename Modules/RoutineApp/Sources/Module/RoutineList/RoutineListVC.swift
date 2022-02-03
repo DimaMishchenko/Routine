@@ -1,7 +1,10 @@
 import UIKit
 
 protocol RoutineListViewInterface: AnyObject {
-  func update(with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>)
+  func update(
+    with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,
+    animated: Bool
+  )
 }
 
 final class RoutineListVC: UIViewController {
@@ -37,12 +40,19 @@ final class RoutineListVC: UIViewController {
   private func setupUI() {
     title = RoutineAppStrings.RoutineList.title
     contentView.onAdd = { [weak self] in self?.presenter.addRoutine() }
+    contentView.onEdit = { [weak self] in self?.presenter.editRoutine(at: $0, rowIndex: $1) }
+    contentView.onDelete = { [weak self] in self?.presenter.deleteRoutine(at: $0, rowIndex: $1) }
+    contentView.onIncreaseProgress = { [weak self] in self?.presenter.increaseProgress(at: $0, rowIndex: $1) }
+    contentView.onDecreaseProgress = { [weak self] in self?.presenter.decreaseProgress(at: $0, rowIndex: $1) }
   }
 }
 
 // MARK: - RoutineListViewInterface
 extension RoutineListVC: RoutineListViewInterface {
-  func update(with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>) {
-    contentView.update(with: snapshot)
+  func update(
+    with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,
+    animated: Bool
+  ) {
+    contentView.update(with: snapshot, animated: animated)
   }
 }

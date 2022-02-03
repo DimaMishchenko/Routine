@@ -1,15 +1,15 @@
 import Foundation
 
-protocol RoutineEditSectionFactory {
-  typealias Section = Snapshot<RoutineEdit.Section, RoutineEdit.Row>.Item
+protocol RoutineEditItemFactory {
+  typealias Item = Snapshot<RoutineEdit.Section, RoutineEdit.Row>.Item
   
-  func emojiSection(emoji: String, action: @escaping () -> Void) -> Section
-  func frequencySection(frequency: Frequency, action: @escaping () -> Void) -> Section
-  func goalSection(goal: Progress.Goal, action: @escaping () -> Void) -> Section
+  func emoji(with emoji: String, action: @escaping () -> Void) -> Item
+  func frequency(with frequency: Frequency, action: @escaping () -> Void) -> Item
+  func goal(with goal: Progress.Goal, action: @escaping () -> Void) -> Item
 }
 
-final class RoutineEditSectionFactoryImpl: RoutineEditSectionFactory {
-  func emojiSection(emoji: String, action: @escaping () -> Void) -> Section {
+final class RoutineEditItemFactoryImpl: RoutineEditItemFactory {
+  func emoji(with emoji: String, action: @escaping () -> Void) -> Item {
     .init(section: .emoji, rows: [
       .init(
         .value(.init(title: RoutineAppStrings.RoutineEdit.Text.emoji, value: .emoji(emoji))),
@@ -18,7 +18,7 @@ final class RoutineEditSectionFactoryImpl: RoutineEditSectionFactory {
     ])
   }
   
-  func frequencySection(frequency: Frequency, action: @escaping () -> Void) -> Section {
+  func frequency(with frequency: Frequency, action: @escaping () -> Void) -> Item {
     .init(section: .frequency, rows: [
       .init(
         .value(.init(title: RoutineAppStrings.RoutineEdit.Text.frequency, value: .text(frequency.localized))),
@@ -27,7 +27,7 @@ final class RoutineEditSectionFactoryImpl: RoutineEditSectionFactory {
     ])
   }
   
-  func goalSection(goal: Progress.Goal, action: @escaping () -> Void) -> Section {
+  func goal(with goal: Progress.Goal, action: @escaping () -> Void) -> Item {
     .init(section: .goal, rows: [
       .init(
         .value(

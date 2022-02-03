@@ -1,6 +1,6 @@
 import Foundation
 
-struct Routine {
+struct Routine: Hashable {
   let uuid: UUID
   let name: String
   let description: String

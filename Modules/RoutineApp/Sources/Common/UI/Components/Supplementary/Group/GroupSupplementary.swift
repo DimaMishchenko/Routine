@@ -8,6 +8,7 @@ final class GroupSupplementary: UICollectionViewListCell, ModelConfigurable {
   // MARK: - Public
   func update(with model: GroupSupplementaryVM) {
     titleLabel.text = model.title
+    backgroundConfiguration = .clear()
     
     switch model.accessory {
     case .none:
@@ -26,7 +27,8 @@ final class GroupSupplementary: UICollectionViewListCell, ModelConfigurable {
       addSubview($0)
       
       $0.snp.makeConstraints {
-        $0.edges.equalToSuperview().inset(Inset.Padding.small)
+        $0.top.bottom.equalToSuperview().inset(Inset.Padding.small)
+        $0.leading.trailing.equalToSuperview()
       }
     }
   }

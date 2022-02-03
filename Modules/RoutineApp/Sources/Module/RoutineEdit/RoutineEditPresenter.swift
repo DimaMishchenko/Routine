@@ -15,7 +15,7 @@ protocol RoutineEditPresenter {
 final class RoutineEditPresenterImpl: RoutineEditPresenter {
   // MARK: - Dependencies
   weak var view: RoutineEditViewInterface?
-  private let sectionFactory: RoutineEditSectionFactory
+  private let itemFactory: RoutineEditItemFactory
   
   // MARK: - Action Properties
   var saveRoutine: ((Routine) -> Void)?
@@ -33,10 +33,10 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   // MARK: - Init
   init(
     moduleType: RoutineEdit.ModuleType,
-    sectionFactory: RoutineEditSectionFactory
+    itemFactory: RoutineEditItemFactory
   ) {
     self.moduleType = moduleType
-    self.sectionFactory = sectionFactory
+    self.itemFactory = itemFactory
     
     switch moduleType {
     case .new: editableRoutine = EditableRoutine(routine: .new)
@@ -115,14 +115,14 @@ extension RoutineEditPresenterImpl {
           )
         ])
         
-        sectionFactory.emojiSection(emoji: editableRoutine.emoji) { [weak self] in
+        itemFactory.emoji(with: editableRoutine.emoji) { [weak self] in
           self?.pickEmoji? { emoji in
             self?.editableRoutine.emoji = emoji
             self?.reloadSnapshot()
           }
         }
         
-        sectionFactory.frequencySection(frequency: editableRoutine.frequency) { [weak self] in
+        itemFactory.frequency(with: editableRoutine.frequency) { [weak self] in
           guard let self = self else { return }
           self.pickFrequency?(self.editableRoutine.frequency) {
             self.editableRoutine.frequency = $0
@@ -130,7 +130,7 @@ extension RoutineEditPresenterImpl {
           }
         }
         
-        sectionFactory.goalSection(goal: editableRoutine.progress.goal) { [weak self] in
+        itemFactory.goal(with: editableRoutine.progress.goal) { [weak self] in
           guard let self = self else { return }
           self.pickGoal?(self.editableRoutine.progress.goal) {
             self.editableRoutine.progress = Progress(goal: $0, current: self.editableRoutine.progress.current)

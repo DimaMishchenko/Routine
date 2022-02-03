@@ -8,6 +8,11 @@ final class RoutineListView: UIView {
   // MARK: - Public Properties
   var onAdd: (() -> Void)?
   
+  var onEdit: ((RoutineList.Section, Int) -> Void)?
+  var onDelete: ((RoutineList.Section, Int) -> Void)?
+  var onIncreaseProgress: ((RoutineList.Section, Int) -> Void)?
+  var onDecreaseProgress: ((RoutineList.Section, Int) -> Void)?
+  
   // MARK: - UI Properties
   private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
@@ -23,15 +28,20 @@ final class RoutineListView: UIView {
 
 // MARK: - Public
 extension RoutineListView {
-  func update(with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>) {
-    dataSource.apply(snapshot)
+  func update(
+    with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,
+    animated: Bool
+  ) {
+    dataSource.apply(snapshot, animatingDifferences: animated)
   }
 }
 
 // MARK: - UICollectionViewDelegate
 extension RoutineListView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//    dataSource.row(at: indexPath).action?()
+    if case .row(let row) = dataSource.row(at: indexPath) {
+      row.action?()
+    }
     collectionView.deselectItem(at: indexPath, animated: true)
   }
 }
@@ -45,10 +55,22 @@ extension RoutineListView {
   private func updateLayout() {
     collectionView.pin.all()
     addButton.pin
-      .size(CGSize(width: 44, height: 44))
+      .size(Size.Button.default)
       .bottom(pin.safeArea)
       .right(pin.safeArea)
       .margin(Inset.Padding.default)
+  }
+  
+  private func position(for cell: UICollectionViewCell?) -> (section: RoutineList.Section, row: Int)? {
+    guard
+      let cell = cell,
+      let indexPath = collectionView.indexPath(for: cell)
+    else {
+      return nil
+    }
+    
+    let section = dataSource.section(at: indexPath.section)
+    return (section, indexPath.row - 1) // -1 because of outline cell
   }
   
   private func createDataSource() -> OutlineDataSource<RoutineList.Section, RoutineList.Header, RoutineList.Row> {
@@ -62,6 +84,28 @@ extension RoutineListView {
         switch row.type {
         case .empty(let viewModel):
           return collectionView.dequeue(EmptyCell.self, with: viewModel, for: indexPath)
+        case .routine(let viewModel):
+          let cell = collectionView.dequeue(RoutineCell.self, with: viewModel, for: indexPath)
+          
+          cell?.onEdit = { [weak self, weak cell] in
+            guard let position = self?.position(for: cell) else { return }
+            self?.onEdit?(position.section, position.row)
+          }
+          
+          cell?.onDelete = { [weak self, weak cell] in
+            guard let position = self?.position(for: cell) else { return }
+            self?.onDelete?(position.section, position.row)
+          }
+          
+          cell?.onIncrease = { [weak self, weak cell] in
+            guard let position = self?.position(for: cell) else { return }
+            self?.onIncreaseProgress?(position.section, position.row)
+          }
+          cell?.onDecrease = { [weak self, weak cell] in
+            guard let position = self?.position(for: cell) else { return }
+            self?.onDecreaseProgress?(position.section, position.row)
+          }
+          return cell
         }
       }
     }
@@ -70,13 +114,29 @@ extension RoutineListView {
   }
   
   private func createCollectionView() -> UICollectionView {
-    let configuration = with(UICollectionLayoutListConfiguration(appearance: .sidebar)) {
-      $0.backgroundColor = Color.Background.default
-    }
+    let layout = CompositionalLayout(
+      itemContentInset: NSDirectionalEdgeInsets(
+        top: .zero,
+        leading: Inset.Padding.default,
+        bottom: .zero,
+        trailing: .zero
+      ),
+      itemEdgeSpacing: NSCollectionLayoutEdgeSpacing(
+        leading: nil,
+        top: .fixed(Inset.Padding.small),
+        trailing: nil,
+        bottom: nil
+      ),
+      interSectionSpacing: Inset.Padding.small,
+      applyGroupBackground: { _ in false }
+    )
     
-    return with(UICollectionView(layout: .list(using: configuration))) {
+    return with(UICollectionView(layout: layout)) {
       $0.delegate = self
+      $0.backgroundColor = .clear
+      $0.delaysContentTouches = false
       $0.register(EmptyCell.self)
+      $0.register(RoutineCell.self)
       $0.register(GroupSupplementary.self)
       addSubview($0)
     }

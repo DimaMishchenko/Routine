@@ -1,12 +1,12 @@
 import Foundation
 
-struct Progress {
+struct Progress: Hashable {
   let goal: Goal
   let current: Int
 }
 
 extension Progress {
-  struct Goal: RawRepresentable, ExpressibleByIntegerLiteral {
+  struct Goal: RawRepresentable, Hashable, ExpressibleByIntegerLiteral {
     static let min: Goal = 1
     static let max: Goal = 7
     

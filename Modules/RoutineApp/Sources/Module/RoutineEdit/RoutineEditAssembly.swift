@@ -10,7 +10,7 @@ final class RoutineEditAssembly {
   ) -> UIViewController {
     let presenter = RoutineEditPresenterImpl(
       moduleType: type,
-      sectionFactory: RoutineEditSectionFactoryImpl()
+      itemFactory: RoutineEditItemFactoryImpl()
     )
     let vc = RoutineEditVC(presenter: presenter)
     presenter.view = vc

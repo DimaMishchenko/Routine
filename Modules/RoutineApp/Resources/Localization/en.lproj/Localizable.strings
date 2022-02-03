@@ -24,6 +24,10 @@
 
 "routineList.row.empty.text" = "There are no routines yet.\nClick plus to fix it! 👇";
 
+"routineList.row.routine.goal.daily" = "TODAY";
+"routineList.row.routine.goal.weekly" = "THIS WEEK";
+"routineList.row.routine.goal.monthly" = "THIS MONTH";
+
 // MARK: - RoutineEdit
 "routineEdit.title.create" = "Create a routine";
 "routineEdit.title.edit" = "Edit routine";

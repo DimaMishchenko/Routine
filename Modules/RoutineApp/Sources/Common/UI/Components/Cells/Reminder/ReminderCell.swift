@@ -2,6 +2,7 @@ import PinLayout
 import UIKit
 
 final class ReminderCell: UICollectionViewCell, ModelConfigurable {
+  // MARK: - Public Properties
   var onDelete: (() -> Void)?
   
   // MARK: - UI Properties

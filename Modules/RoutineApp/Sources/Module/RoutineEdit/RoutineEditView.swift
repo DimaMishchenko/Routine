@@ -145,11 +145,19 @@ extension RoutineEditView {
     }
   }
   
-  private func createLayout() -> GroupLayout {
-    GroupLayout(applyGroupBackground: { [weak self] index in
-      guard case .addReminder = self?.dataSource.section(at: index) else { return true }
-      return false
-    })
+  private func createLayout() -> CompositionalLayout {
+    CompositionalLayout(
+      itemContentInset: NSDirectionalEdgeInsets(
+        top: .zero,
+        leading: Inset.Padding.default,
+        bottom: .zero,
+        trailing: Inset.Padding.default
+      ),
+      applyGroupBackground: { [weak self] index in
+        guard case .addReminder = self?.dataSource.section(at: index) else { return true }
+        return false
+      }
+    )
   }
   
   private func createSaveButton() -> UIButton {

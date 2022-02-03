@@ -8,6 +8,7 @@ final class EmojiAssembly {
     emojiVC.onSelected = onSelected
     emojiVC.dismissAfterSelected = true
     emojiVC.delegate = emojiVC
+    emojiVC.isDarkMode = emojiVC.traitCollection.userInterfaceStyle == .dark
     return emojiVC
   }
 }

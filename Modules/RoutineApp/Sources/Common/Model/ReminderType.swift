@@ -1,12 +1,12 @@
 import Foundation
 
-enum ReminderType {
+enum ReminderType: Hashable {
   case daily(Daily)
 //  case weekly(day: Int, hours: Int, minutes: Int)
 }
 
 extension ReminderType {
-  struct Daily {
+  struct Daily: Hashable {
     // MARK: - Properties
     let hours: Int
     let minutes: Int

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Reminder {
+struct Reminder: Hashable {
   let uuid: UUID
   let type: ReminderType
 }
