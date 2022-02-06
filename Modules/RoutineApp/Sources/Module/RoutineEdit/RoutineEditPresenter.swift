@@ -7,7 +7,7 @@ protocol RoutineEditPresenter {
   func delete()
   func nameChanged(_ name: String)
   func descriptionChanged(_ description: String)
-  func remindMeChanged(_ state: Bool)
+  func remindMeChangeRequest(_ currentState: Bool)
   func addReminder()
   func deleteReminder(at index: Int)
 }
@@ -81,8 +81,8 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     editableRoutine.description = description
   }
   
-  func remindMeChanged(_ state: Bool) {
-    editableRoutine.remind = state
+  func remindMeChangeRequest(_ currentState: Bool) {
+    editableRoutine.remind = !currentState
     reloadSnapshot()
   }
   

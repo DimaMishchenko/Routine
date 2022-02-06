@@ -1,13 +1,17 @@
+import Combine
 import Foundation
 
 protocol SettingsPresenter: AnyObject {
   func viewDidLoad()
+  func notificationStateUpdateRequest(_ currentStatus: Bool)
 }
 
 final class SettingsPresenterImpl: SettingsPresenter {
   // MARK: - Dependencies
   weak var view: SettingsViewInterface?
   private let rowFactory: SettingsRowFactory
+  private let appStateObserver: AppStateObserver
+  private let notificationsPermissionHandler: NotificationsPermissionHandler
   
   // MARK: - Properties
   var openSettings: (() -> Void)?
@@ -16,31 +20,82 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
   
+  // MARK: - Private Properties
+  private var cancellables: Set<AnyCancellable> = []
+  
   // MARK: - Init
-  init(rowFactory: SettingsRowFactory) {
+  init(
+    rowFactory: SettingsRowFactory,
+    appStateObserver: AppStateObserver,
+    notificationsPermissionHandler: NotificationsPermissionHandler
+  ) {
     self.rowFactory = rowFactory
+    self.appStateObserver = appStateObserver
+    self.notificationsPermissionHandler = notificationsPermissionHandler
+    
+    setupAppStateObserver()
   }
   
   // MARK: - SettingsPresenter
   func viewDidLoad() {
-    view?.update(
-      with: Snapshot(
-        items: [
-          .init(
-            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),
-            rows: [
-              rowFactory.languageRow { [weak self] in
-                guard let self = self else { return }
-                self.view?.showAlert(with: self.languageAlertVM())
+    Task(priority: .userInitiated) {
+      await reloadSnapshot()
+    }
+  }
+  
+  func notificationStateUpdateRequest(_ currentStatus: Bool) {
+    Task(priority: .userInitiated) {
+      if currentStatus {
+        await view?.showAlert(with: notificationSettingsAlertVM(enabled: true))
+      } else {
+        let result = await notificationsPermissionHandler.request()
+        if !result {
+          await view?.showAlert(with: notificationSettingsAlertVM(enabled: false))
+        }
+      }
+      await reloadSnapshot()
+    }
+  }
+  
+  // MARK: - Private
+  private func setupAppStateObserver() {
+    appStateObserver
+      .on(.didBecomeActive)
+      .sink { [weak self] in
+        guard let self = self else { return }
+        Task { await self.reloadSnapshot() }
+      }
+      .store(in: &cancellables)
+  }
+  
+  private func reloadSnapshot() async {
+    typealias Item = Snapshot<Settings.Section, Settings.Row>.Item
+    
+    let isAuthorized = await notificationsPermissionHandler.isAuthorized()
+    
+    await view?.update(
+      with: Snapshot {
+        Item(
+          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),
+          rows: [
+            rowFactory.languageRow { [weak self] in
+              guard let self = self else { return }
+              Task(priority: .userInitiated) {
+                await self.view?.showAlert(with: self.languageAlertVM())
               }
-            ]
-          ),
-          .init(
-            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.feedback)),
-            rows: [
-              rowFactory.reportBugRow { [weak self] in
-                guard let self = self else { return }
-                self.view?.showAlert(
+            },
+            rowFactory.notificationsRow(isAuthorized: isAuthorized),
+            rowFactory.appearanceRow {}
+          ]
+        )
+        
+        Item(
+          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.feedback)),
+          rows: [
+            rowFactory.reportBugRow { [weak self] in
+              guard let self = self else { return }
+              Task(priority: .userInitiated) {
+                await self.view?.showAlert(
                   with: self.feedbackAlertVM(
                     title: RoutineAppStrings.Settings.Alert.ReportBug.title,
                     message: RoutineAppStrings.Settings.Alert.ReportBug.message,
@@ -50,38 +105,26 @@ final class SettingsPresenterImpl: SettingsPresenter {
                     )
                   )
                 )
-              },
-              rowFactory.suggestFeatureRow { [weak self] in
-                guard let self = self else { return }
-                self.view?.showAlert(
-                  with: self.feedbackAlertVM(
-                    title: RoutineAppStrings.Settings.Alert.SuggestFeature.title,
-                    message: RoutineAppStrings.Settings.Alert.SuggestFeature.message,
-                    mailConfig: (
-                      subject: RoutineAppStrings.Settings.Mail.SuggestFeature.subject,
-                      message: RoutineAppStrings.Settings.Mail.SuggestFeature.message
-                    )
-                  )
-                )
-              },
-              rowFactory.rateAppRow { [weak self] in self?.rateApp?() },
-              rowFactory.shareAppRow { [weak self] in self?.share?() }
-            ]
-          ),
-          .init(
-            section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
-            rows: [
-              rowFactory.privacyPolicyRow {},
-              rowFactory.termsOfUseRow {},
-              rowFactory.appVersionRow()
-            ]
-          )
-        ]
-      )
+              }
+            },
+            rowFactory.writeReviewRow { [weak self] in self?.rateApp?() },
+            rowFactory.shareAppRow { [weak self] in self?.share?() }
+          ]
+        )
+        
+        Item(
+          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
+          rows: [
+            rowFactory.privacyPolicyRow {},
+            rowFactory.termsOfUseRow {},
+            rowFactory.onboardingRow {},
+            rowFactory.appVersionRow()
+          ]
+        )
+      }
     )
   }
   
-  // MARK: - Private
   private func languageAlertVM() -> Alert.VM {
     let continueAction = Alert.ActionType.Custom(
       title: RoutineAppStrings.Settings.Alert.Language.Button.continue,
@@ -126,6 +169,24 @@ final class SettingsPresenterImpl: SettingsPresenter {
       case telegramAction: self?.telegramSupport?()
       default: return
       }
+    }
+  }
+  
+  private func notificationSettingsAlertVM(enabled: Bool) -> Alert.VM {
+    let title = enabled ?
+    RoutineAppStrings.Settings.Alert.Notifications.Title.disable :
+    RoutineAppStrings.Settings.Alert.Notifications.Title.enable
+    
+    return .init(
+      title: title,
+      message: RoutineAppStrings.Settings.Alert.Notifications.message,
+      actions: [
+        .custom(.init(title: RoutineAppStrings.Settings.Alert.Notifications.Button.openSettings, style: .default)),
+        .cancel
+      ]
+    ) { [weak self] in
+      guard case .custom = $0 else { return }
+      self?.openSettings?()
     }
   }
 }

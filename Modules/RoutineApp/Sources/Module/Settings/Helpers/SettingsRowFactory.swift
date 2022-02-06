@@ -2,12 +2,14 @@ import Foundation
 
 protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
+  func notificationsRow(isAuthorized: Bool) -> Settings.Row
+  func appearanceRow(action: @escaping () -> Void) -> Settings.Row
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row
-  func suggestFeatureRow(action: @escaping () -> Void) -> Settings.Row
-  func rateAppRow(action: @escaping () -> Void) -> Settings.Row
+  func writeReviewRow(action: @escaping () -> Void) -> Settings.Row
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row
   func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row
   func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row
+  func onboardingRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow() -> Settings.Row
 }
 
@@ -21,6 +23,32 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Settings.Row.language,
           value: .text(Locale.current.localizedString(forLanguageCode: code)?.capitalized),
+          icon: RoutineAppAsset.Icon.language.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+  
+  func notificationsRow(isAuthorized: Bool) -> Settings.Row {
+    .init(
+      .switch(
+        .init(
+          title: RoutineAppStrings.Settings.Row.notifications,
+          state: isAuthorized,
+          icon: RoutineAppAsset.Icon.notification.image
+        )
+      )
+    )
+  }
+  
+  func appearanceRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Settings.Row.appearance,
+          icon: RoutineAppAsset.Icon.appearance.image,
           accessory: .disclosure
         )
       ),
@@ -31,25 +59,24 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
-        .init(title: RoutineAppStrings.Settings.Row.reportBug, accessory: .disclosure)
+        .init(
+          title: RoutineAppStrings.Settings.Row.reportBug,
+          icon: RoutineAppAsset.Icon.report.image,
+          accessory: .disclosure
+        )
       ),
       action: action
     )
   }
   
-  func suggestFeatureRow(action: @escaping () -> Void) -> Settings.Row {
+  func writeReviewRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
-        .init(title: RoutineAppStrings.Settings.Row.suggestFeature, accessory: .disclosure)
-      ),
-      action: action
-    )
-  }
-  
-  func rateAppRow(action: @escaping () -> Void) -> Settings.Row {
-    .init(
-      .value(
-        .init(title: RoutineAppStrings.Settings.Row.rateApp, accessory: .disclosure)
+        .init(
+          title: RoutineAppStrings.Settings.Row.writeReview,
+          icon: RoutineAppAsset.Icon.review.image,
+          accessory: .disclosure
+        )
       ),
       action: action
     )
@@ -58,7 +85,11 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
-        .init(title: RoutineAppStrings.Settings.Row.shareApp, accessory: .disclosure)
+        .init(
+          title: RoutineAppStrings.Settings.Row.shareApp,
+          icon: RoutineAppAsset.Icon.share.image,
+          accessory: .disclosure
+        )
       ),
       action: action
     )
@@ -67,7 +98,11 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
-        .init(title: RoutineAppStrings.Settings.Row.privacyPolicy, accessory: .disclosure)
+        .init(
+          title: RoutineAppStrings.Settings.Row.privacyPolicy,
+          icon: RoutineAppAsset.Icon.terms.image,
+          accessory: .disclosure
+        )
       ),
       action: action
     )
@@ -76,7 +111,23 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
   func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
-        .init(title: RoutineAppStrings.Settings.Row.termsOfUse, accessory: .disclosure)
+        .init(
+          title: RoutineAppStrings.Settings.Row.termsOfUse,
+          icon: RoutineAppAsset.Icon.terms.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+  
+  func onboardingRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Settings.Row.onboarding,
+          icon: RoutineAppAsset.Icon.onboarding.image
+        )
       ),
       action: action
     )
@@ -87,7 +138,8 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Settings.Row.appVersion,
-          value: .text(AppInfo.appVersion, style: .bold)
+          value: .text(AppInfo.appVersion, style: .bold),
+          icon: RoutineAppAsset.Icon.appversion.image
         )
       )
     )

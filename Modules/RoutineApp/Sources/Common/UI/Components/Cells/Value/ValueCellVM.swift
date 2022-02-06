@@ -1,17 +1,21 @@
 import Foundation
+import UIKit.UIImage
 
 struct ValueCellVM: Hashable {
   let title: String
   let value: ValueType?
+  let icon: UIImage?
   let accessory: Accessory
   
   init(
     title: String,
     value: ValueType? = nil,
+    icon: UIImage? = nil,
     accessory: Accessory = .none
   ) {
     self.title = title
     self.value = value
+    self.icon = icon
     self.accessory = accessory
   }
 }

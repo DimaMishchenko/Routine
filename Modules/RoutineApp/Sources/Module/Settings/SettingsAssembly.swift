@@ -4,15 +4,21 @@ import UIKit
 final class SettingsAssembly {
   // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
+  private let serviceFactory: ServiceFactory
   
   // MARK: - Init
-  init(assemblyFactory: AssemblyFactory) {
+  init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
+    self.serviceFactory = serviceFactory
   }
   
   // MARK: - Public
   func controller() -> UIViewController {
-    let presenter = SettingsPresenterImpl(rowFactory: SettingsRowFactoryImpl())
+    let presenter = SettingsPresenterImpl(
+      rowFactory: SettingsRowFactoryImpl(),
+      appStateObserver: serviceFactory.appStateObserver(),
+      notificationsPermissionHandler: serviceFactory.notificationsPermissionHandler()
+    )
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
     

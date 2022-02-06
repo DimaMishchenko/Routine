@@ -1,3 +1,11 @@
 import Foundation
 
-final class ServiceFactory {}
+final class ServiceFactory {
+  func notificationsPermissionHandler() -> NotificationsPermissionHandler {
+    NotificationsPermissionHandlerImpl()
+  }
+  
+  func appStateObserver() -> AppStateObserver {
+    AppStateObserverImpl()
+  }
+}

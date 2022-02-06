@@ -9,7 +9,7 @@ final class RoutineEditView: UIView {
   
   var onNameChange: ((String) -> Void)?
   var onDescriptionChange: ((String) -> Void)?
-  var onRemindMeChange: ((Bool) -> Void)?
+  var onRemindMeChangeRequest: ((Bool) -> Void)?
   var onAddReminder: (() -> Void)?
   var onDeleteReminder: ((Int) -> Void)?
   
@@ -105,7 +105,7 @@ extension RoutineEditView {
       }
     case .switch(let viewModel):
       return with(collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath)) {
-        $0?.onChange = { [weak self] in self?.onRemindMeChange?($0) }
+        $0?.onChangeRequest = { [weak self] in self?.onRemindMeChangeRequest?($0) }
       }
     case .plainButton(let viewModel):
       return with(collectionView.dequeue(PlainButtonCell.self, with: viewModel, for: indexPath)) {

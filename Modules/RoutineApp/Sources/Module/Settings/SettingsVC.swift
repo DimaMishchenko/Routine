@@ -1,6 +1,6 @@
 import UIKit
 
-protocol SettingsViewInterface: AnyObject {
+@MainActor protocol SettingsViewInterface: AnyObject {
   func update(with snapshot: Snapshot<Settings.Section, Settings.Row>)
   func showAlert(with viewModel: Alert.VM)
 }
@@ -30,7 +30,7 @@ final class SettingsVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineAppStrings.Settings.title
+    setupUI()
     presenter.viewDidLoad()
   }
 }
@@ -43,5 +43,15 @@ extension SettingsVC: SettingsViewInterface {
   
   func showAlert(with viewModel: Alert.VM) {
     Alert.show(on: self, with: viewModel)
+  }
+}
+
+// MARK: - Private
+extension SettingsVC {
+  private func setupUI() {
+    title = RoutineAppStrings.Settings.title
+    contentView.onNotificationStateChangeRequest = { [weak self] in
+      self?.presenter.notificationStateUpdateRequest($0)
+    }
   }
 }

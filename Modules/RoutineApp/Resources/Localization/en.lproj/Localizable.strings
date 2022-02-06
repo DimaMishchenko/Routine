@@ -55,12 +55,13 @@
 
 "settings.row.language" = "Language";
 "settings.row.notifications" = "Notifications";
+"settings.row.appearance" = "Appearance";
 "settings.row.reportBug" = "Report a bug";
-"settings.row.suggestFeature" = "Suggest a feature";
-"settings.row.rateApp" = "Rate app";
+"settings.row.writeReview" = "Write a review";
 "settings.row.shareApp" = "Share app";
 "settings.row.privacyPolicy" = "Privacy policy";
 "settings.row.termsOfUse" = "Terms of use";
+"settings.row.onboarding" = "Onboarding";
 "settings.row.appVersion" = "App version";
 
 "settings.alert.language.title" = "Language change";
@@ -70,10 +71,10 @@
 "settings.alert.reportBug.title" = "Report a bug";
 "settings.alert.reportBug.message" = "We have accounts on different networks. \nWhich one would you like to choose?";
 
-"settings.alert.suggestFeature.title" = "Suggest a feature";
-"settings.alert.suggestFeature.message" = "We have accounts on different networks. \nWhich one would you like to choose?";
+"settings.alert.notifications.title.enable" = "Enable notifications";
+"settings.alert.notifications.title.disable" = "Disable notifications";
+"settings.alert.notifications.message" = "You can control notifications permission in your device settings";
+"settings.alert.notifications.button.openSettings" = "Open settings";
 
 "settings.mail.reportBug.subject" = "Routine bug report";
 "settings.mail.reportBug.message" = "Please describe a bug.";
-"settings.mail.suggestFeature.subject" = "Routine feature suggestion.";
-"settings.mail.suggestFeature.message" = "Please describe your proposal.";

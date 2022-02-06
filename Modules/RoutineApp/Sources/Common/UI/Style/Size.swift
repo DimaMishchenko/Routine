@@ -32,3 +32,12 @@ extension Size.Button {
   static let `default`: CGFloat = 44
   static let small: CGFloat = 24
 }
+
+// MARK: - Icon
+extension Size {
+  enum Icon {}
+}
+
+extension Size.Icon {
+  static let `default`: CGFloat = 24
+}

@@ -101,8 +101,8 @@ extension RoutineEditVC {
     contentView.onDescriptionChange = { [weak self] in
       self?.presenter.descriptionChanged($0)
     }
-    contentView.onRemindMeChange = { [weak self] in
-      self?.presenter.remindMeChanged($0)
+    contentView.onRemindMeChangeRequest = { [weak self] in
+      self?.presenter.remindMeChangeRequest($0)
     }
     contentView.onAddReminder = { [weak self] in
       self?.presenter.addReminder()

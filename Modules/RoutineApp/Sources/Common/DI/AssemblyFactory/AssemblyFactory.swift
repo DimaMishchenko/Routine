@@ -15,7 +15,7 @@ final class AssemblyFactory {
   }
   
   func settings() -> SettingsAssembly {
-    SettingsAssembly(assemblyFactory: self)
+    SettingsAssembly(assemblyFactory: self, serviceFactory: serviceFactory)
   }
   
   func routineList() -> RoutineListAssembly {

@@ -10,12 +10,14 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
   // MARK: - UI Properties
   var valueSourceRect: CGRect? { valueLabel.frameRelativeToVC }
   
+  private lazy var iconImageView = createIconImageView()
   private lazy var titleLabel = createTitleLabel()
   private lazy var valueLabel = createValueLabel()
   private lazy var colorView = createColorView()
   
   // MARK: - ModelConfigurable
   func update(with model: ValueCellVM) {
+    iconImageView.image = model.icon
     titleLabel.text = model.title
     
     switch model.value {
@@ -63,6 +65,12 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
   
   // MARK: - Private
   private func layoutViews() {
+    // icon
+    iconImageView.pin
+      .vCenter()
+      .left(Inset.Padding.default)
+      .size(Size.Icon.default)
+    
     // value
     valueLabel.pin
       .vCenter()
@@ -71,17 +79,28 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
       .sizeToFit()
     
     // title
-    titleLabel.pin
+    let titlePin = titleLabel.pin
       .top()
       .bottom()
-      .left(Inset.Padding.default)
       .before(of: valueLabel)
+    
+    if iconImageView.image == nil {
+      titlePin.left(Inset.Padding.default)
+    } else {
+      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.small)
+    }
     
     // colorView
     colorView.pin
       .vCenter()
       .right(accessories.isEmpty ? Inset.Padding.default : Inset.Padding.small)
       .size(Constants.colorSize)
+  }
+  
+  private func createIconImageView() -> UIImageView {
+    with(UIImageView()) {
+      contentView.addSubview($0)
+    }
   }
   
   private func createTitleLabel() -> UILabel {

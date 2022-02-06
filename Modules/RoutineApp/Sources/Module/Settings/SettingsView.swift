@@ -2,6 +2,9 @@ import PinLayout
 import UIKit
 
 final class SettingsView: UIView {
+  // MARK: - Public Properties
+  var onNotificationStateChangeRequest: ((Bool) -> Void)?
+  
   // MARK: - Private Properties
   private var initialLayout = Once()
   
@@ -49,6 +52,10 @@ extension SettingsView {
       switch row.type {
       case .value(let viewModel):
         return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
+      case .switch(let viewModel):
+        let cell = collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath)
+        cell?.onChangeRequest = { [weak self] in self?.onNotificationStateChangeRequest?($0) }
+        return cell
       }
     }
     
@@ -74,6 +81,7 @@ extension SettingsView {
       $0.delegate = self
       $0.register(GroupSupplementary.self, kind: UICollectionView.elementKindSectionHeader)
       $0.register(ValueCell.self)
+      $0.register(SwitchCell.self)
       addSubview($0)
     }
   }

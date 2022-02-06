@@ -56,25 +56,26 @@
 
 "settings.row.language" = "Язык";
 "settings.row.notifications" = "Уведомления";
+"settings.row.appearance" = "Оформление";
 "settings.row.reportBug" = "Сообщить об ошибке";
-"settings.row.suggestFeature" = "Предложить функцию";
-"settings.row.rateApp" = "Оценить приложение";
+"settings.row.writeReview" = "Написать отзыв";
 "settings.row.shareApp" = "Поделиться";
 "settings.row.privacyPolicy" = "Privacy policy";
 "settings.row.termsOfUse" = "Terms of use";
+"settings.row.onboarding" = "Обучение";
 "settings.row.appVersion" = "Версия приложения";
 
 "settings.alert.language.title" = "Смена языка";
-"settings.alert.language.message" = "Чтобы изменить язык:\n\n1. Нажмите \"Продолжить\"\n2. Затем нажимте \"Язык\" и выберите нужный язык";
+"settings.alert.language.message" = "Чтобы изменить язык:\n\n1. Нажмите \"Продолжить\"\n2. Затем нажмите \"Язык\" и выберите нужный язык";
 "settings.alert.language.button.continue" = "Продолжить";
 
 "settings.alert.reportBug.title" = "Сообщить об ошибке";
 "settings.alert.reportBug.message" = "У нас есть аккаунты в разных сетях. \nКакой вариант Вы бы хотели использовать?";
 
-"settings.alert.suggestFeature.title" = "Предложить функцию";
-"settings.alert.suggestFeature.message" = "У нас есть аккаунты в разных сетях. \nКакой вариант Вы бы хотели использовать?";
+"settings.alert.notifications.title.enable" = "Включить уведомления";
+"settings.alert.notifications.title.disable" = "Выключить уведомления";
+"settings.alert.notifications.message" = "Вы можете контролировать разрешение на уведомления в настройках вашего устройства";
+"settings.alert.notifications.button.openSettings" = "Открыть настройки";
 
 "settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
 "settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
-"settings.mail.suggestFeature.subject" = "Routine предложение функции";
-"settings.mail.suggestFeature.message" = "Пожалуйста опишите Ваше предложение.";
