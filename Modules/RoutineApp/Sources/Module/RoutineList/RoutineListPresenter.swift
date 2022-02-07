@@ -1,4 +1,6 @@
 import Foundation
+import SPConfetti
+import UIKit
 
 protocol RoutineListPresenter {
   func viewDidLoad()
@@ -73,6 +75,10 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current + 1)
     routines[currentIndex] = editable.routine
     reloadSnapshot()
+    
+    if editable.progress.goal.rawValue == editable.progress.current {
+      view?.showConfetti(with: editable.emoji)
+    }
   }
   
   func decreaseProgress(at section: RoutineList.Section, rowIndex: Int) {

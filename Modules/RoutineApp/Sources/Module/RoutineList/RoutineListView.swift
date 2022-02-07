@@ -110,6 +110,9 @@ extension RoutineListView {
       }
     }
     
+    dataSource.sectionSnapshotHandlers.willExpandItem = { _ in HapticFeedback.select() }
+    dataSource.sectionSnapshotHandlers.willCollapseItem = { _ in HapticFeedback.select() }
+    
     return dataSource
   }
   

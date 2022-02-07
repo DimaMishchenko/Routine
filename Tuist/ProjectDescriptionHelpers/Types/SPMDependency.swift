@@ -10,6 +10,7 @@ public enum SPMDependency: CaseIterable {
   case iqKeyboardManager
   case actionSheetPicker
   case swipeCellKit
+  case spConfetti
   
   // MARK: - Public
   public static var packages: [Package] { allCases.map { $0.package } }
@@ -25,6 +26,7 @@ public enum SPMDependency: CaseIterable {
     case .iqKeyboardManager:  return "IQKeyboardManagerSwift"
     case .actionSheetPicker:  return "ActionSheetPicker-3.0"
     case .swipeCellKit:       return "SwipeCellKit"
+    case .spConfetti:         return "SPConfetti"
     }
   }
   
@@ -42,6 +44,7 @@ public enum SPMDependency: CaseIterable {
     case .iqKeyboardManager:  return "https://github.com/hackiftekhar/IQKeyboardManager.git"
     case .actionSheetPicker:  return "https://github.com/skywinder/ActionSheetPicker-3.0"
     case .swipeCellKit:       return "https://github.com/SwipeCellKit/SwipeCellKit"
+    case .spConfetti:         return "https://github.com/ivanvorobei/SPConfetti"
     }
   }
   
@@ -56,6 +59,7 @@ public enum SPMDependency: CaseIterable {
     case .iqKeyboardManager:  return .upToNextMajor(from: "6.5.0")
     case .actionSheetPicker:  return .branch("develop")
     case .swipeCellKit:       return .upToNextMajor(from: "2.7.1")
+    case .spConfetti:         return .upToNextMajor(from: "1.4.0")
     }
   }
 }

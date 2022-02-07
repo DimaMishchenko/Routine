@@ -5,6 +5,7 @@ protocol RoutineListViewInterface: AnyObject {
     with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,
     animated: Bool
   )
+  func showConfetti(with emoji: String)
 }
 
 final class RoutineListVC: UIViewController {
@@ -54,5 +55,10 @@ extension RoutineListVC: RoutineListViewInterface {
     animated: Bool
   ) {
     contentView.update(with: snapshot, animated: animated)
+  }
+  
+  func showConfetti(with emoji: String) {
+    Confetti.run(with: emoji)
+    HapticFeedback.success()
   }
 }
