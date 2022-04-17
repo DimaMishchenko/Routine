@@ -29,11 +29,15 @@ extension Font.Size {
   static let footnote: Font.Size = 13
   static let caption1: Font.Size = 12
   static let caption2: Font.Size = 11
+  static let caption3: Font.Size = 10
 }
 
 // MARK: - System
 extension Font {
   static func system(_ size: Font.Size, weight: UIFont.Weight) -> UIFont {
-    UIFontMetrics.default.scaledFont(for: .systemFont(ofSize: size.rawValue, weight: weight))
+    let font = UIFont.systemFont(ofSize: size.rawValue, weight: weight)
+    return UIFontMetrics.default.scaledFont(
+      for: font.fontDescriptor.withDesign(.rounded).flatMap { UIFont(descriptor: $0, size: size.rawValue) } ?? font
+    )
   }
 }
