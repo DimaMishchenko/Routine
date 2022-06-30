@@ -4,11 +4,12 @@ extension TargetScript {
   public static var swiftlint: TargetScript {
     .post(
       script: """
-        if which swiftlint >/dev/null; then
-          swiftlint
-        else
-          echo "warning: SwiftLint not installed, run `make init`"
-        fi
+      export PATH="$PATH:/opt/homebrew/bin"
+      if which swiftlint >/dev/null; then
+        swiftlint
+      else
+        echo "warning: SwiftLint not installed"
+      fi
       """,
       name: "SwiftLint"
     )

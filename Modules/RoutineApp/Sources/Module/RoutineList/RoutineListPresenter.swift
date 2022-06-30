@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 import SPConfetti
 import UIKit
 
@@ -34,18 +34,19 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
  
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
-    provider.observeAll().sink(
-      receiveCompletion: {
-        guard case .failure(let error) = $0 else { return }
-        // TODO: - Error
-        print(error)
-      },
-      receiveValue: { [weak self] in
-        self?.routines = $0
-        self?.reloadSnapshot()
-      }
-    )
-    .store(in: &cancellables)
+    provider.observeAll()
+      .sink(
+        receiveCompletion: {
+          guard case .failure(let error) = $0 else { return }
+          // TODO: - Error
+          print(error)
+        },
+        receiveValue: { [weak self] in
+          self?.routines = $0
+          self?.reloadSnapshot()
+        }
+      )
+      .store(in: &cancellables)
   }
   
   func addRoutine() {
@@ -62,14 +63,17 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     
     // swiftlint:disable:next multiline_arguments
     editRoutine?(routine, { edited in
+      // TODO: - error
       Task { [weak self] in try await self?.provider.update(edited) }
     }, {
+      // TODO: - error
       Task { [weak self] in try await self?.provider.delete(routine) }
     })
   }
   
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
+    // TODO: - error
     Task { [weak self] in try await self?.provider.delete(routine) }
   }
   
@@ -78,6 +82,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     var editable = EditableRoutine(routine: routine)
     editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current + 1)
     
+    // TODO: - error
     Task { [weak self, editable] in
       try await self?.provider.update(editable.routine)
     }
@@ -94,6 +99,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     else { return }
     var editable = EditableRoutine(routine: routine)
     editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current - 1)
+    // TODO: - error
     Task { [weak self, editable] in
       try await self?.provider.update(editable.routine)
     }
