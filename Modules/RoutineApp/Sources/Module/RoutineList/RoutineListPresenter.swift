@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import SPConfetti
 import UIKit
 
@@ -14,6 +15,7 @@ protocol RoutineListPresenter {
 final class RoutineListPresenterImpl: RoutineListPresenter {
   // MARK: - Dependencies
   weak var view: RoutineListViewInterface?
+  private let provider: RoutineProvider
   private let itemFactory: RoutineListItemFactory
   
   // MARK: - Public Properties
@@ -21,60 +23,64 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
   
   // MARK: - Private Properties
-  var routines: [Routine] = []
+  private var routines: [Routine] = []
+  private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
-  init(itemFactory: RoutineListItemFactory) {
+  init(provider: RoutineProvider, itemFactory: RoutineListItemFactory) {
+    self.provider = provider
     self.itemFactory = itemFactory
   }
  
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
-    reloadSnapshot()
+    provider.observeAll().sink(
+      receiveCompletion: {
+        guard case .failure(let error) = $0 else { return }
+        // TODO: - Error
+        print(error)
+      },
+      receiveValue: { [weak self] in
+        self?.routines = $0
+        self?.reloadSnapshot()
+      }
+    )
+    .store(in: &cancellables)
   }
   
   func addRoutine() {
-    addNewRoutine? { [weak self] in
-      self?.routines.append($0)
-      self?.reloadSnapshot(animated: true)
+    addNewRoutine? { routine in
+      Task { [weak self] in
+        // TODO: - error
+        try await self?.provider.save(routine)
+      }
     }
   }
   
   func editRoutine(at section: RoutineList.Section, rowIndex: Int) {
-    guard
-      let routine = routine(at: section, rowIndex: rowIndex),
-      let index = routines.firstIndex(of: routine)
-    else { return }
+    guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     
     // swiftlint:disable:next multiline_arguments
-    editRoutine?(routine, { [weak self] in
-      self?.routines[index] = $0
-      self?.reloadSnapshot()
-    }, { [weak self] in
-      self?.routines.remove(at: index)
-      self?.reloadSnapshot(animated: true)
+    editRoutine?(routine, { edited in
+      Task { [weak self] in try await self?.provider.update(edited) }
+    }, {
+      Task { [weak self] in try await self?.provider.delete(routine) }
     })
   }
   
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
-    guard
-      let routine = routine(at: section, rowIndex: rowIndex),
-      let index = routines.firstIndex(of: routine)
-    else { return }
-    
-    routines.remove(at: index)
-    reloadSnapshot(animated: true)
+    guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
+    Task { [weak self] in try await self?.provider.delete(routine) }
   }
   
   func increaseProgress(at section: RoutineList.Section, rowIndex: Int) {
-    guard
-      let routine = routine(at: section, rowIndex: rowIndex),
-      let currentIndex = routines.firstIndex(of: routine)
-    else { return }
+    guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     var editable = EditableRoutine(routine: routine)
     editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current + 1)
-    routines[currentIndex] = editable.routine
-    reloadSnapshot()
+    
+    Task { [weak self, editable] in
+      try await self?.provider.update(editable.routine)
+    }
     
     if editable.progress.goal.rawValue == editable.progress.current {
       view?.showConfetti(with: editable.emoji)
@@ -84,13 +90,13 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   func decreaseProgress(at section: RoutineList.Section, rowIndex: Int) {
     guard
       let routine = routine(at: section, rowIndex: rowIndex),
-      routine.progress.current != .zero,
-      let currentIndex = routines.firstIndex(of: routine)
+      routine.progress.current != .zero
     else { return }
     var editable = EditableRoutine(routine: routine)
     editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current - 1)
-    routines[currentIndex] = editable.routine
-    reloadSnapshot()
+    Task { [weak self, editable] in
+      try await self?.provider.update(editable.routine)
+    }
   }
 }
 
@@ -102,7 +108,8 @@ extension RoutineListPresenterImpl {
     view?.update(
       with: Snapshot {
         itemFactory.daily(
-          rows: groups[.daily]?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
+          rows: groups[.daily]?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? [],
+          containsAnyItems: !routines.isEmpty
         )
         
         itemFactory.weekly(

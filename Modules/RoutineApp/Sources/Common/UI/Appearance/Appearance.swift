@@ -20,16 +20,17 @@ enum Appearance {
 extension UIBarButtonItem {
   fileprivate static func swizzleSetTitleTextAttributes() {
     guard let oldMethod = class_getInstanceMethod(Self.self, #selector(setter: style)) else { return }
-    guard let newMethod = class_getInstanceMethod(Self.self, #selector(setter: _style)) else { return }
+    guard let newMethod = class_getInstanceMethod(Self.self, #selector(setter: __swizzledStyle)) else { return }
     method_exchangeImplementations(oldMethod, newMethod)
   }
   
-  @objc private var _style: UIBarButtonItem.Style {
+  // swiftlint:disable:next identifier_name
+  @objc private var __swizzledStyle: UIBarButtonItem.Style {
     get {
-      self._style
+      self.__swizzledStyle
     }
     set {
-      self._style = newValue
+      self.__swizzledStyle = newValue
       
       switch newValue {
       case .done:

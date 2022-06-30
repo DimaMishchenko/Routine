@@ -122,7 +122,7 @@ extension RoutineListView {
         top: .zero,
         leading: Inset.Padding.default,
         bottom: .zero,
-        trailing: .zero
+        trailing: Inset.Padding.default
       ),
       itemEdgeSpacing: NSCollectionLayoutEdgeSpacing(
         leading: nil,

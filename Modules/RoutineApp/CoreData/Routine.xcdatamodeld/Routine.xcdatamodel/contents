@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E232" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="ProgressEntity" representedClassName="ProgressEntity" syncable="YES">
+        <attribute name="current" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="goal" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="routine" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RoutineEntity" inverseName="progress" inverseEntity="RoutineEntity"/>
+    </entity>
+    <entity name="ReminderEntity" representedClassName="ReminderEntity" syncable="YES">
+        <attribute name="contentJson" optional="YES" attributeType="Binary"/>
+        <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="routine" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RoutineEntity" inverseName="reminders" inverseEntity="RoutineEntity"/>
+    </entity>
     <entity name="RoutineEntity" representedClassName="RoutineEntity" syncable="YES">
-        <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
+        <attribute name="desc" optional="YES" attributeType="String"/>
+        <attribute name="emoji" optional="YES" attributeType="String"/>
+        <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="remind" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="progress" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ProgressEntity" inverseName="routine" inverseEntity="ProgressEntity"/>
+        <relationship name="reminders" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReminderEntity" inverseName="routine" inverseEntity="ReminderEntity"/>
     </entity>
     <elements>
-        <element name="RoutineEntity" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="ProgressEntity" positionX="-326.5952758789062" positionY="-47.5831298828125" width="128" height="88"/>
+        <element name="ReminderEntity" positionX="-182.5586547851562" positionY="126.5974731445312" width="128" height="74"/>
+        <element name="RoutineEntity" positionX="176.5595703125" positionY="-185.7842407226562" width="128" height="164"/>
     </elements>
 </model>

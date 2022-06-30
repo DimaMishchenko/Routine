@@ -17,7 +17,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     IQKeyboardManager.shared.shouldPlayInputClicks = false
     Appearance.setup()
     
-    let assemblyFactory = AssemblyFactory(serviceFactory: ServiceFactory())
+    let assemblyFactory = AssemblyFactory(
+      serviceFactory: ServiceFactory(
+        coreDataStack: CoreDataStackAssembly.routineStack()
+      )
+    )
     let tabBarVC = assemblyFactory.tabBarAssembly().controller()
     
     window = UIWindow(frame: UIScreen.main.bounds)

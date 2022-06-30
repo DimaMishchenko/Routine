@@ -2,7 +2,7 @@ import CloudKit
 import CoreData
 import Foundation
 
-final class CoreDataCloudStack {
+final class CoreDataStack {
   // MARK: - Constants
   private enum Constants {
     static let storageFolderName = "Database"
@@ -26,6 +26,7 @@ final class CoreDataCloudStack {
     localStorageOptions.databaseScope = .private
     localStorage.cloudKitContainerOptions = localStorageOptions
     persistentContainer.persistentStoreDescriptions = [localStorage]
+    persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
     
     persistentContainer.loadPersistentStores { _, error in
       // TODO: - Handle errors

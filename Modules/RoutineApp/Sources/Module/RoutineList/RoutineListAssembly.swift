@@ -3,15 +3,20 @@ import UIKit
 final class RoutineListAssembly {
   // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
+  private let serviceFactory: ServiceFactory
   
   // MARK: - Init
-  init(assemblyFactory: AssemblyFactory) {
+  init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
+    self.serviceFactory = serviceFactory
   }
   
   // MARK: - Public
   func controller() -> UIViewController {
-    let presenter = RoutineListPresenterImpl(itemFactory: RoutineListItemFactoryImpl())
+    let presenter = RoutineListPresenterImpl(
+      provider: CoreDataRoutineProvider(coreDataStack: serviceFactory.coreDataStack()),
+      itemFactory: RoutineListItemFactoryImpl()
+    )
     let vc = RoutineListVC(presenter: presenter)
     presenter.view = vc
     

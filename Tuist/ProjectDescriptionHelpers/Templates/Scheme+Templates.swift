@@ -8,8 +8,8 @@ extension Scheme {
   // MARK: - Private
   private static func routine(for environment: Environment) -> Scheme {
     let configurationName = (
-      debug: CustomConfiguration.name(for: environment, type: .debug),
-      release: CustomConfiguration.name(for: environment, type: .release)
+      debug: Configuration.name(for: environment, type: .debug),
+      release: Configuration.name(for: environment, type: .release)
     )
     
     let targetName = "RoutineApp"
@@ -18,25 +18,24 @@ extension Scheme {
       name: targetName + " " + environment.rawValue.capitalized,
       shared: true,
       buildAction: BuildAction(targets: ["\(targetName)"]),
-      testAction: TestAction(
-        targets: ["\(targetName)Tests"],
-        configurationName: configurationName.debug,
-        coverage: true,
-        codeCoverageTargets: ["\(targetName)"]
+      testAction: .targets(
+        ["\(targetName)Tests"],
+        configuration: .configuration(configurationName.debug),
+        options: .options(coverage: true, codeCoverageTargets: ["\(targetName)"])
       ),
-      runAction: RunAction(
-        configurationName: configurationName.debug,
+      runAction: .runAction(
+        configuration: .configuration(configurationName.debug),
         executable: "\(targetName)",
         arguments: Arguments(
           environment: ["OS_ACTIVITY_MODE": "disable"]
         )
       ),
-      archiveAction: ArchiveAction(configurationName: configurationName.release),
-      profileAction: ProfileAction(
-        configurationName: configurationName.debug,
+      archiveAction: .archiveAction(configuration: .configuration(configurationName.release)),
+      profileAction: .profileAction(
+        configuration: .configuration(configurationName.debug),
         executable: "\(targetName)"
       ),
-      analyzeAction: AnalyzeAction(configurationName: configurationName.debug)
+      analyzeAction: .analyzeAction(configuration: .configuration(configurationName.debug))
     )
   }
 }

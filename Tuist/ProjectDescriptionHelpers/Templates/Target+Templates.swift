@@ -14,12 +14,12 @@ extension Target {
       infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
-      actions: [
+      scripts: [
         .swiftlint,
         .crashlytics
       ],
       dependencies: dependencies,
-      settings: Settings(configurations: CustomConfiguration.routine),
+      settings: .settings(configurations: Configuration.routine),
       coreDataModels: [.init("Modules/RoutineApp/CoreData/Routine.xcdatamodeld")]
     )
   }

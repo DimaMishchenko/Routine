@@ -3,9 +3,12 @@ import ProjectDescriptionHelpers
 
 let project = Project(
   name: "Routine",
-  organizationName: "D&M",
+  options: .options(
+    automaticSchemesOptions: .disabled,
+    textSettings: .textSettings(indentWidth: 2, tabWidth: 2)
+  ),
   packages: SPMDependency.packages,
-  settings: Settings(configurations: CustomConfiguration.project),
+  settings: .settings(configurations: Configuration.project),
   targets: [
     .routineApp(
       dependencies: [
@@ -17,7 +20,6 @@ let project = Project(
         .package(.actionSheetPicker),
         .package(.swipeCellKit),
         .package(.spConfetti),
-        .cocoapods(path: ".")
       ]
     ),
     .routineAppTests()

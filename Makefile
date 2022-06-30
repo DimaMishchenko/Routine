@@ -4,4 +4,5 @@ init:
 	tuist up
 
 gen: 
-	tuist generate
+	tuist generate -n
+	bundle exec pod install
