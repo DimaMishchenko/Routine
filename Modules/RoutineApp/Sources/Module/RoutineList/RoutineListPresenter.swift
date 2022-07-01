@@ -23,7 +23,11 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
   
   // MARK: - Private Properties
-  private var routines: [Routine] = []
+  private struct Section {
+    let type: Frequency
+    let routines: [Routine]
+  }
+  private var sections: [Section] = []
   private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
@@ -35,6 +39,10 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
     provider.observeAll()
+      .map {
+        Dictionary(grouping: $0) { $0.frequency }
+          .map { Section(type: $0.key, routines: $0.value.sorted { $0.name < $1.name }) }
+      }
       .sink(
         receiveCompletion: {
           guard case .failure(let error) = $0 else { return }
@@ -42,7 +50,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
           print(error)
         },
         receiveValue: { [weak self] in
-          self?.routines = $0
+          self?.sections = $0
           self?.reloadSnapshot()
         }
       )
@@ -109,21 +117,19 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
 // MARK: - Private
 extension RoutineListPresenterImpl {
   private func reloadSnapshot(animated: Bool = false) {
-    let groups = Dictionary(grouping: routines) { $0.frequency }
-    
     view?.update(
       with: Snapshot {
         itemFactory.daily(
-          rows: groups[.daily]?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? [],
-          containsAnyItems: !routines.isEmpty
+          rows: routines(in: .daily)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? [],
+          containsAnyItems: !sections.isEmpty
         )
         
         itemFactory.weekly(
-          rows: groups[.weekly]?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
+          rows: routines(in: .weekly)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
         )
         
         itemFactory.monthly(
-          rows: groups[.monthly]?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
+          rows: routines(in: .monthly)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
         )
       },
       animated: animated
@@ -131,15 +137,17 @@ extension RoutineListPresenterImpl {
   }
   
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {
-    let groups = Dictionary(grouping: routines) { $0.frequency }
-    
     switch section {
     case .daily:
-      return groups[.daily]?[safe: rowIndex]
+      return routines(in: .daily)?[safe: rowIndex]
     case .weekly:
-      return groups[.weekly]?[safe: rowIndex]
+      return routines(in: .weekly)?[safe: rowIndex]
     case .monthly:
-      return groups[.monthly]?[safe: rowIndex]
+      return routines(in: .monthly)?[safe: rowIndex]
     }
+  }
+  
+  private func routines(in type: Frequency) -> [Routine]? {
+    sections.first { $0.type == type }?.routines
   }
 }
