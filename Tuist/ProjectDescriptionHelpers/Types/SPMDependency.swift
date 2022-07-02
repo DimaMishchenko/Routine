@@ -4,7 +4,6 @@ public enum SPMDependency: CaseIterable {
   case pinLayout
   case quick
   case nimble
-  case sfSafeSymbols
   case deviceKit
   case snapKit
   case iqKeyboardManager
@@ -20,7 +19,6 @@ public enum SPMDependency: CaseIterable {
     case .pinLayout:          return "PinLayout"
     case .quick:              return "Quick"
     case .nimble:             return "Nimble"
-    case .sfSafeSymbols:      return "SFSafeSymbols"
     case .deviceKit:          return "DeviceKit"
     case .snapKit:            return "SnapKit"
     case .iqKeyboardManager:  return "IQKeyboardManagerSwift"
@@ -38,7 +36,6 @@ public enum SPMDependency: CaseIterable {
     case .pinLayout:          return "https://github.com/layoutBox/PinLayout"
     case .quick:              return "https://github.com/Quick/Quick.git"
     case .nimble:             return "https://github.com/Quick/Nimble.git"
-    case .sfSafeSymbols:      return "https://github.com/piknotech/SFSafeSymbols.git"
     case .deviceKit:          return "https://github.com/devicekit/DeviceKit.git"
     case .snapKit:            return "https://github.com/SnapKit/SnapKit.git"
     case .iqKeyboardManager:  return "https://github.com/hackiftekhar/IQKeyboardManager.git"
@@ -53,7 +50,6 @@ public enum SPMDependency: CaseIterable {
     case .pinLayout:          return .upToNextMajor(from: "1.10.0")
     case .quick:              return .upToNextMajor(from: "4.0.0")
     case .nimble:             return .upToNextMajor(from: "9.2.0")
-    case .sfSafeSymbols:      return .upToNextMajor(from: "2.1.3")
     case .deviceKit:          return .upToNextMajor(from: "4.0.0")
     case .snapKit:            return .upToNextMajor(from: "5.0.1")
     case .iqKeyboardManager:  return .upToNextMajor(from: "6.5.0")

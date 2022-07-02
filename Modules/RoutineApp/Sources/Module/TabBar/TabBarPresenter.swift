@@ -13,14 +13,12 @@ final class TabBarPresenterImpl: TabBarPresenter {
     view?.setup(
       with: [
         TabBar.ItemVM(
-          type: .routines,
-          title: RoutineAppStrings.Tabbar.Tab.routines,
-          sfSymbol: .rCircle
+          type: .home,
+          title: RoutineAppStrings.Tabbar.Tab.routines
         ),
         TabBar.ItemVM(
           type: .settings,
-          title: RoutineAppStrings.Tabbar.Tab.settings,
-          sfSymbol: .gear
+          title: RoutineAppStrings.Tabbar.Tab.settings
         )
       ]
     )

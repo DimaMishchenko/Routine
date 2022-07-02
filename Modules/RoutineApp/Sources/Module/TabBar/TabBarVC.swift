@@ -27,16 +27,27 @@ final class TabBarVC: UITabBarController {
 
 // MARK: - TabBarViewInterface
 extension TabBarVC: TabBarViewInterface {
-  // MARK: - Private
   func setup(with items: [TabBar.ItemVM]) {
-    viewControllers = items.enumerated().map {
-      let vc = controllersFactory.controller(for: $0.element.type)
+    viewControllers = items.map {
+      let vc = controllersFactory.controller(for: $0.type)
       vc.tabBarItem = .init(
-        title: $0.element.title,
-        image: UIImage(systemSymbol: $0.element.sfSymbol),
-        tag: $0.offset
+        title: $0.title,
+        image: image(for: $0.type, selected: false),
+        selectedImage: image(for: $0.type, selected: true)
       )
       return vc
+    }
+  }
+}
+
+// MARK: - Private
+extension TabBarVC {
+  private func image(for type: TabBar.ItemType, selected: Bool) -> UIImage {
+    switch type {
+    case .home:
+      return selected ? RoutineAppAsset.Icon.homeSelected.image : RoutineAppAsset.Icon.home.image
+    case .settings:
+      return selected ? RoutineAppAsset.Icon.settingsSelected.image : RoutineAppAsset.Icon.settings.image
     }
   }
 }

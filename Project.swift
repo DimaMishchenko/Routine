@@ -13,7 +13,6 @@ let project = Project(
     .routineApp(
       dependencies: [
         .package(.pinLayout),
-        .package(.sfSafeSymbols),
         .package(.deviceKit),
         .package(.snapKit),
         .package(.iqKeyboardManager),
