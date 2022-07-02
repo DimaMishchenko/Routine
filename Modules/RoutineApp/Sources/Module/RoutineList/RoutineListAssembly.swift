@@ -14,7 +14,7 @@ final class RoutineListAssembly {
   // MARK: - Public
   func controller() -> UIViewController {
     let presenter = RoutineListPresenterImpl(
-      provider: CoreDataRoutineProvider(coreDataStack: serviceFactory.coreDataStack()),
+      store: serviceFactory.routineStore(),
       itemFactory: RoutineListItemFactoryImpl()
     )
     let vc = RoutineListVC(presenter: presenter)
@@ -26,6 +26,7 @@ final class RoutineListAssembly {
         onSave: { completion($0) },
         onDelete: { onDelete() }
       )
+      NotificationCenter.default.post(name: .NSCalendarDayChanged, object: nil)
       editVC.flatMap { vc?.present(UINavigationController(rootViewController: $0), animated: true) }
     }
     presenter.addNewRoutine = { [weak vc, weak assemblyFactory] completion in

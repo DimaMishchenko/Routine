@@ -4,6 +4,18 @@ import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
+  // MARK: - Dependencies
+  private let assemblyFactory: AssemblyFactory
+  private let historyUpdater: RoutineHistoryUpdater
+  
+  // MARK: - Init
+  override init() {
+    let serviceFactory = ServiceFactory(coreDataStack: CoreDataStackAssembly.routineStack())
+    assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
+    historyUpdater = serviceFactory.routineHistoryUpdater()
+    super.init()
+  }
+  
   // MARK: - Properties
   var window: UIWindow?
   
@@ -16,12 +28,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.shouldPlayInputClicks = false
     Appearance.setup()
+    historyUpdater.handleAppLaunch()
     
-    let assemblyFactory = AssemblyFactory(
-      serviceFactory: ServiceFactory(
-        coreDataStack: CoreDataStackAssembly.routineStack()
-      )
-    )
     let tabBarVC = assemblyFactory.tabBarAssembly().controller()
     
     window = UIWindow(frame: UIScreen.main.bounds)

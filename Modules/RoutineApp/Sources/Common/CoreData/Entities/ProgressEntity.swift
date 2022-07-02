@@ -19,11 +19,6 @@ extension ProgressEntity {
     current = Int16(progress.current)
     goal = Int16(progress.goal.rawValue)
   }
-  
-  func apply(_ progress: Progress) {
-    current = Int16(progress.current)
-    goal = Int16(progress.goal.rawValue)
-  }
 }
 
 extension ProgressEntity {

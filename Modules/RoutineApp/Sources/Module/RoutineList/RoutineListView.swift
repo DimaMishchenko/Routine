@@ -122,6 +122,7 @@ extension RoutineListView {
         top: .zero,
         leading: Inset.Padding.default,
         bottom: .zero,
+        // TODO: - IOS 15.3 bug
         trailing: Inset.Padding.default
       ),
       itemEdgeSpacing: NSCollectionLayoutEdgeSpacing(

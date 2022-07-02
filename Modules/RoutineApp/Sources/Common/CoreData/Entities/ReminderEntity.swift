@@ -29,11 +29,6 @@ extension ReminderEntity {
     uuid = reminder.uuid
     type = reminder.type
   }
-  
-  func apply(_ reminder: Reminder) {
-    uuid = reminder.uuid
-    type = reminder.type
-  }
 }
 
 extension ReminderEntity {

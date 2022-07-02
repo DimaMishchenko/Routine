@@ -10,6 +10,7 @@ struct Routine: Hashable {
   let progress: Progress
   let remind: Bool
   let reminders: [Reminder]
+  let history: [History]
 }
 
 extension Routine {
@@ -23,7 +24,8 @@ extension Routine {
       frequency: .daily,
       progress: Progress(goal: .min, current: .zero),
       remind: false,
-      reminders: []
+      reminders: [],
+      history: [History(uuid: UUID(), date: Date(), goal: Progress.Goal.min.rawValue, result: .zero)]
     )
   }
 }

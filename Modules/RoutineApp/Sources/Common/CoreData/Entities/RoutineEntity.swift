@@ -13,6 +13,7 @@ class RoutineEntity: NSManagedObject {
   @NSManaged private(set) var progress: ProgressEntity
   @NSManaged private(set) var remind: Bool
   @NSManaged private(set) var reminders: Set<ReminderEntity>
+  @NSManaged private(set) var history: Set<HistoryEntity>
   
   var frequencyType: Frequency {
     get {
@@ -41,21 +42,12 @@ extension RoutineEntity {
     progress = ProgressEntity(context: context, progress: routine.progress)
     remind = routine.remind
     reminders = Set(routine.reminders.map { ReminderEntity(context: context, reminder: $0) })
+    history = Set(routine.history.map { HistoryEntity(context: context, history: $0) })
   }
   
-  func apply(_ routine: Routine) {
-    uuid = routine.uuid
-    name = routine.name
-    desc = routine.description
-    emoji = routine.emoji
-    startDate = routine.startDate
-    frequency = Int16(routine.frequency.rawValue)
-    progress.apply(routine.progress)
-    remind = routine.remind
-    reminders.forEach { reminder in
-      guard let update = routine.reminders.first(where: { $0.uuid == reminder.uuid }) else { return }
-      reminder.apply(update)
-    }
+  // MARK: - Public
+  func append(_ history: HistoryEntity) {
+    self.history.insert(history)
   }
 }
 
@@ -70,7 +62,8 @@ extension RoutineEntity {
       frequency: frequencyType,
       progress: progress.model,
       remind: remind,
-      reminders: reminders.map { $0.model }
+      reminders: reminders.map { $0.model },
+      history: history.map { $0.model }
     )
   }
 }

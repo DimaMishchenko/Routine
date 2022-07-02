@@ -15,7 +15,7 @@ protocol RoutineListPresenter {
 final class RoutineListPresenterImpl: RoutineListPresenter {
   // MARK: - Dependencies
   weak var view: RoutineListViewInterface?
-  private let provider: RoutineProvider
+  private let store: RoutineStore
   private let itemFactory: RoutineListItemFactory
   
   // MARK: - Public Properties
@@ -31,14 +31,14 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
-  init(provider: RoutineProvider, itemFactory: RoutineListItemFactory) {
-    self.provider = provider
+  init(store: RoutineStore, itemFactory: RoutineListItemFactory) {
+    self.store = store
     self.itemFactory = itemFactory
   }
  
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
-    provider.observeAll()
+    store.observeAll()
       .map {
         Dictionary(grouping: $0) { $0.frequency }
           .map { Section(type: $0.key, routines: $0.value.sorted { $0.name < $1.name }) }
@@ -58,11 +58,9 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   }
   
   func addRoutine() {
-    addNewRoutine? { routine in
-      Task { [weak self] in
-        // TODO: - error
-        try await self?.provider.save(routine)
-      }
+    addNewRoutine? { [weak self] routine in
+      // TODO: - error
+      Task { [self] in try await self?.store.save(routine) }
     }
   }
   
@@ -70,29 +68,29 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     
     // swiftlint:disable:next multiline_arguments
-    editRoutine?(routine, { edited in
+    editRoutine?(routine, { [weak self] edited in
       // TODO: - error
-      Task { [weak self] in try await self?.provider.update(edited) }
-    }, {
+      Task { [self] in try await self?.store.update(edited) }
+    }, { [weak self] in
       // TODO: - error
-      Task { [weak self] in try await self?.provider.delete(routine) }
+      Task { [self] in try await self?.store.delete(routine) }
     })
   }
   
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     // TODO: - error
-    Task { [weak self] in try await self?.provider.delete(routine) }
+    Task { try await store.delete(routine) }
   }
   
   func increaseProgress(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     var editable = EditableRoutine(routine: routine)
-    editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current + 1)
+    editable.increaseProgress()
     
     // TODO: - error
-    Task { [weak self, editable] in
-      try await self?.provider.update(editable.routine)
+    Task { [editable] in
+      try await store.update(editable.routine)
     }
     
     if editable.progress.goal.rawValue == editable.progress.current {
@@ -106,10 +104,10 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       routine.progress.current != .zero
     else { return }
     var editable = EditableRoutine(routine: routine)
-    editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.current - 1)
+    editable.decreaseProgress()
     // TODO: - error
-    Task { [weak self, editable] in
-      try await self?.provider.update(editable.routine)
+    Task { [editable] in
+      try await store.update(editable.routine)
     }
   }
 }

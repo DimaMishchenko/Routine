@@ -2,14 +2,15 @@ import Combine
 import CoreData
 import Foundation
 
-protocol RoutineProvider {
+protocol RoutineStore {
   func save(_ routine: Routine) async throws
   func update(_ routine: Routine) async throws
   func delete(_ routine: Routine) async throws
   func observeAll() -> AnyPublisher<[Routine], Error>
+  func fillHistoryIfNeeded() async throws
 }
 
-final class CoreDataRoutineProvider: RoutineProvider {
+final class CoreDataRoutineStore: RoutineStore {
   // MARK: - Dependencies
   private let coreDataStack: CoreDataStack
   
@@ -52,6 +53,12 @@ final class CoreDataRoutineProvider: RoutineProvider {
     .eraseToAnyPublisher()
   }
   
+  func fillHistoryIfNeeded() async throws {
+    try await withCheckedThrowingContinuation { continuation in
+      fillHistoryIfNeeded { continuation.resume(with: $0) }
+    }
+  }
+  
   // MARK: - Private
   private func save(_ routine: Routine, completion: @escaping (Result<Void, Error>) -> Void) {
     coreDataStack.persistentContainer.performBackgroundTask {
@@ -78,15 +85,60 @@ final class CoreDataRoutineProvider: RoutineProvider {
           return
         }
         
-        if delete {
-          $0.delete(result)
-        } else {
-          result.apply(routine)
+        $0.delete(result)
+        
+        if !delete {
+          _ = RoutineEntity(context: $0, routine: routine)
         }
         try $0.save()
         completion(.success(Void()))
       } catch {
         $0.rollback()
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  private func fillHistoryIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
+    coreDataStack.persistentContainer.performBackgroundTask { context in
+      let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
+      
+      do {
+        let routines = try context.fetch(request)
+        routines.forEach { routine in
+          guard
+            let latestItem = routine.history.sorted(by: { $0.date < $1.date }).last,
+            !latestItem.date.compareWithToday(to: .day)
+          else { return }
+          
+          let today = Date()
+          var latestDate = latestItem.date
+          
+          while true {
+            guard let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: latestDate) else { break }
+            
+            routine.append(
+              HistoryEntity(
+                context: context,
+                history: History(
+                  uuid: UUID(),
+                  date: nextDay,
+                  goal: Int(routine.progress.goal),
+                  result: .zero
+                )
+              )
+            )
+            
+            latestDate = nextDay
+            
+            if latestDate.compare(with: today, to: .day) { break }
+          }
+        }
+        
+        try context.save()
+        completion(.success(Void()))
+      } catch {
+        context.rollback()
         completion(.failure(error))
       }
     }
