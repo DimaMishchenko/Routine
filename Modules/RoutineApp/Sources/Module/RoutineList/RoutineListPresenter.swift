@@ -125,7 +125,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
 
 // MARK: - Private
 extension RoutineListPresenterImpl {
-  private func reloadSnapshot(animated: Bool = false) {
+  private func reloadSnapshot() {
     view?.update(
       with: Snapshot {
         itemFactory.daily(
@@ -135,7 +135,7 @@ extension RoutineListPresenterImpl {
         itemFactory.weekly(rows: rows(in: .weekly))
         itemFactory.monthly(rows: rows(in: .monthly))
       },
-      animated: animated
+      animated: true
     )
   }
   
