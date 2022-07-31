@@ -10,7 +10,7 @@ struct Progress: Hashable {
 extension Progress {
   struct Goal: RawRepresentable, Hashable, ExpressibleByIntegerLiteral {
     static let min: Goal = 1
-    static let max: Goal = 7
+    static let max: Goal = 99
     
     let rawValue: Int
     

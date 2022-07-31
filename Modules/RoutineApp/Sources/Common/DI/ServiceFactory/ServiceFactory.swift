@@ -14,8 +14,8 @@ final class ServiceFactory {
     sharedCoreDataStack
   }
   
-  func notificationsPermissionHandler() -> NotificationsPermissionHandler {
-    NotificationsPermissionHandlerImpl()
+  func notificationsPermissionHandler() -> NotificationsHandler {
+    NotificationsHandlerImpl()
   }
   
   func appStateObserver() -> AppStateObserver {

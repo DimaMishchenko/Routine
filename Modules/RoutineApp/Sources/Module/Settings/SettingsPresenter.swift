@@ -11,7 +11,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   weak var view: SettingsViewInterface?
   private let rowFactory: SettingsRowFactory
   private let appStateObserver: AppStateObserver
-  private let notificationsPermissionHandler: NotificationsPermissionHandler
+  private let notificationsHandler: NotificationsHandler
   
   // MARK: - Properties
   var openSettings: (() -> Void)?
@@ -27,11 +27,11 @@ final class SettingsPresenterImpl: SettingsPresenter {
   init(
     rowFactory: SettingsRowFactory,
     appStateObserver: AppStateObserver,
-    notificationsPermissionHandler: NotificationsPermissionHandler
+    notificationsHandler: NotificationsHandler
   ) {
     self.rowFactory = rowFactory
     self.appStateObserver = appStateObserver
-    self.notificationsPermissionHandler = notificationsPermissionHandler
+    self.notificationsHandler = notificationsHandler
     
     setupAppStateObserver()
   }
@@ -48,7 +48,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
       if currentStatus {
         await view?.showAlert(with: notificationSettingsAlertVM(enabled: true))
       } else {
-        let result = await notificationsPermissionHandler.request()
+        let result = await notificationsHandler.request()
         if !result {
           await view?.showAlert(with: notificationSettingsAlertVM(enabled: false))
         }
@@ -71,7 +71,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   private func reloadSnapshot() async {
     typealias Item = Snapshot<Settings.Section, Settings.Row>.Item
     
-    let isAuthorized = await notificationsPermissionHandler.isAuthorized()
+    let isAuthorized = await notificationsHandler.isAuthorized()
     
     await view?.update(
       with: Snapshot {

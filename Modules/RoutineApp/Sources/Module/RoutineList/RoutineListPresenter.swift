@@ -17,6 +17,8 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   weak var view: RoutineListViewInterface?
   private let store: RoutineStore
   private let itemFactory: RoutineListItemFactory
+  private let appStateObserver: AppStateObserver
+  private let notificationsHandler: NotificationsHandler
   
   // MARK: - Public Properties
   var editRoutine: ((Routine, _ completion: @escaping (Routine) -> Void, _ onDelete: @escaping () -> Void) -> Void)?
@@ -31,13 +33,29 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
-  init(store: RoutineStore, itemFactory: RoutineListItemFactory) {
+  init(
+    store: RoutineStore,
+    itemFactory: RoutineListItemFactory,
+    appStateObserver: AppStateObserver,
+    notificationsHandler: NotificationsHandler
+  ) {
     self.store = store
     self.itemFactory = itemFactory
+    self.appStateObserver = appStateObserver
+    self.notificationsHandler = notificationsHandler
   }
  
   // MARK: - RoutineListPresenter
   func viewDidLoad() {
+    clearNotifications()
+    
+    appStateObserver
+      .on(.didBecomeActive)
+      .sink { [weak self] in
+        self?.clearNotifications()
+      }
+      .store(in: &cancellables)
+    
     store.observeAll()
       .map {
         Dictionary(grouping: $0) { $0.frequency }
@@ -73,6 +91,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       Task { [self] in try await self?.store.update(edited) }
     }, { [weak self] in
       // TODO: - error
+      routine.reminders.forEach { self?.notificationsHandler.delete($0) }
       Task { [self] in try await self?.store.delete(routine) }
     })
   }
@@ -80,6 +99,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
     // TODO: - error
+    routine.reminders.forEach { notificationsHandler.delete($0) }
     Task { try await store.delete(routine) }
   }
   
@@ -156,5 +176,9 @@ extension RoutineListPresenterImpl {
   
   private func routines(in type: Frequency) -> [Routine]? {
     sections.first { $0.type == type }?.routines
+  }
+  
+  private func clearNotifications() {
+    notificationsHandler.clearDelivered()
   }
 }

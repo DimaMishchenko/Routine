@@ -31,6 +31,6 @@ final class AssemblyFactory {
   }
   
   func routineEdit() -> RoutineEditAssembly {
-    RoutineEditAssembly()
+    RoutineEditAssembly(serviceFactory: serviceFactory)
   }
 }

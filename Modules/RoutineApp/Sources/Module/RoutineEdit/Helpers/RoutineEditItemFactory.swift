@@ -33,7 +33,7 @@ final class RoutineEditItemFactoryImpl: RoutineEditItemFactory {
         .value(
           .init(
             title: RoutineAppStrings.RoutineEdit.Text.goal,
-            value: .text("\(goal.rawValue) \(RoutineAppStrings.RoutineEdit.Text.timePerDay)")
+            value: .text("\(goal.rawValue)")
           )
         ),
         action: action

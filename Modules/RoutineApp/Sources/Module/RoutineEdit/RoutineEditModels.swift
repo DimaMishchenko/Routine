@@ -7,6 +7,11 @@ enum RoutineEdit {
     case edit(Routine)
   }
   
+  // MARK: - Errors
+  enum ValidationError: Error {
+    case emptyName
+  }
+  
   // MARK: - Section
   enum Section: Hashable {
     case name

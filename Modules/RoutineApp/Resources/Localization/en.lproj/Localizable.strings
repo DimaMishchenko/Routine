@@ -44,7 +44,12 @@
 "routineEdit.text.emoji" = "Emoji";
 "routineEdit.text.frequency" = "Frequency";
 "routineEdit.text.goal" = "Goal";
-"routineEdit.text.timePerDay" = "time per day";
+
+"routineEdit.alert.error.title" = "Failed to save";
+"routineEdit.alert.error.emptyName.message" = "Please set name; it can't be empty";
+
+"routineEdit.alert.notificationsDiabled.title" = "Notifications disabled";
+"routineEdit.alert.notificationsDiabled.message" = "Application can't send notifications because they are disabled. Please first enable them on the settings page.";
 
 // MARK: - Settings
 "settings.title" = "Settings";

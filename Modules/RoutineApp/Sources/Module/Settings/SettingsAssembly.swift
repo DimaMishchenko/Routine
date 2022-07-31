@@ -17,7 +17,7 @@ final class SettingsAssembly {
     let presenter = SettingsPresenterImpl(
       rowFactory: SettingsRowFactoryImpl(),
       appStateObserver: serviceFactory.appStateObserver(),
-      notificationsPermissionHandler: serviceFactory.notificationsPermissionHandler()
+      notificationsHandler: serviceFactory.notificationsPermissionHandler()
     )
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc

@@ -4,6 +4,7 @@ protocol RoutineEditViewInterface: AnyObject {
   func update(title: String)
   func updateDelete(visibility isVisible: Bool)
   func update(with snapshot: Snapshot<RoutineEdit.Section, RoutineEdit.Row>)
+  func showAlert(with viewModel: Alert.VM)
 }
 
 final class RoutineEditVC: UIViewController {
@@ -52,6 +53,12 @@ extension RoutineEditVC: RoutineEditViewInterface {
   
   func update(with snapshot: Snapshot<RoutineEdit.Section, RoutineEdit.Row>) {
     contentView.update(with: snapshot)
+  }
+  
+  func showAlert(with viewModel: Alert.VM) {
+    DispatchQueue.main.async {
+      Alert.show(on: self, with: viewModel)      
+    }
   }
 }
 

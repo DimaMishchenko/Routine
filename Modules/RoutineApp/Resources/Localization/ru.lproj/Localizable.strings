@@ -44,8 +44,12 @@
 "routineEdit.text.emoji" = "Эмодзи";
 "routineEdit.text.frequency" = "Частота";
 "routineEdit.text.goal" = "Цель";
-"routineEdit.text.timePerDay" = "раз в день";
 
+"routineEdit.alert.error.title" = "Не удалось сохранить";
+"routineEdit.alert.error.emptyName.message" = "Пожалуйста укажите имя, оно не может быть пустым";
+
+"routineEdit.alert.notificationsDiabled.title" = "Уведомления отключены";
+"routineEdit.alert.notificationsDiabled.message" = "Приложение не может отправлять уведомления, потому что они отключены. Сначала включите их на странице настроек.";
 
 // MARK: - Settings
 "settings.title" = "Настройки";
