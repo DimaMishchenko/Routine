@@ -179,7 +179,7 @@ extension RoutineCell {
   
   private func createProgress() -> RountineProgress {
     with(RountineProgress()) {
-      addSubview($0)
+      containerView.addSubview($0)
       $0.addGestureRecognizer(progressTapGesture)
       $0.snp.makeConstraints {
         $0.centerY.equalToSuperview()
