@@ -88,9 +88,14 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     var editable = EditableRoutine(routine: routine)
     editable.increaseProgress()
     
-    // TODO: - error
-    Task { [editable] in
-      try await store.update(editable.routine)
+    view?.animateProgressUpdate(
+      for: editable.progress.percent,
+      at: IndexPath(row: rowIndex, section: section.rawValue)
+    ) {
+      Task { [weak self, editable] in
+        // TODO: - error
+        try await self?.store.update(editable.routine)
+      }
     }
     
     if editable.progress.goal.rawValue == editable.progress.current {
@@ -105,9 +110,15 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     else { return }
     var editable = EditableRoutine(routine: routine)
     editable.decreaseProgress()
-    // TODO: - error
-    Task { [editable] in
-      try await store.update(editable.routine)
+    
+    view?.animateProgressUpdate(
+      for: editable.progress.percent,
+      at: IndexPath(row: rowIndex, section: section.rawValue)
+    ) {
+      Task { [weak self, editable] in
+        // TODO: - error
+        try await self?.store.update(editable.routine)
+      }
     }
   }
 }
@@ -118,17 +129,11 @@ extension RoutineListPresenterImpl {
     view?.update(
       with: Snapshot {
         itemFactory.daily(
-          rows: routines(in: .daily)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? [],
+          rows: rows(in: .daily),
           containsAnyItems: !sections.isEmpty
         )
-        
-        itemFactory.weekly(
-          rows: routines(in: .weekly)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
-        )
-        
-        itemFactory.monthly(
-          rows: routines(in: .monthly)?.map { RoutineList.Row(.routine(.init(routine: $0))) } ?? []
-        )
+        itemFactory.weekly(rows: rows(in: .weekly))
+        itemFactory.monthly(rows: rows(in: .monthly))
       },
       animated: animated
     )
@@ -143,6 +148,10 @@ extension RoutineListPresenterImpl {
     case .monthly:
       return routines(in: .monthly)?[safe: rowIndex]
     }
+  }
+  
+  private func rows(in type: Frequency) -> [RoutineList.Row] {
+    routines(in: type)?.map { routine in .init(.routine(.init(routine: routine))) } ?? []
   }
   
   private func routines(in type: Frequency) -> [Routine]? {

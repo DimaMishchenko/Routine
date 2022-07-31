@@ -1,7 +1,10 @@
 import UIKit
 
 // MARK: - Color
-enum Color {}
+enum Color {
+  static let black = UIColor.black
+  static let clear = UIColor.clear
+}
 
 // MARK: - Background
 extension Color {
@@ -11,6 +14,8 @@ extension Color {
 extension Color.Background {
   static let `default`: UIColor = .systemGroupedBackground
   static let secondary: UIColor = .secondarySystemGroupedBackground
+  
+  static let lightBlue = UIColor(hex: "#D7E9FC")
 }
 
 // MARK: - Text
@@ -43,4 +48,14 @@ extension Color.Button {
   static let delete: UIColor = .systemRed
   
   static let gray: UIColor = .systemGray
+}
+
+// MARK: - Gradient
+extension Color {
+  enum Gradient {}
+}
+
+extension Color.Gradient {
+  static let primary = [UIColor(hex: "#80BCFF"), UIColor(hex: "#007AFF")]
+  static let secondary = [UIColor(hex: "#FFCA80"), UIColor(hex: "#FF9500")]
 }

@@ -14,9 +14,9 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
   private lazy var emojiLabel = createEmojiLabel()
   private lazy var titleLabel = createTitleLabel()
   private lazy var goalLabel = createGoalLabel()
-  private lazy var decreaseButton = createDecreaseButton()
-  private lazy var progressLabel = createProgressLabel()
-  private lazy var increaseButton = createIncreaseButton()
+  private lazy var undoButton = createUndoButton()
+  private lazy var progress = createProgress()
+  private lazy var progressTapGesture = UITapGestureRecognizer(target: self, action: #selector(increaseProgress))
   
   // MARK: - Init
   override init(frame: CGRect) {
@@ -35,7 +35,17 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
     emojiLabel.text = model.emoji
     titleLabel.text = model.title
     goalLabel.text = model.goal
-    progressLabel.text = "\(model.progress)"
+    progress.update(progress: model.progressPercent, animated: false)
+  }
+  
+  func updateProgress(to newValue: Double, completion: @escaping () -> Void) {
+    undoButton.isEnabled = false
+    progressTapGesture.isEnabled = false
+    progress.update(progress: newValue, animated: true) { [weak self] in
+      self?.undoButton.isEnabled = true
+      self?.progressTapGesture.isEnabled = true
+      completion()
+    }
   }
 }
 
@@ -75,6 +85,13 @@ extension RoutineCell: SwipeCollectionViewCellDelegate {
       $0.backgroundColor = Color.Background.default
       $0.buttonVerticalAlignment = .center
     }
+  }
+}
+
+// MARK: - Actions
+extension RoutineCell {
+  @objc private func increaseProgress() {
+    onIncrease?()
   }
 }
   
@@ -117,7 +134,7 @@ extension RoutineCell {
       
       $0.snp.makeConstraints {
         $0.leading.equalTo(emojiLabel.snp.trailing).offset(Inset.Padding.small)
-        $0.trailing.lessThanOrEqualTo(decreaseButton.snp.leading)
+        $0.trailing.lessThanOrEqualTo(undoButton.snp.leading)
         $0.centerY.equalTo(emojiLabel)
       }
     }
@@ -133,65 +150,41 @@ extension RoutineCell {
       $0.snp.makeConstraints {
         $0.top.equalTo(emojiLabel.snp.bottom).offset(Inset.Padding.small)
         $0.leading.equalToSuperview().offset(Inset.Padding.default)
-        $0.trailing.lessThanOrEqualTo(decreaseButton.snp.leading)
+        $0.trailing.lessThanOrEqualTo(undoButton.snp.leading)
         $0.bottom.equalToSuperview().offset(-Inset.Padding.small)
       }
     }
   }
   
-  private func createDecreaseButton() -> UIButton {
+  private func createUndoButton() -> UIButton {
     with(UIButton(type: .system)) {
       $0.on { [weak self] in self?.onDecrease?() }
-      $0.setImage(RoutineAppAsset.Icon.minus.image, for: .normal)
-      $0.tintColor = Color.Button.gray
+      $0.setImage(RoutineAppAsset.Icon.undo.image, for: .normal)
       $0.imageEdgeInsets = UIEdgeInsets(
-        top: Inset.Padding.default,
-        left: Inset.Padding.default,
-        bottom: Inset.Padding.default,
-        right: Inset.Padding.default
+        top: Inset.Padding.small,
+        left: .zero,
+        bottom: .zero,
+        right: .zero
       )
-      containerView.addSubview($0)
       
+      containerView.addSubview($0)
+
       $0.snp.makeConstraints {
         $0.centerY.equalToSuperview()
         $0.size.equalTo(Size.Button.default)
-        $0.trailing.equalTo(progressLabel.snp.leading).offset(Inset.Padding.small)
+        $0.trailing.equalTo(progress.snp.leading)
       }
     }
   }
   
-  private func createProgressLabel() -> UILabel {
-    with(UILabel()) {
-      $0.font = Font.system(.title1, weight: .bold)
-      $0.textAlignment = .center
-      $0.textColor = Color.Text.default
-      containerView.addSubview($0)
-      
-      $0.snp.contentCompressionResistanceHorizontalPriority = UILayoutPriority.required.rawValue
-      
+  private func createProgress() -> RountineProgress {
+    with(RountineProgress()) {
+      addSubview($0)
+      $0.addGestureRecognizer(progressTapGesture)
       $0.snp.makeConstraints {
         $0.centerY.equalToSuperview()
-        $0.trailing.equalTo(increaseButton.snp.leading).offset(Inset.Padding.small)
-      }
-    }
-  }
-  
-  private func createIncreaseButton() -> UIButton {
-    with(UIButton(type: .system)) {
-      $0.on { [weak self] in self?.onIncrease?() }
-      $0.setImage(RoutineAppAsset.Icon.plus.image, for: .normal)
-      $0.tintColor = Color.Button.gray
-      $0.imageEdgeInsets = UIEdgeInsets(
-        top: Inset.Padding.default,
-        left: Inset.Padding.default,
-        bottom: Inset.Padding.default,
-        right: Inset.Padding.default
-      )
-      containerView.addSubview($0)
-      
-      $0.snp.makeConstraints {
-        $0.centerY.trailing.equalToSuperview()
-        $0.size.equalTo(Size.Button.default)
+        $0.trailing.equalToSuperview().offset(-Inset.Padding.default)
+        $0.size.equalTo(54) // TODO: - size
       }
     }
   }

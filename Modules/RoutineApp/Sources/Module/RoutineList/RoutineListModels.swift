@@ -2,7 +2,7 @@ import Foundation
 
 enum RoutineList {
   // MARK: - Section
-  enum Section: Hashable {
+  enum Section: Int, Hashable {
     case daily
     case weekly
     case monthly

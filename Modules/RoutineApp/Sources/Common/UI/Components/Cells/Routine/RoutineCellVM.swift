@@ -6,6 +6,7 @@ struct RoutineCellVM: Hashable {
   var title: String { routine.name }
   var goal: String { "\(goalFrequencyPrefix()) \(routine.progress.current) / \(routine.progress.goal.rawValue)" }
   var progress: Int { routine.progress.current }
+  var progressPercent: Double { routine.progress.percent }
   
   // MARK: - Private Properties
   private let routine: Routine

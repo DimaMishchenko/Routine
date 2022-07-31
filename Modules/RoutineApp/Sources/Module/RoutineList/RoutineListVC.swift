@@ -6,6 +6,7 @@ protocol RoutineListViewInterface: AnyObject {
     animated: Bool
   )
   func showConfetti(with emoji: String)
+  func animateProgressUpdate(for newValue: Double, at indexPath: IndexPath, completion: @escaping () -> Void)
 }
 
 final class RoutineListVC: UIViewController {
@@ -60,5 +61,9 @@ extension RoutineListVC: RoutineListViewInterface {
   func showConfetti(with emoji: String) {
     Confetti.run(with: emoji)
     HapticFeedback.success()
+  }
+  
+  func animateProgressUpdate(for newValue: Double, at indexPath: IndexPath, completion: @escaping () -> Void) {
+    contentView.animateProgressUpdate(for: newValue, at: indexPath, completion: completion)
   }
 }

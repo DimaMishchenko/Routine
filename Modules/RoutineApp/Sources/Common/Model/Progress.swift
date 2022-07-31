@@ -3,6 +3,8 @@ import Foundation
 struct Progress: Hashable {
   let goal: Goal
   let current: Int
+  
+  var percent: Double { Double(current) / Double(goal.rawValue) }
 }
 
 extension Progress {

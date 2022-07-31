@@ -34,6 +34,17 @@ extension RoutineListView {
   ) {
     dataSource.apply(snapshot, animatingDifferences: animated)
   }
+  
+  func animateProgressUpdate(
+    for newValue: Double,
+    at indexPath: IndexPath,
+    completion: @escaping () -> Void
+  ) {
+    // +1 because of outline cell
+    let indexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+    guard let cell = collectionView.cellForItem(at: indexPath) as? RoutineCell else { return }
+    cell.updateProgress(to: newValue) { completion() }
+  }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -101,6 +112,7 @@ extension RoutineListView {
             guard let position = self?.position(for: cell) else { return }
             self?.onIncreaseProgress?(position.section, position.row)
           }
+          
           cell?.onDecrease = { [weak self, weak cell] in
             guard let position = self?.position(for: cell) else { return }
             self?.onDecreaseProgress?(position.section, position.row)
