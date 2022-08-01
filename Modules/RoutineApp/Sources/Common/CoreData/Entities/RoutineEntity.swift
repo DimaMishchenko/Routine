@@ -10,10 +10,10 @@ class RoutineEntity: NSManagedObject {
   @NSManaged private(set) var emoji: String
   @NSManaged private(set) var startDate: Date
   @NSManaged private var frequency: Int16
-  @NSManaged private(set) var progress: ProgressEntity
+  @NSManaged private(set) var progress: ProgressEntity?
   @NSManaged private(set) var remind: Bool
-  @NSManaged private(set) var reminders: Set<ReminderEntity>
-  @NSManaged private(set) var history: Set<HistoryEntity>
+  @NSManaged private(set) var reminders: Set<ReminderEntity>?
+  @NSManaged private(set) var history: Set<HistoryEntity>?
   
   var frequencyType: Frequency {
     get {
@@ -47,13 +47,19 @@ extension RoutineEntity {
   
   // MARK: - Public
   func append(_ history: HistoryEntity) {
-    self.history.insert(history)
+    self.history?.insert(history)
   }
 }
 
 extension RoutineEntity {
-  var model: Routine {
-    Routine(
+  var model: Routine? {
+    guard
+      let progress = progress,
+      let reminders = reminders,
+      let history = history
+    else { return nil }
+    
+    return Routine(
       uuid: uuid,
       name: name,
       description: description,

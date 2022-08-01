@@ -14,7 +14,7 @@ final class CoreDataStack {
   
   // MARK: - Init
   init(containerName: String, sharedGroupIdentifier: String, cloudKitIdentifier: String) {
-    persistentContainer = NSPersistentCloudKitContainer(name: containerName)
+    persistentContainer = AppNSPersistentCloudKitContainer(name: containerName)
     
     guard let storageURL = sharedStorageURL(for: sharedGroupIdentifier) else {
       // TODO: - Handle error
@@ -27,6 +27,7 @@ final class CoreDataStack {
     localStorage.cloudKitContainerOptions = localStorageOptions
     persistentContainer.persistentStoreDescriptions = [localStorage]
     persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+    persistentContainer.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     
     persistentContainer.loadPersistentStores { _, error in
       // TODO: - Handle errors
@@ -45,5 +46,21 @@ final class CoreDataStack {
     return containerURL
       .appendingPathComponent(Constants.storageFolderName)
       .appendingPathComponent(Constants.storageName)
+  }
+}
+
+private class AppNSPersistentCloudKitContainer: NSPersistentCloudKitContainer {
+  override func newBackgroundContext() -> NSManagedObjectContext {
+    let context = super.newBackgroundContext()
+    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+    
+    return context
+  }
+  
+  override func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+    super.performBackgroundTask { context in
+      context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+      block(context)
+    }
   }
 }

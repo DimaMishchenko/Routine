@@ -49,7 +49,7 @@ final class CoreDataRoutineStore: RoutineStore {
       request: NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self)),
       context: coreDataStack.persistentContainer.viewContext
     )
-    .map { $0.map { $0.model } }
+    .map { $0.compactMap { $0.model } }
     .eraseToAnyPublisher()
   }
   
@@ -107,7 +107,9 @@ final class CoreDataRoutineStore: RoutineStore {
         let routines = try context.fetch(request)
         routines.forEach { routine in
           guard
-            let latestItem = routine.history.sorted(by: { $0.date < $1.date }).last,
+            let progress = routine.progress,
+            let history = routine.history,
+            let latestItem = history.sorted(by: { $0.date < $1.date }).last,
             !latestItem.date.compareWithToday(to: .day)
           else { return }
           
@@ -123,7 +125,7 @@ final class CoreDataRoutineStore: RoutineStore {
                 history: History(
                   uuid: UUID(),
                   date: nextDay,
-                  goal: Int(routine.progress.goal),
+                  goal: Int(progress.goal),
                   result: .zero
                 )
               )

@@ -9,7 +9,7 @@ extension Target {
       bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
       deploymentTarget: .iOS(
         targetVersion: "14.0",
-        devices: [.iphone]
+        devices: [.iphone, .ipad]
       ),
       infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
