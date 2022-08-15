@@ -65,7 +65,7 @@ final class CoreDataRoutineStore: RoutineStore {
       _ = RoutineEntity(context: $0, routine: routine)
 
       do {
-        try $0.save()
+        try $0.saveIfNeeded()
         completion(.success(Void()))
       } catch {
         $0.rollback()
@@ -90,7 +90,7 @@ final class CoreDataRoutineStore: RoutineStore {
         if !delete {
           _ = RoutineEntity(context: $0, routine: routine)
         }
-        try $0.save()
+        try $0.saveIfNeeded()
         completion(.success(Void()))
       } catch {
         $0.rollback()
@@ -135,9 +135,11 @@ final class CoreDataRoutineStore: RoutineStore {
             
             if latestDate.compare(with: today, to: .day) { break }
           }
+          
+          progress.resetCurrent()
         }
         
-        try context.save()
+        try context.saveIfNeeded()
         completion(.success(Void()))
       } catch {
         context.rollback()

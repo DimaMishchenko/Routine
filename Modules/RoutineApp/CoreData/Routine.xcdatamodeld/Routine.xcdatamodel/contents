@@ -22,6 +22,7 @@
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="emoji" optional="YES" attributeType="String"/>
         <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastUpdateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="remind" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -34,6 +35,6 @@
         <element name="HistoryEntity" positionX="-117" positionY="-27" width="128" height="104"/>
         <element name="ProgressEntity" positionX="-326.5952758789062" positionY="-47.5831298828125" width="128" height="89"/>
         <element name="ReminderEntity" positionX="-182.5586547851562" positionY="126.5974731445312" width="128" height="74"/>
-        <element name="RoutineEntity" positionX="176.5595703125" positionY="-185.7842407226562" width="128" height="179"/>
+        <element name="RoutineEntity" positionX="176.5595703125" positionY="-185.7842407226562" width="128" height="194"/>
     </elements>
 </model>

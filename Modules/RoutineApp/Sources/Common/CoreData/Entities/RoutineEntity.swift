@@ -14,6 +14,7 @@ class RoutineEntity: NSManagedObject {
   @NSManaged private(set) var remind: Bool
   @NSManaged private(set) var reminders: Set<ReminderEntity>?
   @NSManaged private(set) var history: Set<HistoryEntity>?
+  @NSManaged private(set) var lastUpdateDate: Date
   
   var frequencyType: Frequency {
     get {
@@ -43,6 +44,7 @@ extension RoutineEntity {
     remind = routine.remind
     reminders = Set(routine.reminders.map { ReminderEntity(context: context, reminder: $0) })
     history = Set(routine.history.map { HistoryEntity(context: context, history: $0) })
+    lastUpdateDate = Date()
   }
   
   // MARK: - Public
