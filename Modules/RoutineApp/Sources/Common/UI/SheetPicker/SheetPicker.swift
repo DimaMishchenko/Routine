@@ -1,4 +1,4 @@
-import CoreActionSheetPicker
+import ActionSheetPicker_3_0
 
 enum SheetPicker {
   static func string(

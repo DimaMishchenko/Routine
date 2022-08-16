@@ -3,9 +3,7 @@ use_frameworks!
 
 # Use CocoaPods only if SPM is not available
 target 'RoutineApp' do
-  pod 'Firebase/AnalyticsWithoutAdIdSupport'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Crashlytics'
+  pod 'ActionSheetPicker-3.0'
   pod 'EmojiPicker', '1.1'
 
   target 'RoutineTests' do end

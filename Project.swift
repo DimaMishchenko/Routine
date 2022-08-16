@@ -7,18 +7,19 @@ let project = Project(
     automaticSchemesOptions: .disabled,
     textSettings: .textSettings(indentWidth: 2, tabWidth: 2)
   ),
-  packages: SPMDependency.packages,
   settings: .settings(configurations: Configuration.project),
   targets: [
     .routineApp(
       dependencies: [
-        .package(.pinLayout),
-        .package(.deviceKit),
-        .package(.snapKit),
-        .package(.iqKeyboardManager),
-        .package(.actionSheetPicker),
-        .package(.swipeCellKit),
-        .package(.spConfetti),
+        .spm(.pinLayout),
+        .spm(.deviceKit),
+        .spm(.snapKit),
+        .spm(.iqKeyboardManager),
+        .spm(.swipeCellKit),
+        .spm(.spConfetti),
+        .spm(.firebase(.analytics)),
+        .spm(.firebase(.crashlytics)),
+        .spm(.firebase(.performance))
       ]
     ),
     .routineAppTests()

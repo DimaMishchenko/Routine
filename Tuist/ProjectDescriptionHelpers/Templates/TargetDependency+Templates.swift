@@ -1,7 +1,7 @@
 import ProjectDescription
 
 extension TargetDependency {
-  public static func package(_ dependency: SPMDependency) -> TargetDependency {
-    .package(product: dependency.name)
+  public static func spm(_ dependency: SPM.Dependency) -> TargetDependency {
+    .external(name: dependency.name)
   }
 }

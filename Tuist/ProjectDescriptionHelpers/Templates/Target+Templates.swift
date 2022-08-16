@@ -34,8 +34,8 @@ extension Target {
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
         .target(name: "RoutineApp"),
-        .package(.quick),
-        .package(.nimble)
+        .spm(.quick),
+        .spm(.nimble)
       ]
     )
   }

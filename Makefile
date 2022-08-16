@@ -3,6 +3,7 @@ init:
 	bash -c "bash <(curl -Ls https://install.tuist.io)"
 	tuist up
 
-gen: 
-	tuist generate -n
+gen:
+	tuist fetch
+	tuist generate -n -x
 	bundle exec pod install

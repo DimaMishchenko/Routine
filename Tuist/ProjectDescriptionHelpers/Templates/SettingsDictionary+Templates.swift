@@ -18,6 +18,10 @@ extension SettingsDictionary {
     ]
   }
   
+  public static func dependency() -> SettingsDictionary {
+    ["ONLY_ACTIVE_ARCH": "NO"]
+  }
+  
   // MARK: - Private
   private static func routineBundleId(for environment: Environment) -> String {
     let base = "com.dm.routine.app"

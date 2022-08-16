@@ -17,7 +17,7 @@ extension TargetScript {
   
   public static var crashlytics: TargetScript {
     .post(
-      script: "${PODS_ROOT}/FirebaseCrashlytics/run -gsp ${PROJECT_DIR}/Modules/RoutineApp/Resources/FirebaseConfig/${GOOGLE_SERVICE_INFO_NAME}.plist",
+      script: "${PROJECT_DIR}/Tuist/Dependencies/SwiftPackageManager/.build/checkouts/firebase-ios-sdk/Crashlytics/run -gsp ${PROJECT_DIR}/Modules/RoutineApp/Resources/FirebaseConfig/${GOOGLE_SERVICE_INFO_NAME}.plist",
       name: "Crashlytics"
     )
   }
