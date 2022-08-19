@@ -75,6 +75,9 @@ extension SettingsView {
     let configuration = with(UICollectionLayoutListConfiguration(appearance: .insetGrouped)) {
       $0.backgroundColor = Color.Background.default
       $0.headerMode = .supplementary
+      if #available(iOS 14.5, *) {
+        $0.separatorConfiguration.bottomSeparatorInsets = .init(top: .zero, leading: 62, bottom: .zero, trailing: .zero)
+      }
     }
     
     return with(UICollectionView(layout: .list(using: configuration))) {

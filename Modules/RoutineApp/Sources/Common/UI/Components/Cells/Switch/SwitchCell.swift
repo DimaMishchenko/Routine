@@ -57,7 +57,7 @@ final class SwitchCell: UICollectionViewCell, ModelConfigurable {
     if iconImageView.image == nil {
       titlePin.left(Inset.Padding.default)
     } else {
-      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.small)
+      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.default)
     }
   }
   

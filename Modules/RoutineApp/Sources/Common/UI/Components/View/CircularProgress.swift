@@ -3,7 +3,7 @@ import UIKit
 final class CircularProgressView: UIView {
   // MARK: - Constants
   private enum Constans {
-    static let lineWidth: CGFloat = 6
+    static let lineWidth: CGFloat = 5
   }
   
   // MARK: - Properties

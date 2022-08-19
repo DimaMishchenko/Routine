@@ -27,10 +27,8 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
       
       switch style {
       case .default:
-        valueLabel.font = Font.system(.footnote, weight: .regular)
         valueLabel.textColor = Color.Text.value
       case .bold:
-        valueLabel.font = Font.system(.footnote, weight: .semibold)
         valueLabel.textColor = Color.Text.default
       }
       
@@ -87,7 +85,7 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
     if iconImageView.image == nil {
       titlePin.left(Inset.Padding.default)
     } else {
-      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.small)
+      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.default)
     }
     
     // colorView
@@ -114,7 +112,7 @@ final class ValueCell: UICollectionViewListCell, ModelConfigurable {
   
   private func createValueLabel() -> UILabel {
     with(UILabel()) {
-      $0.font = Font.system(.footnote, weight: .regular)
+      $0.font = Font.system(.body, weight: .regular)
       $0.textColor = Color.Text.value
       $0.textAlignment = .right
       contentView.addSubview($0)

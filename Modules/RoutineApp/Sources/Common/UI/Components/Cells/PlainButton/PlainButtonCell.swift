@@ -32,7 +32,7 @@ final class PlainButtonCell: UICollectionViewCell, ModelConfigurable {
   private func createButton() -> UIButton {
     with(UIButton(type: .system)) {
       $0.setTitleColor(Color.Button.default, for: .normal)
-      $0.titleLabel?.font = Font.system(.body, weight: .regular)
+      $0.titleLabel?.font = Font.system(.body, weight: .medium)
       $0.contentHorizontalAlignment = .left
       $0.on { [weak self] in self?.action?() }
       addSubview($0)

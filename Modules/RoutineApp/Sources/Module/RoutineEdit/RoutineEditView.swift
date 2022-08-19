@@ -64,7 +64,7 @@ extension RoutineEditView {
       .bottom(pin.safeArea)
       .left(Inset.Padding.default)
       .right(Inset.Padding.default)
-      .height(Size.Button.small)
+      .height(Size.Button.big)
     
     saveButton.pin
       .left(Inset.Padding.default)
@@ -74,7 +74,7 @@ extension RoutineEditView {
     if deleteButton.isHidden {
       saveButton.pin.bottom(pin.safeArea)
     } else {
-      saveButton.pin.above(of: deleteButton).marginBottom(Inset.Padding.default)
+      saveButton.pin.above(of: deleteButton).marginBottom(Inset.Padding.small)
     }
   }
   
@@ -167,7 +167,7 @@ extension RoutineEditView {
       $0.setTitle(RoutineAppStrings.RoutineEdit.Button.save, for: .normal)
       $0.layer.cornerRadius = Size.CornerRadius.buttonBig
       $0.backgroundColor = Color.Button.default
-      $0.titleLabel?.font = Font.system(.title3, weight: .semibold)
+      $0.titleLabel?.font = Font.system(.body, weight: .medium)
       $0.setTitleColor(Color.Text.light, for: .normal)
     }
   }
@@ -178,7 +178,10 @@ extension RoutineEditView {
       $0.on { [weak self] in self?.onDelete?() }
       $0.setTitle(RoutineAppStrings.RoutineEdit.Button.delete, for: .normal)
       // TODO: - Add trash icon
-      $0.titleLabel?.font = Font.system(.title3, weight: .semibold)
+      $0.titleLabel?.font = Font.system(.body, weight: .medium)
+      $0.tintColor = Color.Button.delete
+      $0.imageEdgeInsets = .init(top: .zero, left: .zero, bottom: .zero, right: Inset.Padding.default)
+      $0.setImage(RoutineAppAsset.Icon.deletePlain.image, for: .normal)
       $0.setTitleColor(Color.Button.delete, for: .normal)
     }
   }
