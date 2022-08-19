@@ -166,6 +166,7 @@ extension RoutineEditView {
       $0.on { [weak self] in self?.onSave?() }
       $0.setTitle(RoutineAppStrings.RoutineEdit.Button.save, for: .normal)
       $0.layer.cornerRadius = Size.CornerRadius.buttonBig
+      $0.layer.cornerCurve = .continuous
       $0.backgroundColor = Color.Button.default
       $0.titleLabel?.font = Font.system(.body, weight: .medium)
       $0.setTitleColor(Color.Text.light, for: .normal)
