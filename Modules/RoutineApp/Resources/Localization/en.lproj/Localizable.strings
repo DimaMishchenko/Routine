@@ -5,6 +5,8 @@
 // MARK: - Navigation Bar
 "navBar.save" = "Save";
 "navBar.cancel" = "Cancel";
+"navBar.close" = "Close";
+"navBar.edit" = "Edit";
 
 // MARK: - Alert
 "alert.ok" = "Ok";
@@ -50,6 +52,10 @@
 
 "routineEdit.alert.notificationsDiabled.title" = "Notifications disabled";
 "routineEdit.alert.notificationsDiabled.message" = "Application can't send notifications because they are disabled. Please first enable them on the settings page.";
+
+// MARK: - RoutineDetails
+"routineDetails.title" = "Details";
+"routineDetails.section.overview" = "Overview";
 
 // MARK: - Settings
 "settings.title" = "Settings";

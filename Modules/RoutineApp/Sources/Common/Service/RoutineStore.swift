@@ -100,7 +100,8 @@ final class CoreDataRoutineStore: RoutineStore {
   }
   
   private func fillHistoryIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
-    coreDataStack.persistentContainer.performBackgroundTask { context in
+    coreDataStack.persistentContainer.performBackgroundTask { [weak self] context in
+      guard let self = self else { return }
       let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
       
       do {
@@ -110,30 +111,31 @@ final class CoreDataRoutineStore: RoutineStore {
             let progress = routine.progress,
             let history = routine.history,
             let latestItem = history.sorted(by: { $0.date < $1.date }).last,
-            !latestItem.date.compareWithToday(to: .day)
+            !self.isDateInCurrentPeriod(latestItem.date, frequency: routine.frequencyType)
           else { return }
           
-          let today = Date()
           var latestDate = latestItem.date
           
           while true {
-            guard let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: latestDate) else { break }
+            guard let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType) else {
+              break
+            }
             
             routine.append(
               HistoryEntity(
                 context: context,
                 history: History(
                   uuid: UUID(),
-                  date: nextDay,
+                  date: nextDate,
                   goal: Int(progress.goal),
                   result: .zero
                 )
               )
             )
             
-            latestDate = nextDay
+            latestDate = nextDate
             
-            if latestDate.compare(with: today, to: .day) { break }
+            if self.isDateInCurrentPeriod(latestDate, frequency: routine.frequencyType) { break }
           }
           
           progress.resetCurrent()
@@ -145,6 +147,22 @@ final class CoreDataRoutineStore: RoutineStore {
         context.rollback()
         completion(.failure(error))
       }
+    }
+  }
+  
+  private func isDateInCurrentPeriod(_ date: Date, frequency: Frequency) -> Bool {
+    switch frequency {
+    case .daily: return date.isInToday
+    case .weekly: return date.isInThisWeek
+    case .monthly: return date.isInThisMonth
+    }
+  }
+  
+  private func dateByAddingCurrentPeriod(to date: Date, frequency: Frequency) -> Date? {
+    switch frequency {
+    case .daily: return date.byAddingDay
+    case .weekly: return date.byAddingWeek
+    case .monthly: return date.byAddingMonth
     }
   }
 }

@@ -5,6 +5,8 @@
 // MARK: - Navigation Bar
 "navBar.save" = "Сохранить";
 "navBar.cancel" = "Отмена";
+"navBar.close" = "Закрыть";
+"navBar.edit" = "Редактировать";
 
 // MARK: - Alert
 "alert.ok" = "Ок";
@@ -50,6 +52,10 @@
 
 "routineEdit.alert.notificationsDiabled.title" = "Уведомления отключены";
 "routineEdit.alert.notificationsDiabled.message" = "Приложение не может отправлять уведомления, потому что они отключены. Сначала включите их на странице настроек.";
+
+// MARK: - RoutineDetails
+"routineDetails.title" = "Детали";
+"routineDetails.section.overview" = "Обзор";
 
 // MARK: - Settings
 "settings.title" = "Настройки";

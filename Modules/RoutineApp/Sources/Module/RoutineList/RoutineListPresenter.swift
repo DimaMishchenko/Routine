@@ -21,6 +21,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   private let notificationsHandler: NotificationsHandler
   
   // MARK: - Public Properties
+  var routineDetails: ((Routine, _ onEdit: @escaping () -> Void) -> Void)?
   var editRoutine: ((Routine, _ completion: @escaping (Routine) -> Void, _ onDelete: @escaping () -> Void) -> Void)?
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
   
@@ -84,16 +85,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   
   func editRoutine(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
-    
-    // swiftlint:disable:next multiline_arguments
-    editRoutine?(routine, { [weak self] edited in
-      // TODO: - error
-      Task { [self] in try await self?.store.update(edited) }
-    }, { [weak self] in
-      // TODO: - error
-      routine.reminders.forEach { self?.notificationsHandler.delete($0) }
-      Task { [self] in try await self?.store.delete(routine) }
-    })
+    edit(routine: routine)
   }
   
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
@@ -159,6 +151,18 @@ extension RoutineListPresenterImpl {
     )
   }
   
+  private func edit(routine: Routine) {
+    // swiftlint:disable:next multiline_arguments
+    editRoutine?(routine, { [weak self] edited in
+      // TODO: - error
+      Task { [self] in try await self?.store.update(edited) }
+    }, { [weak self] in
+      // TODO: - error
+      routine.reminders.forEach { self?.notificationsHandler.delete($0) }
+      Task { [self] in try await self?.store.delete(routine) }
+    })
+  }
+  
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {
     switch section {
     case .daily:
@@ -171,7 +175,13 @@ extension RoutineListPresenterImpl {
   }
   
   private func rows(in type: Frequency) -> [RoutineList.Row] {
-    routines(in: type)?.map { routine in .init(.routine(.init(routine: routine))) } ?? []
+    routines(in: type)?.map { routine in
+      .init(.routine(.init(routine: routine))) { [weak self] in
+        self?.routineDetails?(routine) {
+          self?.edit(routine: routine)
+        }
+      }
+    } ?? []
   }
   
   private func routines(in type: Frequency) -> [Routine]? {

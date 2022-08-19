@@ -61,7 +61,7 @@ struct EditableRoutine {
   
   private mutating func updateTodaysHistory(updater: (_ current: History) -> History) {
     history
-      .firstIndex { $0.date.compareWithToday(to: .day) }
+      .firstIndex { $0.date.isInToday }
       .flatMap { history[$0] = updater(history[$0]) }
   }
 }

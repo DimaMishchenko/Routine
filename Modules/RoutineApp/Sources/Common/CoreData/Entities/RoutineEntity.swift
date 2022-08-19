@@ -64,7 +64,7 @@ extension RoutineEntity {
     return Routine(
       uuid: uuid,
       name: name,
-      description: description,
+      description: desc,
       emoji: emoji,
       startDate: startDate,
       frequency: frequencyType,

@@ -39,5 +39,6 @@ extension Size {
 }
 
 extension Size.Icon {
+  static let big: CGFloat = 48
   static let `default`: CGFloat = 24
 }

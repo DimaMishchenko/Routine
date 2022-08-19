@@ -35,7 +35,7 @@ extension UIControl {
   }
 }
 
-// MARK: - OptionSet+Elementa
+// MARK: - OptionSet+Elements
 extension OptionSet where RawValue: FixedWidthInteger {
   fileprivate func elements() -> AnySequence<Self> {
     var remainingBits = rawValue

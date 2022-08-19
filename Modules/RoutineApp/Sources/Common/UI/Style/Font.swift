@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 enum Font {}
@@ -39,5 +40,9 @@ extension Font {
     return UIFontMetrics.default.scaledFont(
       for: font.fontDescriptor.withDesign(.rounded).flatMap { UIFont(descriptor: $0, size: size.rawValue) } ?? font
     )
+  }
+  
+  static func system(size: Font.Size, weight: UIFont.Weight) -> SwiftUI.Font {
+    .init(system(size, weight: weight) as CTFont)
   }
 }

@@ -14,7 +14,6 @@ let project = Project(
         .spm(.pinLayout),
         .spm(.deviceKit),
         .spm(.snapKit),
-        .spm(.iqKeyboardManager),
         .spm(.swipeCellKit),
         .spm(.spConfetti),
         .spm(.firebase(.analytics)),
