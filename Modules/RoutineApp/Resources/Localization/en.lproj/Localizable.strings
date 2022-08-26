@@ -11,6 +11,7 @@
 // MARK: - Alert
 "alert.ok" = "Ok";
 "alert.cancel" = "Cancel";
+"alert.remove" = "Remove";
 
 // MARK: - Frequency
 "frequency.daily" = "Daily";
@@ -22,7 +23,7 @@
 "tabbar.tab.settings" = "Settings";
 
 // MARK: - RoutineList
-"routineList.title" = "My Routines";
+"routineList.title" = "My routines";
 
 "routineList.row.empty.text" = "There are no routines yet.\nClick plus to fix it! 👇";
 
@@ -97,3 +98,8 @@
 "appearance.text.dark" = "Dark";
 "appearance.text.useDeviceSettings" = "Use device settings";
 "appearance.text.hint" = "We'll use Light or Dark appearance based on your device's system settings";
+
+// MARK: - Common
+"common.alert.deleteRoutine.title" = "Are you sure you want to remove the routine?";
+"common.alert.deleteRoutine.message" = "It can not be restored";
+

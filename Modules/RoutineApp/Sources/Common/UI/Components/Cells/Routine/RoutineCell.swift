@@ -81,7 +81,6 @@ extension RoutineCell: SwipeCollectionViewCellDelegate {
     for orientation: SwipeActionsOrientation
   ) -> SwipeOptions {
     with(SwipeOptions()) {
-      $0.expansionStyle = orientation == .right ? .destructive(automaticallyDelete: false) : nil
       $0.backgroundColor = Color.Background.default
       $0.buttonVerticalAlignment = .center
     }
@@ -107,7 +106,10 @@ extension RoutineCell {
       $0.backgroundColor = Color.Background.secondary
       contentView.addSubview($0)
       
-      $0.snp.makeConstraints { $0.edges.equalToSuperview() }
+      $0.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+        $0.height.greaterThanOrEqualTo(72)
+      }
     }
   }
   
@@ -184,7 +186,7 @@ extension RoutineCell {
       $0.snp.makeConstraints {
         $0.centerY.equalToSuperview()
         $0.trailing.equalToSuperview().offset(-Inset.Padding.default)
-        $0.size.equalTo(54) // TODO: - size
+        $0.size.equalTo(54)
       }
     }
   }

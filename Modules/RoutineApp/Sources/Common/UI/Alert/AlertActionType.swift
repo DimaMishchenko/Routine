@@ -4,12 +4,14 @@ extension Alert {
   enum ActionType {
     case ok
     case cancel
+    case remove
     case custom(Custom)
     
     var title: String {
       switch self {
       case .ok:                 return RoutineAppStrings.Alert.ok
       case .cancel:             return RoutineAppStrings.Alert.cancel
+      case .remove:             return RoutineAppStrings.Alert.remove
       case .custom(let action): return action.title
       }
     }
@@ -18,6 +20,7 @@ extension Alert {
       switch self {
       case .ok:                 return .default
       case .cancel:             return .cancel
+      case .remove:             return .destructive
       case .custom(let action): return action.style
       }
     }

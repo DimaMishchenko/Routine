@@ -90,9 +90,11 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int) {
     guard let routine = routine(at: section, rowIndex: rowIndex) else { return }
-    // TODO: - error
-    routine.reminders.forEach { notificationsHandler.delete($0) }
-    Task { try await store.delete(routine) }
+    view?.showAlert(
+      with: .deleteAlert { [weak self] in
+        self?.delete(routine: routine)
+      }
+    )
   }
   
   func increaseProgress(at section: RoutineList.Section, rowIndex: Int) {
@@ -157,10 +159,14 @@ extension RoutineListPresenterImpl {
       // TODO: - error
       Task { [self] in try await self?.store.update(edited) }
     }, { [weak self] in
-      // TODO: - error
-      routine.reminders.forEach { self?.notificationsHandler.delete($0) }
-      Task { [self] in try await self?.store.delete(routine) }
+      self?.delete(routine: routine)
     })
+  }
+  
+  private func delete(routine: Routine) {
+    // TODO: - error
+    routine.reminders.forEach { notificationsHandler.delete($0) }
+    Task { try await store.delete(routine) }
   }
   
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {

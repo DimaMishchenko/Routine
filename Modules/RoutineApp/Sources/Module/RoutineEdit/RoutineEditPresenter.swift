@@ -87,10 +87,12 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   }
   
   func delete() {
-    // TODO: - Add warning alert
-    
-    deleteRoutine?()
-    close?()
+    view?.showAlert(
+      with: .deleteAlert { [weak self] in
+        self?.deleteRoutine?()
+        self?.close?()
+      }
+    )
   }
   
   func nameChanged(_ name: String) {

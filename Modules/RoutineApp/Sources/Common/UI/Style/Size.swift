@@ -28,6 +28,7 @@ extension Size {
 }
 
 extension Size.Button {
+  static let big2: CGFloat = 60
   static let big: CGFloat = 50
   static let `default`: CGFloat = 44
   static let small: CGFloat = 24

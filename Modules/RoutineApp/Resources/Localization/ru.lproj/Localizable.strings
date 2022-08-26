@@ -11,6 +11,7 @@
 // MARK: - Alert
 "alert.ok" = "Ок";
 "alert.cancel" = "Отмена";
+"alert.remove" = "Удалить";
 
 // MARK: - Frequency
 "frequency.daily" = "Ежедневно";
@@ -22,7 +23,7 @@
 "tabbar.tab.settings" = "Настройки";
 
 // MARK: - RoutineList
-"routineList.title" = "Мои Рутины";
+"routineList.title" = "Мои рутины";
 
 "routineList.row.empty.text" = "Пока нет рутин.\nНажмите плюс, чтобы исправить это! 👇";
 
@@ -97,3 +98,7 @@
 "appearance.text.dark" = "Темная";
 "appearance.text.useDeviceSettings" = "Использовать настройки устройства";
 "appearance.text.hint" = "Мы будем использовать Светлую или Темную тему в зависимости от системных настроек вашего устройства";
+
+// MARK: - Common
+"common.alert.deleteRoutine.title" = "Вы уверены, что хотите удалить рутину?";
+"common.alert.deleteRoutine.message" = "Ее нельзя восстановить";

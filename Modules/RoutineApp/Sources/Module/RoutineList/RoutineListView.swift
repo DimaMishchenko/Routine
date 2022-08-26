@@ -82,10 +82,10 @@ extension RoutineListView {
   private func updateLayout() {
     collectionView.pin.all()
     addButton.pin
-      .size(Size.Button.default)
+      .size(Size.Button.big2)
       .bottom(pin.safeArea)
       .right(pin.safeArea)
-      .margin(Inset.Padding.default)
+      .margin(Inset.Padding.small)
   }
   
   private func position(for cell: UICollectionViewCell?) -> (section: RoutineList.Section, row: Int)? {
