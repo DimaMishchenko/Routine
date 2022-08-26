@@ -7,6 +7,7 @@ let project = Project(
     automaticSchemesOptions: .disabled,
     textSettings: .textSettings(indentWidth: 2, tabWidth: 2)
   ),
+  packages: SPM.Package.packages,
   settings: .settings(configurations: Configuration.project),
   targets: [
     .routineApp(

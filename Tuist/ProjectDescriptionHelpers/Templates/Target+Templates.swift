@@ -9,14 +9,13 @@ extension Target {
       bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
       deploymentTarget: .iOS(
         targetVersion: "14.0",
-        devices: [.iphone, .ipad]
+        devices: [.iphone, .ipad, .mac]
       ),
       infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
       scripts: [
-        .swiftlint,
-        .crashlytics
+        .swiftlint
       ],
       dependencies: dependencies,
       settings: .settings(configurations: Configuration.routine),

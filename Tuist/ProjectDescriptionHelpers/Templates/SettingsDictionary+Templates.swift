@@ -14,12 +14,9 @@ extension SettingsDictionary {
       "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment)),
       "GOOGLE_SERVICE_INFO_NAME": .string(routineGoogleInfoName(for: environment)),
       "CODE_SIGN_ENTITLEMENTS": .string(routineEntitlementsPath(for: environment)),
-      "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
+      "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
+      "OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]
     ]
-  }
-  
-  public static func dependency() -> SettingsDictionary {
-    ["ONLY_ACTIVE_ARCH": "NO"]
   }
   
   // MARK: - Private

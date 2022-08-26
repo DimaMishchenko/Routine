@@ -14,11 +14,4 @@ extension TargetScript {
       name: "SwiftLint"
     )
   }
-  
-  public static var crashlytics: TargetScript {
-    .post(
-      script: "${PROJECT_DIR}/Tuist/Dependencies/SwiftPackageManager/.build/checkouts/firebase-ios-sdk/Crashlytics/run -gsp ${PROJECT_DIR}/Modules/RoutineApp/Resources/FirebaseConfig/${GOOGLE_SERVICE_INFO_NAME}.plist",
-      name: "Crashlytics"
-    )
-  }
 }
