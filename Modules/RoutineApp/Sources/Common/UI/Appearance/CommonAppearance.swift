@@ -1,6 +1,6 @@
 import UIKit
 
-enum Appearance {
+enum CommonAppearance {
   static func setup() {
     UINavigationBar.appearance().prefersLargeTitles = true
     UINavigationBar.appearance().titleTextAttributes = [
@@ -14,6 +14,17 @@ enum Appearance {
       for: .normal
     )
     UIBarButtonItem.swizzleSetTitleTextAttributes()
+  }
+  
+  static func setupTheme() {
+    switch Theme.current {
+    case .light:
+      UIApplication.keyWindow?.overrideUserInterfaceStyle = .light
+    case .dark:
+      UIApplication.keyWindow?.overrideUserInterfaceStyle = .dark
+    case .system:
+      UIApplication.keyWindow?.overrideUserInterfaceStyle = .unspecified
+    }
   }
 }
 

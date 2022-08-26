@@ -20,8 +20,7 @@ extension Scheme {
       buildAction: BuildAction(targets: ["\(targetName)"]),
       testAction: .targets(
         ["\(targetName)Tests"],
-        configuration: .configuration(configurationName.debug),
-        options: .options(coverage: true, codeCoverageTargets: ["\(targetName)"])
+        configuration: .configuration(configurationName.debug)
       ),
       runAction: .runAction(
         configuration: .configuration(configurationName.debug),

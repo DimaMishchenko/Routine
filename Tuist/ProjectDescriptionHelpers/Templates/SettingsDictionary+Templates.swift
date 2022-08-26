@@ -11,11 +11,18 @@ extension SettingsDictionary {
   
   public static func routine(for environment: Environment) -> SettingsDictionary {
     [
+      "PRODUCT_NAME": "Routine",
       "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment)),
       "GOOGLE_SERVICE_INFO_NAME": .string(routineGoogleInfoName(for: environment)),
       "CODE_SIGN_ENTITLEMENTS": .string(routineEntitlementsPath(for: environment)),
       "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
       "OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]
+    ]
+  }
+  
+  public static func routineTests() -> SettingsDictionary {
+    [
+      "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Routine.app/Routine"
     ]
   }
   

@@ -51,6 +51,18 @@ final class SettingsAssembly {
       vc?.present(shareVC, animated: true)
     }
     
+    presenter.openAppearance = { [weak assemblyFactory, weak vc] in
+      Task { [assemblyFactory, vc] in
+        guard let appearanceVC = await assemblyFactory?.appearance().controller() else { return }
+        
+        if let nc = await vc?.navigationController {
+          await nc.pushViewController(appearanceVC, animated: true)
+        } else {
+          await vc?.present(UINavigationController(rootViewController: appearanceVC), animated: true)
+        }
+      }
+    }
+    
     return vc
   }
 }

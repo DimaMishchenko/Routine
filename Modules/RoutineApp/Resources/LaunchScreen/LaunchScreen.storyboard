@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,19 +17,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="slR-lf-fdc">
-                                <rect key="frame" x="102" y="418" width="210" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="TEQ-U3-Onz"/>
-                                    <constraint firstAttribute="width" constant="210" id="kLq-5G-XhD"/>
-                                </constraints>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="slR-lf-fdc">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="slR-lf-fdc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="KBN-xK-GaL"/>
-                            <constraint firstItem="slR-lf-fdc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="dSa-wS-Bda"/>
+                            <constraint firstItem="slR-lf-fdc" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="E0y-6f-1mm"/>
+                            <constraint firstItem="slR-lf-fdc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="FIY-dR-YWm"/>
+                            <constraint firstAttribute="bottom" secondItem="slR-lf-fdc" secondAttribute="bottom" id="l7O-Ov-kBb"/>
+                            <constraint firstAttribute="trailing" secondItem="slR-lf-fdc" secondAttribute="trailing" id="z6C-jr-hj3"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,7 +37,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="splash" width="102" height="22"/>
+        <image name="LaunchScreen" width="375" height="812"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

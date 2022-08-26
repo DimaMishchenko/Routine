@@ -13,6 +13,10 @@ extension Configuration {
     configurations { .routine(for: $0) }
   }
   
+  public static var routineTests: [Configuration] {
+    configurations { _ in .routineTests() }
+  }
+  
   // MARK: - Private
   private static func configurations(settingsProvider: (Environment) -> SettingsDictionary) -> [Configuration] {
     Environment.allCases.map { environment -> [Configuration] in

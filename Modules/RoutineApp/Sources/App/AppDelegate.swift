@@ -26,7 +26,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     FirebaseConfigureImpl().configure()
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.shouldPlayInputClicks = false
-    Appearance.setup()
+    CommonAppearance.setup()
     historyUpdater.handleAppLaunch()
     
     let tabBarVC = assemblyFactory.tabBarAssembly().controller()
@@ -34,6 +34,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = tabBarVC
     window?.makeKeyAndVisible()
+    
+    CommonAppearance.setupTheme()
     
     return true
   }

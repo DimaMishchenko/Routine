@@ -25,17 +25,18 @@ extension Target {
   
   public static func routineAppTests() -> Target {
     Target(
-      name: "RoutineTests",
+      name: "RoutineAppTests",
       platform: .iOS,
       product: .unitTests,
-      bundleId: "com.dm.RoutineTests",
+      bundleId: "com.dm.routine.app.tests",
       infoPlist: .default,
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
         .target(name: "RoutineApp"),
         .spm(.quick),
         .spm(.nimble)
-      ]
+      ],
+      settings: .settings(configurations: Configuration.routineTests)
     )
   }
 }

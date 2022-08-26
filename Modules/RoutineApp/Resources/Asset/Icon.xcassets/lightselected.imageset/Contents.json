@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "splash-light.pdf",
+      "filename" : "lightselected.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "splash-dark.pdf",
+      "filename" : "Icons.pdf",
       "idiom" : "universal"
     }
   ],

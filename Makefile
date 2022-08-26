@@ -5,4 +5,4 @@ init:
 
 gen:
 	tuist generate -n
-	bundle exec pod install
+	bundle exec pod install --repo-update

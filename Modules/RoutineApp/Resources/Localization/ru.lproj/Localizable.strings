@@ -66,7 +66,7 @@
 
 "settings.row.language" = "Язык";
 "settings.row.notifications" = "Уведомления";
-"settings.row.appearance" = "Оформление";
+"settings.row.appearance" = "Тема";
 "settings.row.reportBug" = "Сообщить об ошибке";
 "settings.row.writeReview" = "Написать отзыв";
 "settings.row.shareApp" = "Поделиться";
@@ -89,3 +89,11 @@
 
 "settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
 "settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
+
+// MARK: - Appearance
+"appearance.title" = "Тема";
+
+"appearance.text.light" = "Светлая";
+"appearance.text.dark" = "Темная";
+"appearance.text.useDeviceSettings" = "Использовать настройки устройства";
+"appearance.text.hint" = "Мы будем использовать Светлую или Темную тему в зависимости от системных настроек вашего устройства";

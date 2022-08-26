@@ -19,6 +19,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var telegramSupport: (() -> Void)?
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
+  var openAppearance: (() -> Void)?
   
   // MARK: - Private Properties
   private var cancellables: Set<AnyCancellable> = []
@@ -85,7 +86,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
               }
             },
             rowFactory.notificationsRow(isAuthorized: isAuthorized),
-            rowFactory.appearanceRow {}
+            rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
           ]
         )
         

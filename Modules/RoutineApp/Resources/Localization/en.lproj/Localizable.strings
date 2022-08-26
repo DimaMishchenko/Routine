@@ -89,3 +89,11 @@
 
 "settings.mail.reportBug.subject" = "Routine bug report";
 "settings.mail.reportBug.message" = "Please describe a bug.";
+
+// MARK: - Appearance
+"appearance.title" = "Appearance";
+
+"appearance.text.light" = "Light";
+"appearance.text.dark" = "Dark";
+"appearance.text.useDeviceSettings" = "Use device settings";
+"appearance.text.hint" = "We'll use Light or Dark appearance based on your device's system settings";

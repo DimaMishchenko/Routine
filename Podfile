@@ -7,7 +7,7 @@ target 'RoutineApp' do
   pod 'IQKeyboardManagerSwift'
   pod 'EmojiPicker', '1.1'
 
-  target 'RoutineTests' do end
+  target 'RoutineAppTests' do end
 end
 
 # Scripts

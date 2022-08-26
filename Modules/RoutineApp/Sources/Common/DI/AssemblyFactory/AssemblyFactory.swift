@@ -37,4 +37,8 @@ final class AssemblyFactory {
   func routineDetails() -> RoutineDetailsAssembly {
     RoutineDetailsAssembly()
   }
+  
+  func appearance() -> AppearanceAssembly {
+    AppearanceAssembly()
+  }
 }
