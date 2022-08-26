@@ -36,14 +36,30 @@ extension RoutineListView {
   }
   
   func animateProgressUpdate(
-    for newValue: Double,
+    for viewModel: RoutineCellVM,
     at indexPath: IndexPath,
     completion: @escaping () -> Void
   ) {
     // +1 because of outline cell
     let indexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
     guard let cell = collectionView.cellForItem(at: indexPath) as? RoutineCell else { return }
-    cell.updateProgress(to: newValue) { completion() }
+    cell.updateProgress(to: viewModel.progressPercent) { [weak self] in
+      guard
+        let self = self,
+        let currentItem = self.dataSource.itemIdentifier(for: indexPath),
+        case .row(let row) = currentItem
+      else {
+        completion()
+        return
+      }
+      
+      var snapshot = self.dataSource.snapshot()
+      snapshot.insertItems([.row(RoutineList.Row(.routine(viewModel), action: row.action))], afterItem: currentItem)
+      snapshot.deleteItems([currentItem])
+      self.dataSource.apply(snapshot, animatingDifferences: false)
+      
+      completion()
+    }
   }
 }
 

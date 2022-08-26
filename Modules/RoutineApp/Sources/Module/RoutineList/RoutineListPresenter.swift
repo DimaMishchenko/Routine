@@ -101,7 +101,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     editable.increaseProgress()
     
     view?.animateProgressUpdate(
-      for: editable.progress.percent,
+      for: RoutineCellVM(routine: editable.routine),
       at: IndexPath(row: rowIndex, section: section.rawValue)
     ) {
       Task { [weak self, editable] in
@@ -124,7 +124,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     editable.decreaseProgress()
     
     view?.animateProgressUpdate(
-      for: editable.progress.percent,
+      for: RoutineCellVM(routine: editable.routine),
       at: IndexPath(row: rowIndex, section: section.rawValue)
     ) {
       Task { [weak self, editable] in
