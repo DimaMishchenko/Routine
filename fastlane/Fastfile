@@ -31,7 +31,7 @@ platform :ios do
     )
 
     new_build_number = current_build_number + 1
-    ENV["TUIST_BUILD_NUMBER"] = new_build_number
+    ENV["TUIST_BUILD_NUMBER"] = new_build_number.to_s
 
     generate_project()
     match(type: "appstore", app_identifier: bundle_id)
