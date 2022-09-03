@@ -1,6 +1,7 @@
 // MARK: - Common
 "common.email" = "Почта";
 "common.telegram" = "Telegram";
+"common.times" = "раз";
 
 // MARK: - Navigation Bar
 "navBar.save" = "Сохранить";
@@ -55,8 +56,20 @@
 "routineEdit.alert.notificationsDiabled.message" = "Приложение не может отправлять уведомления, потому что они отключены. Сначала включите их на странице настроек.";
 
 // MARK: - RoutineDetails
-"routineDetails.title" = "Детали";
+"routineDetails.title" = "Детали рутины";
 "routineDetails.section.overview" = "Обзор";
+"routineDetails.section.calendar" = "Календарь";
+"routineDetails.section.charts" = "Графики";
+"routineDetails.section.successRate" = "Степень успеха";
+
+"routineDetails.text.currentStreak" = "Текущая серия";
+"routineDetails.text.bestStreak" = "Лучшая серия";
+"routineDetails.text.missedTimes" = "Пропущенные разы";
+"routineDetails.text.startDate" = "Дата начала";
+"routineDetails.text.completedRoutines" = "Завершенные рутины";
+
+"routineDetails.text.chart.bar" = "Гистограмма (сжатая)";
+"routineDetails.text.chart.line" = "Линейный (полный)";
 
 // MARK: - Settings
 "settings.title" = "Настройки";

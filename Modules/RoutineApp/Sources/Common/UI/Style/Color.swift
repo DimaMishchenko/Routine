@@ -50,6 +50,15 @@ extension Color.Button {
   static let gray: UIColor = .systemGray
 }
 
+// MARK: - Separator
+extension Color {
+  enum Separator {}
+}
+
+extension Color.Separator {
+  static let `default`: UIColor = .systemGray5
+}
+
 // MARK: - Gradient
 extension Color {
   enum Gradient {}

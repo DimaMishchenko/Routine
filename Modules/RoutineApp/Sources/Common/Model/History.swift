@@ -5,4 +5,6 @@ struct History: Hashable {
   let date: Date
   let goal: Int
   let result: Int
+  
+  var goalAchieved: Bool { result >= goal }
 }

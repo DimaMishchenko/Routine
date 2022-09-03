@@ -1,12 +1,12 @@
 import SwiftUI
 import UIKit
 
-final class RoutineDetailsVC: UIHostingController<RoutineDetailsView> {
+final class RoutineDetailsVC<VM: RoutineDetailsViewModel>: UIHostingController<RoutineDetailsView<VM>> {
   // MARK: - Properties
-  private let viewModel: RoutineDetailsViewModel
+  private let viewModel: VM
   
   // MARK: - Init
-  init(viewModel: RoutineDetailsViewModel) {
+  init(viewModel: VM) {
     self.viewModel = viewModel
     super.init(rootView: RoutineDetailsView(viewModel: viewModel))
   }
@@ -21,10 +21,8 @@ final class RoutineDetailsVC: UIHostingController<RoutineDetailsView> {
     super.viewDidLoad()
     setupUI()
   }
-}
 
-// MARK: - Actions
-extension RoutineDetailsVC {
+  // MARK: - Actions
   @objc private func close() { viewModel.close() }
   @objc private func edit() { viewModel.edit() }
 }

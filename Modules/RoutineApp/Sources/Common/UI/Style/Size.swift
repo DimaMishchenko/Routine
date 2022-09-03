@@ -11,6 +11,7 @@ extension Size.CornerRadius {
   static let container: CGFloat = 14
   static let buttonBig: CGFloat = 14
   static let button: CGFloat = 6
+  static let barsInChart: CGFloat = 12
 }
 
 // MARK: - View

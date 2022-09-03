@@ -13,8 +13,6 @@ final class CircularProgressView: UIView {
     set { backgroundLayer.strokeColor = newValue?.cgColor }
   }
   
-//  private(set) var progress: CGFloat = .zero
-  
   // MARK: - UI Properties
   private lazy var backgroundLayer = createBackground()
   private lazy var primaryProgress = createProgress(colors: Color.Gradient.primary)

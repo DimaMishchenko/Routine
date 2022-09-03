@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AppearanceView<VM: AppearanceViewModel>: View {
   // MARK: - Dependencies
-  @ObservedObject var viewModel: VM
+  @ObservedObject private var viewModel: VM
   @State private var isSystemSettings: Bool
   
   init(viewModel: VM) {

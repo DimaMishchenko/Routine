@@ -1,6 +1,7 @@
 // MARK: - Common
 "common.email" = "Email";
 "common.telegram" = "Telegram";
+"common.times" = "times";
 
 // MARK: - Navigation Bar
 "navBar.save" = "Save";
@@ -55,8 +56,20 @@
 "routineEdit.alert.notificationsDiabled.message" = "Application can't send notifications because they are disabled. Please first enable them on the settings page.";
 
 // MARK: - RoutineDetails
-"routineDetails.title" = "Details";
+"routineDetails.title" = "Routine details";
 "routineDetails.section.overview" = "Overview";
+"routineDetails.section.calendar" = "Calendar";
+"routineDetails.section.charts" = "Charts";
+"routineDetails.section.successRate" = "Success rate";
+
+"routineDetails.text.currentStreak" = "Current streak";
+"routineDetails.text.bestStreak" = "Best streak";
+"routineDetails.text.missedTimes" = "Missed times";
+"routineDetails.text.startDate" = "Start date";
+"routineDetails.text.completedRoutines" = "Completed routines";
+
+"routineDetails.text.chart.bar" = "Bar (short)";
+"routineDetails.text.chart.line" = "Line (full)";
 
 // MARK: - Settings
 "settings.title" = "Settings";

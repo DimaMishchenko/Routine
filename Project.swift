@@ -17,6 +17,7 @@ let project = Project(
         .spm(.snapKit),
         .spm(.swipeCellKit),
         .spm(.spConfetti),
+        .spm(.charts),
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
         .spm(.firebase(.performance))

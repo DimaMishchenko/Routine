@@ -15,7 +15,7 @@ struct StatsView: View {
   }
   
   var body: some View {
-    VStack {
+    VStack(spacing: .zero) {
       SwiftUI.Image(uiImage: viewModel.image)
         .frame(width: Size.Icon.big, height: Size.Icon.big, alignment: .center)
         .padding(.bottom, Inset.Padding.default)
@@ -23,6 +23,7 @@ struct StatsView: View {
         .padding(.bottom, Inset.Padding.extraSmall)
         .font(Font.system(size: .body, weight: .semibold))
       Text(viewModel.description)
+        .foregroundColor(SwiftUI.Color(Color.Text.value))
         .font(Font.system(size: .callout, weight: .regular))
     }
   }
