@@ -57,7 +57,7 @@ platform :ios do
   
   desc "Upload RoutineApp Prod to Testflight"
   lane :upload_tf_routine_prod do |options|
-    bundle_id = "com.dm.routine.app"
+    bundle_id = "com.dm.routine.app.prod"
 
     version_file_path = "Modules/RoutineApp/app-version"
     version = nil

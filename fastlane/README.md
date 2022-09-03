@@ -37,14 +37,6 @@ Parameters
 
 Upload RoutineApp Prod to Testflight
 
-### ios create_routine_app_ids
-
-```sh
-[bundle exec] fastlane ios create_routine_app_ids
-```
-
-Create app ids for RoutineApp
-
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
