@@ -22,24 +22,18 @@ platform :ios do
       File.open(version_file_path, 'w') { |file| file.write(version) }
     end
 
-    build_file_path = "Modules/RoutineApp/app-build"
-    build_number = nil
-    Dir.chdir("..") do
-      current_build_number = File.read(build_file_path).to_i
-      build_number = current_build_number + 1
-      File.open(build_file_path, 'w') { |file| file.write("#{build_number}") }
-    end
-    
-    if build_number.nil?
-      UI.user_error!("Failed to update buld number")
-    end
-
-    generate_project()
-
-    increment_build_number(build_number: build_number.to_s)
-
     setup_as_api_key()
 
+    current_build_number = latest_testflight_build_number(
+      app_identifier: bundle_id,
+      version: version,
+      initial_build_number: 0
+    )
+
+    new_build_number = current_build_number + 1
+    ENV["TUIST_BUILD_NUMBER"] = new_build_number
+
+    generate_project()
     match(type: "appstore", app_identifier: bundle_id)
 
     gym(
@@ -50,9 +44,9 @@ platform :ios do
       app_identifier: bundle_id
     )
 
-    full_new_version = version + "-" + build_number.to_s
+    full_new_version = version + "-" + new_build_number.to_s
 
-    git_commit(path: [version_file_path, build_file_path], message: "Bump RoutineApp to version #{full_new_version}")
+    git_commit(path: [version_file_path, build_file_path], message: "📦 RoutineApp release with version #{full_new_version}")
     add_git_tag(tag: full_new_version)
     push_to_git_remote()
   end

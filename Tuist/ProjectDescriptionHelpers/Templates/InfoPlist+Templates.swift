@@ -25,9 +25,6 @@ extension InfoPlist {
   }
   
   private static func appBuild() -> String {
-    let path = (FileManager.default.currentDirectoryPath as NSString)
-      .appendingPathComponent("Modules/RoutineApp/app-build")
-    
-    return try! String(contentsOfFile: path)
+    return ProjectDescription.Environment.buildNumber.getString(default: "1")
   }
 }
