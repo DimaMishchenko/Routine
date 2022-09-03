@@ -32,7 +32,7 @@ extension SettingsDictionary {
     
     switch environment {
     case .dev:  return base + "." + "dev"
-    case .prod: return base
+    case .prod: return base + "." + "prod"
     }
   }
   
@@ -46,7 +46,7 @@ extension SettingsDictionary {
   private static func routineEntitlementsPath(for environment: Environment) -> String {
     switch environment {
     case .dev:  return "Modules/RoutineApp/Entitlements/RoutineAppDev.entitlements"
-    case .prod: return "Modules/RoutineApp/Entitlements/RoutineApp.entitlements"
+    case .prod: return "Modules/RoutineApp/Entitlements/RoutineAppProd.entitlements"
     }
   }
 }
