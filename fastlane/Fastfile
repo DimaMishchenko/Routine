@@ -46,7 +46,11 @@ platform :ios do
 
     full_new_version = version + "-" + new_build_number.to_s
 
-    git_commit(path: [version_file_path, build_file_path], message: "📦 RoutineApp release with version #{full_new_version}")
+    git_commit(
+      path: [version_file_path], 
+      message: "📦 RoutineApp release with version #{full_new_version}", 
+      allow_nothing_to_commit: true
+    )
     add_git_tag(tag: full_new_version)
     push_to_git_remote()
   end
