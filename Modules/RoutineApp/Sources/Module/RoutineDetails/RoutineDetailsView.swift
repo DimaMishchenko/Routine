@@ -49,16 +49,16 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         }
         
         // Calendar
-        if #available(iOS 16.0, *) {
-          Section(title: RoutineAppStrings.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
-            CalendarView(viewModel: viewModel.calendarVM)
-              .frame(
-                height: Device.current.realDevice.isOneOf(Device.allPlusSizedDevices) ?
-                  430 :
-                  (Device.current.isIPhoneMini ? 380 : 400)
-              )
-          }
-        }
+//        if #available(iOS 16.0, *) {
+//          Section(title: RoutineAppStrings.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
+//            CalendarView(viewModel: viewModel.calendarVM)
+//              .frame(
+//                height: Device.current.realDevice.isOneOf(Device.allPlusSizedDevices) ?
+//                  430 :
+//                  (Device.current.isIPhoneMini ? 380 : 400)
+//              )
+//          }
+//        }
         
         // Charts
         Section(title: RoutineAppStrings.RoutineDetails.Section.charts) {
