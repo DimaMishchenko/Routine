@@ -54,6 +54,38 @@ platform :ios do
     add_git_tag(tag: full_new_version)
     push_to_git_remote()
   end
+  
+  desc "Upload RoutineApp Prod to Testflight"
+  lane :upload_tf_routine_prod do |options|
+    bundle_id = "com.dm.routine.app"
+
+    version_file_path = "Modules/RoutineApp/app-version"
+    Dir.chdir("..") do
+      File.open(version_file_path, 'w') { |file| file.write(version) }
+    end
+
+    setup_as_api_key()
+
+    current_build_number = latest_testflight_build_number(
+      app_identifier: bundle_id,
+      version: version,
+      initial_build_number: 0
+    )
+
+    new_build_number = current_build_number + 1
+    ENV["TUIST_BUILD_NUMBER"] = new_build_number.to_s
+
+    generate_project()
+    match(type: "appstore", app_identifier: bundle_id)
+
+    gym(
+      scheme: "RoutineApp Prod"
+    )
+
+    testflight(
+      app_identifier: bundle_id
+    )
+  end
 
   # Identifiers creation
   desc "Create app ids for RoutineApp"
