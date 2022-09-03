@@ -60,8 +60,10 @@ platform :ios do
     bundle_id = "com.dm.routine.app"
 
     version_file_path = "Modules/RoutineApp/app-version"
-    Dir.chdir("..") do
-      File.open(version_file_path, 'w') { |file| file.write(version) }
+    version = File.read(version_file_path)
+
+    if version.nil?
+      UI.user_error!("Can't load version from #{version_file_path}")
     end
 
     setup_as_api_key()

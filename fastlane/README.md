@@ -29,6 +29,14 @@ Parameters
 
 - version(required) - build version
 
+### ios upload_tf_routine_prod
+
+```sh
+[bundle exec] fastlane ios upload_tf_routine_prod
+```
+
+Upload RoutineApp Prod to Testflight
+
 ### ios create_routine_app_ids
 
 ```sh
