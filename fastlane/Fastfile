@@ -44,7 +44,9 @@ platform :ios do
       app_identifier: bundle_id
     )
 
-    upload_symbols()
+    upload_symbols(
+      plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist"
+    )
 
     full_new_version = version + "-" + new_build_number.to_s
 
@@ -93,7 +95,9 @@ platform :ios do
       app_identifier: bundle_id
     )
 
-    upload_symbols()
+    upload_symbols(
+      plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Prod-GoogleService-Info.plist"
+    )
   end
 
   # Private 
@@ -117,10 +121,11 @@ platform :ios do
   end
 
   desc "Upload symbols to crashlytics"
-  private_lane :upload_symbols do
+  desc "- plist_path (required) - firebase (GoogleService) info.plist path"
+  private_lane :upload_symbols do |options|
     upload_symbols_to_crashlytics(
       dsym_path: "./Routine.app.dSYM.zip",
-      gsp_path: "./Derived/InfoPlists/RoutineApp-Info.plist",
+      gsp_path: options[:plist_path],
       binary_path: "./Crashlytics/upload-symbols"
     )
   end
