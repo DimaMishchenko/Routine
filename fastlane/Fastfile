@@ -44,6 +44,8 @@ platform :ios do
       app_identifier: bundle_id
     )
 
+    upload_symbols()
+
     full_new_version = version + "-" + new_build_number.to_s
 
     git_commit(
@@ -90,6 +92,8 @@ platform :ios do
     testflight(
       app_identifier: bundle_id
     )
+
+    upload_symbols()
   end
 
   # Private 
@@ -110,5 +114,15 @@ platform :ios do
     Dir.chdir("..") do
       sh("make", "gen")
     end
+  end
+
+  desc "Upload symbols to crashlytics"
+  desc "- plistPath (required) - firebase (GoogleService) info.plist path"
+  private_lane :upload_symbols do
+    upload_symbols_to_crashlytics(
+      dsym_path: "./RoutineApp.app.dSYM.zip",
+      gsp_path: "./Derived/InfoPlists/RoutineApp-Info.plist",
+      binary_path: "./Crashlytics/upload-symbols"
+    )
   end
 end

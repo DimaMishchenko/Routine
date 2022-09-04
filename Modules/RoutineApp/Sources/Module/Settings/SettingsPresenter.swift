@@ -121,7 +121,10 @@ final class SettingsPresenterImpl: SettingsPresenter {
           rows: [
             rowFactory.privacyPolicyRow {},
             rowFactory.termsOfUseRow {},
-            rowFactory.onboardingRow {},
+            rowFactory.onboardingRow {
+              let items: [Int] = []
+              _ = items[1]
+            },
             rowFactory.appVersionRow { [weak self] in
               self?.identifierCopyHandler.appVersionSelected()
             }
