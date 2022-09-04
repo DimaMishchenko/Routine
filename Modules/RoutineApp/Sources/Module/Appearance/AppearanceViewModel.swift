@@ -5,7 +5,7 @@ import Foundation
 }
 
 final class AppearanceViewModelImpl: AppearanceViewModel {
-  @Published var theme: Theme = Theme.current {
+  @Published var theme = Theme.current {
     didSet { Theme.current = theme }
   }
   

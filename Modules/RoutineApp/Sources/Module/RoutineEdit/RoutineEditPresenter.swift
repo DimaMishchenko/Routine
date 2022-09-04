@@ -70,13 +70,12 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     
     switch validate(routine) {
     case .success:
-      Task(priority: .userInitiated) {
-        // TODO: - Error
+      Task(priority: .userInitiated, logError: true) {
         // TODO: - Reminder text
         try await notificationsHandler.schedule(
           routine.reminders,
           title: "\(routine.emoji) \(routine.name)",
-          body: "Example body"
+          body: "You can do it"
         )
         saveRoutine?(routine)
         close?()

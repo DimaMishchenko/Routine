@@ -22,11 +22,11 @@ final class CoreDataStack {
     }
     
     guard let storageURL = sharedStorageURL(for: sharedGroupIdentifier) else {
-      // TODO: - Handle error
-      return
+      Logger.log(.error, "Failed to create DB URL")
+      fatalError("Failed to create DB URL")
     }
     
-    print("Starge path \(storageURL.absoluteString)")
+    Logger.log(.debug, "Storage path \(storageURL.absoluteString)")
     
     let localStorage = NSPersistentStoreDescription(url: storageURL)
     localStorage.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
@@ -42,8 +42,8 @@ final class CoreDataStack {
     persistentContainer.viewContext.transactionAuthor = Constants.transactionAuthor
 
     persistentContainer.loadPersistentStores { _, error in
-      // TODO: - Handle errors
       if let error = error {
+        Logger.log(error)
         fatalError(error.localizedDescription)
       }
     }
@@ -112,8 +112,11 @@ final class CoreDataStack {
           duplicatedItems.forEach { context.delete($0) }
         }
         
-        // TODO: - handle error
-        try? context.saveIfNeeded()
+        do {
+          try context.saveIfNeeded()
+        } catch {
+          Logger.log(error)
+        }
       }
     }
   }

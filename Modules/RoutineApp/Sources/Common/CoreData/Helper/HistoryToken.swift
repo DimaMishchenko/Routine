@@ -14,7 +14,6 @@ extension HistoryToken {
     self.token = token
   }
   
-  
   func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     let data = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)

@@ -10,7 +10,7 @@ protocol SettingsRowFactory {
   func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row
   func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
-  func appVersionRow() -> Settings.Row
+  func appVersionRow(action: @escaping () -> Void) -> Settings.Row
 }
 
 final class SettingsRowFactoryImpl: SettingsRowFactory {
@@ -133,7 +133,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     )
   }
   
-  func appVersionRow() -> Settings.Row {
+  func appVersionRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
         .init(
@@ -141,7 +141,8 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
           value: .text(AppInfo.appVersion, style: .bold),
           icon: RoutineAppAsset.Icon.appversion.image
         )
-      )
+      ),
+      action: action
     )
   }
 }

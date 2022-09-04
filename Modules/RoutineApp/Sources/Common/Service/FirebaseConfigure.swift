@@ -14,6 +14,7 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
     static let plistExtension = "plist"
   }
   
+  // MARK: - Public
   func configure() {
     guard
       let configPath = configPath(),
@@ -23,6 +24,8 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
     }
     
     FirebaseApp.configure(options: options)
+    Analytics.setUserID(UserIdentifier.current)
+    Crashlytics.crashlytics().setUserID(UserIdentifier.current)
   }
   
   // MARK: - Private

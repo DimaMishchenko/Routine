@@ -178,7 +178,6 @@ extension RoutineEditView {
       insertSubview($0, aboveSubview: collectionView)
       $0.on { [weak self] in self?.onDelete?() }
       $0.setTitle(RoutineAppStrings.RoutineEdit.Button.delete, for: .normal)
-      // TODO: - Add trash icon
       $0.titleLabel?.font = Font.system(.body, weight: .medium)
       $0.tintColor = Color.Button.delete
       $0.imageEdgeInsets = .init(top: .zero, left: .zero, bottom: .zero, right: Inset.Padding.default)

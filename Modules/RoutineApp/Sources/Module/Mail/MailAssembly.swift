@@ -35,6 +35,7 @@ final class MailAssembly {
     Device: \(Device.current.description)
     iOS version: \(UIDevice.current.systemVersion)
     App version: \(AppInfo.appVersion ?? .empty)
+    Identifier: \(UserIdentifier.current)
     """
   }
 }

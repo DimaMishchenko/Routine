@@ -145,13 +145,20 @@ extension RoutineListView {
   }
   
   private func createCollectionView() -> UICollectionView {
+    let trailingInset: CGFloat = {
+      if #available(iOS 15.4, *) {
+        return Inset.Padding.default
+      } else {
+        return .zero
+      }
+    }()
+    
     let layout = CompositionalLayout(
       itemContentInset: NSDirectionalEdgeInsets(
         top: .zero,
         leading: Inset.Padding.default,
         bottom: .zero,
-        // TODO: - IOS 15.3 bug
-        trailing: Inset.Padding.default
+        trailing: trailingInset
       ),
       itemEdgeSpacing: NSCollectionLayoutEdgeSpacing(
         leading: nil,

@@ -22,8 +22,7 @@ extension UICollectionView {
     guard
       let cell = dequeueReusableCell(withReuseIdentifier: identifier(for: Cell.self), for: indexPath) as? Cell
     else {
-      // TODO: - use `os_log`
-      print("Failed to cast reuse cell to \(Cell.self)")
+      Logger.log(.error, "Failed to cast reuse cell to \(Cell.self)")
       return nil
     }
     
@@ -45,8 +44,7 @@ extension UICollectionView {
         for: indexPath
       ) as? Supplementary
     else {
-      // TODO: - use `os_log`
-      print("Failed to cast reuse supplementary to \(Supplementary.self)")
+      Logger.log(.error, "Failed to cast reuse supplementary to \(Supplementary.self)")
       return nil
     }
     

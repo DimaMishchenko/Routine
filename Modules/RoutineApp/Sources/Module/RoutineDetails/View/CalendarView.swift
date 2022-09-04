@@ -10,6 +10,7 @@ struct CalendarVM {
   }
 }
 
+// swiftlint:disable all
 //@available(iOS 16.0, *)
 //struct CalendarView: UIViewRepresentable {
 //  let viewModel: CalendarVM
@@ -133,3 +134,4 @@ struct CalendarVM {
 //  }
 //}
 //#endif
+// swiftlint:enable all

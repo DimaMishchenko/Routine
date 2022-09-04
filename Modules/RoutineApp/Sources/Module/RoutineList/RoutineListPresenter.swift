@@ -65,8 +65,8 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       .sink(
         receiveCompletion: {
           guard case .failure(let error) = $0 else { return }
-          // TODO: - Error
-          print(error)
+          // TODO: - resubscribe
+          Logger.log(error)
         },
         receiveValue: { [weak self] in
           self?.sections = $0
@@ -78,8 +78,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   
   func addRoutine() {
     addNewRoutine? { [weak self] routine in
-      // TODO: - error
-      Task { [self] in try await self?.store.save(routine) }
+      Task(logError: true) { [self] in try await self?.store.save(routine) }
     }
   }
   
@@ -106,8 +105,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       for: RoutineCellVM(routine: editable.routine),
       at: IndexPath(row: rowIndex, section: section.rawValue)
     ) {
-      Task { [weak self, editable] in
-        // TODO: - error
+      Task(logError: true) { [weak self, editable] in
         try await self?.store.update(editable.routine)
       }
     }
@@ -129,8 +127,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       for: RoutineCellVM(routine: editable.routine),
       at: IndexPath(row: rowIndex, section: section.rawValue)
     ) {
-      Task { [weak self, editable] in
-        // TODO: - error
+      Task(logError: true) { [weak self, editable] in
         try await self?.store.update(editable.routine)
       }
     }
@@ -156,17 +153,15 @@ extension RoutineListPresenterImpl {
   private func edit(routine: Routine) {
     // swiftlint:disable:next multiline_arguments
     editRoutine?(routine, { [weak self] edited in
-      // TODO: - error
-      Task { [self] in try await self?.store.update(edited) }
+      Task(logError: true) { [self] in try await self?.store.update(edited) }
     }, { [weak self] in
       self?.delete(routine: routine)
     })
   }
   
   private func delete(routine: Routine) {
-    // TODO: - error
     routine.reminders.forEach { notificationsHandler.delete($0) }
-    Task { try await store.delete(routine) }
+    Task(logError: true) { try await store.delete(routine) }
   }
   
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {

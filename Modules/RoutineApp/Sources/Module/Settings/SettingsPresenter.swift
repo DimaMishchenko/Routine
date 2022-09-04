@@ -12,6 +12,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   private let rowFactory: SettingsRowFactory
   private let appStateObserver: AppStateObserver
   private let notificationsHandler: NotificationsHandler
+  private let identifierCopyHandler: UserIdentifierCopyHandler
   
   // MARK: - Properties
   var openSettings: (() -> Void)?
@@ -28,11 +29,13 @@ final class SettingsPresenterImpl: SettingsPresenter {
   init(
     rowFactory: SettingsRowFactory,
     appStateObserver: AppStateObserver,
-    notificationsHandler: NotificationsHandler
+    notificationsHandler: NotificationsHandler,
+    identifierCopyHandler: UserIdentifierCopyHandler
   ) {
     self.rowFactory = rowFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
+    self.identifierCopyHandler = identifierCopyHandler
     
     setupAppStateObserver()
   }
@@ -119,7 +122,9 @@ final class SettingsPresenterImpl: SettingsPresenter {
             rowFactory.privacyPolicyRow {},
             rowFactory.termsOfUseRow {},
             rowFactory.onboardingRow {},
-            rowFactory.appVersionRow()
+            rowFactory.appVersionRow { [weak self] in
+              self?.identifierCopyHandler.appVersionSelected()
+            }
           ]
         )
       }

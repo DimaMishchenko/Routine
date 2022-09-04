@@ -23,7 +23,7 @@ final class NotificationsHandlerImpl: NotificationsHandler {
       )
       return result
     } catch {
-      print(error) // TODO: - replace with os_log and Crashlytics non-fatal
+      Logger.log(error)
       return false
     }
   }

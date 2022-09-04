@@ -26,8 +26,7 @@ final class RoutineHistoryUpdaterImpl: RoutineHistoryUpdater {
   @objc private func handleDayChange() { fillHistory() }
   
   private func fillHistory() {
-    Task {
-      // TODO: - error
+    Task(logError: true) {
       try await store.fillHistoryIfNeeded()
     }
   }
