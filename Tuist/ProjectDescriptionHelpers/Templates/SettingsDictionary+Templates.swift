@@ -5,7 +5,8 @@ extension SettingsDictionary {
     [
       "ENVIRONMENT": .string(environment.rawValue),
       "DEVELOPMENT_TEAM": "77X75EH6F4",
-      "CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED": "YES"
+      "CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED": "YES",
+      "ENABLE_BITCODE": "false"
     ]
   }
   
