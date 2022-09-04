@@ -117,7 +117,6 @@ platform :ios do
   end
 
   desc "Upload symbols to crashlytics"
-  desc "- plistPath (required) - firebase (GoogleService) info.plist path"
   private_lane :upload_symbols do
     upload_symbols_to_crashlytics(
       dsym_path: "./Routine.app.dSYM.zip",
