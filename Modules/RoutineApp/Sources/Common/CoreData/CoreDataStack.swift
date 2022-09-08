@@ -33,7 +33,7 @@ final class CoreDataStack {
     localStorage.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
 
     let localStorageOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitIdentifier)
-    localStorageOptions.databaseScope = .private
+    localStorageOptions.setValue(CKDatabase.Scope.private.rawValue, forKey: "databaseScope")
     localStorage.cloudKitContainerOptions = localStorageOptions
     persistentContainer.persistentStoreDescriptions = [localStorage]
     persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
