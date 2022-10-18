@@ -17,7 +17,8 @@ extension UICollectionView {
   func dequeue<Cell: UICollectionViewCell & ModelConfigurable>(
     _ type: Cell.Type,
     with model: Cell.Model,
-    for indexPath: IndexPath
+    for indexPath: IndexPath,
+    configure: (Cell) -> Void = { _ in }
   ) -> Cell? {
     guard
       let cell = dequeueReusableCell(withReuseIdentifier: identifier(for: Cell.self), for: indexPath) as? Cell
@@ -26,6 +27,7 @@ extension UICollectionView {
       return nil
     }
     
+    configure(cell)
     cell.update(with: model)
     
     return cell

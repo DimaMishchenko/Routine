@@ -117,5 +117,14 @@ extension RoutineEditVC {
     contentView.onDeleteReminder = { [weak self] in
       self?.presenter.deleteReminder(at: $0)
     }
+    contentView.onUpdateReminderDate = { [weak self] in
+      self?.presenter.updateReminder(date: $0, at: $1)
+    }
+    contentView.onGoalChange = { [weak self] in
+      self?.presenter.goalChanged($0)
+    }
+    contentView.onFrequencyChange = { [weak self] in
+      self?.presenter.frequencyChanged($0)
+    }
   }
 }

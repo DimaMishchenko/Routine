@@ -12,6 +12,9 @@ final class RoutineEditView: UIView {
   var onRemindMeChangeRequest: ((Bool) -> Void)?
   var onAddReminder: (() -> Void)?
   var onDeleteReminder: ((Int) -> Void)?
+  var onUpdateReminderDate: ((Date, Int) -> Void)?
+  var onGoalChange: ((Progress.Goal) -> Void)?
+  var onFrequencyChange: ((Frequency) -> Void)?
   
   // MARK: - Private Properties
   private var initialLayout = Once()
@@ -57,6 +60,7 @@ extension RoutineEditView: UICollectionViewDelegate {
 extension RoutineEditView {
   private func setupUI() {
     backgroundColor = Color.Background.default
+    setupTapToHideKeyboard()
   }
   
   private func updateLayout() {
@@ -88,35 +92,63 @@ extension RoutineEditView {
     }
   }
   
+  // swiftlint:disable:next function_body_length
   private func cell(for row: RoutineEdit.Row, at indexPath: IndexPath) -> UICollectionViewCell? {
     switch row.type {
     case .textfield(let viewModel):
-      return with(collectionView.dequeue(TextFieldCell.self, with: viewModel, for: indexPath)) {
-        $0?.onTextChange = { [weak self] in self?.onNameChange?($0) }
+      return collectionView.dequeue(TextFieldCell.self, with: viewModel, for: indexPath) {
+        $0.onTextChange = { [weak self] in self?.onNameChange?($0) }
       }
     case .textview(let viewModel):
-      return with(collectionView.dequeue(TextViewCell.self, with: viewModel, for: indexPath)) {
-        $0?.onTextChange = { [weak self] in self?.onDescriptionChange?($0) }
+      return collectionView.dequeue(TextViewCell.self, with: viewModel, for: indexPath) {
+        $0.onTextChange = { [weak self] in self?.onDescriptionChange?($0) }
+        $0.onBeginEditing = { [weak self] in
+          guard let self = self else { return }
+          self.collectionView.contentInset = self.collectionContentInset(keyboard: true)
+          self.dataSource.indexPath(for: row).flatMap {
+            self.collectionView.scrollToItem(at: $0, at: .bottom, animated: true)
+          }
+        }
+        $0.onEndEditing = { [weak self] in
+          guard let self = self else { return }
+          UIView.animate(withDuration: 0.3) {
+            self.collectionView.contentInset = self.collectionContentInset(keyboard: false)
+          }
+        }
       }
     case .value(let viewModel):
-      return with(collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)) {
+      return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath) {
         guard case .emoji = viewModel.value else { return }
         emojiCell = $0
       }
     case .switch(let viewModel):
-      return with(collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath)) {
-        $0?.onChangeRequest = { [weak self] in self?.onRemindMeChangeRequest?($0) }
+      return collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath) {
+        $0.onChangeRequest = { [weak self] in self?.onRemindMeChangeRequest?($0) }
       }
     case .plainButton(let viewModel):
-      return with(collectionView.dequeue(PlainButtonCell.self, with: viewModel, for: indexPath)) {
-        $0?.action = { [weak self] in self?.onAddReminder?() }
+      return collectionView.dequeue(PlainButtonCell.self, with: viewModel, for: indexPath) {
+        $0.action = { [weak self] in self?.onAddReminder?() }
       }
     case .reminder(let viewModel):
-      return with(collectionView.dequeue(ReminderCell.self, with: viewModel, for: indexPath)) {
-        $0?.onDelete = { [weak self] in
+      return collectionView.dequeue(ReminderCell.self, with: viewModel, for: indexPath) {
+        $0.onDelete = { [weak self] in
           guard let indexPath = self?.dataSource.indexPath(for: row) else { return }
           self?.onDeleteReminder?(indexPath.row)
         }
+        $0.onDateUpdate = { [weak self] in
+          guard let indexPath = self?.dataSource.indexPath(for: row) else { return }
+          self?.onUpdateReminderDate?($0, indexPath.row)
+        }
+      }
+    case .goalPicker(let viewModel):
+      return collectionView.dequeue(PickerCell<Progress.Goal>.self, with: viewModel, for: indexPath) {
+        $0.onValueChanged = { [weak self] in self?.onGoalChange?($0) }
+        $0.valueTitleProvider = { $1 ? "\($0.rawValue)" : "\($0.rawValue) \(RoutineAppStrings.Common.times)" }
+      }
+    case .frequencyPicker(let viewModel):
+      return collectionView.dequeue(PickerCell<Frequency>.self, with: viewModel, for: indexPath) {
+        $0.onValueChanged = { [weak self] in self?.onFrequencyChange?($0) }
+        $0.valueTitleProvider = { value, _ in value.localized }
       }
     }
   }
@@ -124,12 +156,7 @@ extension RoutineEditView {
   private func createCollectionView() -> UICollectionView {
     with(UICollectionView(layout: createLayout())) {
       $0.delegate = self
-      $0.contentInset = .init(
-        top: Inset.Padding.default,
-        left: .zero,
-        bottom: Size.Button.big + Inset.Padding.default + Size.Button.small, // buttons height
-        right: .zero
-      )
+      $0.contentInset = collectionContentInset()
       $0.backgroundColor = Color.Background.default
       $0.delaysContentTouches = false
       
@@ -139,10 +166,22 @@ extension RoutineEditView {
       $0.register(SwitchCell.self)
       $0.register(PlainButtonCell.self)
       $0.register(ReminderCell.self)
+      $0.register(PickerCell<Progress.Goal>.self)
+      $0.register(PickerCell<Frequency>.self)
       
       addSubview($0)
       $0.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
+  }
+  
+  private func collectionContentInset(keyboard: Bool = false) -> UIEdgeInsets {
+    let keyboardInset: CGFloat = keyboard ? 250 : 0
+    return .init(
+      top: Inset.Padding.default,
+      left: .zero,
+      bottom: keyboardInset + Size.Button.big + Inset.Padding.default + Size.Button.small, // buttons height
+      right: .zero
+    )
   }
   
   private func createLayout() -> CompositionalLayout {
@@ -184,5 +223,11 @@ extension RoutineEditView {
       $0.setImage(RoutineAppAsset.Icon.deletePlain.image, for: .normal)
       $0.setTitleColor(Color.Button.delete, for: .normal)
     }
+  }
+  
+  private func setupTapToHideKeyboard() {
+    let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+    tap.cancelsTouchesInView = false
+    addGestureRecognizer(tap)
   }
 }

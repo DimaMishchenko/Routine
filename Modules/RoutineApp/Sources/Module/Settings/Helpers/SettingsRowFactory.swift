@@ -7,8 +7,7 @@ protocol SettingsRowFactory {
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row
   func writeReviewRow(action: @escaping () -> Void) -> Settings.Row
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row
-  func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row
-  func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row
+  func termsPolicy(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow(action: @escaping () -> Void) -> Settings.Row
 }
@@ -95,24 +94,11 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     )
   }
   
-  func privacyPolicyRow(action: @escaping () -> Void) -> Settings.Row {
+  func termsPolicy(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
         .init(
-          title: RoutineAppStrings.Settings.Row.privacyPolicy,
-          icon: RoutineAppAsset.Icon.terms.image,
-          accessory: .disclosure
-        )
-      ),
-      action: action
-    )
-  }
-  
-  func termsOfUseRow(action: @escaping () -> Void) -> Settings.Row {
-    .init(
-      .value(
-        .init(
-          title: RoutineAppStrings.Settings.Row.termsOfUse,
+          title: RoutineAppStrings.Settings.Row.termsPolicy,
           icon: RoutineAppAsset.Icon.terms.image,
           accessory: .disclosure
         )

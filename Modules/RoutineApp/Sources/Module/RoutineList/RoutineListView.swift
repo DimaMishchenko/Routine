@@ -112,28 +112,24 @@ extension RoutineListView {
         case .empty(let viewModel):
           return collectionView.dequeue(EmptyCell.self, with: viewModel, for: indexPath)
         case .routine(let viewModel):
-          let cell = collectionView.dequeue(RoutineCell.self, with: viewModel, for: indexPath)
-          
-          cell?.onEdit = { [weak self, weak cell] in
-            guard let position = self?.position(for: cell) else { return }
-            self?.onEdit?(position.section, position.row)
+          return collectionView.dequeue(RoutineCell.self, with: viewModel, for: indexPath) { cell in
+            cell.onEdit = { [weak self, weak cell] in
+              guard let position = self?.position(for: cell) else { return }
+              self?.onEdit?(position.section, position.row)
+            }
+            cell.onDelete = { [weak self, weak cell] in
+              guard let position = self?.position(for: cell) else { return }
+              self?.onDelete?(position.section, position.row)
+            }
+            cell.onIncrease = { [weak self, weak cell] in
+              guard let position = self?.position(for: cell) else { return }
+              self?.onIncreaseProgress?(position.section, position.row)
+            }
+            cell.onDecrease = { [weak self, weak cell] in
+              guard let position = self?.position(for: cell) else { return }
+              self?.onDecreaseProgress?(position.section, position.row)
+            }
           }
-          
-          cell?.onDelete = { [weak self, weak cell] in
-            guard let position = self?.position(for: cell) else { return }
-            self?.onDelete?(position.section, position.row)
-          }
-          
-          cell?.onIncrease = { [weak self, weak cell] in
-            guard let position = self?.position(for: cell) else { return }
-            self?.onIncreaseProgress?(position.section, position.row)
-          }
-          
-          cell?.onDecrease = { [weak self, weak cell] in
-            guard let position = self?.position(for: cell) else { return }
-            self?.onDecreaseProgress?(position.section, position.row)
-          }
-          return cell
         }
       }
     }

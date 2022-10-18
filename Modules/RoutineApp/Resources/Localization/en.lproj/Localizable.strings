@@ -71,6 +71,8 @@
 "routineDetails.text.chart.bar" = "Bar (short)";
 "routineDetails.text.chart.line" = "Line (full)";
 
+"routineDetails.text.chart.noData" = "Not enough data to display the chart";
+
 // MARK: - Settings
 "settings.title" = "Settings";
 
@@ -84,8 +86,7 @@
 "settings.row.reportBug" = "Report a bug";
 "settings.row.writeReview" = "Write a review";
 "settings.row.shareApp" = "Share app";
-"settings.row.privacyPolicy" = "Privacy policy";
-"settings.row.termsOfUse" = "Terms of use";
+"settings.row.termsPolicy" = "Terms & Policy";
 "settings.row.onboarding" = "Onboarding";
 "settings.row.appVersion" = "App version";
 

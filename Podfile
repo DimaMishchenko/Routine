@@ -3,8 +3,6 @@ use_frameworks!
 
 # Use CocoaPods only if SPM is not available
 target 'RoutineApp' do
-  pod 'ActionSheetPicker-3.0'
-  pod 'IQKeyboardManagerSwift'
   pod 'EmojiPicker', '1.1'
 
   target 'RoutineAppTests' do end

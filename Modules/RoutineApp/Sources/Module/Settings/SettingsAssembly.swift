@@ -42,9 +42,8 @@ final class SettingsAssembly {
     }
     
     presenter.share = { [weak assemblyFactory, weak vc] in
-      // TODO: - Set AppStore URL
       guard
-        let url = URL(string: "https://google.com"),
+        let url = URL(string: "https://apps.apple.com/us/app/routine-daily-tracker/id1643340709"),
         let shareVC = assemblyFactory?.share().controller(items: [url])
       else {
         return

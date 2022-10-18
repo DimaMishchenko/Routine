@@ -53,9 +53,9 @@ extension SettingsView {
       case .value(let viewModel):
         return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
       case .switch(let viewModel):
-        let cell = collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath)
-        cell?.onChangeRequest = { [weak self] in self?.onNotificationStateChangeRequest?($0) }
-        return cell
+        return collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath) {
+          $0.onChangeRequest = { [weak self] in self?.onNotificationStateChangeRequest?($0) }
+        }
       }
     }
     

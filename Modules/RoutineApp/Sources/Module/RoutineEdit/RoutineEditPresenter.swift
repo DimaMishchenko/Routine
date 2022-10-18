@@ -10,6 +10,9 @@ protocol RoutineEditPresenter {
   func remindMeChangeRequest(_ currentState: Bool)
   func addReminder()
   func deleteReminder(at index: Int)
+  func updateReminder(date: Date, at index: Int)
+  func goalChanged(_ goal: Progress.Goal)
+  func frequencyChanged(_ frequency: Frequency)
 }
 
 final class RoutineEditPresenterImpl: RoutineEditPresenter {
@@ -23,9 +26,6 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   var deleteRoutine: (() -> Void)?
   var close: (() -> Void)?
   var pickEmoji: ((@escaping (String) -> Void) -> Void)?
-  var pickFrequency: ((Frequency, @escaping (Frequency) -> Void) -> Void)?
-  var pickGoal: ((Progress.Goal, @escaping (Progress.Goal) -> Void) -> Void)?
-  var pickTime: ((Date, @escaping (Date) -> Void) -> Void)?
   
   // MARK: - Private Properties
   private let moduleType: RoutineEdit.ModuleType
@@ -72,11 +72,17 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     case .success:
       Task(priority: .userInitiated, logError: true) {
         // TODO: - Reminder text
-        try await notificationsHandler.schedule(
-          routine.reminders,
-          title: "\(routine.emoji) \(routine.name)",
-          body: "You can do it"
-        )
+        if editableRoutine.remind {
+          try await notificationsHandler.schedule(
+            routine.reminders,
+            title: "\(routine.emoji) \(routine.name)",
+            body: "You can do it"
+          )
+        } else {
+          editableRoutine.reminders.forEach {
+            notificationsHandler.delete($0)
+          }
+        }
         saveRoutine?(routine)
         close?()
       }
@@ -124,6 +130,27 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     notificationsHandler.delete(reminder)
     reloadSnapshot()
   }
+  
+  func updateReminder(date: Date, at index: Int) {
+    guard let reminder = editableRoutine.reminders[safe: index] else { return }
+    switch reminder.type {
+    case .daily:
+      editableRoutine.reminders[index] = .init(
+        uuid: reminder.uuid,
+        type: .daily(.from(date: date))
+      )
+    }
+  }
+  
+  func goalChanged(_ goal: Progress.Goal) {
+    editableRoutine.progress = Progress(goal: goal, current: editableRoutine.progress.current)
+    reloadSnapshot()
+  }
+  
+  func frequencyChanged(_ frequency: Frequency) {
+    editableRoutine.frequency = frequency
+    reloadSnapshot()
+  }
 }
 
 // MARK: - Private
@@ -164,21 +191,11 @@ extension RoutineEditPresenterImpl {
           }
         }
         
-        itemFactory.frequency(with: editableRoutine.frequency) { [weak self] in
-          guard let self = self else { return }
-          self.pickFrequency?(self.editableRoutine.frequency) {
-            self.editableRoutine.frequency = $0
-            self.reloadSnapshot()
-          }
+        if case .new = moduleType {
+          itemFactory.frequency(with: editableRoutine.frequency)
         }
         
-        itemFactory.goal(with: editableRoutine.progress.goal) { [weak self] in
-          guard let self = self else { return }
-          self.pickGoal?(self.editableRoutine.progress.goal) {
-            self.editableRoutine.progress = Progress(goal: $0, current: self.editableRoutine.progress.current)
-            self.reloadSnapshot()
-          }
-        }
+        itemFactory.goal(with: editableRoutine.progress.goal)
         
         Item(section: .remindMe, rows: [
           .init(.switch(.init(title: RoutineAppStrings.RoutineEdit.Text.remindeMe, state: editableRoutine.remind)))
@@ -209,28 +226,17 @@ extension RoutineEditPresenterImpl {
   }
   
   private func remindersRows() -> [RoutineEdit.Row] {
-    editableRoutine.reminders.enumerated().map { index, reminder in
-      let value: String = {
+    editableRoutine.reminders.map { reminder in
+      let date: Date = {
         switch reminder.type {
         case .daily(let daily):
-          return daily.date?.time ?? .empty
+          return daily.date ?? Date()
         }
       }()
       
       let title = RoutineAppStrings.RoutineEdit.Text.time
       
-      return .init(.reminder(.init(uuid: reminder.uuid.uuidString, title: title, value: value))) { [weak self] in
-        switch reminder.type {
-        case .daily(let daily):
-          self?.pickTime?(daily.date ?? Date()) {
-            self?.editableRoutine.reminders[index] = .init(
-              uuid: reminder.uuid,
-              type: .daily(.from(date: $0))
-            )
-            self?.reloadSnapshot()
-          }
-        }
-      }
+      return .init(.reminder(.init(uuid: reminder.uuid.uuidString, title: title, date: date)))
     }
   }
   

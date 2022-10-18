@@ -119,8 +119,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
           rows: [
-            rowFactory.privacyPolicyRow {},
-            rowFactory.termsOfUseRow {},
+            rowFactory.termsPolicy {},
             rowFactory.onboardingRow {},
             rowFactory.appVersionRow { [weak self] in
               self?.identifierCopyHandler.appVersionSelected()

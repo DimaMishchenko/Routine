@@ -18,6 +18,9 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
   private lazy var progress = createProgress()
   private lazy var progressTapGesture = UITapGestureRecognizer(target: self, action: #selector(increaseProgress))
   
+  // MARK: - Private Properties
+  private var updateInProgress = false
+  
   // MARK: - Init
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -39,11 +42,9 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
   }
   
   func updateProgress(to newValue: Double, completion: @escaping () -> Void) {
-    undoButton.isEnabled = false
-    progressTapGesture.isEnabled = false
+    updateInProgress = true
     progress.update(progress: newValue, animated: true) { [weak self] in
-      self?.undoButton.isEnabled = true
-      self?.progressTapGesture.isEnabled = true
+      self?.updateInProgress = false
       completion()
     }
   }
@@ -90,6 +91,7 @@ extension RoutineCell: SwipeCollectionViewCellDelegate {
 // MARK: - Actions
 extension RoutineCell {
   @objc private func increaseProgress() {
+    guard !updateInProgress else { return }
     onIncrease?()
   }
 }
@@ -160,7 +162,10 @@ extension RoutineCell {
   
   private func createUndoButton() -> UIButton {
     with(UIButton(type: .system)) {
-      $0.on { [weak self] in self?.onDecrease?() }
+      $0.on { [weak self] in
+        guard self?.updateInProgress == false else { return }
+        self?.onDecrease?()
+      }
       $0.setImage(RoutineAppAsset.Icon.undo.image, for: .normal)
       $0.imageEdgeInsets = UIEdgeInsets(
         top: Inset.Padding.small,

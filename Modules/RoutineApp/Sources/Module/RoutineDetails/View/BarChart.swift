@@ -32,6 +32,9 @@ struct BarChart: UIViewRepresentable {
   }
   
   func updateUIView(_ chart: BarChartView, context: Context) {
+    chart.noDataText = RoutineAppStrings.RoutineDetails.Text.Chart.noData
+    guard viewModel.entries.count > 1 else { return }
+    
     let dataEntries: [BarChartDataEntry] = viewModel.entries.enumerated().map {
       BarChartDataEntry(x: Double($0.offset), y: $0.element.value)
     }
@@ -73,6 +76,8 @@ struct BarChart: UIViewRepresentable {
     chart.doubleTapToZoomEnabled = false
     chart.legend.enabled = false
     chart.data = chartData
+    
+    chart.gestureRecognizers?.forEach { $0.isEnabled = false }
   }
 }
 

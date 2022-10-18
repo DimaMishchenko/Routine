@@ -11,6 +11,7 @@ public enum SPM {
     case spConfetti
     case charts
     case keychainAccess
+    case popovers
     case firebase
     
     // MARK: - Public
@@ -29,6 +30,7 @@ public enum SPM {
       case .spConfetti:         return "https://github.com/ivanvorobei/SPConfetti"
       case .charts:             return "https://github.com/danielgindi/Charts.git"
       case .keychainAccess:     return "https://github.com/kishikawakatsumi/KeychainAccess.git"
+      case .popovers:           return "https://github.com/aheze/Popovers"
       case .firebase:           return "https://github.com/firebase/firebase-ios-sdk.git"
       }
     }
@@ -44,6 +46,7 @@ public enum SPM {
       case .spConfetti:         return .upToNextMajor(from: "1.4.0")
       case .charts:             return .branch("master")
       case .keychainAccess:     return .upToNextMajor(from: "4.2.2")
+      case .popovers:           return .upToNextMajor(from: "1.0.0")
       case .firebase:           return .upToNextMajor(from: "9.1.0")
       }
     }
@@ -59,6 +62,7 @@ public enum SPM {
     case spConfetti
     case charts
     case keychainAccess
+    case popovers
     case firebase(Firebase)
     
     public enum Firebase {
@@ -79,6 +83,7 @@ public enum SPM {
       case .spConfetti:         return "SPConfetti"
       case .charts:             return "Charts"
       case .keychainAccess:     return "KeychainAccess"
+      case .popovers:           return "Popovers"
       case .firebase(let type):
         switch type {
         case .analytics:        return "FirebaseAnalyticsWithoutAdIdSupport"

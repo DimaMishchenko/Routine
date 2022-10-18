@@ -41,27 +41,6 @@ final class RoutineEditAssembly {
       vc?.present(emojiVC, animated: true)
     }
     
-    presenter.pickFrequency = { [weak vc] frequency, completion in
-      guard let view = vc?.view else { return }
-      SheetPicker.frequency(selectedItem: frequency, from: view) {
-        completion($0)
-      }
-    }
-    
-    presenter.pickGoal = { [weak vc] goal, completion in
-      guard let view = vc?.view else { return }
-      SheetPicker.goal(selectedItem: goal, from: view) {
-        completion($0)
-      }
-    }
-    
-    presenter.pickTime = { [weak vc] date, completion in
-      guard let view = vc?.view else { return }
-      SheetPicker.time(title: .empty, selectedDate: date, from: view) {
-        completion($0)
-      }
-    }
-    
     return vc
   }
 }

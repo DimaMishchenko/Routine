@@ -71,6 +71,8 @@
 "routineDetails.text.chart.bar" = "Гистограмма (сжатая)";
 "routineDetails.text.chart.line" = "Линейный (полный)";
 
+"routineDetails.text.chart.noData" = "Недостаточно данных для отображения графика";
+
 // MARK: - Settings
 "settings.title" = "Настройки";
 
@@ -84,8 +86,7 @@
 "settings.row.reportBug" = "Сообщить об ошибке";
 "settings.row.writeReview" = "Написать отзыв";
 "settings.row.shareApp" = "Поделиться";
-"settings.row.privacyPolicy" = "Privacy policy";
-"settings.row.termsOfUse" = "Terms of use";
+"settings.row.termsPolicy" = "Условия и политика";
 "settings.row.onboarding" = "Обучение";
 "settings.row.appVersion" = "Версия приложения";
 

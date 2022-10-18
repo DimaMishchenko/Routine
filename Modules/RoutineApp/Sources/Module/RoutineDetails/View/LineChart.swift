@@ -12,6 +12,11 @@ struct LineChartVM {
 }
 
 struct LineChart: UIViewRepresentable {
+  // MARK: - Constants
+  private enum Constants {
+    static let maxLabels = 4
+  }
+  
   // MARK: - Properties
   private let viewModel: LineChartVM
   
@@ -26,6 +31,9 @@ struct LineChart: UIViewRepresentable {
   }
   
   func updateUIView(_ chart: LineChartView, context: Context) {
+    chart.noDataText = RoutineAppStrings.RoutineDetails.Text.Chart.noData
+    guard viewModel.entries.count > 1 else { return }
+    
     let dataEntries: [ChartDataEntry] = viewModel.entries.enumerated().map {
       ChartDataEntry(x: Double($0.offset), y: $0.element.value)
     }
@@ -48,7 +56,7 @@ struct LineChart: UIViewRepresentable {
       $0.drawAxisLineEnabled = false
       $0.drawGridLinesEnabled = false
       $0.labelTextColor = Color.Text.default
-      $0.labelCount = dataEntries.count
+      $0.labelCount = dataEntries.count > Constants.maxLabels ? Constants.maxLabels : dataEntries.count
       $0.avoidFirstLastClippingEnabled = true
       $0.granularityEnabled = true
       $0.valueFormatter = DefaultAxisValueFormatter { [viewModel] value, _ in
@@ -74,6 +82,8 @@ struct LineChart: UIViewRepresentable {
     chart.doubleTapToZoomEnabled = false
     chart.legend.enabled = false
     chart.data = chartData
+    
+    chart.gestureRecognizers?.forEach { $0.isEnabled = false }
   }
 }
 

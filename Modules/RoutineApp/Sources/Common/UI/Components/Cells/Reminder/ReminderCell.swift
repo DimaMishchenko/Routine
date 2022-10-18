@@ -4,16 +4,17 @@ import UIKit
 final class ReminderCell: UICollectionViewCell, ModelConfigurable {
   // MARK: - Public Properties
   var onDelete: (() -> Void)?
+  var onDateUpdate: ((Date) -> Void)?
   
   // MARK: - UI Properties
   private lazy var deleteButton = createDeleteButton()
   private lazy var titleLabel = createTitleLabel()
-  private lazy var valueLabel = createValueLabel()
+  private lazy var datePicker = createDatePicker()
   
   // MARK: - ModelConfigurable
   func update(with model: ReminderCellVM) {
     titleLabel.text = model.title
-    valueLabel.text = model.value
+    datePicker.setDate(model.date, animated: true)
   }
   
   // MARK: - Override
@@ -25,7 +26,7 @@ final class ReminderCell: UICollectionViewCell, ModelConfigurable {
   // MARK: - Private
   private func layoutViews() {
     // value
-    valueLabel.pin
+    datePicker.pin
       .vCenter()
       .right(Inset.Padding.default)
       .maxWidth(50%)
@@ -43,7 +44,7 @@ final class ReminderCell: UICollectionViewCell, ModelConfigurable {
       .bottom()
       .after(of: deleteButton)
       .marginLeft(Inset.Padding.smedium)
-      .before(of: valueLabel)
+      .before(of: datePicker)
   }
   
   private func createDeleteButton() -> UIButton {
@@ -65,11 +66,14 @@ final class ReminderCell: UICollectionViewCell, ModelConfigurable {
     }
   }
   
-  private func createValueLabel() -> UILabel {
-    with(UILabel()) {
-      $0.font = Font.system(.footnote, weight: .regular)
-      $0.textColor = Color.Text.value
-      $0.textAlignment = .right
+  private func createDatePicker() -> UIDatePicker {
+    with(UIDatePicker()) {
+      $0.preferredDatePickerStyle = .compact
+      $0.datePickerMode = .time
+      $0.on(.valueChanged) { [weak self] in
+        guard let self = self else { return }
+        self.onDateUpdate?(self.datePicker.date)
+      }
       contentView.addSubview($0)
     }
   }

@@ -8,7 +8,7 @@ struct Progress: Hashable {
 }
 
 extension Progress {
-  struct Goal: RawRepresentable, Hashable, ExpressibleByIntegerLiteral {
+  struct Goal: RawRepresentable, Hashable, Strideable, ExpressibleByIntegerLiteral {
     static let min: Goal = 1
     static let max: Goal = 99
     
@@ -20,6 +20,14 @@ extension Progress {
     
     init(integerLiteral value: Int) {
       rawValue = value
+    }
+    
+    func distance(to other: Progress.Goal) -> Int {
+      rawValue.distance(to: other.rawValue)
+    }
+    
+    func advanced(by number: Int) -> Progress.Goal {
+      .init(rawValue: rawValue.advanced(by: number))
     }
   }
 }

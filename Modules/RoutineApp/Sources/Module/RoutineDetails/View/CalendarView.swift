@@ -31,7 +31,7 @@ struct CalendarVM {
 //  }
 //
 //  func makeCoordinator() -> Coordinator {
-//    Coordinator(calendar: Calendar.current, viewModel: viewModel)
+//    Coordinator(calendar: Calendar.app, viewModel: viewModel)
 //  }
 //}
 //

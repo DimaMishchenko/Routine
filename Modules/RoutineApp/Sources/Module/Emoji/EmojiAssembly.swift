@@ -7,6 +7,7 @@ final class EmojiAssembly {
     emojiVC.sourceRect = sourceRect
     emojiVC.onSelected = onSelected
     emojiVC.dismissAfterSelected = true
+    emojiVC.size = .init(width: 250, height: 350)
     emojiVC.delegate = emojiVC
     emojiVC.isDarkMode = emojiVC.traitCollection.userInterfaceStyle == .dark
     return emojiVC

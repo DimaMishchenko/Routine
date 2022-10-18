@@ -11,7 +11,7 @@ extension ReminderType {
     let hours: Int
     let minutes: Int
     
-    var date: Date? { Calendar.current.date(from: .init(hour: hours, minute: minutes)) }
+    var date: Date? { Calendar.app.date(from: .init(hour: hours, minute: minutes)) }
     
     // MARK: - Init
     static func form(hours: Int, minutes: Int) -> Daily {
@@ -19,7 +19,7 @@ extension ReminderType {
     }
     
     static func from(date: Date) -> Daily {
-      let calendar = Calendar.current
+      let calendar = Calendar.app
       return .init(
         hours: calendar.component(.hour, from: date),
         minutes: calendar.component(.minute, from: date)

@@ -4,6 +4,8 @@ import UIKit
 final class TextViewCell: UICollectionViewCell, ModelConfigurable {
   // MARK: - Public Properties
   var onTextChange: ((String) -> Void)?
+  var onBeginEditing: (() -> Void)?
+  var onEndEditing: (() -> Void)?
   
   // MARK: - UI Properties
   private lazy var textView = createTextView()
@@ -18,6 +20,14 @@ final class TextViewCell: UICollectionViewCell, ModelConfigurable {
 extension TextViewCell: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
     onTextChange?(textView.text)
+  }
+  
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    onBeginEditing?()
+  }
+  
+  func textViewDidEndEditing(_ textView: UITextView) {
+    onEndEditing?()
   }
 }
   

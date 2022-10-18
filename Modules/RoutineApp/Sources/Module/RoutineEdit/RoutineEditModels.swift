@@ -45,6 +45,8 @@ enum RoutineEdit {
     case `switch`(SwitchCellVM)
     case plainButton(PlainButtonCellVM)
     case reminder(ReminderCellVM)
+    case goalPicker(PickerCellVM<Progress.Goal>)
+    case frequencyPicker(PickerCellVM<Frequency>)
   }
 }
 

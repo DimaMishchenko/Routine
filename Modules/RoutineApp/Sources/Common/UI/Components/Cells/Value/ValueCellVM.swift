@@ -25,7 +25,6 @@ extension ValueCellVM {
   enum ValueType: Hashable {
     case text(String?, style: TextValueStyle = .default)
     case emoji(String?)
-    case color(hex: String?)
   }
 }
 

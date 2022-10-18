@@ -1,24 +1,16 @@
 PODS:
-  - ActionSheetPicker-3.0 (2.7.1)
   - EmojiPicker (1.1)
-  - IQKeyboardManagerSwift (6.5.10)
 
 DEPENDENCIES:
-  - ActionSheetPicker-3.0
   - EmojiPicker (= 1.1)
-  - IQKeyboardManagerSwift
 
 SPEC REPOS:
   trunk:
-    - ActionSheetPicker-3.0
     - EmojiPicker
-    - IQKeyboardManagerSwift
 
 SPEC CHECKSUMS:
-  ActionSheetPicker-3.0: 36da254b97a09ff89679ecb8b8510bd3e5bdc773
   EmojiPicker: 7d9cb698a2983501c0fa800e759dd7744638a0b9
-  IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
 
-PODFILE CHECKSUM: 55d4425ea6ab0a9ce4ab249cd25ae5a391446158
+PODFILE CHECKSUM: 9dd6730f38b1e088029ec2511cf68b180b2cb202
 
 COCOAPODS: 1.11.3
