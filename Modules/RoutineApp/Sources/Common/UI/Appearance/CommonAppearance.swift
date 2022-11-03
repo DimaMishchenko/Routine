@@ -1,7 +1,7 @@
 import UIKit
 
 enum CommonAppearance {
-  static func setup() {
+  static func setup(for scene: UIWindowScene) {
     UINavigationBar.appearance().prefersLargeTitles = true
     UINavigationBar.appearance().titleTextAttributes = [
       .font: Font.system(.headline, weight: .semibold)
@@ -14,6 +14,20 @@ enum CommonAppearance {
       for: .normal
     )
     UIBarButtonItem.swizzleSetTitleTextAttributes()
+    
+#if targetEnvironment(macCatalyst)
+    scene.titlebar?.titleVisibility = .hidden
+    let defaultSize = CGSize(width: 1200, height: 750)
+    scene.sizeRestrictions?.minimumSize = defaultSize
+    scene.sizeRestrictions?.maximumSize = defaultSize
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      scene.sizeRestrictions?.minimumSize = CGSize(width: 400, height: 250)
+      scene.sizeRestrictions?.maximumSize = CGSize(
+        width: CGFloat.greatestFiniteMagnitude,
+        height: CGFloat.greatestFiniteMagnitude
+      )
+    }
+#endif
   }
   
   static func setupTheme() {

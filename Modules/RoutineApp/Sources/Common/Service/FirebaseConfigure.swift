@@ -23,7 +23,9 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
       return
     }
     
-    FirebaseApp.configure(options: options)
+    if FirebaseApp.app() == nil {
+      FirebaseApp.configure(options: options)
+    }
     Analytics.setUserID(UserIdentifier.current)
     Crashlytics.crashlytics().setUserID(UserIdentifier.current)
   }

@@ -1,4 +1,5 @@
 // MARK: - Common
+"routine" = "Routine";
 "common.email" = "Почта";
 "common.telegram" = "Telegram";
 "common.times" = "раз";

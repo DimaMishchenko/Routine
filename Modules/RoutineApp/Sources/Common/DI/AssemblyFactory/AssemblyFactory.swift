@@ -10,8 +10,8 @@ final class AssemblyFactory {
   }
   
   // MARK: - Public
-  func tabBarAssembly() -> TabBarAssembly {
-    TabBarAssembly(assemblyFactory: self)
+  func navigationAssembly() -> NavigationAssembly {
+    NavigationAssembly(assemblyFactory: self)
   }
   
   func settings() -> SettingsAssembly {

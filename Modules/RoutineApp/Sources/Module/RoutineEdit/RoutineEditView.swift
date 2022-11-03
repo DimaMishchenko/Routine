@@ -64,8 +64,10 @@ extension RoutineEditView {
   }
   
   private func updateLayout() {
+    let bottomOffset: CGFloat = pin.safeArea.bottom == .zero ? Inset.Padding.default : pin.safeArea.bottom
+    
     deleteButton.pin
-      .bottom(pin.safeArea)
+      .bottom(bottomOffset)
       .left(Inset.Padding.default)
       .right(Inset.Padding.default)
       .height(Size.Button.big)
@@ -76,7 +78,7 @@ extension RoutineEditView {
       .height(Size.Button.big)
     
     if deleteButton.isHidden {
-      saveButton.pin.bottom(pin.safeArea)
+      saveButton.pin.bottom(bottomOffset)
     } else {
       saveButton.pin.above(of: deleteButton).marginBottom(Inset.Padding.small)
     }

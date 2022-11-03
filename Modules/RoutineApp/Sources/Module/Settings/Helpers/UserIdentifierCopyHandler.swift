@@ -15,7 +15,6 @@ final class UserIdentifierCopyHandler {
     if counter >= 3 {
       reset()
       UIPasteboard.general.string = UserIdentifier.current
-      _ = [0][1]
     }
   }
   

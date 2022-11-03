@@ -1,8 +1,6 @@
 import SwiftUI
 import UIKit
 
-protocol AppearanceViewInterface: AnyObject {}
-
 final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<AppearanceView<VM>> {
   // MARK: - Dependencies
   private let viewModel: VM
@@ -24,6 +22,3 @@ final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<Appearanc
     title = RoutineAppStrings.Appearance.title
   }
 }
-
-// MARK: - AppearanceViewInterface
-extension AppearanceVC: AppearanceViewInterface {}

@@ -2,7 +2,11 @@ import UIKit
 
 enum ExternalLinksNavigator {
   static func systemSettings() {
+    #if targetEnvironment(macCatalyst)
+    open(with: URL(string: "x-apple.systempreferences:com.apple.preference.localization"))
+    #else
     open(with: URL(string: UIApplication.openSettingsURLString))
+    #endif
   }
   
   static func telegramSupport() {
