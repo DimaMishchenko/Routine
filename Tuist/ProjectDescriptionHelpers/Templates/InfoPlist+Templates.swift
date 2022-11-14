@@ -12,6 +12,8 @@ extension InfoPlist {
         "ENVIRONMENT": "${ENVIRONMENT}",
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
         "LSApplicationQueriesSchemes": ["tg"],
+        "LSApplicationCategoryType": "public.app-category.productivity",
+        "ITSAppUsesNonExemptEncryption": false,
         "UIApplicationSceneManifest": [
           "UIApplicationSupportsMultipleScenes": false,
           "UISceneConfigurations": [

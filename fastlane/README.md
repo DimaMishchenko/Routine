@@ -13,12 +13,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-## iOS
-
-### ios upload_tf_routine_dev
+### upload_tf_routine_dev
 
 ```sh
-[bundle exec] fastlane ios upload_tf_routine_dev
+[bundle exec] fastlane upload_tf_routine_dev
 ```
 
 Upload RoutineApp Dev to Testflight
@@ -27,15 +25,61 @@ Upload RoutineApp Dev to Testflight
 
 Parameters
 
-- version(required) - build version
+- version (required) - build version
 
-### ios upload_tf_routine_prod
+### upload_tf_routine_prod
 
 ```sh
-[bundle exec] fastlane ios upload_tf_routine_prod
+[bundle exec] fastlane upload_tf_routine_prod
 ```
 
 Upload RoutineApp Prod to Testflight
+
+----
+
+
+## iOS
+
+### ios upload_tf_routine
+
+```sh
+[bundle exec] fastlane ios upload_tf_routine
+```
+
+Upload RoutineApp to Testflight
+
+
+
+Parameters
+
+- version (required) - build version
+
+- bundle_id (required) - app bundle id
+
+- scheme (required) - app scheme
+
+----
+
+
+## Mac
+
+### mac upload_tf_routine
+
+```sh
+[bundle exec] fastlane mac upload_tf_routine
+```
+
+Upload RoutineApp to Testflight
+
+
+
+Parameters
+
+- version (required) - build version
+
+- bundle_id (required) - app bundle id
+
+- scheme (required) - app scheme
 
 ----
 

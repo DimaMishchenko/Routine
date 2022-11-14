@@ -79,3 +79,5 @@ fastlane/report.xml
 *.dSYM.zip
 *.dSYM
 *.ipa
+*.app
+*.pkg

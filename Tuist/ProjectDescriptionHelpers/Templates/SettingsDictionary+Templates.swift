@@ -17,7 +17,8 @@ extension SettingsDictionary {
       "GOOGLE_SERVICE_INFO_NAME": .string(routineGoogleInfoName(for: environment)),
       "CODE_SIGN_ENTITLEMENTS": .string(routineEntitlementsPath(for: environment)),
       "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
-      "OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]
+      "OTHER_LDFLAGS": ["$(inherited)", "-ObjC"],
+      "DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": false
     ]
   }
   
