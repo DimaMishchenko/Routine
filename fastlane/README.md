@@ -58,6 +58,8 @@ Parameters
 
 - scheme (required) - app scheme
 
+- groups (optional) - tester groups to assign
+
 ----
 
 
@@ -80,6 +82,8 @@ Parameters
 - bundle_id (required) - app bundle id
 
 - scheme (required) - app scheme
+
+- groups (optional) - tester groups to assign
 
 ----
 
