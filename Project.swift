@@ -20,6 +20,7 @@ let project = Project(
         .spm(.charts),
         .spm(.keychainAccess),
         .spm(.popovers),
+        .spm(.emojiPicker),
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
         .spm(.firebase(.performance))

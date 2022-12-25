@@ -3,7 +3,7 @@ import UIKit
 
 final class ValueCell: UICollectionViewListCell, ModelConfigurable {
   // MARK: - UI Properties
-  var valueSourceRect: CGRect? { valueLabel.frameRelativeToVC }
+  var valueSourceView: UIView { valueLabel }
   
   private lazy var iconImageView = createIconImageView()
   private lazy var titleLabel = createTitleLabel()

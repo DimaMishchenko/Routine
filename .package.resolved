@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "emojipicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DimaMishchenko/EmojiPicker",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e93a675b705a75bb0a2d47c1a05406dff715d398"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",

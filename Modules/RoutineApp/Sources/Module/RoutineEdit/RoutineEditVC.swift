@@ -12,7 +12,7 @@ final class RoutineEditVC: UIViewController {
   private let presenter: RoutineEditPresenter
   
   // MARK: - Properties
-  var emojiSourceRect: CGRect? { contentView.emojiSourceRect }
+  var emojiSourceView: UIView? { contentView.emojiSourceView }
   
   // MARK: - Private Properties
   private lazy var contentView = RoutineEditView()

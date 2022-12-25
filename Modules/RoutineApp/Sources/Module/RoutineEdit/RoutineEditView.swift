@@ -20,7 +20,7 @@ final class RoutineEditView: UIView {
   private var initialLayout = Once()
   
   // MARK: - UI Properties
-  var emojiSourceRect: CGRect? { emojiCell?.valueSourceRect }
+  var emojiSourceView: UIView? { emojiCell?.valueSourceView }
   private weak var emojiCell: ValueCell?
   
   private lazy var collectionView = createCollectionView()
