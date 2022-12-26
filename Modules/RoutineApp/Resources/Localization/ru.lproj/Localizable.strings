@@ -106,6 +106,21 @@
 "settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
 "settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
 
+// MARK: - Tutorial
+"tutorial.welcome.titlePrefix" = "Добро пожаловать в";
+"tutorial.welcome.message" = "Routine — это простое и полностью нативное приложение для отслеживания ваших привычек в одном месте.";
+"tutorial.welcome.action" = "Продолжить";
+
+"tutorial.features.title" = "Оставайтесь продуктивными, где бы вы ни находились";
+"tutorial.features.message" = "Routine помогает вам создавать и поддерживать привычки и позволяет вам достигать своих целей.";
+"tutorial.features.unlimited.title" = "Неограниченные рутины";
+"tutorial.features.unlimited.message" = "Вы можете создавать неограниченное количество рутин";
+"tutorial.features.icloud.title" = "iCloud синхронизация";
+"tutorial.features.icloud.message" = "Резервное копирование данных на любое устройство — iPhone, iPad и MacOS";
+"tutorial.features.overview.title" = "Обзор";
+"tutorial.features.overview.message" = "Наглядно наблюдайте, как ваши рутины улучшались с течением времени, с помощью подробных диаграмм.";
+"tutorial.features.action" = "Начать";
+
 // MARK: - Appearance
 "appearance.title" = "Тема";
 

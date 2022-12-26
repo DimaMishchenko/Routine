@@ -101,7 +101,8 @@ final class CoreDataStack {
         
         changes.forEach {
           guard let routine = context.object(with: $0.changedObjectID) as? RoutineEntity else { return }
-          
+          guard routine.value(forKey: "uuid") != nil else { return }
+
           let request = with(NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))) {
             $0.sortDescriptors = [NSSortDescriptor(key: "lastUpdateDate", ascending: false)]
             $0.predicate = NSPredicate(format: "uuid == %@", routine.uuid as CVarArg)

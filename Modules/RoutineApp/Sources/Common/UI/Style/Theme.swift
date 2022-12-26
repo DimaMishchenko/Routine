@@ -5,7 +5,7 @@ enum Theme: Codable {
   case dark
   case system
   
-  @Defaults(key: .key, initial: .system) static var current: Theme {
+  @Defaults(key: .appTheme, initial: .system) static var current: Theme {
     didSet {
       CommonAppearance.setupTheme()
     }
@@ -13,5 +13,5 @@ enum Theme: Codable {
 }
 
 extension DefaultsKey {
-  static let key: DefaultsKey = "app.theme"
+  static let appTheme: DefaultsKey = "app.theme"
 }

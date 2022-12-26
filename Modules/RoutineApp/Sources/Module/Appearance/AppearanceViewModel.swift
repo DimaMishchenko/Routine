@@ -8,6 +8,4 @@ final class AppearanceViewModelImpl: AppearanceViewModel {
   @Published var theme = Theme.current {
     didSet { Theme.current = theme }
   }
-  
-  // MARK: - AppearanceViewModel
 }

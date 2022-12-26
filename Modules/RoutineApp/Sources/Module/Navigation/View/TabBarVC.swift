@@ -28,5 +28,6 @@ final class TabBarVC<VM: NavigationViewModel>: UITabBarController {
   // MARK: - Lazy Load
   override func viewDidLoad() {
     super.viewDidLoad()
+    viewModel.viewDidLoad()
   }
 }

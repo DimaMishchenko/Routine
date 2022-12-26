@@ -41,4 +41,8 @@ final class AssemblyFactory {
   func appearance() -> AppearanceAssembly {
     AppearanceAssembly()
   }
+  
+  func tutorial() -> TutorialAssembly {
+    TutorialAssembly()
+  }
 }

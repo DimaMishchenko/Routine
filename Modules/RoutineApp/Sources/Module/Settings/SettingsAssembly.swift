@@ -62,6 +62,13 @@ final class SettingsAssembly {
         }
       }
     }
+
+    presenter.openTutorial = { [weak assemblyFactory, weak vc] in
+      Task { [assemblyFactory, vc] in
+        guard let tutorialVC = await assemblyFactory?.tutorial().controller() else { return }
+        await vc?.present(tutorialVC, animated: true)
+      }
+    }
     
     return vc
   }

@@ -40,6 +40,8 @@ final class SplitVC<VM: NavigationViewModel>: UISplitViewController {
     viewModel.selectedItemPublisher
       .sink { [weak self] in self?.updateSecondaryVC(for: $0) }
       .store(in: &cancellables)
+
+    viewModel.viewDidLoad()
   }
   
   // MARK: - Private

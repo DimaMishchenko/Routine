@@ -106,6 +106,21 @@
 "settings.mail.reportBug.subject" = "Routine bug report";
 "settings.mail.reportBug.message" = "Please describe a bug.";
 
+// MARK: - Tutorial
+"tutorial.welcome.titlePrefix" = "Welcome to";
+"tutorial.welcome.message" = "Routine is a simple and fully native app for tracking your habits in one place.";
+"tutorial.welcome.action" = "Continue";
+
+"tutorial.features.title" = "Stay productive wherever you are";
+"tutorial.features.message" = "Routine helps you create and maintain habits and allows you to achieve your goals.";
+"tutorial.features.unlimited.title" = "Unlimited routines";
+"tutorial.features.unlimited.message" = "You can create an unlimited number of routines";
+"tutorial.features.icloud.title" = "iCloud sync";
+"tutorial.features.icloud.message" = "Backup your data on any device – iPhone, iPad, and MacOS";
+"tutorial.features.overview.title" = "Overview";
+"tutorial.features.overview.message" = "Clearly see how your routines improved over time with detailed charts";
+"tutorial.features.action" = "Get started";
+
 // MARK: - Appearance
 "appearance.title" = "Appearance";
 
@@ -117,4 +132,3 @@
 // MARK: - Common
 "common.alert.deleteRoutine.title" = "Are you sure you want to remove the routine?";
 "common.alert.deleteRoutine.message" = "It can not be restored";
-

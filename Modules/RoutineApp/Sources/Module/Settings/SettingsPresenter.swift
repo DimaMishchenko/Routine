@@ -21,6 +21,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
   var openAppearance: (() -> Void)?
+  var openTutorial: (() -> Void)?
   
   // MARK: - Private Properties
   private var cancellables: Set<AnyCancellable> = []
@@ -120,7 +121,9 @@ final class SettingsPresenterImpl: SettingsPresenter {
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
           rows: [
             rowFactory.termsPolicy {},
-            rowFactory.onboardingRow {},
+            rowFactory.onboardingRow { [weak self] in
+              self?.openTutorial?()
+            },
             rowFactory.appVersionRow { [weak self] in
               self?.identifierCopyHandler.appVersionSelected()
             }

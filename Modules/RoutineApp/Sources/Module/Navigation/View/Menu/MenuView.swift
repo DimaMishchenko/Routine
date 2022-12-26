@@ -50,6 +50,8 @@ struct MenuView_Previews: PreviewProvider {
     ]
     @Published var selectedItem: Navigation.ItemVM?
     var selectedItemPublisher: Published<Navigation.ItemVM?>.Publisher { $selectedItem }
+
+    func viewDidLoad() {}
   }
 }
 #endif

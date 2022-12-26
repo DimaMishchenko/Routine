@@ -11,16 +11,24 @@ final class NavigationAssembly {
   
   // MARK: - Public
   @MainActor func controller() -> UIViewController {
+    let vm = NavigationViewModelImpl()
+    let vc: UIViewController
+    let controllersFactory = NavigationControllersFactoryImpl(assemblyFactory: assemblyFactory)
+
     if UIDevice.current.userInterfaceIdiom == .phone {
-      return TabBarVC(
-        viewModel: NavigationViewModelImpl(),
-        controllersFactory: NavigationControllersFactoryImpl(assemblyFactory: assemblyFactory)
-      )
+      vc = TabBarVC(viewModel: vm, controllersFactory: controllersFactory)
     } else {
-      return SplitVC(
-        viewModel: NavigationViewModelImpl(),
-        controllersFactory: NavigationControllersFactoryImpl(assemblyFactory: assemblyFactory)
-      )
+      vc = SplitVC(viewModel: vm, controllersFactory: controllersFactory)
     }
+
+    vm.showTutorial = { [weak vc, weak assemblyFactory] in
+      guard let tutorial = assemblyFactory?.tutorial().controller() else { return }
+      if UIDevice.current.userInterfaceIdiom == .phone {
+        tutorial.modalPresentationStyle = .fullScreen
+      }
+      vc?.present(tutorial, animated: true)
+    }
+
+    return vc
   }
 }

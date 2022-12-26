@@ -4,6 +4,7 @@ import UIKit
 enum Color {
   static let black = UIColor.black
   static let clear = UIColor.clear
+  static let tint = UIColor.systemBlue
 }
 
 // MARK: - Background
