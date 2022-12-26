@@ -24,6 +24,9 @@ extension InfoPlist {
               ]            
             ]
           ]
+        ],
+        "UIBackgroundModes": [
+          "remote-notification"
         ]
       ]
     )
