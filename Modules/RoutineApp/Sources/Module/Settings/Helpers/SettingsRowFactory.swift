@@ -3,10 +3,12 @@ import Foundation
 protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
   func notificationsRow(isAuthorized: Bool) -> Settings.Row
+  func iCloudSyncRow(action: @escaping () -> Void) -> Settings.Row
   func appearanceRow(action: @escaping () -> Void) -> Settings.Row
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row
   func writeReviewRow(action: @escaping () -> Void) -> Settings.Row
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row
+  func faceID(biometryType: BiometryType, isEnabled: Bool) -> Settings.Row
   func termsPolicy(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow(action: @escaping () -> Void) -> Settings.Row
@@ -37,8 +39,22 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
           title: RoutineAppStrings.Settings.Row.notifications,
           state: isAuthorized,
           icon: RoutineAppAsset.Icon.notification.image
-        )
+        ),
+        .notifications
       )
+    )
+  }
+  
+  func iCloudSyncRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Settings.Row.iCloudSync,
+          icon: RoutineAppAsset.Icon.iCloud.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
     )
   }
   
@@ -91,6 +107,21 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         )
       ),
       action: action
+    )
+  }
+  
+  func faceID(biometryType: BiometryType, isEnabled: Bool) -> Settings.Row {
+    .init(
+      .switch(
+        .init(
+          title: biometryType == .faceID ?
+            RoutineAppStrings.Settings.Row.faceID :
+            RoutineAppStrings.Settings.Row.touchID,
+          state: isEnabled,
+          icon: RoutineAppAsset.Icon.faceID.image
+        ),
+        .faceID
+      )
     )
   }
   

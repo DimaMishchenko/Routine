@@ -4,6 +4,7 @@ import UIKit
 final class SettingsView: UIView {
   // MARK: - Public Properties
   var onNotificationStateChangeRequest: ((Bool) -> Void)?
+  var onFaceIDStateChangeRequest: ((Bool) -> Void)?
   
   // MARK: - Private Properties
   private var initialLayout = Once()
@@ -52,9 +53,14 @@ extension SettingsView {
       switch row.type {
       case .value(let viewModel):
         return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
-      case .switch(let viewModel):
+      case let .switch(viewModel, type):
         return collectionView.dequeue(SwitchCell.self, with: viewModel, for: indexPath) {
-          $0.onChangeRequest = { [weak self] in self?.onNotificationStateChangeRequest?($0) }
+          switch type {
+          case .notifications:
+            $0.onChangeRequest = { [weak self] in self?.onNotificationStateChangeRequest?($0) }
+          case .faceID:
+            $0.onChangeRequest = { [weak self] in self?.onFaceIDStateChangeRequest?($0) }
+          }
         }
       }
     }

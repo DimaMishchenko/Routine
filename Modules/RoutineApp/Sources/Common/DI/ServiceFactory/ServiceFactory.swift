@@ -29,4 +29,8 @@ final class ServiceFactory {
   func routineHistoryUpdater() -> RoutineHistoryUpdater {
     RoutineHistoryUpdaterImpl(store: routineStore())
   }
+  
+  func authenticator() -> Authenticator {
+    AuthenticatorImpl()
+  }
 }

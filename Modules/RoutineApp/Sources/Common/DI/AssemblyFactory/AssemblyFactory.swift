@@ -38,11 +38,19 @@ final class AssemblyFactory {
     RoutineDetailsAssembly()
   }
   
+  func cloudInfo() -> CloudInfoAssembly {
+    CloudInfoAssembly()
+  }
+  
   func appearance() -> AppearanceAssembly {
     AppearanceAssembly()
   }
   
   func tutorial() -> TutorialAssembly {
     TutorialAssembly()
+  }
+  
+  func blocker() -> BlockerAssembly {
+    BlockerAssembly()
   }
 }

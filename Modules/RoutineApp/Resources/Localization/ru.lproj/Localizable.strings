@@ -79,14 +79,18 @@
 
 "settings.section.app" = "Приложение";
 "settings.section.feedback" = "Обратная связь";
+"settings.section.security" = "Security";
 "settings.section.more" = "Другое";
 
 "settings.row.language" = "Язык";
 "settings.row.notifications" = "Уведомления";
+"settings.row.iCloudSync" = "iClound синхронизация";
 "settings.row.appearance" = "Тема";
 "settings.row.reportBug" = "Сообщить об ошибке";
 "settings.row.writeReview" = "Написать отзыв";
 "settings.row.shareApp" = "Поделиться";
+"settings.row.faceID" = "Face ID";
+"settings.row.touchID" = "Touch ID";
 "settings.row.termsPolicy" = "Условия и политика";
 "settings.row.onboarding" = "Обучение";
 "settings.row.appVersion" = "Версия приложения";
@@ -101,7 +105,11 @@
 "settings.alert.notifications.title.enable" = "Включить уведомления";
 "settings.alert.notifications.title.disable" = "Выключить уведомления";
 "settings.alert.notifications.message" = "Вы можете контролировать разрешение на уведомления в настройках вашего устройства";
-"settings.alert.notifications.button.openSettings" = "Открыть настройки";
+
+"settings.alert.failedFaceID.title" = "Biometric Authentication Unavailable";
+"settings.alert.failedFaceID.message" = "To use this feature, please grant permission in your device's settings or configure FaceID/TouchID on your device.";
+
+"settings.alert.button.openSettings" = "Открыть настройки";
 
 "settings.mail.reportBug.subject" = "Routine сообщение об ошибке";
 "settings.mail.reportBug.message" = "Пожалуйста опишите ошибку.";
@@ -128,6 +136,32 @@
 "appearance.text.dark" = "Темная";
 "appearance.text.useDeviceSettings" = "Использовать настройки устройства";
 "appearance.text.hint" = "Мы будем использовать Светлую или Темную тему в зависимости от системных настроек вашего устройства";
+
+// MARK: - CloudInfo
+"cloudInfo.title" = "iCloud";
+
+"cloudInfo.row.iCloudStatus" = "iCloud connection status";
+"cloudInfo.row.importStatus" = "Data import status";
+"cloudInfo.row.exportStatus" = "Data export status";
+
+"cloudInfo.errorHint.noNetwork" = "Oops, it looks like you're offline. Connect to a network and syncing will resume automatically.";
+"cloudInfo.errorHint.iCloudAccount" = "It looks like there's an issue with your iCloud account. Please go to the Settings app and check if you're logged in and if your account is accessible. Make sure your credentials are verified and that access to your account is not restricted by Parental Controls or Device Management software. If you're having trouble, try logging out and logging back in. If the issue persists, contact Apple support for further assistance.";
+"cloudInfo.errorHint.syncError" = "Syncing failed. Please go to the Settings app and check if there's an issue with your iCloud account. Make sure you have enough storage space in iCloud and that your internet connection is stable. If the issue persists, contact Apple support for further assistance.";
+
+// MARK: - Reminders
+"reminder.body.0" = "Stay on track today";
+"reminder.body.1" = "You can do it";
+"reminder.body.2" = "Keep it up";
+"reminder.body.3" = "Keep the streak going";
+"reminder.body.4" = "Just a friendly reminder to stick to your routine today";
+"reminder.body.5" = "A small step today leads to a big change tomorrow, keep it up";
+"reminder.body.6" = "Small steps, big changes";
+"reminder.body.7" = "Stay strong";
+"reminder.body.8" = "Don't let today be the day you break your streak, keep it up";
+"reminder.body.9" = "You've got this! Stay focused on your routine today";
+
+// MARK: - FaceID
+"faceID.requestReason" = "Please log in to use an app";
 
 // MARK: - Common
 "common.alert.deleteRoutine.title" = "Вы уверены, что хотите удалить рутину?";

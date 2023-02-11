@@ -21,6 +21,7 @@ let project = Project(
         .spm(.keychainAccess),
         .spm(.popovers),
         .spm(.emojiPicker),
+        .spm(.ckSyncMonitor),
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
         .spm(.firebase(.performance))

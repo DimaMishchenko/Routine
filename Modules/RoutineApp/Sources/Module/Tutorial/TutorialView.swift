@@ -16,33 +16,37 @@ struct TutorialView<VM: TutorialViewModel>: View {
 
   // MARK: - Public
   var body: some View {
-    VStack {
-      Spacer()
-      if !showsFeatures {
-        WelcomeView(vm: viewModel.welcomeVM)
-      } else {
-        FeaturesView(vm: viewModel.featuresVM)
-      }
-      Spacer()
-      Button(actionTitle) {
-        actionTitle = viewModel.featuresVM.actionTitle
+    GeometryReader { geometry in
+      VStack {
+        Spacer()
         if !showsFeatures {
-          showsFeatures = true
+          WelcomeView(vm: viewModel.welcomeVM, width: geometry.size.width)
         } else {
-          viewModel.close()
+          FeaturesView(vm: viewModel.featuresVM)
         }
+        Spacer()
+        Button(actionTitle) {
+          actionTitle = viewModel.featuresVM.actionTitle
+          if !showsFeatures {
+            showsFeatures = true
+          } else {
+            viewModel.close()
+          }
+        }
+        .font(SwiftUI.Font(Font.system(.body, weight: .medium)))
+        .frame(maxWidth: .infinity, maxHeight: Size.Button.big)
+        .foregroundColor(SwiftUI.Color(Color.Text.light))
+        .background(SwiftUI.Color(Color.Button.default))
+        .cornerRadius(Size.CornerRadius.buttonBig)
       }
-      .font(SwiftUI.Font(Font.system(.body, weight: .medium)))
-      .frame(maxWidth: .infinity, maxHeight: Size.Button.big)
-      .foregroundColor(SwiftUI.Color(Color.Text.light))
-      .background(SwiftUI.Color(Color.Button.default))
-      .cornerRadius(Size.CornerRadius.buttonBig)
+      .padding(Inset.Padding.default)
+      .frame(width: geometry.size.width)
     }
-    .padding(Inset.Padding.default)
   }
 
   struct WelcomeView: View {
     let vm: Tutorial.WelcomeVM
+    let width: CGFloat
 
     var body: some View {
       VStack(spacing: Inset.Padding.small) {
@@ -56,7 +60,9 @@ struct TutorialView<VM: TutorialViewModel>: View {
         UIKitLabel {
           $0.attributedText = vm.title
           $0.textAlignment = .center
+          $0.numberOfLines = .zero
           $0.font = Font.system(.largeTitle, weight: .bold)
+          $0.preferredMaxLayoutWidth = width - Inset.Padding.big
         }
         .fixedSize()
 

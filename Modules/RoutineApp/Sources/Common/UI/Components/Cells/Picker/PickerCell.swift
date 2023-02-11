@@ -132,9 +132,13 @@ final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigur
           )
       )
       .background(
-        Templates.VisualEffectView(UIBlurEffect.Style.prominent)
+        Templates.VisualEffectView(.prominent)
           .cornerRadius(Size.CornerRadius.container)
-          .popoverShadow(shadow: .system),
+          .popoverShadow(
+            shadow: with(.system) {
+              $0.color = SwiftUI.Color(Color.black.withAlphaComponent(0.3))
+            }
+          ),
         alignment: .top
       )
       .onChange(of: selected) { value in

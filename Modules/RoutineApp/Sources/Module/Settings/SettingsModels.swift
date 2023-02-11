@@ -22,7 +22,12 @@ enum Settings {
   
   enum RowType: Hashable {
     case value(ValueCellVM)
-    case `switch`(SwitchCellVM)
+    case `switch`(SwitchCellVM, SwitchType)
+  }
+  
+  enum SwitchType {
+    case notifications
+    case faceID
   }
 }
 

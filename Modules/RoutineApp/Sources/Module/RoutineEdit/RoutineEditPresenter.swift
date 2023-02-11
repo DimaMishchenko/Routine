@@ -71,12 +71,11 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     switch validate(routine) {
     case .success:
       Task(priority: .userInitiated, logError: true) {
-        // TODO: - Reminder text
         if editableRoutine.remind {
           try await notificationsHandler.schedule(
             routine.reminders,
             title: "\(routine.emoji) \(routine.name)",
-            body: "You can do it"
+            body: randomReminderBody()
           )
         } else {
           editableRoutine.reminders.forEach {
@@ -259,5 +258,21 @@ extension RoutineEditPresenterImpl {
       actions: [.ok],
       handler: { _ in }
     )
+  }
+  
+  private func randomReminderBody() -> String {
+    [
+      RoutineAppStrings.Reminder.Body._0,
+      RoutineAppStrings.Reminder.Body._1,
+      RoutineAppStrings.Reminder.Body._2,
+      RoutineAppStrings.Reminder.Body._3,
+      RoutineAppStrings.Reminder.Body._4,
+      RoutineAppStrings.Reminder.Body._5,
+      RoutineAppStrings.Reminder.Body._6,
+      RoutineAppStrings.Reminder.Body._7,
+      RoutineAppStrings.Reminder.Body._8,
+      RoutineAppStrings.Reminder.Body._9
+    ]
+      .randomElement() ?? .empty
   }
 }

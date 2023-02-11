@@ -4,6 +4,7 @@ import Foundation
 protocol SettingsPresenter: AnyObject {
   func viewDidLoad()
   func notificationStateUpdateRequest(_ currentStatus: Bool)
+  func faceIDStateUpdateRequest(_ currentStatus: Bool)
 }
 
 final class SettingsPresenterImpl: SettingsPresenter {
@@ -13,6 +14,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   private let appStateObserver: AppStateObserver
   private let notificationsHandler: NotificationsHandler
   private let identifierCopyHandler: UserIdentifierCopyHandler
+  private let authenticator: Authenticator
   
   // MARK: - Properties
   var openSettings: (() -> Void)?
@@ -20,10 +22,12 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var telegramSupport: (() -> Void)?
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
+  var openCloudInfo: (() -> Void)?
   var openAppearance: (() -> Void)?
   var openTutorial: (() -> Void)?
   
   // MARK: - Private Properties
+  @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
   private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
@@ -31,14 +35,17 @@ final class SettingsPresenterImpl: SettingsPresenter {
     rowFactory: SettingsRowFactory,
     appStateObserver: AppStateObserver,
     notificationsHandler: NotificationsHandler,
-    identifierCopyHandler: UserIdentifierCopyHandler
+    identifierCopyHandler: UserIdentifierCopyHandler,
+    authenticator: Authenticator
   ) {
     self.rowFactory = rowFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
     self.identifierCopyHandler = identifierCopyHandler
+    self.authenticator = authenticator
     
     setupAppStateObserver()
+    disableFaceIDIfNeeded()
   }
   
   // MARK: - SettingsPresenter
@@ -62,15 +69,36 @@ final class SettingsPresenterImpl: SettingsPresenter {
     }
   }
   
+  func faceIDStateUpdateRequest(_ currentStatus: Bool) {
+    Task(priority: .userInitiated) {
+      if currentStatus {
+        useFaceID = false
+      } else if authenticator.biometryType == .none && !authenticator.isLockout() {
+        useFaceID = false
+        await view?.showAlert(with: failedToUseFaceIDAlert())
+      } else {
+        useFaceID = await authenticator.auth(biometryOnly: true)
+      }
+      await reloadSnapshot()
+    }
+  }
+  
   // MARK: - Private
   private func setupAppStateObserver() {
     appStateObserver
       .on(.didBecomeActive)
       .sink { [weak self] in
         guard let self = self else { return }
+        self.disableFaceIDIfNeeded()
         Task { await self.reloadSnapshot() }
       }
       .store(in: &cancellables)
+  }
+  
+  private func disableFaceIDIfNeeded() {
+    if self.authenticator.biometryType == .none {
+      self.useFaceID = false
+    }
   }
   
   private func reloadSnapshot() async {
@@ -90,6 +118,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
               }
             },
             rowFactory.notificationsRow(isAuthorized: isAuthorized),
+            rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() },
             rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
           ]
         )
@@ -117,6 +146,13 @@ final class SettingsPresenterImpl: SettingsPresenter {
           ]
         )
         
+        Item(
+          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.security)),
+          rows: [
+            rowFactory.faceID(biometryType: authenticator.biometryType, isEnabled: useFaceID)
+          ]
+        )
+
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
           rows: [
@@ -189,7 +225,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
       title: title,
       message: RoutineAppStrings.Settings.Alert.Notifications.message,
       actions: [
-        .custom(.init(title: RoutineAppStrings.Settings.Alert.Notifications.Button.openSettings, style: .default)),
+        .custom(.init(title: RoutineAppStrings.Settings.Alert.Button.openSettings, style: .default)),
         .cancel
       ]
     ) { [weak self] in
@@ -197,4 +233,22 @@ final class SettingsPresenterImpl: SettingsPresenter {
       self?.openSettings?()
     }
   }
+  
+  private func failedToUseFaceIDAlert() -> Alert.VM {
+    .init(
+      title: RoutineAppStrings.Settings.Alert.FailedFaceID.title,
+      message: RoutineAppStrings.Settings.Alert.FailedFaceID.message,
+      actions: [
+        .custom(.init(title: RoutineAppStrings.Settings.Alert.Button.openSettings, style: .default)),
+        .cancel
+      ]
+    ) { [weak self] in
+      guard case .custom = $0 else { return }
+      self?.openSettings?()
+    }
+  }
+}
+
+extension DefaultsKey {
+  static let useFaceID: DefaultsKey = "use.faceid"
 }

@@ -28,6 +28,12 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
     }
     Analytics.setUserID(UserIdentifier.current)
     Crashlytics.crashlytics().setUserID(UserIdentifier.current)
+    
+    #if DEBUG
+      Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
+    #else
+      Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+    #endif
   }
   
   // MARK: - Private

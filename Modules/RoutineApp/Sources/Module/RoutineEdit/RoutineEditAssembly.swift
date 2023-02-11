@@ -35,9 +35,13 @@ final class RoutineEditAssembly {
     
     presenter.pickEmoji = { [weak vc] completion in
       guard let vc, let sourceView = vc.emojiSourceView else { return }
-      EmojiPicker.present(on: vc, with: .init(sender: sourceView)) {
-        completion($0)
-      }
+      
+      vc.present(
+        EmojiPickerAssembly().controller(with: sourceView) {
+          completion($0)
+        },
+        animated: true
+      )
     }
     
     return vc

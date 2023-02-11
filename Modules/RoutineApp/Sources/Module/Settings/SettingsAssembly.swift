@@ -18,7 +18,8 @@ final class SettingsAssembly {
       rowFactory: SettingsRowFactoryImpl(),
       appStateObserver: serviceFactory.appStateObserver(),
       notificationsHandler: serviceFactory.notificationsPermissionHandler(),
-      identifierCopyHandler: UserIdentifierCopyHandler()
+      identifierCopyHandler: UserIdentifierCopyHandler(),
+      authenticator: serviceFactory.authenticator()
     )
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
@@ -49,6 +50,18 @@ final class SettingsAssembly {
         return
       }
       vc?.present(shareVC, animated: true)
+    }
+    
+    presenter.openCloudInfo = { [weak assemblyFactory, weak vc] in
+      Task { [assemblyFactory, vc] in
+        guard let appearanceVC = await assemblyFactory?.cloudInfo().controller() else { return }
+        
+        if let nc = await vc?.navigationController {
+          await nc.pushViewController(appearanceVC, animated: true)
+        } else {
+          await vc?.present(UINavigationController(rootViewController: appearanceVC), animated: true)
+        }
+      }
     }
     
     presenter.openAppearance = { [weak assemblyFactory, weak vc] in

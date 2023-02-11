@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "cloudkitsyncmonitor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ggruen/CloudKitSyncMonitor.git",
+      "state" : {
+        "revision" : "e1ba30a32815e36308e659775719386ade1853ce",
+        "version" : "1.2.0"
+      }
+    },
+    {
       "identity" : "cwlcatchexception",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlCatchException.git",
@@ -57,10 +66,10 @@
     {
       "identity" : "emojipicker",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/DimaMishchenko/EmojiPicker",
+      "location" : "https://github.com/htmlprogrammist/EmojiPicker",
       "state" : {
-        "branch" : "main",
-        "revision" : "e93a675b705a75bb0a2d47c1a05406dff715d398"
+        "revision" : "6018bd985b01d2355a635569cc702e8a337ed0a1",
+        "version" : "3.0.9"
       }
     },
     {

@@ -53,5 +53,8 @@ extension SettingsVC {
     contentView.onNotificationStateChangeRequest = { [weak self] in
       self?.presenter.notificationStateUpdateRequest($0)
     }
+    contentView.onFaceIDStateChangeRequest = { [weak self] in
+      self?.presenter.faceIDStateUpdateRequest($0)
+    }
   }
 }

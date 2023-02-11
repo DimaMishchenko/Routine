@@ -1,4 +1,5 @@
 import CloudKit
+import CloudKitSyncMonitor
 import CoreData
 import Foundation
 
@@ -20,14 +21,14 @@ final class CoreDataStack {
     persistentContainer = with(AppNSPersistentCloudKitContainer(name: containerName)) {
       $0.transactionsAuthor = Constants.transactionAuthor
     }
-    
+
     guard let storageURL = sharedStorageURL(for: sharedGroupIdentifier) else {
       Logger.log(.error, "Failed to create DB URL")
       fatalError("Failed to create DB URL")
     }
-    
+
     Logger.log(.debug, "Storage path \(storageURL.absoluteString)")
-    
+
     let localStorage = NSPersistentStoreDescription(url: storageURL)
     localStorage.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
     localStorage.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
@@ -37,7 +38,7 @@ final class CoreDataStack {
     localStorage.cloudKitContainerOptions = localStorageOptions
     persistentContainer.persistentStoreDescriptions = [localStorage]
     persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
-    
+
     persistentContainer.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     persistentContainer.viewContext.transactionAuthor = Constants.transactionAuthor
 
@@ -47,13 +48,15 @@ final class CoreDataStack {
         fatalError(error.localizedDescription)
       }
     }
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(storeRemoteChange(_:)),
       name: .NSPersistentStoreRemoteChange,
       object: persistentContainer.persistentStoreCoordinator
     )
+    
+    _ = SyncMonitor.shared
   }
   
   // MARK: - Private
