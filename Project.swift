@@ -12,6 +12,7 @@ let project = Project(
   targets: [
     .routineApp(
       dependencies: [
+        .appExtension(.notificationsService),
         .spm(.pinLayout),
         .spm(.deviceKit),
         .spm(.snapKit),
@@ -24,10 +25,12 @@ let project = Project(
         .spm(.ckSyncMonitor),
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
-        .spm(.firebase(.performance))
+        .spm(.firebase(.performance)),
+        .spm(.firebase(.messaging))
       ]
     ),
-    .routineAppTests()
+    .routineAppTests(),
+    .appExtension(.notificationsService)
   ],
   schemes: Scheme.routine,
   fileHeaderTemplate: "",

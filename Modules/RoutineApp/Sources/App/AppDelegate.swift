@@ -1,3 +1,4 @@
+import FirebaseMessaging
 import UIKit
 
 @main
@@ -12,5 +13,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     application.registerForRemoteNotifications()
     return true
+  }
+  
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    #if DEBUG
+    Logger.log(.debug, "FCM token \(Messaging.messaging().fcmToken ?? "nil")")
+    #endif
   }
 }

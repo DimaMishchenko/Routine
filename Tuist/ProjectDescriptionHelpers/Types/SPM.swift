@@ -77,6 +77,7 @@ public enum SPM {
       case analytics
       case crashlytics
       case performance
+      case messaging
     }
     
     // MARK: - Public
@@ -99,6 +100,7 @@ public enum SPM {
         case .analytics:        return "FirebaseAnalyticsWithoutAdIdSupport"
         case .crashlytics:      return "FirebaseCrashlytics"
         case .performance:      return "FirebasePerformance"
+        case .messaging:        return "FirebaseMessaging"
         }
       }
     }

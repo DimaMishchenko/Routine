@@ -39,4 +39,20 @@ extension Target {
       settings: .settings(configurations: Configuration.routineTests)
     )
   }
+  
+  public static func appExtension(_ appExtension: AppExtension) -> Target {
+    Target(
+      name: appExtension.name,
+      platform: .iOS,
+      product: appExtension.productType,
+      bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
+      deploymentTarget: appExtension.deploymentTarget,
+      infoPlist: appExtension.infoPlist,
+      sources: appExtension.sources,
+      resources: [],
+      entitlements: appExtension.entitlements,
+      dependencies: appExtension.dependencies,
+      settings: .settings(configurations: Configuration.appExtension(appExtension))
+    )
+  }
 }

@@ -5,8 +5,8 @@ extension InfoPlist {
   static var routineApp: InfoPlist {
     .extendingDefault(
       with: [
-        "CFBundleShortVersionString": .string(appVersion()),
-        "CFBundleVersion": .string(appBuild()),
+        "CFBundleShortVersionString": .string(Version.appVersion),
+        "CFBundleVersion": .string(Version.buildNumber),
         "UIMainStoryboardFile": "",
         "UILaunchStoryboardName": "LaunchScreen",
         "ENVIRONMENT": "${ENVIRONMENT}",
@@ -31,17 +31,5 @@ extension InfoPlist {
         ]
       ]
     )
-  }
-  
-  // MARK: - Private
-  private static func appVersion() -> String {
-    let path = (FileManager.default.currentDirectoryPath as NSString)
-      .appendingPathComponent("Modules/RoutineApp/app-version")
-    
-    return try! String(contentsOfFile: path)
-  }
-  
-  private static func appBuild() -> String {
-    return ProjectDescription.Environment.buildNumber.getString(default: "1")
   }
 }

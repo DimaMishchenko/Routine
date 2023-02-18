@@ -28,6 +28,13 @@ extension SettingsDictionary {
     ]
   }
   
+  public static func appExtension(for environment: Environment, appExtension: AppExtension) -> SettingsDictionary {
+    [
+      "DEVELOPMENT_TEAM": "77X75EH6F4",
+      "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment) + "." + appExtension.bundleIdSuffix)
+    ]
+  }
+  
   // MARK: - Private
   private static func routineBundleId(for environment: Environment) -> String {
     let base = "com.dm.routine.app"
