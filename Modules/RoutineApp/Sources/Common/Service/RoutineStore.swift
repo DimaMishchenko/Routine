@@ -3,6 +3,7 @@ import CoreData
 import Foundation
 
 protocol RoutineStore {
+  func allRoutines() async throws -> [Routine]
   func save(_ routine: Routine) async throws
   func update(_ routine: Routine) async throws
   func delete(_ routine: Routine) async throws
@@ -20,27 +21,27 @@ final class CoreDataRoutineStore: RoutineStore {
   }
   
   // MARK: - Public
+  func allRoutines() async throws -> [Routine] {
+    try await withCheckedThrowingContinuation { continuation in
+      allRoutines { continuation.resume(with: $0) }
+    }
+  }
+  
   func save(_ routine: Routine) async throws {
     try await withCheckedThrowingContinuation { continuation in
-      save(routine) {
-        continuation.resume(with: $0)
-      }
+      save(routine) { continuation.resume(with: $0) }
     }
   }
   
   func update(_ routine: Routine) async throws {
     try await withCheckedThrowingContinuation { continuation in
-      update(routine, delete: false) {
-        continuation.resume(with: $0)
-      }
+      update(routine, delete: false) { continuation.resume(with: $0) }
     }
   }
   
   func delete(_ routine: Routine) async throws {
     try await withCheckedThrowingContinuation { continuation in
-      update(routine, delete: true) {
-        continuation.resume(with: $0)
-      }
+      update(routine, delete: true) { continuation.resume(with: $0) }
     }
   }
   
@@ -58,8 +59,19 @@ final class CoreDataRoutineStore: RoutineStore {
       fillHistoryIfNeeded { continuation.resume(with: $0) }
     }
   }
-  
+
   // MARK: - Private
+  private func allRoutines(completion: @escaping (Result<[Routine], Error>) -> Void) {
+    coreDataStack.persistentContainer.performBackgroundTask {
+      let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
+      do {
+        completion(.success(try $0.fetch(request).compactMap { $0.model }))
+      } catch {
+        completion(.failure(error))
+      }
+    }
+  }
+
   private func save(_ routine: Routine, completion: @escaping (Result<Void, Error>) -> Void) {
     coreDataStack.persistentContainer.performBackgroundTask {
       _ = RoutineEntity(context: $0, routine: routine)

@@ -23,6 +23,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
     authenticator = serviceFactory.authenticator()
     historyUpdater = serviceFactory.routineHistoryUpdater()
+    IntentDependenciesRegisterer.register(with: serviceFactory)
     super.init()
   }
   

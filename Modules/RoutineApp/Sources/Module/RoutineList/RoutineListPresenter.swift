@@ -107,11 +107,13 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     ) {
       Task(logError: true) { [weak self, editable] in
         try await self?.store.update(editable.routine)
+        IntentDonationHandler.donateIncreaseProgress(for: editable.routine)
       }
     }
     
     if editable.progress.goal.rawValue == editable.progress.current {
       view?.showConfetti(with: editable.emoji)
+      IntentDonationHandler.donateComplete(editable.routine)
     }
   }
   

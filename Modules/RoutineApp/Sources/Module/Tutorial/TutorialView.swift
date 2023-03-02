@@ -25,19 +25,25 @@ struct TutorialView<VM: TutorialViewModel>: View {
           FeaturesView(vm: viewModel.featuresVM)
         }
         Spacer()
-        Button(actionTitle) {
-          actionTitle = viewModel.featuresVM.actionTitle
-          if !showsFeatures {
-            showsFeatures = true
-          } else {
-            viewModel.close()
+        Button(
+          action: {
+            actionTitle = viewModel.featuresVM.actionTitle
+            if !showsFeatures {
+              showsFeatures = true
+            } else {
+              viewModel.close()
+            }
+          },
+          label: {
+            Text(actionTitle)
+              .font(SwiftUI.Font(Font.system(.body, weight: .medium)))
+              .frame(maxWidth: .infinity, maxHeight: Size.Button.big)
+              .foregroundColor(SwiftUI.Color(Color.Text.light))
+              .background(SwiftUI.Color(Color.Button.default))
+              .cornerRadius(Size.CornerRadius.buttonBig)
+              .contentShape(Rectangle())
           }
-        }
-        .font(SwiftUI.Font(Font.system(.body, weight: .medium)))
-        .frame(maxWidth: .infinity, maxHeight: Size.Button.big)
-        .foregroundColor(SwiftUI.Color(Color.Text.light))
-        .background(SwiftUI.Color(Color.Button.default))
-        .cornerRadius(Size.CornerRadius.buttonBig)
+        )
       }
       .padding(Inset.Padding.default)
       .frame(width: geometry.size.width)

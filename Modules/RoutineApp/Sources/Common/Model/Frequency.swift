@@ -16,3 +16,14 @@ extension Frequency {
     }
   }
 }
+
+// MARK: - Comparable
+extension Frequency: Comparable {
+  static func < (lhs: Frequency, rhs: Frequency) -> Bool {
+    switch (lhs, rhs) {
+    case (_, .daily): return false
+    case (.monthly, .weekly): return false
+    default: return true
+    }
+  }
+}

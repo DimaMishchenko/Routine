@@ -148,7 +148,6 @@
 "cloudInfo.errorHint.iCloudAccount" = "It looks like there's an issue with your iCloud account. Please go to the Settings app and check if you're logged in and if your account is accessible. Make sure your credentials are verified and that access to your account is not restricted by Parental Controls or Device Management software. If you're having trouble, try logging out and logging back in. If the issue persists, contact Apple support for further assistance.";
 "cloudInfo.errorHint.syncError" = "Syncing failed. Please go to the Settings app and check if there's an issue with your iCloud account. Make sure you have enough storage space in iCloud and that your internet connection is stable. If the issue persists, contact Apple support for further assistance.";
 
-
 // MARK: - Reminders
 "reminder.body.0" = "Stay on track today";
 "reminder.body.1" = "You can do it";
@@ -160,6 +159,30 @@
 "reminder.body.7" = "Stay strong";
 "reminder.body.8" = "Don't let today be the day you break your streak, keep it up";
 "reminder.body.9" = "You've got this! Stay focused on your routine today";
+
+// MARK: - Shortcuts
+"${applicationName} shortcut.IRP.title" = "${applicationName} test";
+
+// MARK: - Intents
+"intent.routine.type" = "Routine";
+"intent.category.tracking" = "Routine Tracking";
+
+"intent.parameter.routines.title" = "Routines";
+"intent.parameter.routines.description" = "List of Routines";
+
+// MARK: - IncreaseRoutineProgressIntent
+"intent.IRP.title" = "Increase Routines progress";
+"intent.IRP.description" = "Increases the progress of Routines by 1. You can use this action to quickly update your progress and stay on track with your Routines.";
+"intent.IRP.summaryPrefix ${routines}" = "Increase progress for ${routines}";
+"intent.IRP.result.noItems" = "Nothing to update";
+"intent.IRP.result.success" = "Progress increased successfully";
+
+// MARK: - CompleteRoutineIntent
+"intent.CR.title" = "Complete Routines";
+"intent.CR.description" = "Complete Routines if still needs to be finished. You can use this action to quickly update your progress and stay on track with your Routines.";
+"intent.CR.summaryPrefix ${routines}" = "Complete following ${routines}";
+"intent.CR.result.noItems" = "Nothing to complete";
+"intent.CR.result.success" = "Completed successfully";
 
 // MARK: - FaceID
 "faceID.requestReason" = "Please log in to use an app";
