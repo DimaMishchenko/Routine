@@ -32,8 +32,7 @@ extension SettingsDictionary {
     [
       "DEVELOPMENT_TEAM": "77X75EH6F4",
       "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment) + "." + appExtension.bundleIdSuffix),
-      "SUPPORTED_PLATFORMS": ["iphonesimulator", "iphoneos", "macosx"],
-      "OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]
+      "DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": false
     ]
   }
   

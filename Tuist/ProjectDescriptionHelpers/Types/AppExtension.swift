@@ -23,7 +23,7 @@ extension AppExtension {
   public var deploymentTarget: DeploymentTarget {
     switch self {
     case .notificationsService:
-      return .iOS(targetVersion: "14.0", devices: [.iphone, .ipad])
+      return .iOS(targetVersion: "14.0", devices: [.iphone, .ipad, .mac])
     }
   }
 
