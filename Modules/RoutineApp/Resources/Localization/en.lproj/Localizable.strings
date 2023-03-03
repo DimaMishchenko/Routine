@@ -12,6 +12,7 @@
 
 // MARK: - Alert
 "alert.ok" = "Ok";
+"alert.yes" = "Yes";
 "alert.cancel" = "Cancel";
 "alert.remove" = "Remove";
 
@@ -73,6 +74,12 @@
 "routineDetails.text.chart.line" = "Line (full)";
 
 "routineDetails.text.chart.noData" = "Not enough data to display the chart";
+
+"routineDetails.alert.progressAdjust.title" = "Confirm progress adjust";
+"routineDetails.alert.progressAdjust.description.add" = "Do you want to mark this Routine as completed on the selected date?";
+"routineDetails.alert.progressAdjust.description.remove" = "Do you want to remove the completion of this Routine on the selected date?";
+"routineDetails.alert.adjustError.title" = "Progress adjust failed";
+"routineDetails.alert.adjustError.description" = "Sorry, we couldn't update your progress at this time. Please try again later.";
 
 // MARK: - Settings
 "settings.title" = "Settings";

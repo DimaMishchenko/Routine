@@ -7,10 +7,12 @@ import Foundation
   var barChartVM: BarChartVM { get }
   var lineChartVM: LineChartVM { get }
   var successRate: Double { get }
-  
+
   func close()
   func edit()
   func loadDetails()
+  func select(date: Date)
+  func deselect(date: Date)
 }
 
 final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
@@ -18,7 +20,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   private enum Constants {
     static let barChartMaxItems = 7
   }
-  
+
   // MARK: - Public Properties
   var description: String { routine.description }
   @Published private(set) var statsVMs: [StatsViewModel] = []
@@ -26,26 +28,32 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   @Published private(set) var barChartVM = BarChartVM(entries: [])
   @Published private(set) var lineChartVM = LineChartVM(entries: [])
   @Published private(set) var successRate: Double = .zero
-  
+
   // MARK: - Action Properties
   var editRoutine: (() -> Void)?
   var dismiss: (() -> Void)?
-  
-  private let routine: Routine
-  
+  var showAlert: ((Alert.VM) -> Void)?
+
+  // MARK: - Dependencies
+  private let routineStore: RoutineStore
+
+  // MARK: - Private Properties
+  private var routine: Routine
+
   // MARK: - Init
-  init(routine: Routine) {
+  init(routine: Routine, routineStore: RoutineStore) {
     self.routine = routine
+    self.routineStore = routineStore
   }
-  
+
   // MARK: - Public
   func close() { dismiss?() }
-  
+
   func edit() {
     dismiss?()
     editRoutine?()
   }
-  
+
   func loadDetails() {
     Task(priority: .userInitiated) {
       loadStats()
@@ -54,7 +62,27 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
       loadSuccessRate()
     }
   }
-  
+
+  func select(date: Date) {
+    guard date < Date(), !date.isInToday else { return }
+    
+    adjustProgress(with: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.Description.add) {
+      $0.history.append(
+        .init(uuid: UUID(), date: date, goal: routine.progress.goal.rawValue, result: routine.progress.goal.rawValue)
+      )
+    }
+  }
+
+  func deselect(date: Date) {
+    guard date < Date(), !date.isInToday else { return }
+
+    adjustProgress(with: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.Description.remove) {
+      guard let index = routine.history.firstIndex(where: { $0.date.isInSameDay(as: date) }) else { return }
+      $0.history.remove(at: index)
+    }
+  }
+
+  // MARK: - Private
   private func loadStats() {
     var successDays: Int = .zero
     var skippedDays: Int = .zero
@@ -97,7 +125,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
       )
     ]
   }
-  
+
   private func loadCalendar() {
     calendarVM = CalendarVM(
       selections: routine.history
@@ -105,7 +133,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
         .map { .init(emoji: routine.emoji, date: $0.date) }
     )
   }
-  
+
   private func loadCharts() {
     let history = routine.history.sorted(by: { $0.date < $1.date })
     
@@ -120,9 +148,59 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
     
     lineChartVM = .init(entries: history.map { .init(title: $0.date.dayMonth, value: Double($0.result)) })
   }
-  
+
   private func loadSuccessRate() {
     let everyDayRates = routine.history.map { $0.goalAchieved ? 1 : (Double($0.result) / Double($0.goal)) }
     successRate = everyDayRates.reduce(into: .zero, { $0 += $1 }) / Double(everyDayRates.count)
+  }
+
+  private func adjustProgress(
+    with message: String,
+    adjust: (inout EditableRoutine) -> Void
+  ) {
+    var editable = EditableRoutine(routine: routine)
+    adjust(&editable)
+
+    showAlert?(
+      adjustProgressAlertVM(
+        message: message,
+        onConfirm: { [weak self] in
+          self?.updateRoutineAndReload(editable.routine)
+        }
+      )
+    )
+  }
+
+  private func updateRoutineAndReload(_ routine: Routine) {
+    Task(priority: .userInitiated) {
+      do {
+        try await routineStore.update(routine)
+        self.routine = routine
+        loadDetails()
+      } catch {
+        showAlert?(adjustFailedAlertVM())
+        Logger.log(error)
+      }
+    }
+  }
+
+  private func adjustProgressAlertVM(message: String, onConfirm: @escaping () -> Void) -> Alert.VM {
+    .init(
+      title: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.title,
+      message: message,
+      actions: [.yes, .cancel]
+    ) {
+      guard case .yes = $0 else { return }
+      onConfirm()
+    }
+  }
+
+  private func adjustFailedAlertVM() -> Alert.VM {
+    .init(
+      title: RoutineAppStrings.RoutineDetails.Alert.AdjustError.title,
+      message: RoutineAppStrings.RoutineDetails.Alert.AdjustError.description,
+      actions: [.ok],
+      handler: { _ in }
+    )
   }
 }

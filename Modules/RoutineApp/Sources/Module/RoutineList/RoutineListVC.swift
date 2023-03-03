@@ -65,9 +65,7 @@ extension RoutineListVC: RoutineListViewInterface {
   }
   
   func showAlert(with viewModel: Alert.VM) {
-    DispatchQueue.main.async {
-      Alert.show(on: self, with: viewModel)
-    }
+    Alert.show(on: self, with: viewModel)
   }
   
   func animateProgressUpdate(for viewModel: RoutineCellVM, at indexPath: IndexPath, completion: @escaping () -> Void) {

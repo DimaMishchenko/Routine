@@ -51,12 +51,16 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         // Calendar
         if #available(iOS 16.0, *) {
           Section(title: RoutineAppStrings.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
-            CalendarView(viewModel: viewModel.calendarVM)
-              .frame(
-                height: Device.current.realDevice.isOneOf(Device.allPlusSizedDevices) ?
-                  430 :
-                  (Device.current.isIPhoneMini ? 380 : 400)
-              )
+            CalendarView(
+              viewModel: viewModel.calendarVM,
+              onSelection: { viewModel.select(date: $0) },
+              onDeselection: { viewModel.deselect(date: $0) }
+            )
+            .frame(
+              height: Device.current.realDevice.isOneOf(Device.allPlusSizedDevices) ?
+              430 :
+                (Device.current.isIPhoneMini ? 380 : 400)
+            )
           }
         }
         
@@ -204,6 +208,8 @@ struct RoutineDetailsView_Previews: PreviewProvider {
     func close() {}
     func edit() {}
     func loadDetails() {}
+    func select(date: Date) {}
+    func deselect(date: Date) {}
   }
   
   static var previews: some View {

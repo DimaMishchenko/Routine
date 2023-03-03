@@ -13,6 +13,8 @@ struct CalendarVM {
 @available(iOS 16.0, *)
 struct CalendarView: UIViewRepresentable {
   let viewModel: CalendarVM
+  let onSelection: (Date) -> Void
+  let onDeselection: (Date) -> Void
 
   func makeUIView(context: Context) -> ContainerView {
     with(ContainerView()) {
@@ -21,6 +23,7 @@ struct CalendarView: UIViewRepresentable {
   }
 
   func updateUIView(_ container: ContainerView, context: Context) {
+    context.coordinator.viewModel = viewModel
     container.calendar.delegate = context.coordinator
     container.calendar.selectionBehavior = with(UICalendarSelectionMultiDate(delegate: context.coordinator)) {
       $0.selectedDates = viewModel.selections
@@ -30,7 +33,12 @@ struct CalendarView: UIViewRepresentable {
   }
 
   func makeCoordinator() -> Coordinator {
-    Coordinator(calendar: Calendar.app, viewModel: viewModel)
+    Coordinator(
+      calendar: Calendar.app,
+      viewModel: viewModel,
+      onSelection: onSelection,
+      onDeselection: onDeselection
+    )
   }
 }
 
@@ -56,12 +64,21 @@ extension CalendarView {
   final class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionMultiDateDelegate {
     // MARK: - Properties
     fileprivate let calendar: Calendar
-    private let viewModel: CalendarVM
+    fileprivate var viewModel: CalendarVM
+    private let onSelection: (Date) -> Void
+    private let onDeselection: (Date) -> Void
 
     // MARK: - Init
-    init(calendar: Calendar, viewModel: CalendarVM) {
+    init(
+      calendar: Calendar,
+      viewModel: CalendarVM,
+      onSelection: @escaping (Date) -> Void,
+      onDeselection: @escaping (Date) -> Void
+    ) {
       self.calendar = calendar
       self.viewModel = viewModel
+      self.onSelection = onSelection
+      self.onDeselection = onDeselection
     }
 
     // MARK: - UICalendarViewDelegate
@@ -84,21 +101,30 @@ extension CalendarView {
 
       return nil
     }
+    
+    // MARK: - Private
+    private func update(selection: UICalendarSelectionMultiDate) {
+      selection.selectedDates = viewModel.selections
+        .map { $0.date }
+        .compactMap { calendar.dateComponents([.day, .month, .year], from: $0) }
+    }
 
     // MARK: - UICalendarSelectionMultiDateDelegate
     func multiDateSelection(
       _ selection: UICalendarSelectionMultiDate,
       didSelectDate dateComponents: DateComponents
     ) {
-      selection.selectedDates = viewModel.selections
-        .map { $0.date }
-        .compactMap { calendar.dateComponents([.day, .month, .year], from: $0) }
+      update(selection: selection)
+      calendar.date(from: dateComponents).flatMap { onSelection($0) }
     }
 
     func multiDateSelection(
       _ selection: UICalendarSelectionMultiDate,
       didDeselectDate dateComponents: DateComponents
-    ) {}
+    ) {
+      update(selection: selection)
+      calendar.date(from: dateComponents).flatMap { onDeselection($0) }
+    }
 
     func multiDateSelection(
       _ selection: UICalendarSelectionMultiDate,
@@ -111,7 +137,7 @@ extension CalendarView {
       _ selection: UICalendarSelectionMultiDate,
       canDeselectDate dateComponents: DateComponents
     ) -> Bool {
-      false
+      true
     }
   }
 }
@@ -127,7 +153,9 @@ struct CalendarView_Previews: PreviewProvider {
         selections: [Date(), Date().byAddingDay!, Date().byAddingDay!.byAddingDay!].map {
           .init(emoji: "✅", date: $0)
         }
-      )
+      ),
+      onSelection: { _ in },
+      onDeselection: { _ in }
     )
     .padding()
   }

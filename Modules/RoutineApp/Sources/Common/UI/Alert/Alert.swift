@@ -21,7 +21,9 @@ extension Alert {
       )
     }
 
-    vc.present(controller, animated: true)
+    DispatchQueue.main.async {
+      vc.present(controller, animated: true)
+    }
   }
 
   static func show<Fields: CaseIterable & AlertFields>(

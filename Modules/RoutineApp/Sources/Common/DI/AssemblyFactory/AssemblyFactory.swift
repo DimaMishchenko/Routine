@@ -35,7 +35,7 @@ final class AssemblyFactory {
   }
   
   func routineDetails() -> RoutineDetailsAssembly {
-    RoutineDetailsAssembly()
+    RoutineDetailsAssembly(serviceFactory: serviceFactory)
   }
   
   func cloudInfo() -> CloudInfoAssembly {

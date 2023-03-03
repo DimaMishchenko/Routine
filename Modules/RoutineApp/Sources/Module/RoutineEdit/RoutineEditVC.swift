@@ -56,9 +56,7 @@ extension RoutineEditVC: RoutineEditViewInterface {
   }
   
   func showAlert(with viewModel: Alert.VM) {
-    DispatchQueue.main.async {
-      Alert.show(on: self, with: viewModel)      
-    }
+    Alert.show(on: self, with: viewModel)
   }
 }
 
