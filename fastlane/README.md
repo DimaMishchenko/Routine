@@ -58,6 +58,8 @@ Parameters
 
 - scheme (required) - app scheme
 
+- extensionIds (required) - app extension bundle ids
+
 - groups (optional) - tester groups to assign
 
 ----

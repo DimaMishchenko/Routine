@@ -21,7 +21,12 @@ lane :upload_tf_routine_dev do |options|
 
   setup_as_api_key()
 
-  options = { version: version, bundle_id: bundle_id, scheme: scheme }
+  options = { 
+    version: version, 
+    bundle_id: bundle_id, 
+    scheme: scheme, 
+    extensionIds: ["com.dm.routine.app.dev.notificationsService"]
+  }
   Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
   Fastlane::LaneManager.cruise_lane("mac", "upload_tf_routine", options)
   
@@ -50,7 +55,13 @@ lane :upload_tf_routine_prod do |options|
 
   setup_as_api_key()
 
-  options = { version: version, bundle_id: bundle_id, scheme: scheme, groups: ["External"] }
+  options = { 
+    version: version, 
+    bundle_id: bundle_id, 
+    scheme: scheme, 
+    extensionIds: ["com.dm.routine.app.prod.notificationsService"],
+    groups: ["External"] 
+  }
   Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
   Fastlane::LaneManager.cruise_lane("mac", "upload_tf_routine", options)
 end
@@ -65,16 +76,19 @@ platform :ios do
   desc "- version (required) - build version"
   desc "- bundle_id (required) - app bundle id"
   desc "- scheme (required) - app scheme"
+  desc "- extensionIds (required) - app extension bundle ids"
   desc "- groups (optional) - tester groups to assign"
   lane :upload_tf_routine do |options|
     version = options[:version]
     bundle_id = options[:bundle_id]
     scheme = options[:scheme]
+    extensionIds = options[:extensionIds]
     groups = options[:groups]
 
     update_build_number(bundle_id: bundle_id, version: version, platform: "ios")
     generate_project()
     match(type: "appstore", app_identifier: bundle_id)
+    extensionIds.each { |id| match(type: "appstore", app_identifier: id) }
     gym(scheme: scheme)
     testflight(app_identifier: bundle_id, app_platform: "ios", groups: groups)
     upload_symbols(plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist")
@@ -96,6 +110,7 @@ platform :mac do
     version = options[:version]
     bundle_id = options[:bundle_id]
     scheme = options[:scheme]
+    extensionIds = options[:extensionIds]
     groups = options[:groups]
 
     update_build_number(bundle_id: bundle_id, version: version, platform: "osx")
@@ -106,6 +121,14 @@ platform :mac do
       platform: "catalyst",
       app_identifier: bundle_id
     )
+    extensionIds.each { |id| 
+      match(
+        type: "appstore", 
+        additional_cert_types: ["mac_installer_distribution"],
+        platform: "catalyst",
+        app_identifier: id
+      )
+    }
     gym(scheme: scheme, catalyst_platform: "macos")
     testflight(app_identifier: bundle_id, app_platform: "osx", groups: groups)
     upload_symbols(plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist")
