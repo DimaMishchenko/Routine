@@ -5,8 +5,10 @@ final class NavigationAssembly {
   private let assemblyFactory: AssemblyFactory
   
   // MARK: - Init
-  init(assemblyFactory: AssemblyFactory) {
+  init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
+    // https://www.revenuecat.com/docs/user-ids#provide-app-user-id-on-configuration
+    serviceFactory.inAppPurchases().setup()
   }
   
   // MARK: - Public

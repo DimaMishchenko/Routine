@@ -39,8 +39,8 @@ final class TutorialViewModelImpl: TutorialViewModel {
       features: [
         .init(
           icon: RoutineAppAsset.Icon.tutorialCheckmark.image,
-          title: RoutineAppStrings.Tutorial.Features.Unlimited.title,
-          description: RoutineAppStrings.Tutorial.Features.Unlimited.message
+          title: RoutineAppStrings.Tutorial.Features.Maintain.title,
+          description: RoutineAppStrings.Tutorial.Features.Maintain.message
         ),
         .init(
           icon: RoutineAppAsset.Icon.tutorialCloud.image,

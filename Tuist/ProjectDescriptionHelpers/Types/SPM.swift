@@ -14,6 +14,7 @@ public enum SPM {
     case popovers
     case emojiPicker
     case ckSyncMonitor
+    case revenueCat
     case firebase
     
     // MARK: - Public
@@ -35,6 +36,7 @@ public enum SPM {
       case .popovers:           return "https://github.com/aheze/Popovers"
       case .emojiPicker:        return "https://github.com/htmlprogrammist/EmojiPicker"
       case .ckSyncMonitor:      return "https://github.com/ggruen/CloudKitSyncMonitor.git"
+      case .revenueCat:         return "https://github.com/RevenueCat/purchases-ios.git"
       case .firebase:           return "https://github.com/firebase/firebase-ios-sdk.git"
       }
     }
@@ -53,7 +55,8 @@ public enum SPM {
       case .popovers:           return .upToNextMajor(from: "1.0.0")
       case .emojiPicker:        return .upToNextMajor(from: "3.0.9")
       case .ckSyncMonitor:      return .upToNextMajor(from: "1.2.0")
-      case .firebase:           return .upToNextMajor(from: "10.6.0")
+      case .revenueCat:         return .upToNextMajor(from: "4.17.11")
+      case .firebase:           return .upToNextMajor(from: "10.8.0")
       }
     }
   }
@@ -71,6 +74,7 @@ public enum SPM {
     case popovers
     case emojiPicker
     case ckSyncMonitor
+    case revenueCat
     case firebase(Firebase)
     
     public enum Firebase {
@@ -95,6 +99,7 @@ public enum SPM {
       case .popovers:           return "Popovers"
       case .emojiPicker:        return "EmojiPicker"
       case .ckSyncMonitor:      return "CloudKitSyncMonitor"
+      case .revenueCat:         return "RevenueCat"
       case .firebase(let type):
         switch type {
         case .analytics:        return "FirebaseAnalyticsWithoutAdIdSupport"

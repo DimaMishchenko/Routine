@@ -19,7 +19,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   // MARK: - Init
   override init() {
-    let serviceFactory = ServiceFactory(coreDataStack: CoreDataStackAssembly.routineStack())
+    let serviceFactory = ServiceFactory(coreDataStack: CoreDataStackAssembly.routineStack(), purchases: .init())
     assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
     authenticator = serviceFactory.authenticator()
     historyUpdater = serviceFactory.routineHistoryUpdater()

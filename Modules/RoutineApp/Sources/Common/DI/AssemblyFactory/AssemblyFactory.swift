@@ -11,7 +11,7 @@ final class AssemblyFactory {
   
   // MARK: - Public
   func navigationAssembly() -> NavigationAssembly {
-    NavigationAssembly(assemblyFactory: self)
+    NavigationAssembly(assemblyFactory: self, serviceFactory: serviceFactory)
   }
   
   func settings() -> SettingsAssembly {
@@ -52,5 +52,9 @@ final class AssemblyFactory {
   
   func blocker() -> BlockerAssembly {
     BlockerAssembly()
+  }
+  
+  func premium() -> PremiumAssembly {
+    PremiumAssembly(serviceFactory: serviceFactory)
   }
 }

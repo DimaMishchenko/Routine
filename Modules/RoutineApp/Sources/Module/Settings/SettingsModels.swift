@@ -21,6 +21,7 @@ enum Settings {
   }
   
   enum RowType: Hashable {
+    case premium(PremiumBannerCellVM)
     case value(ValueCellVM)
     case `switch`(SwitchCellVM, SwitchType)
   }

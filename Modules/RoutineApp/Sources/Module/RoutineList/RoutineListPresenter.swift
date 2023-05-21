@@ -5,6 +5,7 @@ import UIKit
 
 protocol RoutineListPresenter {
   func viewDidLoad()
+  func closePremium()
   func addRoutine()
   func editRoutine(at section: RoutineList.Section, rowIndex: Int)
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int)
@@ -21,6 +22,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   private let notificationsHandler: NotificationsHandler
   
   // MARK: - Public Properties
+  var premium: (() -> Void)?
   var routineDetails: ((Routine, _ onEdit: @escaping () -> Void) -> Void)?
   var editRoutine: ((Routine, _ completion: @escaping (Routine) -> Void, _ onDelete: @escaping () -> Void) -> Void)?
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
@@ -31,6 +33,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     let routines: [Routine]
   }
   private var sections: [Section] = []
+  private var showPremium = true
   private var cancellables: Set<AnyCancellable> = []
   
   // MARK: - Init
@@ -74,6 +77,11 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
         }
       )
       .store(in: &cancellables)
+  }
+  
+  func closePremium() {
+    showPremium = false
+    reloadSnapshot()
   }
   
   func addRoutine() {
@@ -141,6 +149,9 @@ extension RoutineListPresenterImpl {
   private func reloadSnapshot() {
     view?.update(
       with: Snapshot {
+        itemFactory.premium(showBanner: showPremium) { [weak self] in
+          self?.premium?()
+        }
         itemFactory.daily(
           rows: rows(in: .daily),
           containsAnyItems: !sections.isEmpty
@@ -168,6 +179,8 @@ extension RoutineListPresenterImpl {
   
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {
     switch section {
+    case .premium:
+      return nil
     case .daily:
       return routines(in: .daily)?[safe: rowIndex]
     case .weekly:

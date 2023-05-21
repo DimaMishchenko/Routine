@@ -17,6 +17,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   private let authenticator: Authenticator
   
   // MARK: - Properties
+  var premium: (() -> Void)?
   var openSettings: (() -> Void)?
   var mailSupport: ((String, String) -> Void)?
   var telegramSupport: (() -> Void)?
@@ -101,13 +102,23 @@ final class SettingsPresenterImpl: SettingsPresenter {
     }
   }
   
+  // swiftlint:disable:next function_body_length
   private func reloadSnapshot() async {
-    typealias Item = Snapshot<Settings.Section, Settings.Row>.Item
+    typealias Item = Snapshot<Settings.Section?, Settings.Row>.Item
     
     let isAuthorized = await notificationsHandler.isAuthorized()
     
     await view?.update(
       with: Snapshot {
+        Item(
+          section: nil,
+          rows: [
+            .init(.premium(.init(accesory: .disclosure))) { [weak self] in
+              self?.premium?()
+            }
+          ]
+        )
+        
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),
           rows: [

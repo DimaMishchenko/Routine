@@ -23,7 +23,7 @@ final class SettingsView: UIView {
 
 // MARK: - Public
 extension SettingsView {
-  func update(with snapshot: Snapshot<Settings.Section, Settings.Row>) {
+  func update(with snapshot: Snapshot<Settings.Section?, Settings.Row>) {
     dataSource.apply(snapshot)
   }
 }
@@ -46,11 +46,13 @@ extension SettingsView {
     collectionView.pin.all()
   }
   
-  private func createDataSource() -> DataSource<Settings.Section, Settings.Row> {
-    let dataSource = DataSource<Settings.Section, Settings.Row>(
+  private func createDataSource() -> DataSource<Settings.Section?, Settings.Row> {
+    let dataSource = DataSource<Settings.Section?, Settings.Row>(
       collectionView: collectionView
     ) { collectionView, indexPath, row -> UICollectionViewCell? in
       switch row.type {
+      case .premium(let viewModel):
+        return collectionView.dequeue(PremiumBannerCell.self, with: viewModel, for: indexPath)
       case .value(let viewModel):
         return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
       case let .switch(viewModel, type):
@@ -68,8 +70,14 @@ extension SettingsView {
     dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, kind, indexPath in
       guard
         kind == UICollectionView.elementKindSectionHeader,
-        let model = dataSource?.section(at: indexPath.section).model
-      else { return nil }
+        let model = dataSource?.section(at: indexPath.section)?.model
+      else {
+        return collectionView.dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: String(describing: UICollectionViewListCell.self),
+          for: indexPath
+        )
+      }
       
       return collectionView.dequeue(GroupSupplementary.self, with: model, for: indexPath, kind: kind)
     }
@@ -89,6 +97,8 @@ extension SettingsView {
     return with(UICollectionView(layout: .list(using: configuration))) {
       $0.delegate = self
       $0.register(GroupSupplementary.self, kind: UICollectionView.elementKindSectionHeader)
+      $0.register(UICollectionViewListCell.self, kind: UICollectionView.elementKindSectionHeader)
+      $0.register(PremiumBannerCell.self)
       $0.register(ValueCell.self)
       $0.register(SwitchCell.self)
       addSubview($0)

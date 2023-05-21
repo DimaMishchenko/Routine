@@ -17,7 +17,7 @@ struct StatsView: View {
   var body: some View {
     VStack(spacing: .zero) {
       SwiftUI.Image(uiImage: viewModel.image)
-        .frame(width: Size.Icon.big, height: Size.Icon.big, alignment: .center)
+        .frame(width: Size.Icon.big2, height: Size.Icon.big2, alignment: .center)
         .padding(.bottom, Inset.Padding.default)
       Text(viewModel.title)
         .padding(.bottom, Inset.Padding.extraSmall)

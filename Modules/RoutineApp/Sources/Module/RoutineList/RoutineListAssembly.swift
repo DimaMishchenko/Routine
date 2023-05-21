@@ -22,6 +22,12 @@ final class RoutineListAssembly {
     let vc = RoutineListVC(presenter: presenter)
     presenter.view = vc
     
+    presenter.premium = { [weak vc, weak assemblyFactory] in
+      Task { [vc, assemblyFactory] in
+        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
+        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
+      }
+    }
     presenter.editRoutine = { [weak vc, weak assemblyFactory] routine, completion, onDelete in
       let editVC = assemblyFactory?.routineEdit().controller(
         for: .edit(routine),

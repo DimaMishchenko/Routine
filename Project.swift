@@ -13,6 +13,7 @@ let project = Project(
     .routineApp(
       dependencies: [
         .appExtension(.notificationsService),
+        .sdk(name: "StoreKit", type: .framework),
         .spm(.pinLayout),
         .spm(.deviceKit),
         .spm(.snapKit),
@@ -23,6 +24,7 @@ let project = Project(
         .spm(.popovers),
         .spm(.emojiPicker),
         .spm(.ckSyncMonitor),
+        .spm(.revenueCat),
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
         .spm(.firebase(.performance)),

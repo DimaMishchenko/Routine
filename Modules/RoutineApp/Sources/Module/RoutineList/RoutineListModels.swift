@@ -3,6 +3,7 @@ import Foundation
 enum RoutineList {
   // MARK: - Section
   enum Section: Int, Hashable {
+    case premium
     case daily
     case weekly
     case monthly
@@ -28,6 +29,7 @@ enum RoutineList {
   }
   
   enum RowType: Hashable {
+    case premium(PremiumBannerCellVM)
     case empty(EmptyCellVM)
     case routine(RoutineCellVM)
   }

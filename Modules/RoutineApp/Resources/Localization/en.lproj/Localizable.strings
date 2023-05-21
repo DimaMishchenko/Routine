@@ -128,8 +128,8 @@
 
 "tutorial.features.title" = "Stay productive wherever you are";
 "tutorial.features.message" = "Routine helps you create and maintain habits and allows you to achieve your goals.";
-"tutorial.features.unlimited.title" = "Unlimited routines";
-"tutorial.features.unlimited.message" = "You can create an unlimited number of routines";
+"tutorial.features.maintain.title" = "Maintain habits";
+"tutorial.features.maintain.message" = "Track your routine and maintain healthy habits";
 "tutorial.features.icloud.title" = "iCloud sync";
 "tutorial.features.icloud.message" = "Backup your data on any device – iPhone, iPad, and MacOS";
 "tutorial.features.overview.title" = "Overview";
@@ -154,6 +154,33 @@
 "cloudInfo.errorHint.noNetwork" = "Oops, it looks like you're offline. Connect to a network and syncing will resume automatically.";
 "cloudInfo.errorHint.iCloudAccount" = "It looks like there's an issue with your iCloud account. Please go to the Settings app and check if you're logged in and if your account is accessible. Make sure your credentials are verified and that access to your account is not restricted by Parental Controls or Device Management software. If you're having trouble, try logging out and logging back in. If the issue persists, contact Apple support for further assistance.";
 "cloudInfo.errorHint.syncError" = "Syncing failed. Please go to the Settings app and check if there's an issue with your iCloud account. Make sure you have enough storage space in iCloud and that your internet connection is stable. If the issue persists, contact Apple support for further assistance.";
+
+// MARK: - Premium
+"premium.title" = "Routine premium";
+
+"premium.button.done" = "Done";
+"premium.button.restore" = "Restore";
+
+"premium.item.unlimited.title" = "Unlimited routines";
+"premium.item.unlimited.description" = "Add as many routines as you wish and view them in one convenient place.";
+"premium.item.security.title" = "Enhanced security";
+"premium.item.security.description" = "Enable biometric authentication to secure all of your information.";
+"premium.item.reminders.title" = "Reminders";
+"premium.item.reminders.description" = "Enable reminders to ensure you never miss a notification of your routine.";
+"premium.item.creators.title" = "Support creators";
+"premium.item.creators.description" = "Routine was created by two persons and any support is highly appreciated.";
+
+"premium.offer.subscribe" = "Subscribe";
+"premium.offer.freeTrial" = "trial for free!";
+"premium.offer.noOffers" = "No offers available right now.";
+
+"premium.purchased.status" = "Your Premium subscription is active.";
+"premium.purchased.manage" = "Manage your subscription.";
+
+"premium.period.day" = "day";
+"premium.period.week" = "week";
+"premium.period.month" = "month";
+"premium.period.year" = "year";
 
 // MARK: - Reminders
 "reminder.body.0" = "Stay on track today";

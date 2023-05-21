@@ -6,6 +6,7 @@ final class RoutineListView: UIView {
   private var initialLayout = Once()
   
   // MARK: - Public Properties
+  var onClosePremium: (() -> Void)?
   var onAdd: (() -> Void)?
   
   var onEdit: ((RoutineList.Section, Int) -> Void)?
@@ -109,6 +110,12 @@ extension RoutineListView {
         return collectionView.dequeue(GroupSupplementary.self, with: header.model, for: indexPath)
       case .row(let row):
         switch row.type {
+        case .premium(let viewModel):
+          let cell = collectionView.dequeue(PremiumBannerCell.self, with: viewModel, for: indexPath)
+          cell?.onClose = { [weak self] in
+            self?.onClosePremium?()
+          }
+          return cell
         case .empty(let viewModel):
           return collectionView.dequeue(EmptyCell.self, with: viewModel, for: indexPath)
         case .routine(let viewModel):
@@ -170,6 +177,7 @@ extension RoutineListView {
       $0.delegate = self
       $0.backgroundColor = .clear
       $0.delaysContentTouches = false
+      $0.register(PremiumBannerCell.self)
       $0.register(EmptyCell.self)
       $0.register(RoutineCell.self)
       $0.register(GroupSupplementary.self)

@@ -1,7 +1,7 @@
 import UIKit
 
 @MainActor protocol SettingsViewInterface: AnyObject {
-  func update(with snapshot: Snapshot<Settings.Section, Settings.Row>)
+  func update(with snapshot: Snapshot<Settings.Section?, Settings.Row>)
   func showAlert(with viewModel: Alert.VM)
 }
 
@@ -37,7 +37,7 @@ final class SettingsVC: UIViewController {
 
 // MARK: - SettingsViewInterface
 extension SettingsVC: SettingsViewInterface {
-  func update(with snapshot: Snapshot<Settings.Section, Settings.Row>) {
+  func update(with snapshot: Snapshot<Settings.Section?, Settings.Row>) {
     contentView.update(with: snapshot)
   }
   

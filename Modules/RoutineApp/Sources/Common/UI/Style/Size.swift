@@ -11,6 +11,7 @@ extension Size.CornerRadius {
   static let container: CGFloat = 14
   static let buttonBig: CGFloat = 14
   static let button: CGFloat = 6
+  static let icon: CGFloat = 10
   static let barsInChart: CGFloat = 12
 }
 
@@ -41,6 +42,7 @@ extension Size {
 }
 
 extension Size.Icon {
-  static let big: CGFloat = 48
+  static let big2: CGFloat = 48
+  static let big: CGFloat = 40
   static let `default`: CGFloat = 30
 }

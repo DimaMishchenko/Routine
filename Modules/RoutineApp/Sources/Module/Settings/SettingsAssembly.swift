@@ -24,6 +24,12 @@ final class SettingsAssembly {
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
     
+    presenter.premium = { [weak vc, weak assemblyFactory] in
+      Task { [vc, assemblyFactory] in
+        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
+        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
+      }
+    }
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
     presenter.telegramSupport = { ExternalLinksNavigator.telegramSupport() }
     presenter.rateApp = {
