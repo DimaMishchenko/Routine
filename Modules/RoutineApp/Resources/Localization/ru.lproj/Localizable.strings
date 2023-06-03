@@ -160,6 +160,7 @@
 
 "premium.button.done" = "Done";
 "premium.button.restore" = "Restore";
+"premium.button.redeem" = "Redeem";
 
 "premium.item.unlimited.title" = "Unlimited routines";
 "premium.item.unlimited.description" = "Add as many routines as you wish and view them in one convenient place.";

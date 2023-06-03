@@ -8,13 +8,14 @@ import Foundation
   func restore()
   func close()
   func manage()
+  func redeem()
 }
 
 final class PremiumViewModelImpl: PremiumViewModel {
   // MARK: - Properties
   var dismiss: (() -> Void)?
   
-  @Published var isPremium: Bool = false
+  @Published var isPremium = false
   
   let items: [Premium.Item] = [
     .init(
@@ -92,6 +93,10 @@ final class PremiumViewModelImpl: PremiumViewModel {
         Logger.log(error)
       }
     }
+  }
+  
+  func redeem() {
+    purchases.redeemCode()
   }
   
   func close() {

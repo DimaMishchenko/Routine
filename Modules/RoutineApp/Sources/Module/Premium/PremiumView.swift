@@ -147,6 +147,7 @@ struct PremiumView_Previews: PreviewProvider {
     func close() {}
     func purchase(id: String) {}
     func manage() {}
+    func redeem() {}
   }
 }
 #endif

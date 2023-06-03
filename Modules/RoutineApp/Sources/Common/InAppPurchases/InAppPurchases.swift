@@ -93,6 +93,10 @@ final class InAppPurchases: NSObject {
     try await Purchases.shared.showManageSubscriptions()
   }
   
+  func redeemCode() {
+    Purchases.shared.presentCodeRedemptionSheet()
+  }
+  
   // MARK: - Private
   private func currentOffering() async throws -> Offering {
     try await withCheckedThrowingContinuation { continuation in

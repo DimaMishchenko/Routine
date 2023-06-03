@@ -21,12 +21,20 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
     super.viewDidLoad()
     view.backgroundColor = Color.Background.default
     title = RoutineAppStrings.Premium.title
-    navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.Premium.Button.restore,
-      style: .done,
-      target: self,
-      action: #selector(restore)
-    )
+    navigationItem.leftBarButtonItems = [
+      UIBarButtonItem(
+        title: RoutineAppStrings.Premium.Button.restore,
+        style: .plain,
+        target: self,
+        action: #selector(restore)
+      ),
+      UIBarButtonItem(
+        title: RoutineAppStrings.Premium.Button.redeem,
+        style: .plain,
+        target: self,
+        action: #selector(redeem)
+      )
+    ]
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: RoutineAppStrings.Premium.Button.done,
       style: .done,
@@ -38,6 +46,10 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
   // MARK: - Actions
   @objc private func restore() {
     viewModel.restore()
+  }
+  
+  @objc private func redeem() {
+    viewModel.redeem()
   }
   
   @objc private func done() {
