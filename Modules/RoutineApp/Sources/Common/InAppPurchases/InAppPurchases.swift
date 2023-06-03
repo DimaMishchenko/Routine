@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import RevenueCat
 
@@ -42,8 +43,7 @@ final class InAppPurchases: NSObject {
   }
   
   // MARK: - Properties
-  var subscribed: Bool { customerInfo?.entitlements.active.isEmpty == false }
-  private var customerInfo: CustomerInfo?
+  @Published var subscribed = false
   
   // MARK: - Public
   func setup() {
@@ -79,10 +79,8 @@ final class InAppPurchases: NSObject {
     
     try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
       Purchases.shared.purchase(package: package) { transaction, info, error, cancelled in
-        print(transaction)
-        print(info)
-        print(error)
-        print(cancelled)
+        continuation.resume()
+        // TODO: - details + analytics
       }
     }
   }
@@ -116,6 +114,6 @@ final class InAppPurchases: NSObject {
 
 extension InAppPurchases: PurchasesDelegate {
   func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
-    self.customerInfo = customerInfo
+    subscribed = !customerInfo.entitlements.active.isEmpty
   }
 }

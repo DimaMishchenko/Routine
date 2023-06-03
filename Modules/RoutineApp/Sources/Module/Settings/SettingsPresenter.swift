@@ -15,6 +15,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   private let notificationsHandler: NotificationsHandler
   private let identifierCopyHandler: UserIdentifierCopyHandler
   private let authenticator: Authenticator
+  private let inAppPurchases: InAppPurchases
   
   // MARK: - Properties
   var premium: (() -> Void)?
@@ -37,16 +38,19 @@ final class SettingsPresenterImpl: SettingsPresenter {
     appStateObserver: AppStateObserver,
     notificationsHandler: NotificationsHandler,
     identifierCopyHandler: UserIdentifierCopyHandler,
-    authenticator: Authenticator
+    authenticator: Authenticator,
+    inAppPurchases: InAppPurchases
   ) {
     self.rowFactory = rowFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
     self.identifierCopyHandler = identifierCopyHandler
     self.authenticator = authenticator
-    
+    self.inAppPurchases = inAppPurchases
+
     setupAppStateObserver()
     disableFaceIDIfNeeded()
+    setupPremiumObserver()
   }
   
   // MARK: - SettingsPresenter
@@ -71,6 +75,12 @@ final class SettingsPresenterImpl: SettingsPresenter {
   }
   
   func faceIDStateUpdateRequest(_ currentStatus: Bool) {
+    guard inAppPurchases.subscribed else {
+      useFaceID = false
+      premium?()
+      return
+    }
+    
     Task(priority: .userInitiated) {
       if currentStatus {
         useFaceID = false
@@ -102,6 +112,15 @@ final class SettingsPresenterImpl: SettingsPresenter {
     }
   }
   
+  private func setupPremiumObserver() {
+    inAppPurchases.$subscribed
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        Task { [self] in await self?.reloadSnapshot() }
+      }
+      .store(in: &cancellables)
+  }
+  
   // swiftlint:disable:next function_body_length
   private func reloadSnapshot() async {
     typealias Item = Snapshot<Settings.Section?, Settings.Row>.Item
@@ -110,14 +129,16 @@ final class SettingsPresenterImpl: SettingsPresenter {
     
     await view?.update(
       with: Snapshot {
-        Item(
-          section: nil,
-          rows: [
-            .init(.premium(.init(accesory: .disclosure))) { [weak self] in
-              self?.premium?()
-            }
-          ]
-        )
+        if !inAppPurchases.subscribed {
+          Item(
+            section: nil,
+            rows: [
+              .init(.premium(.init(accesory: .disclosure))) { [weak self] in
+                self?.premium?()
+              }
+            ]
+          )          
+        }
         
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),

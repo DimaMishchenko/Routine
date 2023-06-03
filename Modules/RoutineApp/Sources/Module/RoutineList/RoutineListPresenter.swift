@@ -14,12 +14,18 @@ protocol RoutineListPresenter {
 }
 
 final class RoutineListPresenterImpl: RoutineListPresenter {
+  // MARK: - Constants
+  private enum Constants {
+    // TODO: - remote config
+    static let freeRoutines = 5
+  }
   // MARK: - Dependencies
   weak var view: RoutineListViewInterface?
   private let store: RoutineStore
   private let itemFactory: RoutineListItemFactory
   private let appStateObserver: AppStateObserver
   private let notificationsHandler: NotificationsHandler
+  private let inAppPurchases: InAppPurchases
   
   // MARK: - Public Properties
   var premium: (() -> Void)?
@@ -41,12 +47,14 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     store: RoutineStore,
     itemFactory: RoutineListItemFactory,
     appStateObserver: AppStateObserver,
-    notificationsHandler: NotificationsHandler
+    notificationsHandler: NotificationsHandler,
+    inAppPurchases: InAppPurchases
   ) {
     self.store = store
     self.itemFactory = itemFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
+    self.inAppPurchases = inAppPurchases
   }
  
   // MARK: - RoutineListPresenter
@@ -57,6 +65,14 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       .on(.didBecomeActive)
       .sink { [weak self] in
         self?.clearNotifications()
+      }
+      .store(in: &cancellables)
+    
+    inAppPurchases.$subscribed
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        self?.showPremium = !$0
+        self?.reloadSnapshot()
       }
       .store(in: &cancellables)
     
@@ -85,6 +101,14 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   }
   
   func addRoutine() {
+    guard
+      inAppPurchases.subscribed ||
+      sections.reduce(into: Int.zero, { $0 += $1.routines.count }) < Constants.freeRoutines
+    else {
+      premium?()
+      return
+    }
+    
     addNewRoutine? { [weak self] routine in
       Task(logError: true) { [self] in try await self?.store.save(routine) }
     }

@@ -19,7 +19,8 @@ final class SettingsAssembly {
       appStateObserver: serviceFactory.appStateObserver(),
       notificationsHandler: serviceFactory.notificationsPermissionHandler(),
       identifierCopyHandler: UserIdentifierCopyHandler(),
-      authenticator: serviceFactory.authenticator()
+      authenticator: serviceFactory.authenticator(),
+      inAppPurchases: serviceFactory.inAppPurchases()
     )
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
@@ -37,7 +38,7 @@ final class SettingsAssembly {
         SKStoreReviewController.requestReview(in: $0)        
       }
     }
-    
+
     presenter.mailSupport = { [weak assemblyFactory, weak vc] subject, message in
       let controllerProxy = assemblyFactory?.mail().controller(
         subject: subject,

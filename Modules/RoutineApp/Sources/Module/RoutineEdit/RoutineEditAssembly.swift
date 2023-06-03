@@ -3,10 +3,12 @@ import UIKit
 
 final class RoutineEditAssembly {
   // MARK: - Dependencies
+  private let assemblyFactory: AssemblyFactory
   private let serviceFactory: ServiceFactory
   
   // MARK: - Init
-  init(serviceFactory: ServiceFactory) {
+  init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
+    self.assemblyFactory = assemblyFactory
     self.serviceFactory = serviceFactory
   }
   
@@ -19,11 +21,18 @@ final class RoutineEditAssembly {
     let presenter = RoutineEditPresenterImpl(
       moduleType: type,
       itemFactory: RoutineEditItemFactoryImpl(),
-      notificationsHandler: serviceFactory.notificationsPermissionHandler()
+      notificationsHandler: serviceFactory.notificationsPermissionHandler(),
+      inAppPurchases: serviceFactory.inAppPurchases()
     )
     let vc = RoutineEditVC(presenter: presenter)
     presenter.view = vc
     
+    presenter.premium = { [weak vc, weak assemblyFactory] in
+      Task { [vc, assemblyFactory] in
+        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
+        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
+      }
+    }
     presenter.saveRoutine = { onSave($0) }
     presenter.deleteRoutine = { onDelete() }
     

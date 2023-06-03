@@ -17,7 +17,8 @@ final class RoutineListAssembly {
       store: serviceFactory.routineStore(),
       itemFactory: RoutineListItemFactoryImpl(),
       appStateObserver: serviceFactory.appStateObserver(),
-      notificationsHandler: serviceFactory.notificationsPermissionHandler()
+      notificationsHandler: serviceFactory.notificationsPermissionHandler(),
+      inAppPurchases: serviceFactory.inAppPurchases()
     )
     let vc = RoutineListVC(presenter: presenter)
     presenter.view = vc
@@ -28,7 +29,7 @@ final class RoutineListAssembly {
         await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
       }
     }
-    presenter.editRoutine = { [weak vc, weak assemblyFactory] routine, completion, onDelete in
+    presenter.editRoutine = { [weak vc, weak assemblyFactory, weak presenter] routine, completion, onDelete in
       let editVC = assemblyFactory?.routineEdit().controller(
         for: .edit(routine),
         onSave: { completion($0) },
@@ -36,7 +37,7 @@ final class RoutineListAssembly {
       )
       editVC.flatMap { vc?.present(UINavigationController(rootViewController: $0), animated: true) }
     }
-    presenter.addNewRoutine = { [weak vc, weak assemblyFactory] completion in
+    presenter.addNewRoutine = { [weak vc, weak assemblyFactory, weak presenter] completion in
       let editVC = assemblyFactory?.routineEdit().controller(
         for: .new,
         onSave: { completion($0) },

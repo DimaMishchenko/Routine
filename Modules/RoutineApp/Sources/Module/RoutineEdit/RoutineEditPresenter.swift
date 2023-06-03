@@ -20,8 +20,10 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   weak var view: RoutineEditViewInterface?
   private let itemFactory: RoutineEditItemFactory
   private let notificationsHandler: NotificationsHandler
+  private let inAppPurchases: InAppPurchases
   
   // MARK: - Action Properties
+  var premium: (() -> Void)?
   var saveRoutine: ((Routine) -> Void)?
   var deleteRoutine: (() -> Void)?
   var close: (() -> Void)?
@@ -35,11 +37,13 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   init(
     moduleType: RoutineEdit.ModuleType,
     itemFactory: RoutineEditItemFactory,
-    notificationsHandler: NotificationsHandler
+    notificationsHandler: NotificationsHandler,
+    inAppPurchases: InAppPurchases
   ) {
     self.moduleType = moduleType
     self.itemFactory = itemFactory
     self.notificationsHandler = notificationsHandler
+    self.inAppPurchases = inAppPurchases
     
     switch moduleType {
     case .new: editableRoutine = EditableRoutine(routine: .new)
@@ -108,6 +112,12 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   }
   
   func remindMeChangeRequest(_ currentState: Bool) {
+    guard inAppPurchases.subscribed else {
+      updateRemindMeState(false)
+      premium?()
+      return
+    }
+    
     Task(priority: .userInitiated) {
       if await notificationsHandler.isAuthorized() {
         updateRemindMeState(!currentState)

@@ -14,7 +14,7 @@ final class PremiumViewModelImpl: PremiumViewModel {
   // MARK: - Properties
   var dismiss: (() -> Void)?
   
-  var isPremium: Bool { purchases.subscribed }
+  @Published var isPremium: Bool = false
   
   let items: [Premium.Item] = [
     .init(
@@ -47,6 +47,7 @@ final class PremiumViewModelImpl: PremiumViewModel {
   // MARK: - Init
   init(purchases: InAppPurchases) {
     self.purchases = purchases
+    purchases.$subscribed.assign(to: &$isPremium)
     
     Task {
       do {
@@ -65,6 +66,7 @@ final class PremiumViewModelImpl: PremiumViewModel {
         await MainActor.run { self.offers = offers }
       } catch {
         // TODO: - handle error
+        Logger.log(error)
       }
     }
   }
@@ -73,11 +75,9 @@ final class PremiumViewModelImpl: PremiumViewModel {
     Task {
       do {
         try await purchases.purchase(with: id)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          self.objectWillChange.send()
-//        }
       } catch {
         // TODO: - handle error
+        Logger.log(error)
       }
     }
   }
@@ -89,6 +89,7 @@ final class PremiumViewModelImpl: PremiumViewModel {
         // TODO: - Log/analytics
       } catch {
         // TODO: - handle error
+        Logger.log(error)
       }
     }
   }
@@ -103,6 +104,7 @@ final class PremiumViewModelImpl: PremiumViewModel {
         try await purchases.manage()
       } catch {
         // TODO: - handle error
+        Logger.log(error)
       }
     }
   }
