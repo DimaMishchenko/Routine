@@ -27,6 +27,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openCloudInfo: (() -> Void)?
   var openAppearance: (() -> Void)?
   var openTutorial: (() -> Void)?
+  var openMacApp: (() -> Void)?
   
   // MARK: - Private Properties
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
@@ -151,9 +152,19 @@ final class SettingsPresenterImpl: SettingsPresenter {
             },
             rowFactory.notificationsRow(isAuthorized: isAuthorized),
             rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() },
+            rowFactory.premiumRow { [weak self] in self?.premium?() },
             rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
           ]
         )
+        
+        #if !targetEnvironment(macCatalyst)
+        Item(
+          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.macApp)),
+          rows: [
+            rowFactory.macRow { [weak self] in self?.openMacApp?() }
+          ]
+        )
+        #endif
         
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Settings.Section.feedback)),

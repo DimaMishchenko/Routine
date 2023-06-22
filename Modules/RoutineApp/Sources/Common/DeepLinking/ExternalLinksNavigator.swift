@@ -20,6 +20,11 @@ enum ExternalLinksNavigator {
     }
   }
   
+  static func macApp() {
+    // TODO: - replace withr remote config
+    open(with: URL(string: "https://apps.apple.com/us/app/routine-daily-tracker/id1643340709"))
+  }
+  
   // MARK: - Private
   private static func canOpen(_ url: URL?) -> Bool {
     url.flatMap { UIApplication.shared.canOpenURL($0) } ?? false

@@ -21,6 +21,16 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
     super.viewDidLoad()
     view.backgroundColor = Color.Background.default
     title = RoutineAppStrings.Premium.title
+    #if targetEnvironment(macCatalyst)
+    navigationItem.leftBarButtonItems = [
+      UIBarButtonItem(
+        title: RoutineAppStrings.Premium.Button.restore,
+        style: .plain,
+        target: self,
+        action: #selector(restore)
+      )
+    ]
+    #else
     navigationItem.leftBarButtonItems = [
       UIBarButtonItem(
         title: RoutineAppStrings.Premium.Button.restore,
@@ -35,6 +45,7 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
         action: #selector(redeem)
       )
     ]
+    #endif
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: RoutineAppStrings.Premium.Button.done,
       style: .done,

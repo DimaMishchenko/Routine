@@ -87,12 +87,15 @@
 "settings.section.app" = "Приложение";
 "settings.section.feedback" = "Обратная связь";
 "settings.section.security" = "Security";
+"settings.section.macApp" = "Mac app";
 "settings.section.more" = "Другое";
 
 "settings.row.language" = "Язык";
 "settings.row.notifications" = "Уведомления";
 "settings.row.iCloudSync" = "iClound синхронизация";
+"settings.row.premium" = "Premium";
 "settings.row.appearance" = "Тема";
+"settings.row.macOS" = "Routine on macOS";
 "settings.row.reportBug" = "Сообщить об ошибке";
 "settings.row.writeReview" = "Написать отзыв";
 "settings.row.shareApp" = "Поделиться";

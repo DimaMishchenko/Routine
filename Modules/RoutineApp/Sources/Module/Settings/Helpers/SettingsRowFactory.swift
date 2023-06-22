@@ -4,7 +4,9 @@ protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
   func notificationsRow(isAuthorized: Bool) -> Settings.Row
   func iCloudSyncRow(action: @escaping () -> Void) -> Settings.Row
+  func premiumRow(action: @escaping () -> Void) -> Settings.Row
   func appearanceRow(action: @escaping () -> Void) -> Settings.Row
+  func macRow(action: @escaping () -> Void) -> Settings.Row
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row
   func writeReviewRow(action: @escaping () -> Void) -> Settings.Row
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row
@@ -58,12 +60,38 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     )
   }
   
+  func premiumRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Settings.Row.premium,
+          icon: RoutineAppAsset.Icon.premium.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+  
   func appearanceRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
         .init(
           title: RoutineAppStrings.Settings.Row.appearance,
           icon: RoutineAppAsset.Icon.appearance.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+  
+  func macRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Settings.Row.macOS,
+          icon: RoutineAppAsset.Icon.macApp.image,
           accessory: .disclosure
         )
       ),

@@ -87,12 +87,15 @@
 "settings.section.app" = "App";
 "settings.section.feedback" = "Feedback";
 "settings.section.security" = "Security";
+"settings.section.macApp" = "Mac app";
 "settings.section.more" = "More";
 
 "settings.row.language" = "Language";
 "settings.row.notifications" = "Notifications";
 "settings.row.iCloudSync" = "iClound sync";
+"settings.row.premium" = "Premium";
 "settings.row.appearance" = "Appearance";
+"settings.row.macOS" = "Routine on macOS";
 "settings.row.reportBug" = "Report a bug";
 "settings.row.writeReview" = "Write a review";
 "settings.row.shareApp" = "Share app";

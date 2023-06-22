@@ -94,7 +94,9 @@ final class InAppPurchases: NSObject {
   }
   
   func redeemCode() {
-    Purchases.shared.presentCodeRedemptionSheet()
+    #if !targetEnvironment(macCatalyst)
+      Purchases.shared.presentCodeRedemptionSheet()
+    #endif
   }
   
   // MARK: - Private

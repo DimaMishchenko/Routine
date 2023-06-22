@@ -50,6 +50,7 @@ final class SettingsAssembly {
     }
     
     presenter.share = { [weak assemblyFactory, weak vc] in
+      // TODO: - replace withr remote config
       guard
         let url = URL(string: "https://apps.apple.com/us/app/routine-daily-tracker/id1643340709"),
         let shareVC = assemblyFactory?.share().controller(items: [url])
@@ -89,6 +90,8 @@ final class SettingsAssembly {
         await vc?.present(tutorialVC, animated: true)
       }
     }
+    
+    presenter.openMacApp = { ExternalLinksNavigator.macApp() }
     
     return vc
   }
