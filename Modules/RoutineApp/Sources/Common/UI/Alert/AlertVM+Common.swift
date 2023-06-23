@@ -12,4 +12,16 @@ extension Alert.VM {
       }
     )
   }
+  
+  static func appUpdate(onOpenStore: @escaping () -> Void) -> Alert.VM {
+    .init(
+      title: RoutineAppStrings.Common.Alert.UpdateApp.title,
+      message: RoutineAppStrings.Common.Alert.UpdateApp.message,
+      actions: [.cancel, .yes],
+      handler: {
+        guard case .yes = $0 else { return }
+        onOpenStore()
+      }
+    )
+  }
 }

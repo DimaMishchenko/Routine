@@ -50,48 +50,33 @@ final class PremiumViewModelImpl: PremiumViewModel {
     self.purchases = purchases
     purchases.$subscribed.assign(to: &$isPremium)
     
-    Task {
-      do {
-        let offers: [Premium.Offer] = try await purchases.offerings().compactMap { offering in
-          guard let period = offering.period else { return nil }
-          let trial: String? = {
-            guard let trial = offering.trial else { return nil }
-            return "\(trial.amount) \(localizedPeriod(trial.period)) \(RoutineAppStrings.Premium.Offer.freeTrial)"
-          }()
-          return Premium.Offer(
-            id: offering.id,
-            title: "\(RoutineAppStrings.Premium.Offer.subscribe) \(offering.price) / \(localizedPeriod(period))",
-            trialDescription: trial
-          )
-        }
-        await MainActor.run { self.offers = offers }
-      } catch {
-        // TODO: - handle error
-        Logger.log(error)
+    Task(logError: true) {
+      let offers: [Premium.Offer] = try await purchases.offerings().compactMap { offering in
+        guard let period = offering.period else { return nil }
+        let trial: String? = {
+          guard let trial = offering.trial else { return nil }
+          return "\(trial.amount) \(localizedPeriod(trial.period)) \(RoutineAppStrings.Premium.Offer.freeTrial)"
+        }()
+        return Premium.Offer(
+          id: offering.id,
+          title: "\(RoutineAppStrings.Premium.Offer.subscribe) \(offering.price) / \(localizedPeriod(period))",
+          trialDescription: trial
+        )
       }
+      await MainActor.run { self.offers = offers }
     }
   }
   
   func purchase(id: String) {
-    Task {
-      do {
-        try await purchases.purchase(with: id)
-      } catch {
-        // TODO: - handle error
-        Logger.log(error)
-      }
+    Task(logError: true) {
+      try await purchases.purchase(with: id)
     }
   }
   
   func restore() {
-    Task {
-      do {
-        try await purchases.restore()
-        // TODO: - Log/analytics
-      } catch {
-        // TODO: - handle error
-        Logger.log(error)
-      }
+    Task(logError: true) {
+      try await purchases.restore()
+      Analytics.send(.restorePurchases, parameters: [.subscribed: isPremium])
     }
   }
   
@@ -104,13 +89,8 @@ final class PremiumViewModelImpl: PremiumViewModel {
   }
   
   func manage() {
-    Task {
-      do {
-        try await purchases.manage()
-      } catch {
-        // TODO: - handle error
-        Logger.log(error)
-      }
+    Task(logError: true) {
+      try await purchases.manage()
     }
   }
   

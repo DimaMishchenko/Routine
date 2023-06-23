@@ -78,9 +78,15 @@ final class InAppPurchases: NSObject {
     }
     
     try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-      Purchases.shared.purchase(package: package) { transaction, info, error, cancelled in
+      Purchases.shared.purchase(package: package) { _, info, error, _ in
+        if let error { Logger.log(error) }
+        if let info {
+          Analytics.send(
+            .purchase,
+            parameters: [.purchaseId: id, .subscribed: !info.entitlements.active.isEmpty]
+          )
+        }
         continuation.resume()
-        // TODO: - details + analytics
       }
     }
   }

@@ -26,7 +26,7 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
     if FirebaseApp.app() == nil {
       FirebaseApp.configure(options: options)
     }
-    Analytics.setUserID(UserIdentifier.current)
+    Firebase.Analytics.setUserID(UserIdentifier.current)
     Crashlytics.crashlytics().setUserID(UserIdentifier.current)
     
     #if DEBUG
@@ -34,6 +34,25 @@ final class FirebaseConfigureImpl: FirebaseConfigure {
     #else
       Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
     #endif
+
+    let settings = RemoteConfigSettings()
+    settings.minimumFetchInterval = .zero
+    RemoteConfig.remoteConfig().configSettings = settings
+
+    RemoteConfig.remoteConfig().fetch { status, error -> Void in
+      if status == .success {
+        RemoteConfig.remoteConfig().activate()
+      } else {
+        error.flatMap { Logger.log($0) }
+      }
+    }
+    RemoteConfig.remoteConfig().addOnConfigUpdateListener { _, error in
+      if let error {
+        Logger.log(error)
+        return
+      }
+      RemoteConfig.remoteConfig().activate()
+    }
   }
   
   // MARK: - Private

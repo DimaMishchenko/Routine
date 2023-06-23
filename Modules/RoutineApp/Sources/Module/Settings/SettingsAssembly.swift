@@ -13,6 +13,7 @@ final class SettingsAssembly {
   }
   
   // MARK: - Public
+  // swiftlint:disable:next function_body_length
   func controller() -> UIViewController {
     let presenter = SettingsPresenterImpl(
       rowFactory: SettingsRowFactoryImpl(),
@@ -32,8 +33,12 @@ final class SettingsAssembly {
       }
     }
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
-    presenter.telegramSupport = { ExternalLinksNavigator.telegramSupport() }
+    presenter.telegramSupport = {
+      Analytics.send(.supportTG)
+      ExternalLinksNavigator.telegramSupport()
+    }
     presenter.rateApp = {
+      Analytics.send(.rateApp)
       UIApplication.shared.activeWindowScene.flatMap {
         SKStoreReviewController.requestReview(in: $0)        
       }
@@ -44,19 +49,19 @@ final class SettingsAssembly {
         subject: subject,
         message: message,
         addDebugData: true,
-        onResult: { _, _ in /* TODO: - Analytics event */ }
+        onResult: { _, _ in Analytics.send(.supportMail) }
       )
       controllerProxy.flatMap { vc?.present($0.controller, animated: true) }
     }
     
     presenter.share = { [weak assemblyFactory, weak vc] in
-      // TODO: - replace withr remote config
       guard
-        let url = URL(string: "https://apps.apple.com/us/app/routine-daily-tracker/id1643340709"),
+        let url = Flag.appStoreLink,
         let shareVC = assemblyFactory?.share().controller(items: [url])
       else {
         return
       }
+      Analytics.send(.share)
       vc?.present(shareVC, animated: true)
     }
     
@@ -91,7 +96,10 @@ final class SettingsAssembly {
       }
     }
     
-    presenter.openMacApp = { ExternalLinksNavigator.macApp() }
+    presenter.openMacApp = {
+      Analytics.send(.macLink)
+      ExternalLinksNavigator.macApp()
+    }
     
     return vc
   }

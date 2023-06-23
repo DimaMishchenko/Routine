@@ -44,7 +44,8 @@ struct CompleteRoutinesIntent: AppIntent, @unchecked Sendable {
 
       updatedItems.append(.init(routine: editable.routine))
     }
-    
+
+    Analytics.send(.intentComplete)
     return .result(value: updatedItems, dialog: "intent.CR.result.success")
   }
 }

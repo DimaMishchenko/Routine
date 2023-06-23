@@ -91,6 +91,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
       } else {
         useFaceID = await authenticator.auth(biometryOnly: true)
       }
+      Analytics.send(.biometrics, parameters: [.biometricsEnabled: useFaceID])
       await reloadSnapshot()
     }
   }

@@ -63,7 +63,7 @@ final class NotificationsHandlerImpl: NotificationsHandler {
         let content = with(UNMutableNotificationContent()) {
           $0.title = title
           $0.body = body
-          // TODO: - Increase in notification extension on every new item
+          // TODO: - Increase on every new item
           $0.badge = 1
         }
         

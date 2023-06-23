@@ -10,19 +10,21 @@ enum ExternalLinksNavigator {
   }
   
   static func telegramSupport() {
-    // TODO: - Update contact url
-    let tgAppLink = URL(string: "tg://resolve?domain=dimasik_karasik")
+    let tgAppLink = URL(string: "tg://resolve?domain=\(Flag.tgSupportNick)")
     
     if canOpen(tgAppLink) {
       open(with: tgAppLink)
     } else {
-      open(with: URL(string: "https://github.com/DimaMishchenko/Routine/issues"))      
+      open(with: URL(string: "https://github.com/DimaMishchenko/Routine/issues)"))
     }
   }
   
   static func macApp() {
-    // TODO: - replace withr remote config
-    open(with: URL(string: "https://apps.apple.com/us/app/routine-daily-tracker/id1643340709"))
+    open(with: Flag.appStoreLink)
+  }
+  
+  static func appStore() {
+    open(with: Flag.appStoreLink)
   }
   
   // MARK: - Private

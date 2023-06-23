@@ -40,7 +40,8 @@ struct IncreaseRoutinesProgressIntent: AppIntent, @unchecked Sendable {
       try await store.update(editable.routine)
       updatedItems.append(.init(routine: editable.routine))
     }
-    
+
+    Analytics.send(.intentComplete)
     return .result(value: updatedItems, dialog: "intent.IRP.result.success")
   }
 }

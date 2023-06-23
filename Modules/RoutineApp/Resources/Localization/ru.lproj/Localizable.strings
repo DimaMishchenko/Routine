@@ -181,6 +181,8 @@
 "premium.purchased.status" = "Your Premium subscription is active.";
 "premium.purchased.manage" = "Manage your subscription.";
 
+"premium.unavailable" = "Routine Premium is currently unavailable 😞";
+
 "premium.period.day" = "day";
 "premium.period.week" = "week";
 "premium.period.month" = "month";
@@ -228,3 +230,6 @@
 // MARK: - Common
 "common.alert.deleteRoutine.title" = "Вы уверены, что хотите удалить рутину?";
 "common.alert.deleteRoutine.message" = "Ее нельзя восстановить";
+
+"common.alert.updateApp.title" = "New Routine version is available";
+"common.alert.updateApp.message" = "Would you like to update to latest version of the app for better experience?";

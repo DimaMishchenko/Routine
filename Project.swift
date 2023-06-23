@@ -28,7 +28,8 @@ let project = Project(
         .spm(.firebase(.analytics)),
         .spm(.firebase(.crashlytics)),
         .spm(.firebase(.performance)),
-        .spm(.firebase(.messaging))
+        .spm(.firebase(.messaging)),
+        .spm(.firebase(.remoteConfig))
       ]
     ),
     .routineAppTests(),

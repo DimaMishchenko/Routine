@@ -10,11 +10,9 @@ final class MailAssembly {
     onResult: @escaping (MFMailComposeResult, Error?) -> Void
   ) -> MailComposeControllerProxy? {
     guard MFMailComposeViewController.canSendMail() else { return nil }
-    // TODO: - Repalce with remote config
-    let email = "dimasike.dev@gmail.com"
-    
+
     let mailVC = MFMailComposeViewController()
-    mailVC.setToRecipients([email])
+    mailVC.setToRecipients([Flag.contactEmail])
     mailVC.setSubject(subject)
     mailVC.setMessageBody(
       addDebugData ? (message + .newLine + debugInfo()) : message,

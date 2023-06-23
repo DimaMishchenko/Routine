@@ -27,6 +27,10 @@ struct PremiumView<VM: PremiumViewModel>: View {
       VStack {
         if viewModel.isPremium {
           Manage { viewModel.manage() }
+        } else if !Flag.enablePremium {
+          Text(RoutineAppStrings.Premium.unavailable)
+            .font(Font.system(size: .body, weight: .regular))
+            .foregroundColor(SwiftUI.Color(Color.Text.value))
         } else if viewModel.offers.isEmpty {
           Text(RoutineAppStrings.Premium.Offer.noOffers)
             .font(Font.system(size: .body, weight: .regular))

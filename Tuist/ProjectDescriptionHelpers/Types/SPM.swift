@@ -82,6 +82,7 @@ public enum SPM {
       case crashlytics
       case performance
       case messaging
+      case remoteConfig
     }
     
     // MARK: - Public
@@ -106,6 +107,7 @@ public enum SPM {
         case .crashlytics:      return "FirebaseCrashlytics"
         case .performance:      return "FirebasePerformance"
         case .messaging:        return "FirebaseMessaging"
+        case .remoteConfig:     return "FirebaseRemoteConfig"
         }
       }
     }

@@ -19,6 +19,8 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    Analytics.send(.deleteRoutine, parameters: [.subscribed: viewModel.isPremium])
+    
     view.backgroundColor = Color.Background.default
     title = RoutineAppStrings.Premium.title
     #if targetEnvironment(macCatalyst)
