@@ -40,21 +40,23 @@ final class SettingsAssembly {
     }
     presenter.rateApp = {
       Analytics.send(.rateApp)
-      UIApplication.shared.activeWindowScene.flatMap {
-        SKStoreReviewController.requestReview(in: $0)        
-      }
+      ExternalLinksNavigator.appStore()
+      // TODO: - find better approach
+//      UIApplication.shared.activeWindowScene.flatMap {
+//        SKStoreReviewController.requestReview(in: $0)
+//      }
     }
 
     presenter.mailSupport = { [weak assemblyFactory, weak vc] subject, message in
-      let controllerProxy = assemblyFactory?.mail().controller(
+      let mailVC = assemblyFactory?.mail().controller(
         subject: subject,
         message: message,
         addDebugData: true,
         onResult: { _, _ in Analytics.send(.supportMail) }
       )
-      controllerProxy.flatMap { vc?.present($0.controller, animated: true) }
+      mailVC.flatMap { vc?.present($0, animated: true) }
     }
-    
+
     presenter.share = { [weak assemblyFactory, weak vc] in
       guard
         let url = Flag.appStoreLink,
@@ -65,7 +67,7 @@ final class SettingsAssembly {
       Analytics.send(.share)
       vc?.present(shareVC, animated: true)
     }
-    
+
     presenter.openCloudInfo = { [weak assemblyFactory, weak vc] in
       Task { [assemblyFactory, vc] in
         guard let appearanceVC = await assemblyFactory?.cloudInfo().controller() else { return }
@@ -77,7 +79,7 @@ final class SettingsAssembly {
         }
       }
     }
-    
+
     presenter.openAppearance = { [weak assemblyFactory, weak vc] in
       Task { [assemblyFactory, vc] in
         guard let appearanceVC = await assemblyFactory?.appearance().controller() else { return }
@@ -96,7 +98,7 @@ final class SettingsAssembly {
         await vc?.present(tutorialVC, animated: true)
       }
     }
-    
+
     presenter.openMacApp = {
       Analytics.send(.macLink)
       ExternalLinksNavigator.macApp()

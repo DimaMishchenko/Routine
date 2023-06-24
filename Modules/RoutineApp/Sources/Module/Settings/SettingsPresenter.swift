@@ -145,18 +145,28 @@ final class SettingsPresenterImpl: SettingsPresenter {
         
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.app)),
-          rows: [
-            rowFactory.languageRow { [weak self] in
-              guard let self = self else { return }
-              Task(priority: .userInitiated) {
-                await self.view?.showAlert(with: self.languageAlertVM())
-              }
-            },
-            rowFactory.notificationsRow(isAuthorized: isAuthorized),
-            rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() },
-            rowFactory.premiumRow { [weak self] in self?.premium?() },
-            rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
-          ]
+          rows: {
+            var rows = [
+              rowFactory.notificationsRow(isAuthorized: isAuthorized),
+              rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() },
+              rowFactory.premiumRow { [weak self] in self?.premium?() },
+              rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
+            ]
+            
+            #if !targetEnvironment(macCatalyst)
+            rows.insert(
+              rowFactory.languageRow { [weak self] in
+                guard let self = self else { return }
+                Task(priority: .userInitiated) {
+                  await self.view?.showAlert(with: self.languageAlertVM())
+                }
+              },
+              at: .zero
+            )
+            #endif
+            
+            return rows
+          }()
         )
         
         #if !targetEnvironment(macCatalyst)

@@ -8,20 +8,21 @@ final class MailAssembly {
     message: String,
     addDebugData: Bool = false,
     onResult: @escaping (MFMailComposeResult, Error?) -> Void
-  ) -> MailComposeControllerProxy? {
+  ) -> MailComposeController? {
     guard MFMailComposeViewController.canSendMail() else { return nil }
 
-    let mailVC = MFMailComposeViewController()
+    let mailVC = MailComposeController {
+      onResult($1, $2)
+      $0.dismiss(animated: true)
+    }
+
     mailVC.setToRecipients([Flag.contactEmail])
     mailVC.setSubject(subject)
     mailVC.setMessageBody(
       addDebugData ? (message + .newLine + debugInfo()) : message,
       isHTML: false
     )
-    return MailComposeControllerProxy(controller: mailVC) {
-      onResult($1, $2)
-      $0.dismiss(animated: true)
-    }
+    return mailVC
   }
   
   // MARK: - Private
@@ -39,23 +40,25 @@ final class MailAssembly {
 }
 
 extension MailAssembly {
-  final class MailComposeControllerProxy: NSObject, MFMailComposeViewControllerDelegate {
+  final class MailComposeController: MFMailComposeViewController, MFMailComposeViewControllerDelegate {
     // MARK: - Properties
-    let controller: MFMailComposeViewController
     private let delegateProxy: (MFMailComposeViewController, MFMailComposeResult, Error?) -> Void
     
     // MARK: - Init
     fileprivate init(
-      controller: MFMailComposeViewController,
       delegateProxy: @escaping (MFMailComposeViewController, MFMailComposeResult, Error?) -> Void
     ) {
-      self.controller = controller
       self.delegateProxy = delegateProxy
-      super.init()
-      
-      self.controller.mailComposeDelegate = self
+      super.init(nibName: nil, bundle: nil)
+
+      mailComposeDelegate = self
     }
-    
+
+    @available(*, unavailable, message: "Not supported")
+    required init?(coder aDecoder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - MFMailComposeViewControllerDelegate
     func mailComposeController(
       _ controller: MFMailComposeViewController,

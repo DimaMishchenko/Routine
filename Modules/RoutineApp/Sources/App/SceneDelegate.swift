@@ -65,7 +65,15 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private func authIfNeeded() {
     guard authWithFaceID else { return }
     Task {
-      guard await !authenticator.auth(biometryOnly: false) else { return }
+      #if targetEnvironment(macCatalyst)
+      updateBlockerIfNeeded(visible: true)
+      #endif
+      guard await !authenticator.auth(biometryOnly: false) else {
+        #if targetEnvironment(macCatalyst)
+        updateBlockerIfNeeded(visible: false)
+        #endif
+        return
+      }
       
       updateBlockerIfNeeded(visible: true)
       authIfNeeded()
