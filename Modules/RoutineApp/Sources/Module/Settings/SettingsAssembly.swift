@@ -65,6 +65,15 @@ final class SettingsAssembly {
         return
       }
       Analytics.send(.share)
+      if UIDevice.current.userInterfaceIdiom != .phone {
+        shareVC.popoverPresentationController?.sourceView = vc?.view
+        shareVC.popoverPresentationController?.sourceRect = CGRect(
+          x: vc?.view.frame.width ?? .zero,
+          y: vc?.view.frame.height ?? .zero,
+          width: .zero,
+          height: .zero
+        )
+      }
       vc?.present(shareVC, animated: true)
     }
 

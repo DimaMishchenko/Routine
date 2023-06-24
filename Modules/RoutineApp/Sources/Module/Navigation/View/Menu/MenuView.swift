@@ -13,10 +13,16 @@ struct MenuView<VM: NavigationViewModel>: View {
     List(viewModel.items, id: \.type, selection: $viewModel.selectedItem) { item in
       Label {
         Text(item.title)
+          .foregroundColor(
+            viewModel.selectedItem == item ? SwiftUI.Color(Color.Text.light) : SwiftUI.Color(Color.Text.default)
+          )
       } icon: {
-        Image(uiImage: viewModel.selectedItem == item ? item.selectedImage : item.image)
+        Image(uiImage: item.image)
+          .renderingMode(.template)
+          .foregroundColor(
+            viewModel.selectedItem == item ? SwiftUI.Color(Color.Text.light) : SwiftUI.Color(Color.Button.default)
+          )
       }
-      .listRowBackground(SwiftUI.Color(Color.Background.secondary))
       .tag(item)
     }
     .listStyle(.sidebar)
@@ -51,6 +57,8 @@ struct MenuView_Previews: PreviewProvider {
     @Published var selectedItem: Navigation.ItemVM?
     var selectedItemPublisher: Published<Navigation.ItemVM?>.Publisher { $selectedItem }
 
+    init() { selectedItem = items.first }
+    
     func viewDidLoad() {}
   }
 }
