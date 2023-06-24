@@ -55,7 +55,7 @@ public enum SPM {
       case .popovers:           return .upToNextMajor(from: "1.0.0")
       case .emojiPicker:        return .upToNextMajor(from: "3.0.9")
       case .ckSyncMonitor:      return .upToNextMajor(from: "1.2.0")
-      case .revenueCat:         return .upToNextMajor(from: "4.17.11")
+      case .revenueCat:         return .upToNextMajor(from: "4.23.0")
       case .firebase:           return .upToNextMajor(from: "10.8.0")
       }
     }

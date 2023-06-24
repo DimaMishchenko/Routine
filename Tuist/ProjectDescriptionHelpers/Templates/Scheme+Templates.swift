@@ -24,11 +24,7 @@ extension Scheme {
       ),
       runAction: .runAction(
         configuration: .configuration(configurationName.debug),
-        executable: "\(targetName)",
-        arguments: Arguments(
-          environment: ["OS_ACTIVITY_MODE": "disable"]
-        ),
-        options: .options(storeKitConfigurationPath: "Modules/RoutineApp/Resources/StoreKit/Configuration.storekit")
+        executable: "\(targetName)"
       ),
       archiveAction: .archiveAction(configuration: .configuration(configurationName.release)),
       profileAction: .profileAction(

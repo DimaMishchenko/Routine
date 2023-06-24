@@ -5,7 +5,12 @@ import RevenueCat
 final class InAppPurchases: NSObject {
   // MARK: - Constants
   private enum Constants {
-    static let apiKey = (ProcessInfo.processInfo.environment["REVENUECAT_API_KEY"] ?? "")
+    static var apiKey: String {
+      switch Environment.current {
+      case .dev: return (ProcessInfo.processInfo.environment["REVENUECAT_API_KEY"] ?? "")
+      case .prod: return (ProcessInfo.processInfo.environment["REVENUECAT_API_KEY"] ?? "")
+      }
+    }
   }
   
   // MARK: - Models
@@ -47,7 +52,7 @@ final class InAppPurchases: NSObject {
   
   // MARK: - Public
   func setup() {
-    Purchases.logLevel = .debug
+    Purchases.logLevel = .verbose
     Purchases.configure(withAPIKey: Constants.apiKey, appUserID: UserIdentifier.current)
     Purchases.shared.delegate = self
   }
