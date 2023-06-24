@@ -28,14 +28,14 @@
 // MARK: - RoutineList
 "routineList.title" = "My routines";
 
-"routineList.row.empty.text" = "There are no routines yet.\nClick plus to fix it! 👇";
+"routineList.row.empty.text" = "There are no routines yet.\nClick the plus button to add one! 👇";
 
 "routineList.row.routine.goal.daily" = "TODAY";
 "routineList.row.routine.goal.weekly" = "THIS WEEK";
 "routineList.row.routine.goal.monthly" = "THIS MONTH";
 
 // MARK: - RoutineEdit
-"routineEdit.title.create" = "Create a routine";
+"routineEdit.title.create" = "Add a routine";
 "routineEdit.title.edit" = "Edit routine";
 
 "routineEdit.button.save" = "Save";
@@ -52,7 +52,7 @@
 "routineEdit.text.goal" = "Goal";
 
 "routineEdit.alert.error.title" = "Failed to save";
-"routineEdit.alert.error.emptyName.message" = "Please set name; it can't be empty";
+"routineEdit.alert.error.emptyName.message" = "Please enter a name; it cannot be empty";
 
 "routineEdit.alert.notificationsDiabled.title" = "Notifications disabled";
 "routineEdit.alert.notificationsDiabled.message" = "Application can't send notifications because they are disabled. Please first enable them on the settings page.";
@@ -70,8 +70,8 @@
 "routineDetails.text.startDate" = "Start date";
 "routineDetails.text.completedRoutines" = "Completed routines";
 
-"routineDetails.text.chart.bar" = "Bar (short)";
-"routineDetails.text.chart.line" = "Line (full)";
+"routineDetails.text.chart.bar" = "Focused";
+"routineDetails.text.chart.line" = "Full";
 
 "routineDetails.text.chart.noData" = "Not enough data to display the chart";
 
@@ -92,7 +92,7 @@
 
 "settings.row.language" = "Language";
 "settings.row.notifications" = "Notifications";
-"settings.row.iCloudSync" = "iClound sync";
+"settings.row.iCloudSync" = "iCloud sync";
 "settings.row.premium" = "Premium";
 "settings.row.appearance" = "Appearance";
 "settings.row.macOS" = "Routine on macOS";
@@ -101,11 +101,11 @@
 "settings.row.shareApp" = "Share app";
 "settings.row.faceID" = "Face ID";
 "settings.row.touchID" = "Touch ID";
-"settings.row.termsPolicy" = "Terms & Policy";
+"settings.row.privacyPolicy" = "Privacy Policy";
 "settings.row.onboarding" = "Onboarding";
 "settings.row.appVersion" = "App version";
 
-"settings.alert.language.title" = "Language change";
+"settings.alert.language.title" = "Change Language";
 "settings.alert.language.message" = "To change app language:\n\n1. Tap \"Continue\"\n2. Then tap \"Language\" and select language that you want";
 "settings.alert.language.button.continue" = "Continue";
 
@@ -172,7 +172,7 @@
 "premium.item.reminders.title" = "Reminders";
 "premium.item.reminders.description" = "Enable reminders to ensure you never miss a notification of your routine.";
 "premium.item.creators.title" = "Support creators";
-"premium.item.creators.description" = "Routine was created by two persons and any support is highly appreciated.";
+"premium.item.creators.description" = "Routine was created by two individuals, and your support is greatly appreciated.";
 
 "premium.offer.subscribe" = "Subscribe";
 "premium.offer.freeTrial" = "trial for free!";

@@ -79,14 +79,14 @@ extension RoutineEditVC {
   
   private func setupNavBar() {
     navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.NavBar.cancel,
+      title: RoutineAppStrings.Localizable.NavBar.cancel,
       style: .plain,
       target: self,
       action: #selector(cancel)
     )
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.NavBar.save,
+      title: RoutineAppStrings.Localizable.NavBar.save,
       style: .done,
       target: self,
       action: #selector(save)

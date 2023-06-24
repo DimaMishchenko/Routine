@@ -28,11 +28,11 @@ struct PremiumView<VM: PremiumViewModel>: View {
         if viewModel.isPremium {
           Manage { viewModel.manage() }
         } else if !Flag.enablePremium {
-          Text(RoutineAppStrings.Premium.unavailable)
+          Text(RoutineAppStrings.Localizable.Premium.unavailable)
             .font(Font.system(size: .body, weight: .regular))
             .foregroundColor(SwiftUI.Color(Color.Text.value))
         } else if viewModel.offers.isEmpty {
-          Text(RoutineAppStrings.Premium.Offer.noOffers)
+          Text(RoutineAppStrings.Localizable.Premium.Offer.noOffers)
             .font(Font.system(size: .body, weight: .regular))
             .foregroundColor(SwiftUI.Color(Color.Text.value))
         } else {
@@ -102,14 +102,14 @@ struct PremiumView<VM: PremiumViewModel>: View {
     
     var body: some View {
       VStack {
-        Text(RoutineAppStrings.Premium.Purchased.status)
+        Text(RoutineAppStrings.Localizable.Premium.Purchased.status)
           .font(Font.system(size: .body, weight: .regular))
           .foregroundColor(SwiftUI.Color(Color.Text.value))
         
         Button {
           manage()
         } label: {
-          Text(RoutineAppStrings.Premium.Purchased.manage)
+          Text(RoutineAppStrings.Localizable.Premium.Purchased.manage)
             .font(Font.system(size: .body, weight: .regular))
         }
       }

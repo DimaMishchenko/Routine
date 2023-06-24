@@ -1,3 +1,4 @@
+import SafariServices
 import StoreKit
 import UIKit
 
@@ -100,7 +101,21 @@ final class SettingsAssembly {
       Analytics.send(.macLink)
       ExternalLinksNavigator.macApp()
     }
-    
+
+    presenter.privacyPolicy = { [weak vc] in
+      Task { [vc] in
+        guard let url = Flag.privacyPolicyLink else { return }
+        let safariVC = await SFSafariViewController(
+          url: url,
+          configuration: with(.init()) {
+            $0.entersReaderIfAvailable = true
+          }
+        )
+        Analytics.send(.privacyPolicy)
+        await vc?.present(safariVC, animated: true)
+      }
+    }
+
     return vc
   }
 }

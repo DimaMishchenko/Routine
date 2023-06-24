@@ -1,0 +1,235 @@
+// MARK: - Common
+"routine" = "Рутини";
+"common.email" = "Електронна пошта";
+"common.telegram" = "Telegram";
+"common.times" = "рази";
+
+// MARK: - Navigation Bar
+"navBar.save" = "Зберегти";
+"navBar.cancel" = "Скасувати";
+"navBar.close" = "Закрити";
+"navBar.edit" = "Редагувати";
+
+// MARK: - Alert
+"alert.ok" = "Oк";
+"alert.yes" = "Так";
+"alert.cancel" = "Скасувати";
+"alert.remove" = "Видалити";
+
+// MARK: - Frequency
+"frequency.daily" = "Щоденно";
+"frequency.weekly" = "Щотижня";
+"frequency.monthly" = "Щомісячно";
+
+// MARK: - TabBar
+"tabbar.tab.routines" = "Мої рутини";
+"tabbar.tab.settings" = "Налаштування";
+
+// MARK: - RoutineList
+"routineList.title" = "Мої рутини";
+
+"routineList.row.empty.text" = "Поки немає жодних рутин.\nНатисніть кнопку плюс, щоб додати рутину! 👇";
+
+"routineList.row.routine.goal.daily" = "СЬОГОДНІ";
+"routineList.row.routine.goal.weekly" = "ЦЬОГО ТИЖНЯ";
+"routineList.row.routine.goal.monthly" = "ЦЬОГО МІСЯЦЯ";
+
+// MARK: - RoutineEdit
+"routineEdit.title.create" = "Додати рутину";
+"routineEdit.title.edit" = "Редагувати рутину";
+
+"routineEdit.button.save" = "Зберегти";
+"routineEdit.button.delete" = "Видалити рутину";
+
+"routineEdit.placeholder.name" = "Назва рутини";
+"routineEdit.placeholder.description" = "Опис (необов'язково)";
+
+"routineEdit.text.remindeMe" = "Нагадати мені";
+"routineEdit.text.addReminder" = "+ Додати нагадування";
+"routineEdit.text.time" = "Час";
+"routineEdit.text.emoji" = "Емодзі";
+"routineEdit.text.frequency" = "Частота";
+"routineEdit.text.goal" = "Ціль";
+
+"routineEdit.alert.error.title" = "Не вдалося зберегти";
+"routineEdit.alert.error.emptyName.message" = "Будь ласка, введіть назву; вона не може бути порожньою";
+
+"routineEdit.alert.notificationsDiabled.title" = "Сповіщення вимкнено";
+"routineEdit.alert.notificationsDiabled.message" = "Додаток не може надсилати сповіщення, оскільки вони вимкнені. Спочатку увімкніть їх на сторінці налаштувань.";
+
+// MARK: - RoutineDetails
+"routineDetails.title" = "Деталі рутини";
+"routineDetails.section.overview" = "Огляд";
+"routineDetails.section.calendar" = "Календар";
+"routineDetails.section.charts" = "Графіки";
+"routineDetails.section.successRate" = "Відсоток успішності";
+
+"routineDetails.text.currentStreak" = "Поточна серія";
+"routineDetails.text.bestStreak" = "Найкраща серія";
+"routineDetails.text.missedTimes" = "Пропущено разів";
+"routineDetails.text.startDate" = "Дата початку";
+"routineDetails.text.completedRoutines" = "Завершені рутини";
+
+"routineDetails.text.chart.bar" = "Сфокусований";
+"routineDetails.text.chart.line" = "Повний";
+
+"routineDetails.text.chart.noData" = "Недостатньо даних для відображення графіка";
+
+"routineDetails.alert.progressAdjust.title" = "Підтвердити зміну прогресу";
+"routineDetails.alert.progressAdjust.description.add" = "Ви бажаєте позначити цю рутину як виконану на обрану дату?";
+"routineDetails.alert.progressAdjust.description.remove" = "Ви бажаєте скасувати виконання цієї рутини на обрану дату?";
+"routineDetails.alert.adjustError.title" = "Не вдалося змінити прогрес";
+"routineDetails.alert.adjustError.description" = "На жаль, ми не змогли оновити ваш прогрес наразі. Будь ласка, спробуйте ще раз пізніше.";
+
+// MARK: - Settings
+"settings.title" = "Налаштування";
+
+"settings.section.app" = "Додаток";
+"settings.section.feedback" = "Зворотній зв'язок";
+"settings.section.security" = "Безпека";
+"settings.section.macApp" = "Додаток для Mac";
+"settings.section.more" = "Додатково";
+
+"settings.row.language" = "Мова";
+"settings.row.notifications" = "Сповіщення";
+"settings.row.iCloudSync" = "Синхронізація з iCloud";
+"settings.row.premium" = "Преміум";
+"settings.row.appearance" = "Зовнішній вигляд";
+"settings.row.macOS" = "Routine на macOS";
+"settings.row.reportBug" = "Повідомити про помилку";
+"settings.row.writeReview" = "Написати відгук";
+"settings.row.shareApp" = "Поділитися додатком";
+"settings.row.faceID" = "Face ID";
+"settings.row.touchID" = "Touch ID";
+"settings.row.privacyPolicy" = "Політика конфіденційності";
+"settings.row.onboarding" = "Введення в експлуатацію";
+"settings.row.appVersion" = "Версія додатку";
+
+"settings.alert.language.title" = "Змінити мову";
+"settings.alert.language.message" = "Щоб змінити мову додатка:\n\n1. Натисніть \"Продовжити\"\n2. Потім натисніть \"Мова\" та виберіть бажану мову";
+"settings.alert.language.button.continue" = "Продовжити";
+
+"settings.alert.reportBug.title" = "Повідомити про помилку";
+"settings.alert.reportBug.message" = "У нас є облікові записи в різних мережах. \nЯку ви бажаєте вибрати?";
+
+"settings.alert.notifications.title.enable" = "Увімкнути сповіщення";
+"settings.alert.notifications.title.disable" = "Вимкнути сповіщення";
+"settings.alert.notifications.message" = "Ви можете керувати дозволами на сповіщення в налаштуваннях вашого пристрою";
+
+"settings.alert.failedFaceID.title" = "Відсутня біометрична аутентифікація";
+"settings.alert.failedFaceID.message" = "Щоб використовувати цю функцію, будь ласка, надайте дозвіл у налаштуваннях пристрою або налаштуйте Face ID/Touch ID на своєму пристрої.";
+
+"settings.alert.button.openSettings" = "Відкрити налаштування";
+
+"settings.mail.reportBug.subject" = "Звіт про помилку в Routine";
+"settings.mail.reportBug.message" = "Будь ласка, опишіть помилку.";
+
+// MARK: - Tutorial
+"tutorial.welcome.titlePrefix" = "Ласкаво просимо в";
+"tutorial.welcome.message" = "Routine - це простий і повністю нативний додаток для відстеження ваших звичок в одному місці.";
+"tutorial.welcome.action" = "Продовжити";
+
+"tutorial.features.title" = "Будьте продуктивними, де б ви не були";
+"tutorial.features.message" = "Routine допомагає створювати та підтримувати звички, а також досягати ваших цілей.";
+"tutorial.features.maintain.title" = "Підтримуйте звички";
+"tutorial.features.maintain.message" = "Відстежуйте ваші рутини та підтримуйте здорові звички";
+"tutorial.features.icloud.title" = "Синхронізація з iCloud";
+"tutorial.features.icloud.message" = "Резервна копія ваших даних на будь-якому пристрої - iPhone, iPad і MacOS";
+"tutorial.features.overview.title" = "Огляд";
+"tutorial.features.overview.message" = "Чітко бачте, як ваші рутини поліпшуються з часом за допомогою детальних діаграм";
+"tutorial.features.action" = "Почати";
+
+// MARK: - Appearance
+"appearance.title" = "Зовнішній вигляд";
+
+"appearance.text.light" = "Світлий";
+"appearance.text.dark" = "Темний";
+"appearance.text.useDeviceSettings" = "Використовувати налаштування пристрою";
+"appearance.text.hint" = "Ми будемо використовувати світлий або темний вигляд на основі налаштувань системи вашого пристрою";
+
+// MARK: - CloudInfo
+"cloudInfo.title" = "iCloud";
+
+"cloudInfo.row.iCloudStatus" = "Стан підключення iCloud";
+"cloudInfo.row.importStatus" = "Стан імпорту даних";
+"cloudInfo.row.exportStatus" = "Стан експорту даних";
+
+"cloudInfo.errorHint.noNetwork" = "На жаль, схоже, ви не підключені до мережі. Підключіться до мережі, і синхронізація буде автоматично продовжена.";
+"cloudInfo.errorHint.iCloudAccount" = "Схоже, що виникла проблема з вашим обліковим записом iCloud. Будь ласка, перейдіть до додатка Налаштування і перевірте, чи ви увійшли в систему, чи ваш обліковий запис доступний. Переконайтеся, що ваші облікові дані перевірені і доступ до вашого облікового запису не обмежено контролем батьківського контролю або програмним забезпеченням управління пристроями. Якщо у вас виникають проблеми, спробуйте вийти з облікового запису та знову увійти. Якщо проблема продовжується, зверніться до служби підтримки Apple для отримання подальшої допомоги.";
+"cloudInfo.errorHint.syncError" = "Не вдалося синхронізувати. Будь ласка, перейдіть до додатка Налаштування і перевірте, чи є проблема з вашим обліковим записом iCloud. Переконайтеся, що у вас достатньо місця для зберігання в iCloud та що ваше з'єднання з Інтернетом стабільне. Якщо проблема продовжується, зверніться до служби підтримки Apple для отримання подальшої допомоги.";
+
+// MARK: - Premium
+"premium.title" = "Routine Преміум";
+
+"premium.button.done" = "Готово";
+"premium.button.restore" = "Відновити";
+"premium.button.redeem" = "Активувати";
+
+"premium.item.unlimited.title" = "Необмежені рутини";
+"premium.item.unlimited.description" = "Додавайте стільки рутин, скільки потрібно, та переглядайте їх в одному зручному місці.";
+"premium.item.security.title" = "Підвищена безпека";
+"premium.item.security.description" = "Використовуйте біометричну автентифікацію для захисту всіх ваших даних.";
+"premium.item.reminders.title" = "Нагадування";
+"premium.item.reminders.description" = "Увімкніть нагадування, щоб впевнитися, що ніколи не пропустите сповіщення про ваші рутини.";
+"premium.item.creators.title" = "Підтримка розробників";
+"premium.item.creators.description" = "Routine був створений двома особами, і ваша підтримка є надзвичайно важливою.";
+
+"premium.offer.subscribe" = "Підписатися";
+"premium.offer.freeTrial" = "безкоштовний тестовий період!";
+"premium.offer.noOffers" = "Зараз немає доступних пропозицій.";
+
+"premium.purchased.status" = "Ваша підписка Routine Преміум активна.";
+"premium.purchased.manage" = "Керуйте своєю підпискою.";
+
+"premium.unavailable" = "Routine Преміум на даний момент недоступний 😞";
+
+"premium.period.day" = "день";
+"premium.period.week" = "тиждень";
+"premium.period.month" = "місяць";
+"premium.period.year" = "рік";
+
+// MARK: - Reminders
+"reminder.body.0" = "Залишайтесь в тонусі сьогодні";
+"reminder.body.1" = "Ви здатні на це";
+"reminder.body.2" = "Так тримати";
+"reminder.body.3" = "Продовжуйте свою серію";
+"reminder.body.4" = "Просто нагадування, щоб сьогодні дотримуватися своїх рутин";
+"reminder.body.5" = "Невеликий крок сьогодні приведе до великої зміни завтра, продовжуйте у тому ж дусі";
+"reminder.body.6" = "Малі кроки, великі зміни";
+"reminder.body.7" = "Будьте міцними";
+"reminder.body.8" = "Не дозволяйте сьогодні стати днем, коли ви порушите свою серію, продовжуйте у тому ж дусі";
+"reminder.body.9" = "Ви зможете це зробити! Зосередьтеся на своїх рутинах сьогодні";
+
+// MARK: - Shortcuts
+"${applicationName} shortcut.IRP.title" = "${applicationName} тест";
+
+// MARK: - Intents
+"intent.routine.type" = "Рутина";
+"intent.category.tracking" = "Відстеження рутин";
+
+"intent.parameter.routines.title" = "Рутини";
+"intent.parameter.routines.description" = "Список рутин";
+
+// MARK: - IncreaseRoutineProgressIntent
+"intent.IRP.title" = "Збільшити прогрес рутин";
+"intent.IRP.description" = "Збільшує прогрес рутини на 1. Ви можете використовувати цю дію, щоб швидко оновити свій прогрес і залишатися на шляху до досягнення цілей.";
+"intent.IRP.summaryPrefix ${routines}" = "Збільшити прогрес для ${routines}";
+"intent.IRP.result.noItems" = "Немає чого оновлювати";
+"intent.IRP.result.success" = "Прогрес успішно збільшено";
+
+// MARK: - CompleteRoutineIntent
+"intent.CR.title" = "Завершити рутини";
+"intent.CR.description" = "Завершити рутини, якщо вони ще не були завершені. Ви можете використовувати цю дію, щоб швидко оновити свій прогрес і залишатися на шляху до досягнення цілей.";
+"intent.CR.summaryPrefix ${routines}" = "Завершити наступні ${routines}";
+"intent.CR.result.noItems" = "Немає чого завершувати";
+"intent.CR.result.success" = "Успішно завершено";
+
+// MARK: - FaceID
+"faceID.requestReason" = "Будь ласка, увійдіть, щоб використовувати додаток";
+
+// MARK: - Common
+"common.alert.deleteRoutine.title" = "Ви впевнені, що хочете видалити рутину?";
+"common.alert.deleteRoutine.message" = "Цю дію не можна відмінити";
+
+"common.alert.updateApp.title" = "Доступна нова версія Routine";
+"common.alert.updateApp.message" = "Бажаєте оновити додаток до останньої версії для поліпшення використання?";

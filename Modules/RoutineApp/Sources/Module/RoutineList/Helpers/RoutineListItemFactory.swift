@@ -28,7 +28,9 @@ final class RoutineListItemFactoryImpl: RoutineListItemFactory {
       section: .daily,
       rows: [
         .init(
-          header: .init(model: .init(title: RoutineAppStrings.Frequency.daily, accessory: .outlineDisclosure)),
+          header: .init(
+            model: .init(title: RoutineAppStrings.Localizable.Frequency.daily, accessory: .outlineDisclosure)
+          ),
           open: !containsAnyItems || !rows.isEmpty,
           rows: rows.isEmpty ? [emptyRow()] : rows
         )
@@ -42,7 +44,7 @@ final class RoutineListItemFactoryImpl: RoutineListItemFactory {
       rows: [
         .init(
           header: .init(
-            model: .init(title: RoutineAppStrings.Frequency.weekly, accessory: .outlineDisclosure)
+            model: .init(title: RoutineAppStrings.Localizable.Frequency.weekly, accessory: .outlineDisclosure)
           ),
           open: !rows.isEmpty,
           rows: rows.isEmpty ? [emptyRow()] : rows
@@ -57,7 +59,7 @@ final class RoutineListItemFactoryImpl: RoutineListItemFactory {
       rows: [
         .init(
           header: .init(
-            model: .init(title: RoutineAppStrings.Frequency.monthly, accessory: .outlineDisclosure)
+            model: .init(title: RoutineAppStrings.Localizable.Frequency.monthly, accessory: .outlineDisclosure)
           ),
           open: !rows.isEmpty,
           rows: rows.isEmpty ? [emptyRow()] : rows
@@ -68,6 +70,6 @@ final class RoutineListItemFactoryImpl: RoutineListItemFactory {
   
   // MARK: - Private
   private func emptyRow() -> RoutineList.Row {
-    .init(.empty(.init(text: RoutineAppStrings.RoutineList.Row.Empty.text)))
+    .init(.empty(.init(text: RoutineAppStrings.Localizable.RoutineList.Row.Empty.text)))
   }
 }

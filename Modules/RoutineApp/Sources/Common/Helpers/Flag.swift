@@ -36,4 +36,10 @@ enum Flag {
     if result.source == .static { return nil }
     return result.stringValue
   }
+
+  static var privacyPolicyLink: URL? {
+    let result = RemoteConfig.remoteConfig().configValue(forKey: "privacyPolicyLink")
+    if result.source == .static { return nil }
+    return result.stringValue.flatMap { URL(string: $0) }
+  }
 }

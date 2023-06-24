@@ -39,6 +39,7 @@ extension Analytics.Event {
   static let intentIncrease: Self = "intent_increase"
   static let biometrics: Self = "biometrics"
   static let updateApp: Self = "update_app"
+  static let privacyPolicy: Self = "privacy_policy"
 }
 
 extension Analytics.Param {

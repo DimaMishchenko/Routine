@@ -20,11 +20,11 @@ struct RoutineCellVM: Hashable {
   private func goalFrequencyPrefix() -> String {
     switch routine.frequency {
     case .daily:
-      return RoutineAppStrings.RoutineList.Row.Routine.Goal.daily
+      return RoutineAppStrings.Localizable.RoutineList.Row.Routine.Goal.daily
     case .weekly:
-      return RoutineAppStrings.RoutineList.Row.Routine.Goal.weekly
+      return RoutineAppStrings.Localizable.RoutineList.Row.Routine.Goal.weekly
     case .monthly:
-      return RoutineAppStrings.RoutineList.Row.Routine.Goal.monthly
+      return RoutineAppStrings.Localizable.RoutineList.Row.Routine.Goal.monthly
     }
   }
 }

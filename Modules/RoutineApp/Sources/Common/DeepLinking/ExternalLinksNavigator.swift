@@ -26,7 +26,7 @@ enum ExternalLinksNavigator {
   static func appStore() {
     open(with: Flag.appStoreLink)
   }
-  
+
   // MARK: - Private
   private static func canOpen(_ url: URL?) -> Bool {
     url.flatMap { UIApplication.shared.canOpenURL($0) } ?? false

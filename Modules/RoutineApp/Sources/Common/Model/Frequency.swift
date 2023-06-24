@@ -10,9 +10,9 @@ enum Frequency: Int, Hashable, CaseIterable {
 extension Frequency {
   var localized: String {
     switch self {
-    case .daily: return RoutineAppStrings.Frequency.daily
-    case .weekly: return RoutineAppStrings.Frequency.weekly
-    case .monthly: return RoutineAppStrings.Frequency.monthly
+    case .daily: return RoutineAppStrings.Localizable.Frequency.daily
+    case .weekly: return RoutineAppStrings.Localizable.Frequency.weekly
+    case .monthly: return RoutineAppStrings.Localizable.Frequency.monthly
     }
   }
 }

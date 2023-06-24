@@ -31,7 +31,7 @@ struct LineChart: UIViewRepresentable {
   }
   
   func updateUIView(_ chart: LineChartView, context: Context) {
-    chart.noDataText = RoutineAppStrings.RoutineDetails.Text.Chart.noData
+    chart.noDataText = RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.noData
     guard viewModel.entries.count > 1 else { return }
     
     let dataEntries: [ChartDataEntry] = viewModel.entries.enumerated().map {

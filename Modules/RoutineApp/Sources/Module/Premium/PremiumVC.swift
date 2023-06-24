@@ -22,11 +22,11 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
     Analytics.send(.deleteRoutine, parameters: [.subscribed: viewModel.isPremium])
     
     view.backgroundColor = Color.Background.default
-    title = RoutineAppStrings.Premium.title
+    title = RoutineAppStrings.Localizable.Premium.title
     #if targetEnvironment(macCatalyst)
     navigationItem.leftBarButtonItems = [
       UIBarButtonItem(
-        title: RoutineAppStrings.Premium.Button.restore,
+        title: RoutineAppStrings.Localizable.Premium.Button.restore,
         style: .plain,
         target: self,
         action: #selector(restore)
@@ -35,13 +35,13 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
     #else
     navigationItem.leftBarButtonItems = [
       UIBarButtonItem(
-        title: RoutineAppStrings.Premium.Button.restore,
+        title: RoutineAppStrings.Localizable.Premium.Button.restore,
         style: .plain,
         target: self,
         action: #selector(restore)
       ),
       UIBarButtonItem(
-        title: RoutineAppStrings.Premium.Button.redeem,
+        title: RoutineAppStrings.Localizable.Premium.Button.redeem,
         style: .plain,
         target: self,
         action: #selector(redeem)
@@ -49,7 +49,7 @@ final class PremiumVC<VM: PremiumViewModel>: UIHostingController<PremiumView<VM>
     ]
     #endif
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.Premium.Button.done,
+      title: RoutineAppStrings.Localizable.Premium.Button.done,
       style: .done,
       target: self,
       action: #selector(done)

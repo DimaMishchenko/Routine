@@ -19,6 +19,6 @@ final class CloudInfoVC<VM: CloudInfoViewModel>: UIHostingController<CloudInfoVi
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineAppStrings.CloudInfo.title
+    title = RoutineAppStrings.Localizable.CloudInfo.title
   }
 }

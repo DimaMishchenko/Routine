@@ -10,10 +10,10 @@ extension Alert {
     
     var title: String {
       switch self {
-      case .ok:                 return RoutineAppStrings.Alert.ok
-      case .yes:                return RoutineAppStrings.Alert.yes
-      case .cancel:             return RoutineAppStrings.Alert.cancel
-      case .remove:             return RoutineAppStrings.Alert.remove
+      case .ok:                 return RoutineAppStrings.Localizable.Alert.ok
+      case .yes:                return RoutineAppStrings.Localizable.Alert.yes
+      case .cancel:             return RoutineAppStrings.Localizable.Alert.cancel
+      case .remove:             return RoutineAppStrings.Localizable.Alert.remove
       case .custom(let action): return action.title
       }
     }

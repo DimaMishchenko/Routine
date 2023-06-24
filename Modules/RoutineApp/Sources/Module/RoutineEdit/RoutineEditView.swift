@@ -145,7 +145,9 @@ extension RoutineEditView {
     case .goalPicker(let viewModel):
       return collectionView.dequeue(PickerCell<Progress.Goal>.self, with: viewModel, for: indexPath) {
         $0.onValueChanged = { [weak self] in self?.onGoalChange?($0) }
-        $0.valueTitleProvider = { $1 ? "\($0.rawValue)" : "\($0.rawValue) \(RoutineAppStrings.Common.times)" }
+        $0.valueTitleProvider = {
+          $1 ? "\($0.rawValue)" : "\($0.rawValue) \(RoutineAppStrings.Localizable.Common.times)"
+        }
       }
     case .frequencyPicker(let viewModel):
       return collectionView.dequeue(PickerCell<Frequency>.self, with: viewModel, for: indexPath) {
@@ -205,7 +207,7 @@ extension RoutineEditView {
     with(UIButton(type: .system)) {
       insertSubview($0, aboveSubview: collectionView)
       $0.on { [weak self] in self?.onSave?() }
-      $0.setTitle(RoutineAppStrings.RoutineEdit.Button.save, for: .normal)
+      $0.setTitle(RoutineAppStrings.Localizable.RoutineEdit.Button.save, for: .normal)
       $0.layer.cornerRadius = Size.CornerRadius.buttonBig
       $0.layer.cornerCurve = .continuous
       $0.backgroundColor = Color.Button.default
@@ -218,7 +220,7 @@ extension RoutineEditView {
     with(UIButton(type: .system)) {
       insertSubview($0, aboveSubview: collectionView)
       $0.on { [weak self] in self?.onDelete?() }
-      $0.setTitle(RoutineAppStrings.RoutineEdit.Button.delete, for: .normal)
+      $0.setTitle(RoutineAppStrings.Localizable.RoutineEdit.Button.delete, for: .normal)
       $0.titleLabel?.font = Font.system(.body, weight: .medium)
       $0.tintColor = Color.Button.delete
       $0.imageEdgeInsets = .init(top: .zero, left: .zero, bottom: .zero, right: Inset.Padding.default)

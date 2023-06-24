@@ -12,7 +12,7 @@ final class RoutineEditItemFactoryImpl: RoutineEditItemFactory {
   func emoji(with emoji: String, action: @escaping () -> Void) -> Item {
     .init(section: .emoji, rows: [
       .init(
-        .value(.init(title: RoutineAppStrings.RoutineEdit.Text.emoji, value: .emoji(emoji))),
+        .value(.init(title: RoutineAppStrings.Localizable.RoutineEdit.Text.emoji, value: .emoji(emoji))),
         action: action
       )
     ])
@@ -23,7 +23,7 @@ final class RoutineEditItemFactoryImpl: RoutineEditItemFactory {
       .init(
         .frequencyPicker(
           .init(
-            title: RoutineAppStrings.RoutineEdit.Text.frequency,
+            title: RoutineAppStrings.Localizable.RoutineEdit.Text.frequency,
             values: Frequency.allCases,
             selected: frequency,
             style: .menu
@@ -38,7 +38,7 @@ final class RoutineEditItemFactoryImpl: RoutineEditItemFactory {
       .init(
         .goalPicker(
           .init(
-            title: RoutineAppStrings.RoutineEdit.Text.goal,
+            title: RoutineAppStrings.Localizable.RoutineEdit.Text.goal,
             values: .init(Progress.Goal.min...Progress.Goal.max),
             selected: goal,
             style: .wheel

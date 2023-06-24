@@ -35,17 +35,17 @@ extension RoutineDetailsVC {
   }
   
   private func setupNavBar() {
-    title = RoutineAppStrings.RoutineDetails.title
+    title = RoutineAppStrings.Localizable.RoutineDetails.title
     
     navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.NavBar.close,
+      title: RoutineAppStrings.Localizable.NavBar.close,
       style: .plain,
       target: self,
       action: #selector(close)
     )
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.NavBar.edit,
+      title: RoutineAppStrings.Localizable.NavBar.edit,
       style: .done,
       target: self,
       action: #selector(edit)

@@ -28,6 +28,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openAppearance: (() -> Void)?
   var openTutorial: (() -> Void)?
   var openMacApp: (() -> Void)?
+  var privacyPolicy: (() -> Void)?
   
   // MARK: - Private Properties
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
@@ -143,7 +144,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
         }
         
         Item(
-          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.app)),
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.app)),
           rows: [
             rowFactory.languageRow { [weak self] in
               guard let self = self else { return }
@@ -160,7 +161,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
         
         #if !targetEnvironment(macCatalyst)
         Item(
-          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.macApp)),
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.macApp)),
           rows: [
             rowFactory.macRow { [weak self] in self?.openMacApp?() }
           ]
@@ -168,18 +169,18 @@ final class SettingsPresenterImpl: SettingsPresenter {
         #endif
         
         Item(
-          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.feedback)),
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.feedback)),
           rows: [
             rowFactory.reportBugRow { [weak self] in
               guard let self = self else { return }
               Task(priority: .userInitiated) {
                 await self.view?.showAlert(
                   with: self.feedbackAlertVM(
-                    title: RoutineAppStrings.Settings.Alert.ReportBug.title,
-                    message: RoutineAppStrings.Settings.Alert.ReportBug.message,
+                    title: RoutineAppStrings.Localizable.Settings.Alert.ReportBug.title,
+                    message: RoutineAppStrings.Localizable.Settings.Alert.ReportBug.message,
                     mailConfig: (
-                      subject: RoutineAppStrings.Settings.Mail.ReportBug.subject,
-                      message: RoutineAppStrings.Settings.Mail.ReportBug.message
+                      subject: RoutineAppStrings.Localizable.Settings.Mail.ReportBug.subject,
+                      message: RoutineAppStrings.Localizable.Settings.Mail.ReportBug.message
                     )
                   )
                 )
@@ -191,19 +192,17 @@ final class SettingsPresenterImpl: SettingsPresenter {
         )
         
         Item(
-          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.security)),
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.security)),
           rows: [
             rowFactory.faceID(biometryType: authenticator.biometryType, isEnabled: useFaceID)
           ]
         )
 
         Item(
-          section: .init(model: .init(title: RoutineAppStrings.Settings.Section.more)),
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.more)),
           rows: [
-            rowFactory.termsPolicy {},
-            rowFactory.onboardingRow { [weak self] in
-              self?.openTutorial?()
-            },
+            rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
+            rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
             rowFactory.appVersionRow { [weak self] in
               self?.identifierCopyHandler.appVersionSelected()
             }
@@ -215,13 +214,13 @@ final class SettingsPresenterImpl: SettingsPresenter {
   
   private func languageAlertVM() -> Alert.VM {
     let continueAction = Alert.ActionType.Custom(
-      title: RoutineAppStrings.Settings.Alert.Language.Button.continue,
+      title: RoutineAppStrings.Localizable.Settings.Alert.Language.Button.continue,
       style: .default
     )
     
     return .init(
-      title: RoutineAppStrings.Settings.Alert.Language.title,
-      message: RoutineAppStrings.Settings.Alert.Language.message,
+      title: RoutineAppStrings.Localizable.Settings.Alert.Language.title,
+      message: RoutineAppStrings.Localizable.Settings.Alert.Language.message,
       actions: [
         .custom(continueAction),
         .cancel
@@ -238,11 +237,11 @@ final class SettingsPresenterImpl: SettingsPresenter {
     mailConfig: (subject: String, message: String)
   ) -> Alert.VM {
     let emailAction = Alert.ActionType.Custom(
-      title: RoutineAppStrings.Common.email,
+      title: RoutineAppStrings.Localizable.Common.email,
       style: .default
     )
     let telegramAction = Alert.ActionType.Custom(
-      title: RoutineAppStrings.Common.telegram,
+      title: RoutineAppStrings.Localizable.Common.telegram,
       style: .default
     )
     
@@ -262,14 +261,14 @@ final class SettingsPresenterImpl: SettingsPresenter {
   
   private func notificationSettingsAlertVM(enabled: Bool) -> Alert.VM {
     let title = enabled ?
-    RoutineAppStrings.Settings.Alert.Notifications.Title.disable :
-    RoutineAppStrings.Settings.Alert.Notifications.Title.enable
+    RoutineAppStrings.Localizable.Settings.Alert.Notifications.Title.disable :
+    RoutineAppStrings.Localizable.Settings.Alert.Notifications.Title.enable
     
     return .init(
       title: title,
-      message: RoutineAppStrings.Settings.Alert.Notifications.message,
+      message: RoutineAppStrings.Localizable.Settings.Alert.Notifications.message,
       actions: [
-        .custom(.init(title: RoutineAppStrings.Settings.Alert.Button.openSettings, style: .default)),
+        .custom(.init(title: RoutineAppStrings.Localizable.Settings.Alert.Button.openSettings, style: .default)),
         .cancel
       ]
     ) { [weak self] in
@@ -280,10 +279,10 @@ final class SettingsPresenterImpl: SettingsPresenter {
   
   private func failedToUseFaceIDAlert() -> Alert.VM {
     .init(
-      title: RoutineAppStrings.Settings.Alert.FailedFaceID.title,
-      message: RoutineAppStrings.Settings.Alert.FailedFaceID.message,
+      title: RoutineAppStrings.Localizable.Settings.Alert.FailedFaceID.title,
+      message: RoutineAppStrings.Localizable.Settings.Alert.FailedFaceID.message,
       actions: [
-        .custom(.init(title: RoutineAppStrings.Settings.Alert.Button.openSettings, style: .default)),
+        .custom(.init(title: RoutineAppStrings.Localizable.Settings.Alert.Button.openSettings, style: .default)),
         .cancel
       ]
     ) { [weak self] in

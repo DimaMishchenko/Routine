@@ -30,7 +30,7 @@ final class SplitVC<VM: NavigationViewModel>: UISplitViewController {
   // MARK: - Lazy Load
   override func viewDidLoad() {
     super.viewDidLoad()
-    menuVC.title = RoutineAppStrings.routine
+    menuVC.title = RoutineAppStrings.Localizable.routine
     setViewController(menuVC, for: .primary)
     viewModel.selectedItem.flatMap {
       setViewController(controllersFactory.controller(for: $0.type), for: .secondary)

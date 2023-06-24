@@ -66,7 +66,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   func select(date: Date) {
     guard date < Date(), !date.isInToday else { return }
     
-    adjustProgress(with: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.Description.add) {
+    adjustProgress(with: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.add) {
       $0.history.append(
         .init(uuid: UUID(), date: date, goal: routine.progress.goal.rawValue, result: routine.progress.goal.rawValue)
       )
@@ -76,7 +76,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   func deselect(date: Date) {
     guard date < Date(), !date.isInToday else { return }
 
-    adjustProgress(with: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.Description.remove) {
+    adjustProgress(with: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.remove) {
       guard let index = routine.history.firstIndex(where: { $0.date.isInSameDay(as: date) }) else { return }
       $0.history.remove(at: index)
     }
@@ -105,23 +105,23 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
     statsVMs = [
       .init(
         image: RoutineAppAsset.Icon.currentStreak.image,
-        title: "\(currentStreak) \(RoutineAppStrings.Common.times)",
-        description: RoutineAppStrings.RoutineDetails.Text.currentStreak
+        title: "\(currentStreak) \(RoutineAppStrings.Localizable.Common.times)",
+        description: RoutineAppStrings.Localizable.RoutineDetails.Text.currentStreak
       ),
       .init(
         image: RoutineAppAsset.Icon.bestStreak.image,
-        title: "\(bestStreak) \(RoutineAppStrings.Common.times)",
-        description: RoutineAppStrings.RoutineDetails.Text.bestStreak
+        title: "\(bestStreak) \(RoutineAppStrings.Localizable.Common.times)",
+        description: RoutineAppStrings.Localizable.RoutineDetails.Text.bestStreak
       ),
       .init(
         image: RoutineAppAsset.Icon.missedDays.image,
-        title: "\(skippedDays) \(RoutineAppStrings.Common.times)",
-        description: RoutineAppStrings.RoutineDetails.Text.missedTimes
+        title: "\(skippedDays) \(RoutineAppStrings.Localizable.Common.times)",
+        description: RoutineAppStrings.Localizable.RoutineDetails.Text.missedTimes
       ),
       .init(
         image: RoutineAppAsset.Icon.currentStreak.image,
         title: routine.startDate.dateShort.capitalized,
-        description: RoutineAppStrings.RoutineDetails.Text.startDate
+        description: RoutineAppStrings.Localizable.RoutineDetails.Text.startDate
       )
     ]
   }
@@ -186,7 +186,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
 
   private func adjustProgressAlertVM(message: String, onConfirm: @escaping () -> Void) -> Alert.VM {
     .init(
-      title: RoutineAppStrings.RoutineDetails.Alert.ProgressAdjust.title,
+      title: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.title,
       message: message,
       actions: [.yes, .cancel]
     ) {
@@ -197,8 +197,8 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
 
   private func adjustFailedAlertVM() -> Alert.VM {
     .init(
-      title: RoutineAppStrings.RoutineDetails.Alert.AdjustError.title,
-      message: RoutineAppStrings.RoutineDetails.Alert.AdjustError.description,
+      title: RoutineAppStrings.Localizable.RoutineDetails.Alert.AdjustError.title,
+      message: RoutineAppStrings.Localizable.RoutineDetails.Alert.AdjustError.description,
       actions: [.ok],
       handler: { _ in }
     )

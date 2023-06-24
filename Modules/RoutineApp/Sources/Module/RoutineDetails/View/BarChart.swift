@@ -32,7 +32,7 @@ struct BarChart: UIViewRepresentable {
   }
   
   func updateUIView(_ chart: BarChartView, context: Context) {
-    chart.noDataText = RoutineAppStrings.RoutineDetails.Text.Chart.noData
+    chart.noDataText = RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.noData
     guard viewModel.entries.count > 1 else { return }
     
     let dataEntries: [BarChartDataEntry] = viewModel.entries.enumerated().map {

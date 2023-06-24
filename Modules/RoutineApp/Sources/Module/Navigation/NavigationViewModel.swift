@@ -12,13 +12,13 @@ final class NavigationViewModelImpl: NavigationViewModel {
   var items: [Navigation.ItemVM] = [
     Navigation.ItemVM(
       type: .home,
-      title: RoutineAppStrings.Tabbar.Tab.routines,
+      title: RoutineAppStrings.Localizable.Tabbar.Tab.routines,
       image: RoutineAppAsset.Icon.home.image,
       selectedImage: RoutineAppAsset.Icon.homeSelected.image
     ),
     Navigation.ItemVM(
       type: .settings,
-      title: RoutineAppStrings.Tabbar.Tab.settings,
+      title: RoutineAppStrings.Localizable.Tabbar.Tab.settings,
       image: RoutineAppAsset.Icon.settings.image,
       selectedImage: RoutineAppAsset.Icon.settingsSelected.image
     )

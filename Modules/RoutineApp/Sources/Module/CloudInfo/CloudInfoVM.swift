@@ -12,9 +12,9 @@ import UIKit.UIImage
 
 final class CloudInfoViewModelImpl: CloudInfoViewModel {
   // MARK: - Properties
-  private(set) var cloudStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.CloudInfo.Row.iCloudStatus)
-  private(set) var importStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.CloudInfo.Row.importStatus)
-  private(set) var exportStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.CloudInfo.Row.exportStatus)
+  private(set) var cloudStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.iCloudStatus)
+  private(set) var importStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.importStatus)
+  private(set) var exportStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.exportStatus)
   private(set) var errorHint: String?
   
   private var cancellables: Set<AnyCancellable> = []
@@ -23,11 +23,11 @@ final class CloudInfoViewModelImpl: CloudInfoViewModel {
     SyncMonitor.shared.objectWillChange
       .sink { [weak self] in
         if SyncMonitor.shared.networkAvailable == false {
-          self?.errorHint = RoutineAppStrings.CloudInfo.ErrorHint.noNetwork
+          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.noNetwork
         } else if SyncMonitor.shared.iCloudAccountStatus != .available {
-          self?.errorHint = RoutineAppStrings.CloudInfo.ErrorHint.iCloudAccount
+          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.iCloudAccount
         } else if SyncMonitor.shared.syncError {
-          self?.errorHint = RoutineAppStrings.CloudInfo.ErrorHint.syncError
+          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.syncError
           SyncMonitor.shared.lastError.flatMap { Logger.log($0) }
         } else {
           self?.errorHint = nil

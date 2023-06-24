@@ -46,7 +46,13 @@ final class RoutineListVC: UIViewController {
   
   // MARK: - Private
   private func setupUI() {
-    title = RoutineAppStrings.RoutineList.title
+    navigationItem.title = {
+      if Locale.current.languageCode == "uk" {
+        return RoutineAppStrings.Localizable.RoutineList.title + " 🇺🇦"
+      } else {
+        return RoutineAppStrings.Localizable.RoutineList.title
+      }
+    }()
     contentView.onClosePremium = { [weak self] in self?.presenter.closePremium() }
     contentView.onAdd = { [weak self] in self?.presenter.addRoutine() }
     contentView.onEdit = { [weak self] in self?.presenter.editRoutine(at: $0, rowIndex: $1) }

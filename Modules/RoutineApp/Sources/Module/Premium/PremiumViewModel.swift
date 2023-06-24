@@ -20,23 +20,23 @@ final class PremiumViewModelImpl: PremiumViewModel {
   let items: [Premium.Item] = [
     .init(
       icon: RoutineAppAsset.Icon.premiumRoutines.image,
-      title: RoutineAppStrings.Premium.Item.Unlimited.title,
-      description: RoutineAppStrings.Premium.Item.Unlimited.description
+      title: RoutineAppStrings.Localizable.Premium.Item.Unlimited.title,
+      description: RoutineAppStrings.Localizable.Premium.Item.Unlimited.description
     ),
     .init(
       icon: RoutineAppAsset.Icon.premiumSecurity.image,
-      title: RoutineAppStrings.Premium.Item.Security.title,
-      description: RoutineAppStrings.Premium.Item.Security.description
+      title: RoutineAppStrings.Localizable.Premium.Item.Security.title,
+      description: RoutineAppStrings.Localizable.Premium.Item.Security.description
     ),
     .init(
       icon: RoutineAppAsset.Icon.premiumReminders.image,
-      title: RoutineAppStrings.Premium.Item.Reminders.title,
-      description: RoutineAppStrings.Premium.Item.Reminders.description
+      title: RoutineAppStrings.Localizable.Premium.Item.Reminders.title,
+      description: RoutineAppStrings.Localizable.Premium.Item.Reminders.description
     ),
     .init(
       icon: RoutineAppAsset.Icon.premiumCreator.image,
-      title: RoutineAppStrings.Premium.Item.Creators.title,
-      description: RoutineAppStrings.Premium.Item.Creators.description
+      title: RoutineAppStrings.Localizable.Premium.Item.Creators.title,
+      description: RoutineAppStrings.Localizable.Premium.Item.Creators.description
     )
   ]
   
@@ -55,11 +55,13 @@ final class PremiumViewModelImpl: PremiumViewModel {
         guard let period = offering.period else { return nil }
         let trial: String? = {
           guard let trial = offering.trial else { return nil }
-          return "\(trial.amount) \(localizedPeriod(trial.period)) \(RoutineAppStrings.Premium.Offer.freeTrial)"
+          // swiftlint:disable:next line_length
+          return "\(trial.amount) \(localizedPeriod(trial.period)) \(RoutineAppStrings.Localizable.Premium.Offer.freeTrial)"
         }()
         return Premium.Offer(
           id: offering.id,
-          title: "\(RoutineAppStrings.Premium.Offer.subscribe) \(offering.price) / \(localizedPeriod(period))",
+          // swiftlint:disable:next line_length
+          title: "\(RoutineAppStrings.Localizable.Premium.Offer.subscribe) \(offering.price) / \(localizedPeriod(period))",
           trialDescription: trial
         )
       }
@@ -97,10 +99,10 @@ final class PremiumViewModelImpl: PremiumViewModel {
   // MARK: - Private
   private func localizedPeriod(_ period: InAppPurchases.Package.Period) -> String {
     switch period {
-    case .day: return RoutineAppStrings.Premium.Period.day
-    case .week: return RoutineAppStrings.Premium.Period.week
-    case .month: return RoutineAppStrings.Premium.Period.month
-    case .year: return RoutineAppStrings.Premium.Period.year
+    case .day: return RoutineAppStrings.Localizable.Premium.Period.day
+    case .week: return RoutineAppStrings.Localizable.Premium.Period.week
+    case .month: return RoutineAppStrings.Localizable.Premium.Period.month
+    case .year: return RoutineAppStrings.Localizable.Premium.Period.year
     }
   }
 }

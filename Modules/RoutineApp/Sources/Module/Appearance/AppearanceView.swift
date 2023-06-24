@@ -18,7 +18,7 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
           isSelected: viewModel.theme == .light,
           imageName: RoutineAppAsset.Icon.light.name,
           selectedImageName: RoutineAppAsset.Icon.lightSelected.name,
-          text: RoutineAppStrings.Appearance.Text.light
+          text: RoutineAppStrings.Localizable.Appearance.Text.light
         ).onTapGesture {
           viewModel.theme = .light
         }
@@ -27,7 +27,7 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
           isSelected: viewModel.theme == .dark,
           imageName: RoutineAppAsset.Icon.dark.name,
           selectedImageName: RoutineAppAsset.Icon.darkSelected.name,
-          text: RoutineAppStrings.Appearance.Text.dark
+          text: RoutineAppStrings.Localizable.Appearance.Text.dark
         ).onTapGesture {
           viewModel.theme = .dark
         }
@@ -36,7 +36,7 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
       Section {
         HStack {
           Toggle(
-            RoutineAppStrings.Appearance.Text.useDeviceSettings,
+            RoutineAppStrings.Localizable.Appearance.Text.useDeviceSettings,
             isOn: $isSystemSettings
           )
           .onChange(of: viewModel.theme) { newValue in
@@ -49,7 +49,7 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
           }
         }
       } footer: {
-        Text(RoutineAppStrings.Appearance.Text.hint)
+        Text(RoutineAppStrings.Localizable.Appearance.Text.hint)
           .font(Font.system(size: .caption1, weight: .medium))
       }
     }

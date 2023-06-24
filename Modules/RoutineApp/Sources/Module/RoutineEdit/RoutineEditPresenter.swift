@@ -55,10 +55,10 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   func viewDidLoad() {
     switch moduleType {
     case .new:
-      view?.update(title: RoutineAppStrings.RoutineEdit.Title.create)
+      view?.update(title: RoutineAppStrings.Localizable.RoutineEdit.Title.create)
       view?.updateDelete(visibility: false)
     case .edit:
-      view?.update(title: RoutineAppStrings.RoutineEdit.Title.edit)
+      view?.update(title: RoutineAppStrings.Localizable.RoutineEdit.Title.edit)
       view?.updateDelete(visibility: true)
     }
     
@@ -187,7 +187,7 @@ extension RoutineEditPresenterImpl {
             .textfield(
               .init(
                 text: editableRoutine.name,
-                placeholder: RoutineAppStrings.RoutineEdit.Placeholder.name
+                placeholder: RoutineAppStrings.Localizable.RoutineEdit.Placeholder.name
               )
             )
           )
@@ -207,7 +207,11 @@ extension RoutineEditPresenterImpl {
         itemFactory.goal(with: editableRoutine.progress.goal)
         
         Item(section: .remindMe, rows: [
-          .init(.switch(.init(title: RoutineAppStrings.RoutineEdit.Text.remindeMe, state: editableRoutine.remind)))
+          .init(
+            .switch(
+              .init(title: RoutineAppStrings.Localizable.RoutineEdit.Text.remindeMe, state: editableRoutine.remind)
+            )
+          )
         ])
         
         if editableRoutine.remind {
@@ -216,7 +220,7 @@ extension RoutineEditPresenterImpl {
           }
           
           Item(section: .addReminder, rows: [
-            .init(.plainButton(.init(title: RoutineAppStrings.RoutineEdit.Text.addReminder)))
+            .init(.plainButton(.init(title: RoutineAppStrings.Localizable.RoutineEdit.Text.addReminder)))
           ])
         }
         
@@ -225,7 +229,7 @@ extension RoutineEditPresenterImpl {
             .textview(
               .init(
                 text: editableRoutine.description,
-                placeholder: RoutineAppStrings.RoutineEdit.Placeholder.description
+                placeholder: RoutineAppStrings.Localizable.RoutineEdit.Placeholder.description
               )
             )
           )
@@ -243,7 +247,7 @@ extension RoutineEditPresenterImpl {
         }
       }()
       
-      let title = RoutineAppStrings.RoutineEdit.Text.time
+      let title = RoutineAppStrings.Localizable.RoutineEdit.Text.time
       
       return .init(.reminder(.init(uuid: reminder.uuid.uuidString, title: title, date: date)))
     }
@@ -253,8 +257,8 @@ extension RoutineEditPresenterImpl {
     switch error {
     case .emptyName:
       return .init(
-        title: RoutineAppStrings.RoutineEdit.Alert.Error.title,
-        message: RoutineAppStrings.RoutineEdit.Alert.Error.EmptyName.message,
+        title: RoutineAppStrings.Localizable.RoutineEdit.Alert.Error.title,
+        message: RoutineAppStrings.Localizable.RoutineEdit.Alert.Error.EmptyName.message,
         actions: [.ok],
         handler: { _ in }
       )
@@ -263,8 +267,8 @@ extension RoutineEditPresenterImpl {
   
   private func notificationsDisabledAlertVM() -> Alert.VM {
     .init(
-      title: RoutineAppStrings.RoutineEdit.Alert.NotificationsDiabled.title,
-      message: RoutineAppStrings.RoutineEdit.Alert.NotificationsDiabled.message,
+      title: RoutineAppStrings.Localizable.RoutineEdit.Alert.NotificationsDiabled.title,
+      message: RoutineAppStrings.Localizable.RoutineEdit.Alert.NotificationsDiabled.message,
       actions: [.ok],
       handler: { _ in }
     )
@@ -272,16 +276,16 @@ extension RoutineEditPresenterImpl {
   
   private func randomReminderBody() -> String {
     [
-      RoutineAppStrings.Reminder.Body._0,
-      RoutineAppStrings.Reminder.Body._1,
-      RoutineAppStrings.Reminder.Body._2,
-      RoutineAppStrings.Reminder.Body._3,
-      RoutineAppStrings.Reminder.Body._4,
-      RoutineAppStrings.Reminder.Body._5,
-      RoutineAppStrings.Reminder.Body._6,
-      RoutineAppStrings.Reminder.Body._7,
-      RoutineAppStrings.Reminder.Body._8,
-      RoutineAppStrings.Reminder.Body._9
+      RoutineAppStrings.Localizable.Reminder.Body._0,
+      RoutineAppStrings.Localizable.Reminder.Body._1,
+      RoutineAppStrings.Localizable.Reminder.Body._2,
+      RoutineAppStrings.Localizable.Reminder.Body._3,
+      RoutineAppStrings.Localizable.Reminder.Body._4,
+      RoutineAppStrings.Localizable.Reminder.Body._5,
+      RoutineAppStrings.Localizable.Reminder.Body._6,
+      RoutineAppStrings.Localizable.Reminder.Body._7,
+      RoutineAppStrings.Localizable.Reminder.Body._8,
+      RoutineAppStrings.Localizable.Reminder.Body._9
     ]
       .randomElement() ?? .empty
   }

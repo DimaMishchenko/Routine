@@ -18,7 +18,7 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
     ScrollView {
       VStack(spacing: Inset.Padding.big) {
         // Overview
-        Section(title: RoutineAppStrings.RoutineDetails.Section.overview, drawGroup: false) {
+        Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.overview, drawGroup: false) {
           if !viewModel.description.isEmpty {
             Text(viewModel.description)
               .padding(Inset.Padding.default)
@@ -50,7 +50,7 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         
         // Calendar
         if #available(iOS 16.0, *) {
-          Section(title: RoutineAppStrings.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
+          Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
             CalendarView(
               viewModel: viewModel.calendarVM,
               onSelection: { viewModel.select(date: $0) },
@@ -65,15 +65,15 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         }
         
         // Charts
-        Section(title: RoutineAppStrings.RoutineDetails.Section.charts) {
+        Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.charts) {
           VStack(spacing: Inset.Padding.default) {
             Picker("", selection: $chartType) {
               ForEach(ChartType.allCases, id: \.self) {
                 switch $0 {
                 case .bar:
-                  Text(RoutineAppStrings.RoutineDetails.Text.Chart.bar)
+                  Text(RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.bar)
                 case .line:
-                  Text(RoutineAppStrings.RoutineDetails.Text.Chart.line)
+                  Text(RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.line)
                 }
               }
             }
@@ -91,7 +91,7 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         }
         
         // Success rate
-        Section(title: RoutineAppStrings.RoutineDetails.Section.successRate) {
+        Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.successRate) {
           VStack(spacing: Inset.Padding.small) {
             CircularProgressSUIView(progress: viewModel.successRate, lineWidth: 30)
               .frame(width: 202, height: 202)
@@ -109,7 +109,7 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
                 )
                 .frame(width: 8, height: 8)
               
-              Text(RoutineAppStrings.RoutineDetails.Text.completedRoutines)
+              Text(RoutineAppStrings.Localizable.RoutineDetails.Text.completedRoutines)
                 .foregroundColor(SwiftUI.Color(Color.Text.value))
                 .font(Font.system(size: .body, weight: .regular))
             }

@@ -49,7 +49,7 @@ extension SettingsVC: SettingsViewInterface {
 // MARK: - Private
 extension SettingsVC {
   private func setupUI() {
-    title = RoutineAppStrings.Settings.title
+    title = RoutineAppStrings.Localizable.Settings.title
     contentView.onNotificationStateChangeRequest = { [weak self] in
       self?.presenter.notificationStateUpdateRequest($0)
     }

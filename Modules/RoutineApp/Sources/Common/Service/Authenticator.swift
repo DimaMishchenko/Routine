@@ -40,7 +40,10 @@ final class AuthenticatorImpl: Authenticator {
     
     let policy: LAPolicy = biometryOnly ? .deviceOwnerAuthenticationWithBiometrics : .deviceOwnerAuthentication
     do {
-      return try await context.evaluatePolicy(policy, localizedReason: RoutineAppStrings.FaceID.requestReason)
+      return try await context.evaluatePolicy(
+        policy,
+        localizedReason: RoutineAppStrings.Localizable.FaceID.requestReason
+      )
     } catch {
       if isLockout() {
         return await auth(biometryOnly: false)

@@ -19,6 +19,6 @@ final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<Appearanc
   // MARK: - Life Cycle  
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = RoutineAppStrings.Appearance.title
+    title = RoutineAppStrings.Localizable.Appearance.title
   }
 }
