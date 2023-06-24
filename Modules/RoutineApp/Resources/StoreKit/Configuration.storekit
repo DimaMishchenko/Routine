@@ -24,7 +24,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "1.99",
+          "displayPrice" : "0.99",
           "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "2C3844CE",
@@ -40,9 +40,9 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "rtn_199_1m_1w0",
+          "productID" : "rtnd_099_1m_1w0",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly $1.99, 1-week free",
+          "referenceName" : "Monthly $9.99, 1-week free",
           "subscriptionGroupID" : "65488E5D",
           "type" : "RecurringSubscription"
         },
@@ -53,7 +53,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "9.99",
+          "displayPrice" : "4.99",
           "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "BC370DEB",
@@ -69,9 +69,9 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "rtn_999_1y_1w0",
+          "productID" : "rtnd_499_1y_1w0",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Annually $9.99, 1-week free",
+          "referenceName" : "Annually $4.99, 1-week free",
           "subscriptionGroupID" : "65488E5D",
           "type" : "RecurringSubscription"
         }
