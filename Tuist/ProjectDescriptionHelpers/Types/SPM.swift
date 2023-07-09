@@ -46,7 +46,7 @@ public enum SPM {
       case .pinLayout:          return .upToNextMajor(from: "1.10.0")
       case .quick:              return .upToNextMajor(from: "4.0.0")
       case .nimble:             return .upToNextMajor(from: "9.2.0")
-      case .deviceKit:          return .upToNextMajor(from: "4.6.0")
+      case .deviceKit:          return .upToNextMajor(from: "5.0.0")
       case .snapKit:            return .upToNextMajor(from: "5.0.1")
       case .swipeCellKit:       return .upToNextMajor(from: "2.7.1")
       case .spConfetti:         return .upToNextMajor(from: "1.4.0")

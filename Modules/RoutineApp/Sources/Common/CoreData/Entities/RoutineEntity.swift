@@ -51,6 +51,10 @@ extension RoutineEntity {
   func append(_ history: HistoryEntity) {
     self.history?.insert(history)
   }
+
+  func remove(_ history: HistoryEntity) {
+    self.history?.remove(history)
+  }
 }
 
 extension RoutineEntity {

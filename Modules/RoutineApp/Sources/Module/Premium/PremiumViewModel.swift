@@ -77,8 +77,10 @@ final class PremiumViewModelImpl: PremiumViewModel {
   
   func restore() {
     Task(logError: true) {
-      try await purchases.restore()
-      Analytics.send(.restorePurchases, parameters: [.subscribed: isPremium])
+      let items = try await purchases.restore()
+      items.forEach {
+        Analytics.send(.restorePurchases, parameters: [.subscribed: isPremium, .purchaseId: $0])        
+      }
     }
   }
   

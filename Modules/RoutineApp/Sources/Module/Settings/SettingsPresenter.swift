@@ -7,6 +7,7 @@ protocol SettingsPresenter: AnyObject {
   func faceIDStateUpdateRequest(_ currentStatus: Bool)
 }
 
+// swiftlint:disable:next type_body_length
 final class SettingsPresenterImpl: SettingsPresenter {
   // MARK: - Dependencies
   weak var view: SettingsViewInterface?

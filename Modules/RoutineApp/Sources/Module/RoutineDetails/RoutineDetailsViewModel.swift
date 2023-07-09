@@ -129,8 +129,18 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   private func loadCalendar() {
     calendarVM = CalendarVM(
       selections: routine.history
-        .filter { $0.goalAchieved }
-        .map { .init(emoji: routine.emoji, date: $0.date) }
+        .map { item in
+          let emoji: String = {
+            if item.goalAchieved {
+              return routine.emoji
+            } else if item.result == .zero {
+              return "❌"
+            } else {
+              return "⚪️"
+            }
+          }()
+          return .init(emoji: emoji, date: item.date)
+        }
     )
   }
 

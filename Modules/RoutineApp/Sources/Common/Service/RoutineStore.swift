@@ -129,7 +129,10 @@ final class CoreDataRoutineStore: RoutineStore {
           var latestDate = latestItem.date
           
           while true {
-            guard let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType) else {
+            guard
+              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
+              !self.isDateInCurrentPeriod(nextDate, frequency: routine.frequencyType)
+            else {
               break
             }
             
@@ -152,7 +155,27 @@ final class CoreDataRoutineStore: RoutineStore {
           
           progress.resetCurrent()
         }
-        
+
+        routines.forEach { routine in
+          let groups = routine.history?.reduce(into: [Date: [HistoryEntity]]()) { result, item in
+            guard let date = item.date.withoutTime else { return }
+            let existing = result[date] ?? []
+            result[date] = existing + [item]
+          }
+          
+          let itemsToRemove = groups?
+            .map { item -> [HistoryEntity] in
+              guard item.value.count > 1 else { return [] }
+              let itemToStay = item.value.max { $0.result < $1.result }
+              return item.value.filter { $0.uuid != itemToStay?.uuid }
+            }
+            .flatMap { $0 }
+          
+          itemsToRemove?.forEach {
+            routine.remove($0)
+          }
+        }
+
         try context.saveIfNeeded()
         completion(.success(Void()))
       } catch {
