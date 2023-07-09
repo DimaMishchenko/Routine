@@ -25,7 +25,8 @@ lane :upload_tf_routine_dev do |options|
     version: version, 
     bundle_id: bundle_id, 
     scheme: scheme, 
-    extensionIds: ["com.dm.routine.app.dev.notificationsService"]
+    extensionIds: ["com.dm.routine.app.dev.notificationsService"],
+    firebasePlist: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist"
   }
   Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
   Fastlane::LaneManager.cruise_lane("mac", "upload_tf_routine", options)
@@ -60,6 +61,7 @@ lane :upload_tf_routine_prod do |options|
     bundle_id: bundle_id, 
     scheme: scheme, 
     extensionIds: ["com.dm.routine.app.prod.notificationsService"],
+    firebasePlist: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Prod-GoogleService-Info.plist",
     groups: ["External"] 
   }
   Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
@@ -83,6 +85,7 @@ platform :ios do
     bundle_id = options[:bundle_id]
     scheme = options[:scheme]
     extensionIds = options[:extensionIds]
+    firebasePlist = options[:firebasePlist]
     groups = options[:groups]
 
     update_build_number(bundle_id: bundle_id, version: version, platform: "ios")
@@ -91,7 +94,7 @@ platform :ios do
     extensionIds.each { |id| match(type: "appstore", app_identifier: id) }
     gym(scheme: scheme)
     testflight(app_identifier: bundle_id, app_platform: "ios", groups: groups)
-    upload_symbols(plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist")
+    upload_symbols(plist_path: firebasePlist)
 
     Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] = nil
   end
@@ -111,6 +114,7 @@ platform :mac do
     bundle_id = options[:bundle_id]
     scheme = options[:scheme]
     extensionIds = options[:extensionIds]
+    firebasePlist = options[:firebasePlist]
     groups = options[:groups]
 
     update_build_number(bundle_id: bundle_id, version: version, platform: "osx")
@@ -131,7 +135,7 @@ platform :mac do
     }
     gym(scheme: scheme, catalyst_platform: "macos")
     testflight(app_identifier: bundle_id, app_platform: "osx", groups: groups)
-    upload_symbols(plist_path: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist")
+    upload_symbols(plist_path: firebasePlist)
 
     Actions.lane_context[SharedValues::PKG_OUTPUT_PATH] = nil
   end
