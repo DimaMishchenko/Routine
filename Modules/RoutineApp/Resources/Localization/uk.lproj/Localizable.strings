@@ -2,6 +2,7 @@
 "routine" = "Рутини";
 "common.email" = "Електронна пошта";
 "common.telegram" = "Telegram";
+"common.twitter" = "Twitter";
 "common.times" = "рази";
 
 // MARK: - Navigation Bar
@@ -102,6 +103,7 @@
 "settings.row.faceID" = "Face ID";
 "settings.row.touchID" = "Touch ID";
 "settings.row.privacyPolicy" = "Політика конфіденційності";
+"settings.row.termsOfUse" = "Умови користування";
 "settings.row.onboarding" = "Введення в експлуатацію";
 "settings.row.appVersion" = "Версія додатку";
 
@@ -187,6 +189,9 @@
 "premium.period.week" = "тиждень";
 "premium.period.month" = "місяць";
 "premium.period.year" = "рік";
+
+"premium.privacyPolicy" = "Політика конфіденційності";
+"premium.termsOfUse" = "Умови користування";
 
 // MARK: - Reminders
 "reminder.body.0" = "Залишайтесь в тонусі сьогодні";

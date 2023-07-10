@@ -24,6 +24,24 @@ struct PremiumView<VM: PremiumViewModel>: View {
       }
       .listStyle(.sidebar)
       
+      HStack {
+        Button {
+          viewModel.openTermsOfUse()
+        } label: {
+          Text(RoutineAppStrings.Localizable.Premium.termsOfUse)
+            .font(.caption)
+        }
+        Spacer()
+        Button {
+          viewModel.openPrivacyPolicy()
+        } label: {
+          Text(RoutineAppStrings.Localizable.Premium.privacyPolicy)
+            .font(.caption)
+        }
+      }
+      .padding([.top, .bottom])
+      .padding([.leading, .trailing], Inset.Padding.big)
+      
       VStack {
         if viewModel.isPremium {
           Manage { viewModel.manage() }
@@ -36,9 +54,23 @@ struct PremiumView<VM: PremiumViewModel>: View {
             .font(Font.system(size: .body, weight: .regular))
             .foregroundColor(SwiftUI.Color(Color.Text.value))
         } else {
-          ForEach(viewModel.offers) {
-            Offer(offer: $0) {
-              viewModel.purchase(id: $0)
+          let trials = viewModel.offers.compactMap { $0.trialDescription }
+          if trials.dropFirst().allSatisfy { $0 == trials.first } {
+            ForEach(viewModel.offers) {
+              Offer(offer: $0, showTrial: false) {
+                viewModel.purchase(id: $0)
+              }
+            }
+            if let trial = trials.first {
+              Text(trial)
+                .font(Font.system(size: .body, weight: .regular))
+                .foregroundColor(SwiftUI.Color(Color.Text.value))
+            }
+          } else {
+            ForEach(viewModel.offers) {
+              Offer(offer: $0, showTrial: true) {
+                viewModel.purchase(id: $0)
+              }
             }
           }
         }
@@ -73,6 +105,7 @@ struct PremiumView<VM: PremiumViewModel>: View {
   
   private struct Offer: View {
     let offer: Premium.Offer
+    let showTrial: Bool
     let action: (String) -> Void
     
     var body: some View {
@@ -88,7 +121,7 @@ struct PremiumView<VM: PremiumViewModel>: View {
             .cornerRadius(Size.CornerRadius.buttonBig)
             .contentShape(Rectangle()) 
         }
-        if let trial = offer.trialDescription {
+        if showTrial, let trial = offer.trialDescription {
           Text(trial)
             .font(Font.system(size: .body, weight: .regular))
             .foregroundColor(SwiftUI.Color(Color.Text.value))
@@ -152,6 +185,8 @@ struct PremiumView_Previews: PreviewProvider {
     func purchase(id: String) {}
     func manage() {}
     func redeem() {}
+    func openTermsOfUse() {}
+    func openPrivacyPolicy() {}
   }
 }
 #endif

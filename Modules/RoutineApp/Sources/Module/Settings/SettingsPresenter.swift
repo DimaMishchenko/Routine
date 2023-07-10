@@ -23,6 +23,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openSettings: (() -> Void)?
   var mailSupport: ((String, String) -> Void)?
   var telegramSupport: (() -> Void)?
+  var twitter: (() -> Void)?
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
   var openCloudInfo: (() -> Void)?
@@ -30,6 +31,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openTutorial: (() -> Void)?
   var openMacApp: (() -> Void)?
   var privacyPolicy: (() -> Void)?
+  var termsOfUse: (() -> Void)?
   
   // MARK: - Private Properties
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
@@ -213,6 +215,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.more)),
           rows: [
             rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
+            rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
             rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
             rowFactory.appVersionRow { [weak self] in
               self?.identifierCopyHandler.appVersionSelected()
@@ -255,16 +258,21 @@ final class SettingsPresenterImpl: SettingsPresenter {
       title: RoutineAppStrings.Localizable.Common.telegram,
       style: .default
     )
+    let twitterAction = Alert.ActionType.Custom(
+      title: RoutineAppStrings.Localizable.Common.twitter,
+      style: .default
+    )
     
     return .init(
       title: title,
       message: message,
-      actions: [.custom(emailAction), .custom(telegramAction), .cancel]
+      actions: [.custom(emailAction), .custom(telegramAction), .custom(twitterAction), .cancel]
     ) { [weak self] in
       guard case .custom(let action) = $0 else { return }
       switch action {
       case emailAction: self?.mailSupport?(mailConfig.subject, mailConfig.message)
       case telegramAction: self?.telegramSupport?()
+      case twitterAction: self?.twitter?()
       default: return
       }
     }

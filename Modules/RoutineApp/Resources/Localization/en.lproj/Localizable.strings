@@ -2,6 +2,7 @@
 "routine" = "Routine";
 "common.email" = "Email";
 "common.telegram" = "Telegram";
+"common.twitter" = "Twitter";
 "common.times" = "times";
 
 // MARK: - Navigation Bar
@@ -102,6 +103,7 @@
 "settings.row.faceID" = "Face ID";
 "settings.row.touchID" = "Touch ID";
 "settings.row.privacyPolicy" = "Privacy Policy";
+"settings.row.termsOfUse" = "Terms of Use";
 "settings.row.onboarding" = "Onboarding";
 "settings.row.appVersion" = "App version";
 
@@ -187,6 +189,9 @@
 "premium.period.week" = "week";
 "premium.period.month" = "month";
 "premium.period.year" = "year";
+
+"premium.privacyPolicy" = "Privacy Policy";
+"premium.termsOfUse" = "Terms of Use";
 
 // MARK: - Reminders
 "reminder.body.0" = "Stay on track today";

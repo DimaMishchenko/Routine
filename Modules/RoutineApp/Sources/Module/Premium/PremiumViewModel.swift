@@ -9,11 +9,14 @@ import Foundation
   func close()
   func manage()
   func redeem()
+  func openTermsOfUse()
+  func openPrivacyPolicy()
 }
 
 final class PremiumViewModelImpl: PremiumViewModel {
   // MARK: - Properties
   var dismiss: (() -> Void)?
+  var openLinkInSafari: ((URL) -> Void)?
   
   @Published var isPremium = false
   
@@ -96,6 +99,18 @@ final class PremiumViewModelImpl: PremiumViewModel {
     Task(logError: true) {
       try await purchases.manage()
     }
+  }
+  
+  func openTermsOfUse() {
+    guard let url = Flag.termsOfUseLink else { return }
+    Analytics.send(.termsOfUse)
+    openLinkInSafari?(url)
+  }
+
+  func openPrivacyPolicy() {
+    guard let url = Flag.privacyPolicyLink else { return }
+    Analytics.send(.privacyPolicy)
+    openLinkInSafari?(url)
   }
   
   // MARK: - Private

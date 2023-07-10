@@ -33,6 +33,7 @@ extension Analytics.Event {
   static let rateApp: Self = "rate_app"
   static let supportMail: Self = "support_mail"
   static let supportTG: Self = "support_tg"
+  static let supportTwitter: Self = "support_twitter"
   static let share: Self = "share"
   static let macLink: Self = "mac_link"
   static let intentComplete: Self = "intent_complete"
@@ -40,6 +41,7 @@ extension Analytics.Event {
   static let biometrics: Self = "biometrics"
   static let updateApp: Self = "update_app"
   static let privacyPolicy: Self = "privacy_policy"
+  static let termsOfUse: Self = "terms_of_use"
 }
 
 extension Analytics.Param {

@@ -42,4 +42,16 @@ enum Flag {
     if result.source == .static { return nil }
     return result.stringValue.flatMap { URL(string: $0) }
   }
+
+  static var termsOfUseLink: URL? {
+    let result = RemoteConfig.remoteConfig().configValue(forKey: "termsOfUseLink")
+    if result.source == .static { return nil }
+    return result.stringValue.flatMap { URL(string: $0) }
+  }
+
+  static var twitterLink: URL? {
+    let result = RemoteConfig.remoteConfig().configValue(forKey: "twitterLink")
+    if result.source == .static { return nil }
+    return result.stringValue.flatMap { URL(string: $0) }
+  }
 }

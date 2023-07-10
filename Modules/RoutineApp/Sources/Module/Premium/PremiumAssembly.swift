@@ -1,3 +1,4 @@
+import SafariServices
 import UIKit
 
 final class PremiumAssembly {
@@ -15,6 +16,15 @@ final class PremiumAssembly {
     let vc = PremiumVC(viewModel: vm)
     vm.dismiss = { [weak vc] in
       vc?.dismiss(animated: true)
+    }
+    vm.openLinkInSafari = { [weak vc] in
+      let safariVC = SFSafariViewController(
+        url: $0,
+        configuration: with(.init()) {
+          $0.entersReaderIfAvailable = true
+        }
+      )
+      vc?.present(safariVC, animated: true)
     }
     return vc
   }

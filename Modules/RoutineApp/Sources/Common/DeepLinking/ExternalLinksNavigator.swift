@@ -19,6 +19,10 @@ enum ExternalLinksNavigator {
     }
   }
   
+  static func twitter() {
+    open(with: Flag.twitterLink)
+  }
+  
   static func macApp() {
     open(with: Flag.appStoreLink)
   }

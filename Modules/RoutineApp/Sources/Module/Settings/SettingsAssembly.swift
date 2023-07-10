@@ -38,6 +38,10 @@ final class SettingsAssembly {
       Analytics.send(.supportTG)
       ExternalLinksNavigator.telegramSupport()
     }
+    presenter.twitter = {
+      Analytics.send(.supportTwitter)
+      ExternalLinksNavigator.twitter()
+    }
     presenter.rateApp = {
       Analytics.send(.rateApp)
       ExternalLinksNavigator.appStore()
@@ -123,6 +127,20 @@ final class SettingsAssembly {
           }
         )
         Analytics.send(.privacyPolicy)
+        await vc?.present(safariVC, animated: true)
+      }
+    }
+    
+    presenter.termsOfUse = { [weak vc] in
+      Task { [vc] in
+        guard let url = Flag.termsOfUseLink else { return }
+        let safariVC = await SFSafariViewController(
+          url: url,
+          configuration: with(.init()) {
+            $0.entersReaderIfAvailable = true
+          }
+        )
+        Analytics.send(.termsOfUse)
         await vc?.present(safariVC, animated: true)
       }
     }

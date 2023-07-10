@@ -12,6 +12,7 @@ protocol SettingsRowFactory {
   func shareAppRow(action: @escaping () -> Void) -> Settings.Row
   func faceID(biometryType: BiometryType, isEnabled: Bool) -> Settings.Row
   func privacyPolicy(action: @escaping () -> Void) -> Settings.Row
+  func termsOfUse(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow(action: @escaping () -> Void) -> Settings.Row
 }
@@ -158,6 +159,19 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.privacyPolicy,
+          icon: RoutineAppAsset.Icon.terms.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+  
+  func termsOfUse(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Localizable.Settings.Row.termsOfUse,
           icon: RoutineAppAsset.Icon.terms.image,
           accessory: .disclosure
         )
