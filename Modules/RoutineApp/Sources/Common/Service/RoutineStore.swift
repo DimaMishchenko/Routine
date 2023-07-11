@@ -111,6 +111,7 @@ final class CoreDataRoutineStore: RoutineStore {
     }
   }
   
+  // swiftlint:disable:next function_body_length
   private func fillHistoryIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
     coreDataStack.persistentContainer.performBackgroundTask { [weak self] context in
       guard let self = self else { return }
@@ -130,8 +131,7 @@ final class CoreDataRoutineStore: RoutineStore {
           
           while true {
             guard
-              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
-              !self.isDateInCurrentPeriod(nextDate, frequency: routine.frequencyType)
+              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType)
             else {
               break
             }

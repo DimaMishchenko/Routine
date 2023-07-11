@@ -161,6 +161,10 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
 
   private func loadSuccessRate() {
     let everyDayRates = routine.history.map { $0.goalAchieved ? 1 : (Double($0.result) / Double($0.goal)) }
+    guard everyDayRates.count != .zero else {
+      successRate = .zero
+      return
+    }
     successRate = everyDayRates.reduce(into: .zero, { $0 += $1 }) / Double(everyDayRates.count)
   }
 
