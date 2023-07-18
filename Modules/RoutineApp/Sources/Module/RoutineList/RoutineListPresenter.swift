@@ -29,6 +29,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
   var editRoutine: ((Routine, _ completion: @escaping (Routine) -> Void, _ onDelete: @escaping () -> Void) -> Void)?
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
   var updateApp: (() -> Void)?
+  var inAppReview: (() -> Void)?
   
   // MARK: - Private Properties
   private struct Section {
@@ -151,6 +152,7 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       view?.showConfetti(with: editable.emoji)
       IntentDonationHandler.donateComplete(editable.routine)
       Analytics.send(.routineComplete, parameters: [.frequency: editable.frequency.rawValue])
+      inAppReview?()
     }
   }
   

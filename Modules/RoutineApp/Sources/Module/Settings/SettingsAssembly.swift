@@ -1,5 +1,4 @@
 import SafariServices
-import StoreKit
 import UIKit
 
 final class SettingsAssembly {
@@ -44,11 +43,7 @@ final class SettingsAssembly {
     }
     presenter.rateApp = {
       Analytics.send(.rateApp)
-      ExternalLinksNavigator.appStore()
-      // TODO: - find better approach
-//      UIApplication.shared.activeWindowScene.flatMap {
-//        SKStoreReviewController.requestReview(in: $0)
-//      }
+      ExternalLinksNavigator.writeReview()
     }
 
     presenter.mailSupport = { [weak assemblyFactory, weak vc] subject, message in

@@ -74,7 +74,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   }
 
   func deselect(date: Date) {
-    guard date < Date(), !date.isInToday else { return }
+    guard !date.isInToday else { return }
 
     adjustProgress(with: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.remove) {
       guard let index = routine.history.firstIndex(where: { $0.date.isInSameDay(as: date) }) else { return }

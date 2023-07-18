@@ -30,6 +30,20 @@ enum ExternalLinksNavigator {
   static func appStore() {
     open(with: Flag.appStoreLink)
   }
+  
+  static func writeReview() {
+    guard
+      let url = Flag.appStoreLink,
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+    else { return }
+
+    components.queryItems = [
+      URLQueryItem(name: "action", value: "write-review")
+    ]
+
+    guard let writeReviewURL = components.url else { return }
+    open(with: writeReviewURL)
+  }
 
   // MARK: - Private
   private static func canOpen(_ url: URL?) -> Bool {

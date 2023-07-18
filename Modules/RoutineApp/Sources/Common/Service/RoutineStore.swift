@@ -131,7 +131,9 @@ final class CoreDataRoutineStore: RoutineStore {
           
           while true {
             guard
-              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType)
+              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
+              let daysBetween = nextDate.daysBetween(Date()),
+              daysBetween >= .zero
             else {
               break
             }

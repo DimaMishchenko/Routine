@@ -1,4 +1,5 @@
 import UIKit
+import StoreKit
 
 final class RoutineListAssembly {
   // MARK: - Dependencies
@@ -56,6 +57,11 @@ final class RoutineListAssembly {
     presenter.updateApp = {
       Analytics.send(.updateApp)
       ExternalLinksNavigator.appStore()
+    }
+    presenter.inAppReview = {
+      UIApplication.shared.activeWindowScene.flatMap {
+        SKStoreReviewController.requestReview(in: $0)
+      }
     }
     return vc
   }
