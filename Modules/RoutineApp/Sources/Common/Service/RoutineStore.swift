@@ -154,8 +154,10 @@ final class CoreDataRoutineStore: RoutineStore {
             
             if self.isDateInCurrentPeriod(latestDate, frequency: routine.frequencyType) { break }
           }
-          
-          progress.resetCurrent()
+
+          if latestDate != latestItem.date {
+            progress.resetCurrent()
+          }
         }
 
         routines.forEach { routine in
