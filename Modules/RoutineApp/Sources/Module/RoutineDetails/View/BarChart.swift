@@ -108,7 +108,6 @@ extension BarChart {
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         gradientLayer.mask = mask
-        UIGraphicsBeginImageContextWithOptions(gradientLayer.bounds.size, true, .zero)
         gradientLayer.render(in: context)
         context.restoreGState()
       }
