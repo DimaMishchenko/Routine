@@ -131,7 +131,7 @@ final class CoreDataRoutineStore: RoutineStore {
           
           while true {
             guard
-              let nextDate = self.dateByAddingCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
+              let nextDate = self.dateByAddingEndOfCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
               let secondsBetween = nextDate.secondsBetween(Date()),
               secondsBetween >= .zero
             else {
@@ -155,7 +155,11 @@ final class CoreDataRoutineStore: RoutineStore {
             if self.isDateInCurrentPeriod(latestDate, frequency: routine.frequencyType) { break }
           }
 
-          if latestDate != latestItem.date {
+          if
+            let endOfNext = self.dateByAddingEndOfCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
+            let startOfReset = self.dateByAddingStartOfCurrentPeriod(to: endOfNext, frequency: routine.frequencyType),
+            let secondsBetween = startOfReset.secondsBetween(Date()),
+            secondsBetween >= .zero {
             progress.resetCurrent()
           }
         }
@@ -197,9 +201,17 @@ final class CoreDataRoutineStore: RoutineStore {
     }
   }
   
-  private func dateByAddingCurrentPeriod(to date: Date, frequency: Frequency) -> Date? {
+  private func dateByAddingStartOfCurrentPeriod(to date: Date, frequency: Frequency) -> Date? {
     switch frequency {
-    case .daily: return date.byAddingDay
+    case .daily: return date.byAddingDay?.startOfDay
+    case .weekly: return date.byAddingWeek?.startOfWeek
+    case .monthly: return date.byAddingMonth?.startOfMonth
+    }
+  }
+  
+  private func dateByAddingEndOfCurrentPeriod(to date: Date, frequency: Frequency) -> Date? {
+    switch frequency {
+    case .daily: return date.byAddingDay?.endOfDay
     case .weekly: return date.byAddingWeek?.endOfWeek
     case .monthly: return date.byAddingMonth?.endOfMonth
     }

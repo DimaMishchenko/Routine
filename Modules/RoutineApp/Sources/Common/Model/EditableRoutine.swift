@@ -61,7 +61,13 @@ struct EditableRoutine {
   
   private mutating func updateTodaysHistory(updater: (_ current: History) -> History) {
     history
-      .firstIndex { $0.date.isInToday }
+      .firstIndex {
+        switch frequency {
+        case .daily: return $0.date.isInToday
+        case .weekly: return $0.date.isInThisWeek
+        case .monthly: return $0.date.isInThisMonth
+        }
+      }
       .flatMap { history[$0] = updater(history[$0]) }
   }
 }
