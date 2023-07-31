@@ -156,8 +156,7 @@ final class CoreDataRoutineStore: RoutineStore {
           }
 
           if
-            let endOfNext = self.dateByAddingEndOfCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
-            let startOfReset = self.dateByAddingStartOfCurrentPeriod(to: endOfNext, frequency: routine.frequencyType),
+            let startOfReset = self.dateByAddingStartOfCurrentPeriod(to: latestDate, frequency: routine.frequencyType),
             let secondsBetween = startOfReset.secondsBetween(Date()),
             secondsBetween >= .zero {
             progress.resetCurrent()
