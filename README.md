@@ -105,5 +105,4 @@ Routine's project code is licensed under the [MIT license](LICENSE), with the
 original copyright attribution retained. Dependencies keep their own licenses;
 redistributions must also preserve the [third-party notices](THIRD_PARTY_NOTICES.md).
 
-The repository is currently private. Applying the MIT license does not mean a
-public source release is available; repository publication will be reviewed separately.
+Source code is available on [GitHub](https://github.com/DimaMishchenko/Routine).

@@ -26,6 +26,7 @@ sensitive findings and publication checks. Changes to dependencies must retain
 their licenses and update [third-party notices](THIRD_PARTY_NOTICES.md).
 
 Contributions to project code are provided under the [MIT license](LICENSE).
-The repository is currently private; a public contribution channel is not yet
-available. Contact [dimasike.dev@gmail.com](mailto:dimasike.dev@gmail.com) to discuss
-a fix without including credentials or personal routine data.
+Use [GitHub issues](https://github.com/DimaMishchenko/Routine/issues) to report a
+reproducible bug or discuss a fix, and open a pull request for a focused change.
+Keep credentials and personal routine data out of public reports. Send sensitive
+findings privately as described in [Security](SECURITY.md).
