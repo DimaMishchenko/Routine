@@ -3,26 +3,12 @@ import Foundation
 protocol RoutineListItemFactory {
   typealias Item = Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>.Item
   
-  func premium(showBanner: Bool, onSelect: @escaping () -> Void) -> Item
   func daily(rows: [RoutineList.Row], containsAnyItems: Bool) -> Item
   func weekly(rows: [RoutineList.Row]) -> Item
   func monthly(rows: [RoutineList.Row]) -> Item
 }
 
 final class RoutineListItemFactoryImpl: RoutineListItemFactory {
-  func premium(showBanner: Bool, onSelect: @escaping () -> Void) -> Item {
-    Item(
-      section: .premium,
-      rows: !showBanner ? [] : [
-        .init(
-          rows: [
-            .init(.premium(.init(accesory: .close))) { onSelect() }
-          ]
-        )
-      ]
-    )
-  }
-  
   func daily(rows: [RoutineList.Row], containsAnyItems: Bool) -> Item {
     Item(
       section: .daily,
@@ -67,8 +53,6 @@ final class RoutineListItemFactoryImpl: RoutineListItemFactory {
       ]
     )
   }
-  
-  // MARK: - Private
   private func emptyRow() -> RoutineList.Row {
     .init(.empty(.init(text: RoutineAppStrings.Localizable.RoutineList.Row.Empty.text)))
   }

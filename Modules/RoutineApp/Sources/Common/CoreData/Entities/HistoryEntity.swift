@@ -3,7 +3,6 @@ import Foundation
 
 @objc(HistoryEntity)
 class HistoryEntity: NSManagedObject {
-  // MARK: - Properties
   @NSManaged private(set) var uuid: UUID
   @NSManaged private(set) var date: Date
   @NSManaged private(set) var goal: Int16
@@ -12,7 +11,6 @@ class HistoryEntity: NSManagedObject {
 }
 
 extension HistoryEntity {
-  // MARK: - Init
   convenience init(
     context: NSManagedObjectContext,
     history: History
@@ -33,5 +31,13 @@ extension HistoryEntity {
       goal: Int(goal),
       result: Int(result)
     )
+  }
+}
+
+extension HistoryEntity {
+  func update(from history: History) {
+    date = history.date
+    goal = Int16(history.goal)
+    result = Int16(history.result)
   }
 }

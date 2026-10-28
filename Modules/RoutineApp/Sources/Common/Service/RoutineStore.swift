@@ -7,20 +7,18 @@ protocol RoutineStore {
   func save(_ routine: Routine) async throws
   func update(_ routine: Routine) async throws
   func delete(_ routine: Routine) async throws
+  func removeHistory(id: UUID, from routineID: UUID) async throws
   func observeAll() -> AnyPublisher<[Routine], Error>
   func fillHistoryIfNeeded() async throws
 }
 
 final class CoreDataRoutineStore: RoutineStore {
-  // MARK: - Dependencies
   private let coreDataStack: CoreDataStack
   
-  // MARK: - Init
   init(coreDataStack: CoreDataStack) {
     self.coreDataStack = coreDataStack
   }
   
-  // MARK: - Public
   func allRoutines() async throws -> [Routine] {
     try await withCheckedThrowingContinuation { continuation in
       allRoutines { continuation.resume(with: $0) }
@@ -45,9 +43,35 @@ final class CoreDataRoutineStore: RoutineStore {
     }
   }
   
+  func removeHistory(id: UUID, from routineID: UUID) async throws {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+      coreDataStack.persistentContainer.performBackgroundTask { context in
+        let request = NSFetchRequest<HistoryEntity>(entityName: String(describing: HistoryEntity.self))
+        request.predicate = NSPredicate(
+          format: "uuid == %@ AND routine.uuid == %@",
+          id as CVarArg,
+          routineID as CVarArg
+        )
+        request.fetchLimit = 1
+        do {
+          if let item = try context.fetch(request).first {
+            context.delete(item)
+            try context.saveIfNeeded()
+          }
+          continuation.resume()
+        } catch {
+          context.rollback()
+          continuation.resume(throwing: error)
+        }
+      }
+    }
+  }
+
   func observeAll() -> AnyPublisher<[Routine], Error> {
-    CoreDataPublisher(
-      request: NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self)),
+    let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
+    request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: true)]
+    return CoreDataPublisher(
+      request: request,
       context: coreDataStack.persistentContainer.viewContext
     )
     .map { $0.compactMap { $0.model } }
@@ -60,7 +84,6 @@ final class CoreDataRoutineStore: RoutineStore {
     }
   }
 
-  // MARK: - Private
   private func allRoutines(completion: @escaping (Result<[Routine], Error>) -> Void) {
     coreDataStack.persistentContainer.performBackgroundTask {
       let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
@@ -97,10 +120,10 @@ final class CoreDataRoutineStore: RoutineStore {
           return
         }
         
-        $0.delete(result)
-        
-        if !delete {
-          _ = RoutineEntity(context: $0, routine: routine)
+        if delete {
+          $0.delete(result)
+        } else {
+          result.update(from: routine)
         }
         try $0.saveIfNeeded()
         completion(.success(Void()))
@@ -111,10 +134,8 @@ final class CoreDataRoutineStore: RoutineStore {
     }
   }
   
-  // swiftlint:disable:next function_body_length
   private func fillHistoryIfNeeded(completion: @escaping (Result<Void, Error>) -> Void) {
-    coreDataStack.persistentContainer.performBackgroundTask { [weak self] context in
-      guard let self = self else { return }
+    coreDataStack.persistentContainer.performBackgroundTask { context in
       let request = NSFetchRequest<RoutineEntity>(entityName: String(describing: RoutineEntity.self))
       
       do {
@@ -160,26 +181,6 @@ final class CoreDataRoutineStore: RoutineStore {
             let secondsBetween = startOfReset.secondsBetween(Date()),
             secondsBetween >= .zero {
             progress.resetCurrent()
-          }
-        }
-
-        routines.forEach { routine in
-          let groups = routine.history?.reduce(into: [Date: [HistoryEntity]]()) { result, item in
-            guard let date = item.date.withoutTime else { return }
-            let existing = result[date] ?? []
-            result[date] = existing + [item]
-          }
-          
-          let itemsToRemove = groups?
-            .map { item -> [HistoryEntity] in
-              guard item.value.count > 1 else { return [] }
-              let itemToStay = item.value.max { $0.result < $1.result }
-              return item.value.filter { $0.uuid != itemToStay?.uuid }
-            }
-            .flatMap { $0 }
-          
-          itemsToRemove?.forEach {
-            routine.remove($0)
           }
         }
 

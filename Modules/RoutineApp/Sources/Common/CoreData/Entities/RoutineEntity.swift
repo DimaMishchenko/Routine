@@ -3,7 +3,6 @@ import Foundation
 
 @objc(RoutineEntity)
 class RoutineEntity: NSManagedObject {
-  // MARK: - Properties
   @NSManaged private(set) var uuid: UUID
   @NSManaged private(set) var name: String
   @NSManaged private(set) var desc: String
@@ -28,7 +27,6 @@ class RoutineEntity: NSManagedObject {
 }
 
 extension RoutineEntity {
-  // MARK: - Init
   convenience init(
     context: NSManagedObjectContext,
     routine: Routine
@@ -47,13 +45,8 @@ extension RoutineEntity {
     lastUpdateDate = Date()
   }
   
-  // MARK: - Public
   func append(_ history: HistoryEntity) {
     self.history?.insert(history)
-  }
-
-  func remove(_ history: HistoryEntity) {
-    self.history?.remove(history)
   }
 }
 
@@ -77,5 +70,42 @@ extension RoutineEntity {
       reminders: reminders.map { $0.model },
       history: history.map { $0.model }
     )
+  }
+}
+
+extension RoutineEntity {
+  func update(from routine: Routine) {
+    name = routine.name
+    desc = routine.description
+    emoji = routine.emoji
+    frequencyType = routine.frequency
+    remind = routine.remind
+    lastUpdateDate = Date()
+    guard let context = managedObjectContext else { return }
+    if let progress = progress {
+      progress.update(from: routine.progress)
+    } else {
+      progress = ProgressEntity(context: context, progress: routine.progress)
+    }
+    let existingReminders = reminders ?? []
+    for reminder in existingReminders where !routine.reminders.contains(where: { $0.uuid == reminder.uuid }) {
+      context.delete(reminder)
+    }
+    reminders = Set(routine.reminders.map { value in
+      if let existing = existingReminders.first(where: { $0.uuid == value.uuid }) {
+        existing.type = value.type
+        return existing
+      }
+      return ReminderEntity(context: context, reminder: value)
+    })
+    var savedHistory = history ?? []
+    for value in routine.history {
+      if let existing = savedHistory.first(where: { $0.uuid == value.uuid }) {
+        existing.update(from: value)
+      } else {
+        savedHistory.insert(HistoryEntity(context: context, history: value))
+      }
+    }
+    history = savedHistory
   }
 }

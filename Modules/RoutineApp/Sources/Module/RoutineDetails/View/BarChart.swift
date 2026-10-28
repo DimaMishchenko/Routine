@@ -1,4 +1,4 @@
-import Charts
+import DGCharts
 import Foundation
 import SwiftUI
 
@@ -12,16 +12,15 @@ struct BarChartVM {
 }
 
 struct BarChart: UIViewRepresentable {
-  // MARK: - Properties
   private let viewModel: BarChartVM
-  
-  // MARK: - Init
   init(viewModel: BarChartVM) {
     self.viewModel = viewModel
   }
-  
-  // MARK: - Public
   func makeUIView(context: Context) -> BarChartView {
+    makeChart()
+  }
+
+  func makeChart() -> BarChartView {
     let chart = BarChartView()
     chart.renderer = Renderer(
       dataProvider: chart,
@@ -32,8 +31,16 @@ struct BarChart: UIViewRepresentable {
   }
   
   func updateUIView(_ chart: BarChartView, context: Context) {
+    apply(to: chart)
+  }
+
+  func apply(to chart: BarChartView) {
     chart.noDataText = RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.noData
-    guard viewModel.entries.count > 1 else { return }
+    guard viewModel.entries.count > 1 else {
+      chart.clear()
+      (chart.renderer as? BarLineScatterCandleBubbleRenderer)?.accessibleChartElements.removeAll()
+      return
+    }
     
     let dataEntries: [BarChartDataEntry] = viewModel.entries.enumerated().map {
       BarChartDataEntry(x: Double($0.offset), y: $0.element.value)
@@ -116,7 +123,6 @@ extension BarChart {
 }
 
 #if DEBUG
-// MARK: - Preview
 struct BarChart_Previews: PreviewProvider {
   static var previews: some View {
     BarChart(
@@ -132,7 +138,8 @@ struct BarChart_Previews: PreviewProvider {
         ]
       )
     )
-      .frame(width: .infinity, height: 250)
+      .frame(maxWidth: .infinity)
+      .frame(height: 250)
       .padding()
   }
 }

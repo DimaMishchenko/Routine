@@ -2,32 +2,22 @@ import PinLayout
 import UIKit
 
 final class RoutineListView: UIView {
-  // MARK: - Private Properties
   private var initialLayout = Once()
-  
-  // MARK: - Public Properties
-  var onClosePremium: (() -> Void)?
   var onAdd: (() -> Void)?
   
   var onEdit: ((RoutineList.Section, Int) -> Void)?
   var onDelete: ((RoutineList.Section, Int) -> Void)?
   var onIncreaseProgress: ((RoutineList.Section, Int) -> Void)?
   var onDecreaseProgress: ((RoutineList.Section, Int) -> Void)?
-  
-  // MARK: - UI Properties
   private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
   private lazy var addButton = createAddButton()
-  
-  // MARK: - Override
   override func layoutSubviews() {
     super.layoutSubviews()
     initialLayout.once { setupUI() }
     updateLayout()
   }
 }
-
-// MARK: - Public
 extension RoutineListView {
   func update(
     with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,
@@ -41,9 +31,11 @@ extension RoutineListView {
     at indexPath: IndexPath,
     completion: @escaping () -> Void
   ) {
-    // +1 because of outline cell
     let indexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
-    guard let cell = collectionView.cellForItem(at: indexPath) as? RoutineCell else { return }
+    guard let cell = collectionView.cellForItem(at: indexPath) as? RoutineCell else {
+      completion()
+      return
+    }
     cell.updateProgress(to: viewModel.progressPercent) { [weak self] in
       guard
         let self = self,
@@ -63,8 +55,6 @@ extension RoutineListView {
     }
   }
 }
-
-// MARK: - UICollectionViewDelegate
 extension RoutineListView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if case .row(let row) = dataSource.row(at: indexPath) {
@@ -73,8 +63,6 @@ extension RoutineListView: UICollectionViewDelegate {
     collectionView.deselectItem(at: indexPath, animated: true)
   }
 }
-
-// MARK: - Private
 extension RoutineListView {
   private func setupUI() {
     backgroundColor = Color.Background.default
@@ -98,7 +86,7 @@ extension RoutineListView {
     }
     
     let section = dataSource.section(at: indexPath.section)
-    return (section, indexPath.row - 1) // -1 because of outline cell
+    return (section, indexPath.row - 1)
   }
   
   private func createDataSource() -> OutlineDataSource<RoutineList.Section, RoutineList.Header, RoutineList.Row> {
@@ -110,12 +98,6 @@ extension RoutineListView {
         return collectionView.dequeue(GroupSupplementary.self, with: header.model, for: indexPath)
       case .row(let row):
         switch row.type {
-        case .premium(let viewModel):
-          let cell = collectionView.dequeue(PremiumBannerCell.self, with: viewModel, for: indexPath)
-          cell?.onClose = { [weak self] in
-            self?.onClosePremium?()
-          }
-          return cell
         case .empty(let viewModel):
           return collectionView.dequeue(EmptyCell.self, with: viewModel, for: indexPath)
         case .routine(let viewModel):
@@ -148,20 +130,12 @@ extension RoutineListView {
   }
   
   private func createCollectionView() -> UICollectionView {
-    let trailingInset: CGFloat = {
-      if #available(iOS 15.4, *) {
-        return Inset.Padding.default
-      } else {
-        return .zero
-      }
-    }()
-    
     let layout = CompositionalLayout(
       itemContentInset: NSDirectionalEdgeInsets(
         top: .zero,
         leading: Inset.Padding.default,
         bottom: .zero,
-        trailing: trailingInset
+        trailing: Inset.Padding.default
       ),
       itemEdgeSpacing: NSCollectionLayoutEdgeSpacing(
         leading: nil,
@@ -177,7 +151,6 @@ extension RoutineListView {
       $0.delegate = self
       $0.backgroundColor = .clear
       $0.delaysContentTouches = false
-      $0.register(PremiumBannerCell.self)
       $0.register(EmptyCell.self)
       $0.register(RoutineCell.self)
       $0.register(GroupSupplementary.self)

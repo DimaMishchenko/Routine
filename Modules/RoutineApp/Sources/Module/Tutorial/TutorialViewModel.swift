@@ -7,15 +7,10 @@ import Foundation
 }
 
 final class TutorialViewModelImpl: TutorialViewModel {
-  // MARK: - Public Properties
   var onClose: (() -> Void)?
   lazy var welcomeVM = createWelcomVM()
   lazy var featuresVM = createFeaturesVM()
-
-  // MARK: - Public
   func close() { onClose?() }
-
-  // MARK: - Private
   private func createWelcomVM() -> Tutorial.WelcomeVM {
     let title = RoutineAppStrings.Localizable.Tutorial.Welcome.titlePrefix + " " + RoutineAppStrings.Localizable.routine
     let routineRange = (title as NSString).range(of: RoutineAppStrings.Localizable.routine)
@@ -43,16 +38,22 @@ final class TutorialViewModelImpl: TutorialViewModel {
           description: RoutineAppStrings.Localizable.Tutorial.Features.Maintain.message
         ),
         .init(
-          icon: RoutineAppAsset.Icon.tutorialCloud.image,
-          title: RoutineAppStrings.Localizable.Tutorial.Features.Icloud.title,
-          description: RoutineAppStrings.Localizable.Tutorial.Features.Icloud.message
-        ),
-        .init(
           icon: RoutineAppAsset.Icon.tutorialChart.image,
           title: RoutineAppStrings.Localizable.Tutorial.Features.Overview.title,
           description: RoutineAppStrings.Localizable.Tutorial.Features.Overview.message
         )
-      ]
+      ] + cloudFeatures()
     )
+  }
+
+  private func cloudFeatures() -> [Tutorial.FeatureVM] {
+    guard Environment.current != .local else { return [] }
+    return [
+      .init(
+        icon: RoutineAppAsset.Icon.tutorialCloud.image,
+        title: RoutineAppStrings.Localizable.Tutorial.Features.Icloud.title,
+        description: RoutineAppStrings.Localizable.Tutorial.Features.Icloud.message
+      )
+    ]
   }
 }

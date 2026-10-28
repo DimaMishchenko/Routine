@@ -1,17 +1,12 @@
 import Foundation
 
 final class AssemblyFactory {
-  // MARK: - Dependencies
   private let serviceFactory: ServiceFactory
-  
-  // MARK: - Init
   init(serviceFactory: ServiceFactory) {
     self.serviceFactory = serviceFactory
   }
-  
-  // MARK: - Public
   func navigationAssembly() -> NavigationAssembly {
-    NavigationAssembly(assemblyFactory: self, serviceFactory: serviceFactory)
+    NavigationAssembly(assemblyFactory: self)
   }
   
   func settings() -> SettingsAssembly {
@@ -48,13 +43,5 @@ final class AssemblyFactory {
   
   func tutorial() -> TutorialAssembly {
     TutorialAssembly()
-  }
-  
-  func blocker() -> BlockerAssembly {
-    BlockerAssembly()
-  }
-  
-  func premium() -> PremiumAssembly {
-    PremiumAssembly(serviceFactory: serviceFactory)
   }
 }

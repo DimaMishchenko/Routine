@@ -4,7 +4,6 @@ protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
   func notificationsRow(isAuthorized: Bool) -> Settings.Row
   func iCloudSyncRow(action: @escaping () -> Void) -> Settings.Row
-  func premiumRow(action: @escaping () -> Void) -> Settings.Row
   func appearanceRow(action: @escaping () -> Void) -> Settings.Row
   func macRow(action: @escaping () -> Void) -> Settings.Row
   func reportBugRow(action: @escaping () -> Void) -> Settings.Row
@@ -14,11 +13,10 @@ protocol SettingsRowFactory {
   func privacyPolicy(action: @escaping () -> Void) -> Settings.Row
   func termsOfUse(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
-  func appVersionRow(action: @escaping () -> Void) -> Settings.Row
+  func appVersionRow() -> Settings.Row
 }
 
 final class SettingsRowFactoryImpl: SettingsRowFactory {
-  // MARK: - Public
   func languageRow(action: @escaping () -> Void) -> Settings.Row {
     let code = Locale.preferredLanguages.first ?? .empty
     
@@ -54,19 +52,6 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.iCloudSync,
           icon: RoutineAppAsset.Icon.iCloud.image,
-          accessory: .disclosure
-        )
-      ),
-      action: action
-    )
-  }
-  
-  func premiumRow(action: @escaping () -> Void) -> Settings.Row {
-    .init(
-      .value(
-        .init(
-          title: RoutineAppStrings.Localizable.Settings.Row.premium,
-          icon: RoutineAppAsset.Icon.premium.image,
           accessory: .disclosure
         )
       ),
@@ -192,7 +177,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     )
   }
   
-  func appVersionRow(action: @escaping () -> Void) -> Settings.Row {
+  func appVersionRow() -> Settings.Row {
     .init(
       .value(
         .init(
@@ -200,8 +185,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
           value: .text(AppInfo.appVersion, style: .bold),
           icon: RoutineAppAsset.Icon.appversion.image
         )
-      ),
-      action: action
+      )
     )
   }
 }

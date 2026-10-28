@@ -16,37 +16,24 @@ import Foundation
 }
 
 final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
-  // MARK: - Constants
   private enum Constants {
     static let barChartMaxItems = 7
   }
-
-  // MARK: - Public Properties
   var description: String { routine.description }
   @Published private(set) var statsVMs: [StatsViewModel] = []
   @Published private(set) var calendarVM = CalendarVM(selections: [])
   @Published private(set) var barChartVM = BarChartVM(entries: [])
   @Published private(set) var lineChartVM = LineChartVM(entries: [])
   @Published private(set) var successRate: Double = .zero
-
-  // MARK: - Action Properties
   var editRoutine: (() -> Void)?
   var dismiss: (() -> Void)?
   var showAlert: ((Alert.VM) -> Void)?
-
-  // MARK: - Dependencies
   private let routineStore: RoutineStore
-
-  // MARK: - Private Properties
   private var routine: Routine
-
-  // MARK: - Init
   init(routine: Routine, routineStore: RoutineStore) {
     self.routine = routine
     self.routineStore = routineStore
   }
-
-  // MARK: - Public
   func close() { dismiss?() }
 
   func edit() {
@@ -74,15 +61,31 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   }
 
   func deselect(date: Date) {
-    guard !date.isInToday else { return }
-
-    adjustProgress(with: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.remove) {
-      guard let index = routine.history.firstIndex(where: { $0.date.isInSameDay(as: date) }) else { return }
-      $0.history.remove(at: index)
-    }
+    guard
+      !date.isInToday,
+      let history = routine.history.first(where: { $0.date.isInSameDay(as: date) })
+    else { return }
+    let routineID = routine.uuid
+    showAlert?(
+      adjustProgressAlertVM(
+        message: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.remove,
+        onConfirm: { [weak self] in
+          guard let self else { return }
+          Task(priority: .userInitiated) {
+            do {
+              try await self.routineStore.removeHistory(id: history.uuid, from: routineID)
+              let savedRoutines = try await self.routineStore.allRoutines()
+              self.routine = savedRoutines.first(where: { $0.uuid == routineID }) ?? self.routine
+              self.loadDetails()
+            } catch {
+              self.showAlert?(self.adjustFailedAlertVM())
+              Logger.log(error)
+            }
+          }
+        }
+      )
+    )
   }
-
-  // MARK: - Private
   private func loadStats() {
     var successDays: Int = .zero
     var skippedDays: Int = .zero

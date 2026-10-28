@@ -1,4 +1,4 @@
-import Charts
+import DGCharts
 import Foundation
 import SwiftUI
 
@@ -12,27 +12,32 @@ struct LineChartVM {
 }
 
 struct LineChart: UIViewRepresentable {
-  // MARK: - Constants
   private enum Constants {
     static let maxLabels = 4
   }
-  
-  // MARK: - Properties
   private let viewModel: LineChartVM
-  
-  // MARK: - Init
   init(viewModel: LineChartVM) {
     self.viewModel = viewModel
   }
-  
-  // MARK: - Public
   func makeUIView(context: Context) -> LineChartView {
+    makeChart()
+  }
+
+  func makeChart() -> LineChartView {
     LineChartView()
   }
   
   func updateUIView(_ chart: LineChartView, context: Context) {
+    apply(to: chart)
+  }
+
+  func apply(to chart: LineChartView) {
     chart.noDataText = RoutineAppStrings.Localizable.RoutineDetails.Text.Chart.noData
-    guard viewModel.entries.count > 1 else { return }
+    guard viewModel.entries.count > 1 else {
+      chart.clear()
+      (chart.renderer as? BarLineScatterCandleBubbleRenderer)?.accessibleChartElements.removeAll()
+      return
+    }
     
     let dataEntries: [ChartDataEntry] = viewModel.entries.enumerated().map {
       ChartDataEntry(x: Double($0.offset), y: $0.element.value)
@@ -88,7 +93,6 @@ struct LineChart: UIViewRepresentable {
 }
 
 #if DEBUG
-// MARK: - Preview
 struct LineChart_Previews: PreviewProvider {
   static var previews: some View {
     LineChart(
@@ -104,7 +108,8 @@ struct LineChart_Previews: PreviewProvider {
         ]
       )
     )
-      .frame(width: .infinity, height: 250)
+      .frame(maxWidth: .infinity)
+      .frame(height: 250)
       .padding()
   }
 }

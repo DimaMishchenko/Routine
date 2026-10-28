@@ -1,7 +1,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 16.0, *)
 struct RoutineShortcuts: AppShortcutsProvider {
   @AppShortcutsBuilder static var appShortcuts: [AppShortcut] {
     AppShortcut(

@@ -1,11 +1,11 @@
 import Foundation
 
 enum Environment: String {
-  // MARK: - Constants
   private enum Constants {
     static let infoKey = "ENVIRONMENT"
   }
   
+  case local
   case dev
   case prod
   

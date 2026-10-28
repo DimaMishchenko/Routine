@@ -1,20 +1,14 @@
 import Foundation
 
 enum RoutineList {
-  // MARK: - Section
   enum Section: Int, Hashable {
-    case premium
     case daily
     case weekly
     case monthly
   }
-  
-  // MARK: - Header
   struct Header: Hashable {
     let model: GroupSupplementaryVM
   }
-  
-  // MARK: - Row
   struct Row {
     let type: RowType
     let action: (() -> Void)?
@@ -29,13 +23,10 @@ enum RoutineList {
   }
   
   enum RowType: Hashable {
-    case premium(PremiumBannerCellVM)
     case empty(EmptyCellVM)
     case routine(RoutineCellVM)
   }
 }
-
-// MARK: - Cell+Hashable
 extension RoutineList.Row: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(type)

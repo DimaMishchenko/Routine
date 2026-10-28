@@ -7,23 +7,15 @@ protocol SettingsPresenter: AnyObject {
   func faceIDStateUpdateRequest(_ currentStatus: Bool)
 }
 
-// swiftlint:disable:next type_body_length
 final class SettingsPresenterImpl: SettingsPresenter {
-  // MARK: - Dependencies
   weak var view: SettingsViewInterface?
   private let rowFactory: SettingsRowFactory
   private let appStateObserver: AppStateObserver
   private let notificationsHandler: NotificationsHandler
-  private let identifierCopyHandler: UserIdentifierCopyHandler
   private let authenticator: Authenticator
-  private let inAppPurchases: InAppPurchases
-  
-  // MARK: - Properties
-  var premium: (() -> Void)?
   var openSettings: (() -> Void)?
   var mailSupport: ((String, String) -> Void)?
-  var telegramSupport: (() -> Void)?
-  var twitter: (() -> Void)?
+  var githubSupport: (() -> Void)?
   var rateApp: (() -> Void)?
   var share: (() -> Void)?
   var openCloudInfo: (() -> Void)?
@@ -32,33 +24,21 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openMacApp: (() -> Void)?
   var privacyPolicy: (() -> Void)?
   var termsOfUse: (() -> Void)?
-  
-  // MARK: - Private Properties
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
   private var cancellables: Set<AnyCancellable> = []
-  
-  // MARK: - Init
   init(
     rowFactory: SettingsRowFactory,
     appStateObserver: AppStateObserver,
     notificationsHandler: NotificationsHandler,
-    identifierCopyHandler: UserIdentifierCopyHandler,
-    authenticator: Authenticator,
-    inAppPurchases: InAppPurchases
+    authenticator: Authenticator
   ) {
     self.rowFactory = rowFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
-    self.identifierCopyHandler = identifierCopyHandler
     self.authenticator = authenticator
-    self.inAppPurchases = inAppPurchases
 
     setupAppStateObserver()
-    disableFaceIDIfNeeded()
-    setupPremiumObserver()
   }
-  
-  // MARK: - SettingsPresenter
   func viewDidLoad() {
     Task(priority: .userInitiated) {
       await reloadSnapshot()
@@ -80,12 +60,6 @@ final class SettingsPresenterImpl: SettingsPresenter {
   }
   
   func faceIDStateUpdateRequest(_ currentStatus: Bool) {
-    guard inAppPurchases.subscribed else {
-      useFaceID = false
-      premium?()
-      return
-    }
-    
     Task(priority: .userInitiated) {
       if currentStatus {
         useFaceID = false
@@ -95,34 +69,15 @@ final class SettingsPresenterImpl: SettingsPresenter {
       } else {
         useFaceID = await authenticator.auth(biometryOnly: true)
       }
-      Analytics.send(.biometrics, parameters: [.biometricsEnabled: useFaceID])
       await reloadSnapshot()
     }
   }
-  
-  // MARK: - Private
   private func setupAppStateObserver() {
     appStateObserver
       .on(.didBecomeActive)
       .sink { [weak self] in
         guard let self = self else { return }
-        self.disableFaceIDIfNeeded()
         Task { await self.reloadSnapshot() }
-      }
-      .store(in: &cancellables)
-  }
-  
-  private func disableFaceIDIfNeeded() {
-    if self.authenticator.biometryType == .none {
-      self.useFaceID = false
-    }
-  }
-  
-  private func setupPremiumObserver() {
-    inAppPurchases.$subscribed
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] _ in
-        Task { [self] in await self?.reloadSnapshot() }
       }
       .store(in: &cancellables)
   }
@@ -135,27 +90,18 @@ final class SettingsPresenterImpl: SettingsPresenter {
     
     await view?.update(
       with: Snapshot {
-        if !inAppPurchases.subscribed {
-          Item(
-            section: nil,
-            rows: [
-              .init(.premium(.init(accesory: .disclosure))) { [weak self] in
-                self?.premium?()
-              }
-            ]
-          )          
-        }
-        
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.app)),
           rows: {
             var rows = [
               rowFactory.notificationsRow(isAuthorized: isAuthorized),
-              rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() },
-              rowFactory.premiumRow { [weak self] in self?.premium?() },
               rowFactory.appearanceRow { [weak self] in self?.openAppearance?() }
             ]
             
+            if Environment.current != .local {
+              rows.insert(rowFactory.iCloudSyncRow { [weak self] in self?.openCloudInfo?() }, at: 1)
+            }
+
             #if !targetEnvironment(macCatalyst)
             rows.insert(
               rowFactory.languageRow { [weak self] in
@@ -217,9 +163,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
             rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
             rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
             rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
-            rowFactory.appVersionRow { [weak self] in
-              self?.identifierCopyHandler.appVersionSelected()
-            }
+            rowFactory.appVersionRow()
           ]
         )
       }
@@ -254,25 +198,20 @@ final class SettingsPresenterImpl: SettingsPresenter {
       title: RoutineAppStrings.Localizable.Common.email,
       style: .default
     )
-    let telegramAction = Alert.ActionType.Custom(
-      title: RoutineAppStrings.Localizable.Common.telegram,
-      style: .default
-    )
-    let twitterAction = Alert.ActionType.Custom(
-      title: RoutineAppStrings.Localizable.Common.twitter,
+    let githubAction = Alert.ActionType.Custom(
+      title: RoutineAppStrings.Localizable.Common.github,
       style: .default
     )
     
     return .init(
       title: title,
       message: message,
-      actions: [.custom(emailAction), .custom(telegramAction), .custom(twitterAction), .cancel]
+      actions: [.custom(emailAction), .custom(githubAction), .cancel]
     ) { [weak self] in
       guard case .custom(let action) = $0 else { return }
       switch action {
       case emailAction: self?.mailSupport?(mailConfig.subject, mailConfig.message)
-      case telegramAction: self?.telegramSupport?()
-      case twitterAction: self?.twitter?()
+      case githubAction: self?.githubSupport?()
       default: return
       }
     }

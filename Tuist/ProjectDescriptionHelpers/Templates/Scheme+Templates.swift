@@ -14,10 +14,10 @@ extension Scheme {
     
     let targetName = "RoutineApp"
     
-    return Scheme(
+    return .scheme(
       name: targetName + " " + environment.rawValue.capitalized,
       shared: true,
-      buildAction: BuildAction(targets: ["\(targetName)"]),
+      buildAction: .buildAction(targets: ["\(targetName)"]),
       testAction: .targets(
         ["\(targetName)Tests"],
         configuration: .configuration(configurationName.debug)

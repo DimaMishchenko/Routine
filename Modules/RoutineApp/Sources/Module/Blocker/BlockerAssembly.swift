@@ -1,7 +1,7 @@
 import UIKit
 
 final class BlockerAssembly {
-  func controller() -> UIViewController {
-    BlockerVC()
+  func controller(onUnlock: @escaping () -> Void) -> UIViewController {
+    BlockerVC(onUnlock: onUnlock)
   }
 }

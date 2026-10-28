@@ -6,7 +6,7 @@ enum Version {
     let path = (FileManager.default.currentDirectoryPath as NSString)
       .appendingPathComponent("Modules/RoutineApp/app-version")
     
-    return try! String(contentsOfFile: path)
+    return try! String(contentsOfFile: path).trimmingCharacters(in: .whitespacesAndNewlines)
   }
   
   static var buildNumber: String {

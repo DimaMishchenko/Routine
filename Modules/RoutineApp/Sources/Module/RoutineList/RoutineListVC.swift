@@ -11,13 +11,8 @@ protocol RoutineListViewInterface: AnyObject {
 }
 
 final class RoutineListVC: UIViewController {
-  // MARK: - Dependencies
   private let presenter: RoutineListPresenter
-  
-  // MARK: - Private Properties
   private lazy var contentView = RoutineListView()
-  
-  // MARK: - Init
   init(presenter: RoutineListPresenter) {
     self.presenter = presenter
     super.init(nibName: nil, bundle: nil)
@@ -27,8 +22,6 @@ final class RoutineListVC: UIViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: - Life Cycle
   override func loadView() {
     view = contentView
   }
@@ -38,13 +31,6 @@ final class RoutineListVC: UIViewController {
     setupUI()
     presenter.viewDidLoad()
   }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    presenter.viewDidAppear()
-  }
-  
-  // MARK: - Private
   private func setupUI() {
     navigationItem.title = {
       if Locale.current.languageCode == "uk" {
@@ -53,7 +39,6 @@ final class RoutineListVC: UIViewController {
         return RoutineAppStrings.Localizable.RoutineList.title
       }
     }()
-    contentView.onClosePremium = { [weak self] in self?.presenter.closePremium() }
     contentView.onAdd = { [weak self] in self?.presenter.addRoutine() }
     contentView.onEdit = { [weak self] in self?.presenter.editRoutine(at: $0, rowIndex: $1) }
     contentView.onDelete = { [weak self] in self?.presenter.deleteRoutine(at: $0, rowIndex: $1) }
@@ -61,8 +46,6 @@ final class RoutineListVC: UIViewController {
     contentView.onDecreaseProgress = { [weak self] in self?.presenter.decreaseProgress(at: $0, rowIndex: $1) }
   }
 }
-
-// MARK: - RoutineListViewInterface
 extension RoutineListVC: RoutineListViewInterface {
   func update(
     with snapshot: Snapshot<RoutineList.Section, OutlineItem<RoutineList.Header, RoutineList.Row>>,

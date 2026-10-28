@@ -1,32 +1,37 @@
 import Foundation
 
 enum CoreDataStackAssembly {
-  // MARK: - Constants
-  private enum Constants {
-    static let cloudKitContainerIdentifierProd = "iCloud.com.dm.routine.app.icloud.prod"
-    static let cloudKitContainerIdentifierDev = "iCloud.com.dm.routine.app.icloud.dev"
-  
-    static let sharedGroupIdentifierProd = "group.com.dm.routine.app.shared.prod"
-    static let sharedGroupIdentifierDev = "group.com.dm.routine.app.shared.dev"
-    
-    static let coreDataContainerName = "Routine"
+  static func routineStack() throws -> CoreDataStack {
+    try CoreDataStack(storage: storage(for: Environment.current))
   }
-  
-  // MARK: - Public
-  static func routineStack() -> CoreDataStack {
-    switch Environment.current {
+
+  static func storage(for environment: Environment) throws -> CoreDataStack.Storage {
+    switch environment {
+    case .local:
+      let directory = try FileManager.default.url(
+        for: .applicationSupportDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: true
+      )
+      return .local(directory.appendingPathComponent("Database/RoutineApp.sqlite"))
     case .dev:
-      return CoreDataStack(
-        containerName: Constants.coreDataContainerName,
-        sharedGroupIdentifier: Constants.sharedGroupIdentifierDev,
-        cloudKitIdentifier: Constants.cloudKitContainerIdentifierDev
+      return try cloudStorage(
+        group: "group.com.dm.routine.app.shared.dev",
+        container: "iCloud.com.dm.routine.app.icloud.dev"
       )
     case .prod:
-      return CoreDataStack(
-        containerName: Constants.coreDataContainerName,
-        sharedGroupIdentifier: Constants.sharedGroupIdentifierProd,
-        cloudKitIdentifier: Constants.cloudKitContainerIdentifierProd
+      return try cloudStorage(
+        group: "group.com.dm.routine.app.shared.prod",
+        container: "iCloud.com.dm.routine.app.icloud.prod"
       )
     }
+  }
+
+  private static func cloudStorage(group: String, container: String) throws -> CoreDataStack.Storage {
+    guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group) else {
+      throw CocoaError(.fileNoSuchFile)
+    }
+    return .cloud(directory.appendingPathComponent("Database/RoutineApp.sqlite"), containerIdentifier: container)
   }
 }

@@ -3,7 +3,6 @@ import Foundation
 
 @objc(ProgressEntity)
 class ProgressEntity: NSManagedObject {
-  // MARK: - Properties
   @NSManaged private var uuid: UUID
   @NSManaged private(set) var current: Int16
   @NSManaged private(set) var goal: Int16
@@ -11,7 +10,6 @@ class ProgressEntity: NSManagedObject {
 }
 
 extension ProgressEntity {
-  // MARK: - Init
   convenience init(
     context: NSManagedObjectContext,
     progress: Progress
@@ -22,7 +20,6 @@ extension ProgressEntity {
     goal = Int16(progress.goal.rawValue)
   }
   
-  // MARK: - Public
   func resetCurrent() {
     current = .zero
   }
@@ -34,5 +31,12 @@ extension ProgressEntity {
       goal: .init(rawValue: Int(goal)),
       current: Int(current)
     )
+  }
+}
+
+extension ProgressEntity {
+  func update(from progress: Progress) {
+    current = Int16(progress.current)
+    goal = Int16(progress.goal.rawValue)
   }
 }

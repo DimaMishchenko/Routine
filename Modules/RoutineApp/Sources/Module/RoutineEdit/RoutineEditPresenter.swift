@@ -16,42 +16,29 @@ protocol RoutineEditPresenter {
 }
 
 final class RoutineEditPresenterImpl: RoutineEditPresenter {
-  // MARK: - Dependencies
   weak var view: RoutineEditViewInterface?
   private let itemFactory: RoutineEditItemFactory
   private let notificationsHandler: NotificationsHandler
-  private let inAppPurchases: InAppPurchases
-  
-  // MARK: - Action Properties
-  var premium: (() -> Void)?
   var saveRoutine: ((Routine) -> Void)?
   var deleteRoutine: (() -> Void)?
   var close: (() -> Void)?
   var pickEmoji: ((@escaping (String) -> Void) -> Void)?
-  
-  // MARK: - Private Properties
   private let moduleType: RoutineEdit.ModuleType
   private var editableRoutine: EditableRoutine
-  
-  // MARK: - Init
   init(
     moduleType: RoutineEdit.ModuleType,
     itemFactory: RoutineEditItemFactory,
-    notificationsHandler: NotificationsHandler,
-    inAppPurchases: InAppPurchases
+    notificationsHandler: NotificationsHandler
   ) {
     self.moduleType = moduleType
     self.itemFactory = itemFactory
     self.notificationsHandler = notificationsHandler
-    self.inAppPurchases = inAppPurchases
     
     switch moduleType {
     case .new: editableRoutine = EditableRoutine(routine: .new)
     case .edit(let routine): editableRoutine = EditableRoutine(routine: routine)
     }
   }
-  
-  // MARK: - RoutineEditPresenter
   func viewDidLoad() {
     switch moduleType {
     case .new:
@@ -74,21 +61,8 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     
     switch validate(routine) {
     case .success:
-      Task(priority: .userInitiated, logError: true) {
-        if editableRoutine.remind {
-          try await notificationsHandler.schedule(
-            routine.reminders,
-            title: "\(routine.emoji) \(routine.name)",
-            body: randomReminderBody()
-          )
-        } else {
-          editableRoutine.reminders.forEach {
-            notificationsHandler.delete($0)
-          }
-        }
-        saveRoutine?(routine)
-        close?()
-      }
+      saveRoutine?(routine)
+      close?()
     case .failure(let error):
       view?.showAlert(with: validationErrorAlertVM(error))
     }
@@ -112,12 +86,10 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   }
   
   func remindMeChangeRequest(_ currentState: Bool) {
-    guard inAppPurchases.subscribed else {
+    if currentState {
       updateRemindMeState(false)
-      premium?()
       return
     }
-    
     Task(priority: .userInitiated) {
       if await notificationsHandler.isAuthorized() {
         updateRemindMeState(!currentState)
@@ -135,8 +107,7 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
   }
   
   func deleteReminder(at index: Int) {
-    let reminder = editableRoutine.reminders.remove(at: index)
-    notificationsHandler.delete(reminder)
+    editableRoutine.reminders.remove(at: index)
     reloadSnapshot()
   }
   
@@ -161,8 +132,6 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
     reloadSnapshot()
   }
 }
-
-// MARK: - Private
 extension RoutineEditPresenterImpl {
   private func updateRemindMeState(_ newState: Bool) {
     editableRoutine.remind = newState
@@ -272,21 +241,5 @@ extension RoutineEditPresenterImpl {
       actions: [.ok],
       handler: { _ in }
     )
-  }
-  
-  private func randomReminderBody() -> String {
-    [
-      RoutineAppStrings.Localizable.Reminder.Body._0,
-      RoutineAppStrings.Localizable.Reminder.Body._1,
-      RoutineAppStrings.Localizable.Reminder.Body._2,
-      RoutineAppStrings.Localizable.Reminder.Body._3,
-      RoutineAppStrings.Localizable.Reminder.Body._4,
-      RoutineAppStrings.Localizable.Reminder.Body._5,
-      RoutineAppStrings.Localizable.Reminder.Body._6,
-      RoutineAppStrings.Localizable.Reminder.Body._7,
-      RoutineAppStrings.Localizable.Reminder.Body._8,
-      RoutineAppStrings.Localizable.Reminder.Body._9
-    ]
-      .randomElement() ?? .empty
   }
 }

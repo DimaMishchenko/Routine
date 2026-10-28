@@ -1,4 +1,3 @@
-import DeviceKit
 import SwiftUI
 
 struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
@@ -14,10 +13,16 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
     self.viewModel = viewModel
   }
   
+  private var calendarHeight: CGFloat {
+    let size = UIScreen.main.bounds.size
+    let width = min(size.width, size.height)
+    if width >= 414 { return 430 }
+    return width <= 375 ? 380 : 400
+  }
+
   var body: some View {
     ScrollView {
       VStack(spacing: Inset.Padding.big) {
-        // Overview
         Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.overview, drawGroup: false) {
           if !viewModel.description.isEmpty {
             Text(viewModel.description)
@@ -30,8 +35,6 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
           }
           
           Spacer(minLength: Inset.Padding.default)
-          
-          // Stats
           LazyVGrid(
             columns: [GridItem(.flexible(), spacing: Inset.Padding.default), GridItem(.flexible())],
             spacing: Inset.Padding.default
@@ -47,24 +50,16 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
             }
           }
         }
-        
-        // Calendar
-        if #available(iOS 16.0, *) {
-          Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
-            CalendarView(
-              viewModel: viewModel.calendarVM,
-              onSelection: { viewModel.select(date: $0) },
-              onDeselection: { viewModel.deselect(date: $0) }
-            )
-            .frame(
-              height: Device.current.realDevice.isOneOf(Device.allPlusSizedDevices) ?
-              430 :
-                (Device.current.isIPhoneMini ? 380 : 400)
-            )
-          }
+        Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.calendar, padding: Inset.Padding.small) {
+          CalendarView(
+            viewModel: viewModel.calendarVM,
+            onSelection: { viewModel.select(date: $0) },
+            onDeselection: { viewModel.deselect(date: $0) }
+          )
+          .frame(
+            height: calendarHeight
+          )
         }
-        
-        // Charts
         Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.charts) {
           VStack(spacing: Inset.Padding.default) {
             Picker("", selection: $chartType) {
@@ -82,15 +77,15 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
             switch chartType {
             case .bar:
               BarChart(viewModel: viewModel.barChartVM)
-                .frame(width: .infinity, height: 218)
+                .frame(maxWidth: .infinity)
+                .frame(height: 218)
             case .line:
               LineChart(viewModel: viewModel.lineChartVM)
-                .frame(width: .infinity, height: 218)
+                .frame(maxWidth: .infinity)
+                .frame(height: 218)
             }
           }
         }
-        
-        // Success rate
         Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.successRate) {
           VStack(spacing: Inset.Padding.small) {
             CircularProgressSUIView(progress: viewModel.successRate, lineWidth: 30)
@@ -167,7 +162,6 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
 }
 
 #if DEBUG
-// MARK: - Preview
 struct RoutineDetailsView_Previews: PreviewProvider {
   private final class VMMock: RoutineDetailsViewModel {
     var description: String = "Description"

@@ -1,0 +1,43 @@
+name: Build and test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: make secrets secrets-history
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: Toolchain
+        run: |
+          set -o pipefail
+          command -v xcbeautify >/dev/null || brew install xcbeautify
+          xcodebuild -version 2>&1 | xcbeautify
+          tuist version
+      - name: Generate
+        run: make gen
+      - name: Build iOS Simulator and Catalyst
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild build -workspace Routine.xcworkspace -scheme 'RoutineApp Local' -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO 2>&1 | tee ios-build.log | xcbeautify
+          xcodebuild build -workspace Routine.xcworkspace -scheme 'RoutineApp Local' -destination 'generic/platform=macOS,variant=Mac Catalyst' CODE_SIGNING_ALLOWED=NO 2>&1 | tee catalyst-build.log | xcbeautify
+      - name: Test on an owned simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r RUNTIME DEVICE_TYPE < <(xcrun simctl list runtimes -j | python3 -c 'import json,sys; r=[x for x in json.load(sys.stdin)["runtimes"] if x["isAvailable"] and x["identifier"].startswith("com.apple.CoreSimulator.SimRuntime.iOS-") and any(d["productFamily"]=="iPhone" for d in x.get("supportedDeviceTypes",[]))]; runtime=max(r,key=lambda x: tuple(map(int,x["version"].split(".")))); device=next(d for d in runtime["supportedDeviceTypes"] if d["productFamily"]=="iPhone"); print(runtime["identifier"],device["identifier"])')
+          SIMULATOR_UDID=$(xcrun simctl create Routine-CI "$DEVICE_TYPE" "$RUNTIME")
+          trap 'xcrun simctl shutdown "$SIMULATOR_UDID" || true; xcrun simctl delete "$SIMULATOR_UDID"' EXIT
+          xcrun simctl boot "$SIMULATOR_UDID"
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          xcodebuild test -workspace Routine.xcworkspace -scheme 'RoutineApp Local' -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" CODE_SIGNING_ALLOWED=NO 2>&1 | tee test.log | xcbeautify

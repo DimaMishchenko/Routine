@@ -2,15 +2,12 @@ import ProjectDescription
 
 extension Target {
   public static func routineApp(dependencies: [TargetDependency] = []) -> Target {
-    Target(
+    .target(
       name: "RoutineApp",
-      platform: .iOS,
+      destinations: [.iPhone, .iPad, .macCatalyst],
       product: .app,
       bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
-      deploymentTarget: .iOS(
-        targetVersion: "14.0",
-        devices: [.iphone, .ipad, .mac]
-      ),
+      deploymentTargets: .iOS("26.0"),
       infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
       resources: "Modules/RoutineApp/Resources/**",
@@ -19,40 +16,23 @@ extension Target {
       ],
       dependencies: dependencies,
       settings: .settings(configurations: Configuration.routine),
-      coreDataModels: [.init("Modules/RoutineApp/CoreData/Routine.xcdatamodeld")]
+      coreDataModels: [.coreDataModel("Modules/RoutineApp/CoreData/Routine.xcdatamodeld")]
     )
   }
   
   public static func routineAppTests() -> Target {
-    Target(
+    .target(
       name: "RoutineAppTests",
-      platform: .iOS,
+      destinations: [.iPhone, .iPad, .macCatalyst],
       product: .unitTests,
       bundleId: "com.dm.routine.app.tests",
       infoPlist: .default,
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [
-        .target(name: "RoutineApp"),
-        .spm(.quick),
-        .spm(.nimble)
+        .target(name: "RoutineApp")
       ],
       settings: .settings(configurations: Configuration.routineTests)
     )
   }
   
-  public static func appExtension(_ appExtension: AppExtension) -> Target {
-    Target(
-      name: appExtension.name,
-      platform: .iOS,
-      product: appExtension.productType,
-      bundleId: "${PRODUCT_BUNDLE_IDENTIFIER}",
-      deploymentTarget: appExtension.deploymentTarget,
-      infoPlist: appExtension.infoPlist,
-      sources: appExtension.sources,
-      resources: [],
-      entitlements: appExtension.entitlements,
-      dependencies: appExtension.dependencies,
-      settings: .settings(configurations: Configuration.appExtension(appExtension))
-    )
-  }
 }

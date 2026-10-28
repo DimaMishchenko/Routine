@@ -1,190 +1,46 @@
-# Public 
+default_platform(:ios)
 
-# Testflight
-desc "Upload RoutineApp Dev to Testflight"
-desc ""
-desc "Parameters"
-desc "- version (required) - build version"
-lane :upload_tf_routine_dev do |options|
-  version = options[:version]
-  bundle_id = "com.dm.routine.app.dev"
-  scheme = "RoutineApp Dev"
-
-  if version.nil?
-    UI.user_error!("Version must be specified")
-  end
-
-  version_file_path = "Modules/RoutineApp/app-version"
-  Dir.chdir("..") do
-    File.open(version_file_path, 'w') { |file| file.write(version) }
-  end
-
-  setup_as_api_key()
-
-  options = { 
-    version: version, 
-    bundle_id: bundle_id, 
-    scheme: scheme, 
-    extensionIds: ["com.dm.routine.app.dev.notificationsService"],
-    firebasePlist: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Dev-GoogleService-Info.plist"
-  }
-  Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
-  Fastlane::LaneManager.cruise_lane("mac", "upload_tf_routine", options)
-  
-  git_commit(
-    path: [version_file_path], 
-    message: "📦 RoutineApp release with version #{version}", 
-    allow_nothing_to_commit: true
-  )
-  add_git_tag(tag: version, force: true)
-  push_to_git_remote()
-end
-
-desc "Upload RoutineApp Prod to Testflight"
-lane :upload_tf_routine_prod do |options|
-  bundle_id = "com.dm.routine.app.prod"
-  scheme = "RoutineApp Prod"
-  version_file_path = "Modules/RoutineApp/app-version"
-  version = nil
-  Dir.chdir("..") do
-    version = File.read(version_file_path)
-  end
-
-  if version.nil?
-    UI.user_error!("Can't load version from #{version_file_path}")
-  end
-
-  setup_as_api_key()
-
-  options = { 
-    version: version, 
-    bundle_id: bundle_id, 
-    scheme: scheme, 
-    extensionIds: ["com.dm.routine.app.prod.notificationsService"],
-    firebasePlist: "./Modules/RoutineApp/Resources/FirebaseConfig/Routine-Prod-GoogleService-Info.plist",
-    groups: ["External"] 
-  }
-  Fastlane::LaneManager.cruise_lane("ios", "upload_tf_routine", options)
-  Fastlane::LaneManager.cruise_lane("mac", "upload_tf_routine", options)
-end
-
-# Private 
-
+desc "Build and upload a signed Dev or Prod archive using externally supplied credentials"
 platform :ios do
-  # Testflight
-  desc "Upload RoutineApp to Testflight"
-  desc ""
-  desc "Parameters"
-  desc "- version (required) - build version"
-  desc "- bundle_id (required) - app bundle id"
-  desc "- scheme (required) - app scheme"
-  desc "- extensionIds (required) - app extension bundle ids"
-  desc "- groups (optional) - tester groups to assign"
-  lane :upload_tf_routine do |options|
-    version = options[:version]
-    bundle_id = options[:bundle_id]
-    scheme = options[:scheme]
-    extensionIds = options[:extensionIds]
-    firebasePlist = options[:firebasePlist]
-    groups = options[:groups]
-
-    update_build_number(bundle_id: bundle_id, version: version, platform: "ios")
-    generate_project()
-    match(type: "appstore", app_identifier: bundle_id)
-    extensionIds.each { |id| match(type: "appstore", app_identifier: id) }
-    gym(scheme: scheme)
-    testflight(app_identifier: bundle_id, app_platform: "ios", groups: groups)
-    upload_symbols(plist_path: firebasePlist)
-
-    Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] = nil
-  end
-end
-
-platform :mac do
-  # Testflight
-  desc "Upload RoutineApp to Testflight"
-  desc ""
-  desc "Parameters"
-  desc "- version (required) - build version"
-  desc "- bundle_id (required) - app bundle id"
-  desc "- scheme (required) - app scheme"
-  desc "- groups (optional) - tester groups to assign"
-  lane :upload_tf_routine do |options|
-    version = options[:version]
-    bundle_id = options[:bundle_id]
-    scheme = options[:scheme]
-    extensionIds = options[:extensionIds]
-    firebasePlist = options[:firebasePlist]
-    groups = options[:groups]
-
-    update_build_number(bundle_id: bundle_id, version: version, platform: "osx")
-    generate_project()
-    match(
-      type: "appstore", 
-      additional_cert_types: ["mac_installer_distribution"],
-      platform: "catalyst",
-      app_identifier: bundle_id
+  lane :upload_testflight do |options|
+    environment = options.fetch(:environment, "dev").to_s
+    UI.user_error!("environment must be dev or prod") unless %w[dev prod].include?(environment)
+    destination = options.fetch(:destination, "ios").to_s
+    UI.user_error!("destination must be ios or macos") unless %w[ios macos].include?(destination)
+    %w[ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_FILE DEVELOPMENT_TEAM MATCH_GIT_URL MATCH_PASSWORD].each do |name|
+      UI.user_error!("Missing #{name}") if ENV[name].to_s.empty?
+    end
+    UI.user_error!("DEVELOPMENT_TEAM must be a ten-character Apple team ID") unless ENV.fetch("DEVELOPMENT_TEAM").match?(/\A[A-Z0-9]{10}\z/)
+    key_file = File.expand_path(ENV.fetch("ASC_KEY_FILE"))
+    root = File.expand_path("..", __dir__)
+    UI.user_error!("Keep the API private key outside the repository") if key_file.start_with?(root + File::SEPARATOR)
+    UI.user_error!("ASC_KEY_FILE does not exist") unless File.file?(key_file)
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: key_file
     )
-    extensionIds.each { |id| 
-      match(
-        type: "appstore", 
-        additional_cert_types: ["mac_installer_distribution"],
-        platform: "catalyst",
-        app_identifier: id
-      )
+    bundle_id = "com.dm.routine.app.#{environment}"
+    Dir.chdir(root) { sh("make", "gen") }
+    signing_options = {
+      type: "appstore", readonly: true, app_identifier: bundle_id, api_key: api_key,
+      platform: destination == "macos" ? "catalyst" : "ios"
     }
-    gym(scheme: scheme, catalyst_platform: "macos")
-    testflight(app_identifier: bundle_id, app_platform: "osx", groups: groups)
-    upload_symbols(plist_path: firebasePlist)
-
-    Actions.lane_context[SharedValues::PKG_OUTPUT_PATH] = nil
+    signing_options[:additional_cert_types] = ["mac_installer_distribution"] if destination == "macos"
+    match(**signing_options)
+    build_app(
+      workspace: File.join(root, "Routine.xcworkspace"),
+      scheme: "RoutineApp #{environment.capitalize}",
+      configuration: "#{environment.capitalize}Release",
+      export_method: "app-store",
+      catalyst_platform: destination,
+      xcargs: "DEVELOPMENT_TEAM=#{ENV.fetch('DEVELOPMENT_TEAM')}",
+      output_directory: File.join(root, ".artifacts", destination)
+    )
+    upload_to_testflight(
+      api_key: api_key, app_identifier: bundle_id,
+      app_platform: destination == "macos" ? "osx" : "ios",
+      skip_waiting_for_build_processing: true
+    )
   end
-end
-
-# Setup AppStore Connect
-desc "Setup AppStore connect API key"
-private_lane :setup_as_api_key do 
-  app_store_connect_api_key(
-    key_id: ENV.fetch("ASC_KEY_ID"),
-    issuer_id: ENV.fetch("ASC_ISSUER_ID"),
-    key_filepath: ENV.fetch("ASC_KEY_FILE"),
-  )
-end
-
-# Project generation
-desc "Generate XCode project file and install dependencies"
-private_lane :generate_project do
-  Dir.chdir("..") do
-    sh("make", "gen")
-  end
-end
-
-desc "Upload symbols to crashlytics"
-desc ""
-desc "Parameters"
-desc "- plist_path (required) - firebase (GoogleService) info.plist path"
-private_lane :upload_symbols do |options|
-  upload_symbols_to_crashlytics(
-    dsym_path: "./Routine.app.dSYM.zip",
-    gsp_path: options[:plist_path],
-    binary_path: "./Crashlytics/upload-symbols"
-  )
-end
-
-desc "Update build number"
-desc ""
-desc "Parameters"
-desc "- bundle_id (required) - app bundle id"
-desc "- version (required) - app version"
-desc "- platform (required) - app platform"
-private_lane :update_build_number do |options|
-  current_build_number = latest_testflight_build_number(
-    app_identifier: options[:bundle_id],
-    version: options[:version],
-    initial_build_number: 0,
-    platform: options[:platform]
-  )
-
-  new_build_number = current_build_number + 1
-  ENV["TUIST_BUILD_NUMBER"] = new_build_number.to_s
 end

@@ -1,7 +1,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 16.0, *)
 struct RoutineIntentEntity: AppEntity, Hashable, Equatable {
   static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.routine.type")
   static let defaultQuery = RoutineIntentEntityQuery()
@@ -25,24 +24,21 @@ struct RoutineIntentEntity: AppEntity, Hashable, Equatable {
   }
 }
 
-@available(iOS 16.0, *)
 struct RoutineIntentEntityQuery: @unchecked Sendable, EntityStringQuery {
-  @AppDependency private var store: RoutineStore?
-  
   func entities(for identifiers: [UUID]) async throws -> [RoutineIntentEntity] {
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
     return try await store.allRoutines()
       .filter { identifiers.contains($0.uuid) }
       .map { .init(routine: $0) }
   }
   
   func suggestedEntities() async throws -> [RoutineIntentEntity] {
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
     return try await store.allRoutines().map { .init(routine: $0) }
   }
   
   func entities(matching string: String) async throws -> [RoutineIntentEntity] {
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
     return try await store.allRoutines()
       .filter {
         $0.name.lowercased().contains(string.lowercased()) ||
@@ -52,12 +48,9 @@ struct RoutineIntentEntityQuery: @unchecked Sendable, EntityStringQuery {
   }
 }
 
-@available(iOS 16.0, *)
 struct RoutineOptionsProvider: DynamicOptionsProvider {
-  @AppDependency private var store: RoutineStore?
-  
   func results() async throws -> ItemCollection<RoutineIntentEntity> {
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
     let routines = try await store.allRoutines()
     let routinesByType = Dictionary(grouping: routines, by: \.frequency)
     

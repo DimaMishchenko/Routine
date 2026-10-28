@@ -8,15 +8,15 @@ class CoreDataPublisher<Entity>: NSObject, NSFetchedResultsControllerDelegate, P
   
   private let request: NSFetchRequest<Entity>
   private let context: NSManagedObjectContext
-  private let subject: CurrentValueSubject<[Entity], Failure>
-  private var resultController: NSFetchedResultsController<NSManagedObject>?
+  private let subject: CurrentValueSubject<[Entity]?, Failure>
+  private var resultController: NSFetchedResultsController<Entity>?
   private var subscriptions = 0
   
   init(request: NSFetchRequest<Entity>, context: NSManagedObjectContext) {
     if request.sortDescriptors == nil { request.sortDescriptors = [] }
     self.request = request
     self.context = context
-    subject = CurrentValueSubject([])
+    subject = CurrentValueSubject(nil)
     super.init()
   }
   
@@ -47,7 +47,7 @@ class CoreDataPublisher<Entity>: NSObject, NSFetchedResultsControllerDelegate, P
           self.subject.send(completion: .failure(error))
         }
       }
-      resultController = controller as? NSFetchedResultsController<NSManagedObject>
+      resultController = controller
     }
                                          
     CoreDataSubscription(fetchPublisher: self, subscriber: AnySubscriber(subscriber))
@@ -80,7 +80,7 @@ class CoreDataPublisher<Entity>: NSObject, NSFetchedResultsControllerDelegate, P
       
       subscriber.receive(subscription: self)
       
-      cancellable = fetchPublisher.subject.sink(receiveCompletion: { completion in
+      cancellable = fetchPublisher.subject.compactMap { $0 }.sink(receiveCompletion: { completion in
         subscriber.receive(completion: completion)
       }, receiveValue: { value in
         _ = subscriber.receive(value)

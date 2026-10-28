@@ -3,7 +3,6 @@ import Foundation
 
 @objc(ReminderEntity)
 class ReminderEntity: NSManagedObject {
-  // MARK: - Properties
   @NSManaged private(set) var uuid: UUID
   @NSManaged private(set) var contentJson: Data
   @NSManaged private(set) var routine: RoutineEntity?
@@ -20,7 +19,6 @@ class ReminderEntity: NSManagedObject {
 }
 
 extension ReminderEntity {
-  // MARK: - Init
   convenience init(
     context: NSManagedObjectContext,
     reminder: Reminder

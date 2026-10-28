@@ -5,7 +5,4 @@ extension TargetDependency {
     .package(product: dependency.name)
   }
   
-  public static func appExtension(_ appExtension: AppExtension) -> TargetDependency {
-    .target(name: appExtension.name)
-  }
 }

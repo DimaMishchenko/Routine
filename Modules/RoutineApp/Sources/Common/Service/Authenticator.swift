@@ -13,11 +13,8 @@ protocol Authenticator {
 }
 
 final class AuthenticatorImpl: Authenticator {
-  // MARK: - Dependencies
-  private let context = LAContext()
-
-  // MARK: - Properties
   var biometryType: BiometryType {
+    let context = LAContext()
     var error: NSError?
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else { return .none }
     
@@ -30,14 +27,14 @@ final class AuthenticatorImpl: Authenticator {
     case .none: return .none
     case .touchID: return .touchID
     case .faceID: return .faceID
-    @unknown default: return .none
+    default: return .none
     }
   }
 
   func auth(biometryOnly: Bool) async -> Bool {
-    defer { context.localizedFallbackTitle = nil }
+    let context = LAContext()
+    defer { context.invalidate() }
     if biometryOnly { context.localizedFallbackTitle = .empty }
-    
     let policy: LAPolicy = biometryOnly ? .deviceOwnerAuthenticationWithBiometrics : .deviceOwnerAuthentication
     do {
       return try await context.evaluatePolicy(
@@ -45,16 +42,24 @@ final class AuthenticatorImpl: Authenticator {
         localizedReason: RoutineAppStrings.Localizable.FaceID.requestReason
       )
     } catch {
-      if isLockout() {
-        return await auth(biometryOnly: false)
-      } else {
+      guard biometryOnly, (error as? LAError)?.code == .biometryLockout else {
+        Logger.log(error)
+        return false
+      }
+      do {
+        return try await context.evaluatePolicy(
+          .deviceOwnerAuthentication,
+          localizedReason: RoutineAppStrings.Localizable.FaceID.requestReason
+        )
+      } catch {
         Logger.log(error)
         return false
       }
     }
   }
-  
+
   func isLockout() -> Bool {
+    let context = LAContext()
     var error: NSError?
     _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
     return (error as? LAError)?.code == .biometryLockout

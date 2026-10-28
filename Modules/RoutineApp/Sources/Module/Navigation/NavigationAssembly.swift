@@ -1,17 +1,10 @@
 import UIKit
 
 final class NavigationAssembly {
-  // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
-  
-  // MARK: - Init
-  init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
+  init(assemblyFactory: AssemblyFactory) {
     self.assemblyFactory = assemblyFactory
-    // https://www.revenuecat.com/docs/user-ids#provide-app-user-id-on-configuration
-    serviceFactory.inAppPurchases().setup()
   }
-  
-  // MARK: - Public
   @MainActor func controller() -> UIViewController {
     let vm = NavigationViewModelImpl()
     let vc: UIViewController

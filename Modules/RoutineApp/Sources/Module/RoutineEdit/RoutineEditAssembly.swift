@@ -2,17 +2,12 @@ import EmojiPicker
 import UIKit
 
 final class RoutineEditAssembly {
-  // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
   private let serviceFactory: ServiceFactory
-  
-  // MARK: - Init
   init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
     self.serviceFactory = serviceFactory
   }
-  
-  // MARK: - Public
   func controller(
     for type: RoutineEdit.ModuleType,
     onSave: @escaping (Routine) -> Void,
@@ -21,18 +16,11 @@ final class RoutineEditAssembly {
     let presenter = RoutineEditPresenterImpl(
       moduleType: type,
       itemFactory: RoutineEditItemFactoryImpl(),
-      notificationsHandler: serviceFactory.notificationsPermissionHandler(),
-      inAppPurchases: serviceFactory.inAppPurchases()
+      notificationsHandler: serviceFactory.notificationsPermissionHandler()
     )
     let vc = RoutineEditVC(presenter: presenter)
     presenter.view = vc
     
-    presenter.premium = { [weak vc, weak assemblyFactory] in
-      Task { [vc, assemblyFactory] in
-        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
-        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
-      }
-    }
     presenter.saveRoutine = { onSave($0) }
     presenter.deleteRoutine = { onDelete() }
     

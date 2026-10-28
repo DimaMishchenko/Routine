@@ -1,35 +1,23 @@
-import UIKit
 import StoreKit
+import UIKit
 
 final class RoutineListAssembly {
-  // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
   private let serviceFactory: ServiceFactory
-  
-  // MARK: - Init
   init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
     self.serviceFactory = serviceFactory
   }
-  
-  // MARK: - Public
   func controller() -> UIViewController {
     let presenter = RoutineListPresenterImpl(
       store: serviceFactory.routineStore(),
       itemFactory: RoutineListItemFactoryImpl(),
       appStateObserver: serviceFactory.appStateObserver(),
-      notificationsHandler: serviceFactory.notificationsPermissionHandler(),
-      inAppPurchases: serviceFactory.inAppPurchases()
+      notificationsHandler: serviceFactory.notificationsPermissionHandler()
     )
     let vc = RoutineListVC(presenter: presenter)
     presenter.view = vc
     
-    presenter.premium = { [weak vc, weak assemblyFactory] in
-      Task { [vc, assemblyFactory] in
-        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
-        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
-      }
-    }
     presenter.editRoutine = { [weak vc, weak assemblyFactory] routine, completion, onDelete in
       let editVC = assemblyFactory?.routineEdit().controller(
         for: .edit(routine),
@@ -53,10 +41,6 @@ final class RoutineListAssembly {
         }
         await vc?.present(UINavigationController(rootViewController: detailsVC), animated: true)
       }
-    }
-    presenter.updateApp = {
-      Analytics.send(.updateApp)
-      ExternalLinksNavigator.appStore()
     }
     presenter.inAppReview = {
       UIApplication.shared.activeWindowScene.flatMap {

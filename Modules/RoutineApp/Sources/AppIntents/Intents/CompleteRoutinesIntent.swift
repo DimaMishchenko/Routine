@@ -1,7 +1,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 16.0, *)
 struct CompleteRoutinesIntent: AppIntent, @unchecked Sendable {
   static let title: LocalizedStringResource = "intent.CR.title"
   static let description = IntentDescription(
@@ -17,9 +16,7 @@ struct CompleteRoutinesIntent: AppIntent, @unchecked Sendable {
     optionsProvider: RoutineOptionsProvider()
   )
   private(set) var routines: [RoutineIntentEntity]
-  
-  @AppDependency private var store: RoutineStore?
-  
+
   init() {}
   
   init(routines: [Routine]) {
@@ -30,22 +27,27 @@ struct CompleteRoutinesIntent: AppIntent, @unchecked Sendable {
     guard !routines.isEmpty else {
       return .result(value: [RoutineIntentEntity](), dialog: "intent.CR.result.noItems")
     }
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
+    try await store.fillHistoryIfNeeded()
+    let requestedIDs = Set(routines.map(\.id))
+    let currentRoutines = try await store.allRoutines().filter { requestedIDs.contains($0.uuid) }
+    guard !currentRoutines.isEmpty else {
+      return .result(value: [RoutineIntentEntity](), dialog: "intent.CR.result.noItems")
+    }
     
     var updatedItems: [RoutineIntentEntity] = []
     
-    for routine in routines {
-      var editable = EditableRoutine(routine: routine.item)
+    for routine in currentRoutines {
+      var editable = EditableRoutine(routine: routine)
 
-      if routine.item.progress.current < routine.item.progress.goal.rawValue {
-        editable.progress = Progress(goal: routine.item.progress.goal, current: routine.item.progress.goal.rawValue)
+      if routine.progress.current < routine.progress.goal.rawValue {
+        editable.progress = Progress(goal: routine.progress.goal, current: routine.progress.goal.rawValue)
         try await store.update(editable.routine)
       }
 
       updatedItems.append(.init(routine: editable.routine))
     }
 
-    Analytics.send(.intentComplete)
     return .result(value: updatedItems, dialog: "intent.CR.result.success")
   }
 }

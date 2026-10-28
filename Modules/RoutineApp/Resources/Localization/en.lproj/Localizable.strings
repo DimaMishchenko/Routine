@@ -1,8 +1,7 @@
 // MARK: - Common
 "routine" = "Routine";
 "common.email" = "Email";
-"common.telegram" = "Telegram";
-"common.twitter" = "Twitter";
+"common.github" = "GitHub";
 "common.times" = "times";
 
 // MARK: - Navigation Bar
@@ -94,7 +93,6 @@
 "settings.row.language" = "Language";
 "settings.row.notifications" = "Notifications";
 "settings.row.iCloudSync" = "iCloud sync";
-"settings.row.premium" = "Premium";
 "settings.row.appearance" = "Appearance";
 "settings.row.macOS" = "Routine on macOS";
 "settings.row.reportBug" = "Report a bug";
@@ -160,38 +158,13 @@
 "cloudInfo.errorHint.iCloudAccount" = "It looks like there's an issue with your iCloud account. Please go to the Settings app and check if you're logged in and if your account is accessible. Make sure your credentials are verified and that access to your account is not restricted by Parental Controls or Device Management software. If you're having trouble, try logging out and logging back in. If the issue persists, contact Apple support for further assistance.";
 "cloudInfo.errorHint.syncError" = "Syncing failed. Please go to the Settings app and check if there's an issue with your iCloud account. Make sure you have enough storage space in iCloud and that your internet connection is stable. If the issue persists, contact Apple support for further assistance.";
 
-// MARK: - Premium
-"premium.title" = "Routine premium";
 
-"premium.button.done" = "Done";
-"premium.button.restore" = "Restore";
-"premium.button.redeem" = "Redeem";
 
-"premium.item.unlimited.title" = "Unlimited routines";
-"premium.item.unlimited.description" = "Add as many routines as you wish and view them in one convenient place.";
-"premium.item.security.title" = "Enhanced security";
-"premium.item.security.description" = "Enable biometric authentication to secure all of your information.";
-"premium.item.reminders.title" = "Reminders";
-"premium.item.reminders.description" = "Enable reminders to ensure you never miss a notification of your routine.";
-"premium.item.creators.title" = "Support creators";
-"premium.item.creators.description" = "Routine was created by two individuals, and your support is greatly appreciated.";
 
-"premium.offer.subscribe" = "Subscribe";
-"premium.offer.freeTrial" = "trial for free!";
-"premium.offer.noOffers" = "No offers available right now.";
 
-"premium.purchased.status" = "Your Premium subscription is active.";
-"premium.purchased.manage" = "Manage your subscription.";
 
-"premium.unavailable" = "Routine Premium is currently unavailable 😞";
 
-"premium.period.day" = "day";
-"premium.period.week" = "week";
-"premium.period.month" = "month";
-"premium.period.year" = "year";
 
-"premium.privacyPolicy" = "Privacy Policy";
-"premium.termsOfUse" = "Terms of Use";
 
 // MARK: - Reminders
 "reminder.body.0" = "Stay on track today";
@@ -236,5 +209,9 @@
 "common.alert.deleteRoutine.title" = "Are you sure you want to remove the routine?";
 "common.alert.deleteRoutine.message" = "It can not be restored";
 
-"common.alert.updateApp.title" = "New Routine version is available";
-"common.alert.updateApp.message" = "Would you like to update to latest version of the app for better experience?";
+"lock.title" = "Routine is locked";
+"lock.unlock" = "Unlock";
+
+"storageError.title" = "Unable to open your routines";
+"storageError.message" = "Your existing data has been preserved. Try opening it again. If this continues, contact support before changing or reinstalling the app.";
+"storageError.retry" = "Try again";

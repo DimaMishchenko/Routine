@@ -1,7 +1,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 16.0, *)
 struct IncreaseRoutinesProgressIntent: AppIntent, @unchecked Sendable {
   static let title: LocalizedStringResource = "intent.IRP.title"
   static let description = IntentDescription(
@@ -17,9 +16,7 @@ struct IncreaseRoutinesProgressIntent: AppIntent, @unchecked Sendable {
     optionsProvider: RoutineOptionsProvider()
   )
   private(set) var routines: [RoutineIntentEntity]
-  
-  @AppDependency private var store: RoutineStore?
-  
+
   init() {}
   
   init(routines: [Routine]) {
@@ -30,18 +27,23 @@ struct IncreaseRoutinesProgressIntent: AppIntent, @unchecked Sendable {
     guard !routines.isEmpty else {
       return .result(value: [RoutineIntentEntity](), dialog: "intent.IRP.result.noItems")
     }
-    guard let store else { throw IntentError.noDependencies }
+    let store = try await IntentRuntime.store()
+    try await store.fillHistoryIfNeeded()
+    let requestedIDs = Set(routines.map(\.id))
+    let currentRoutines = try await store.allRoutines().filter { requestedIDs.contains($0.uuid) }
+    guard !currentRoutines.isEmpty else {
+      return .result(value: [RoutineIntentEntity](), dialog: "intent.IRP.result.noItems")
+    }
     
     var updatedItems: [RoutineIntentEntity] = []
     
-    for routine in routines {
-      var editable = EditableRoutine(routine: routine.item)
+    for routine in currentRoutines {
+      var editable = EditableRoutine(routine: routine)
       editable.increaseProgress()
       try await store.update(editable.routine)
       updatedItems.append(.init(routine: editable.routine))
     }
 
-    Analytics.send(.intentComplete)
     return .result(value: updatedItems, dialog: "intent.IRP.result.success")
   }
 }

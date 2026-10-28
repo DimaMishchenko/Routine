@@ -1,87 +1,114 @@
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  // MARK: - Dependencies
-  private let assemblyFactory: AssemblyFactory
-  private let authenticator: Authenticator
-  private let historyUpdater: RoutineHistoryUpdater
-  
-  // MARK: - Properties
+  private struct Runtime {
+    let assemblyFactory: AssemblyFactory
+    let authenticator: Authenticator
+    let historyUpdater: RoutineHistoryUpdater
+  }
+
+  private var runtime: Runtime?
+  private var lockState = AppLockState()
+  private var authenticationTask: Task<Void, Never>?
   var window: UIWindow?
-  
+
   private lazy var backgroundWindow: UIWindow = with(UIWindow(frame: UIScreen.main.bounds)) {
     $0.windowScene = window?.windowScene
-    $0.rootViewController = assemblyFactory.blocker().controller()
+    $0.rootViewController = BlockerAssembly().controller { [weak self] in self?.authenticate() }
     $0.windowLevel = .alert
   }
-  
+
   @Defaults(key: .useFaceID, initial: false) private var authWithFaceID: Bool
-  
-  // MARK: - Init
-  override init() {
-    let serviceFactory = ServiceFactory(coreDataStack: CoreDataStackAssembly.routineStack(), purchases: .init())
-    assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
-    authenticator = serviceFactory.authenticator()
-    historyUpdater = serviceFactory.routineHistoryUpdater()
-    IntentDependenciesRegisterer.register(with: serviceFactory)
-    super.init()
-  }
-  
-  // MARK: - Public
+
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
     guard let scene = scene as? UIWindowScene else { return }
-    
-    FirebaseConfigureImpl().configure()
+    LegacyTrackingCleanup.removeIdentifier()
     CommonAppearance.setup(for: scene)
-    historyUpdater.handleAppLaunch()
-    
-    let navigationVC = assemblyFactory.navigationAssembly().controller()
-    
     window = UIWindow(windowScene: scene)
-    window?.rootViewController = navigationVC
-    window?.makeKeyAndVisible()
-    
-    updateBlockerIfNeeded(visible: true)
+    connect(to: scene)
     CommonAppearance.setupTheme()
   }
-  
+
   func sceneWillResignActive(_ scene: UIScene) {
-    updateBlockerIfNeeded(visible: true)
-  }
-  
-  func sceneDidBecomeActive(_ scene: UIScene) {
-    updateBlockerIfNeeded(visible: false)
-  }
-  
-  func sceneWillEnterForeground(_ scene: UIScene) {
-    authIfNeeded()
+    guard runtime != nil else { return }
+    lockState.deactivate(protectionEnabled: authWithFaceID)
+    updateBlocker()
   }
 
-  // MARK: - Properties
-  private func authIfNeeded() {
-    guard authWithFaceID else { return }
-    Task {
-      #if targetEnvironment(macCatalyst)
-      updateBlockerIfNeeded(visible: true)
-      #endif
-      guard await !authenticator.auth(biometryOnly: false) else {
-        #if targetEnvironment(macCatalyst)
-        updateBlockerIfNeeded(visible: false)
-        #endif
-        return
+  func sceneDidEnterBackground(_ scene: UIScene) {
+    lockState.enterBackground()
+    updateBlocker()
+  }
+
+  func sceneDidBecomeActive(_ scene: UIScene) {
+    guard runtime != nil else { return }
+    lockState.activate(protectionEnabled: authWithFaceID)
+    updateBlocker()
+    authenticateAutomaticallyIfNeeded()
+  }
+
+  func sceneWillEnterForeground(_ scene: UIScene) {
+    runtime?.historyUpdater.handleForeground()
+  }
+
+  func sceneDidDisconnect(_ scene: UIScene) {
+    lockState.enterBackground()
+    authenticationTask?.cancel()
+    updateBlocker()
+  }
+
+  private func connect(to scene: UIWindowScene) {
+    do {
+      let serviceFactory = try AppRuntime.shared.serviceFactory()
+      let assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
+      let historyUpdater = serviceFactory.routineHistoryUpdater()
+      runtime = Runtime(
+        assemblyFactory: assemblyFactory,
+        authenticator: serviceFactory.authenticator(),
+        historyUpdater: historyUpdater
+      )
+      lockState.configure(protectionEnabled: authWithFaceID)
+      window?.rootViewController = assemblyFactory.navigationAssembly().controller()
+      window?.makeKeyAndVisible()
+      updateBlocker()
+      historyUpdater.handleAppLaunch()
+      if scene.activationState == .foregroundActive {
+        sceneDidBecomeActive(scene)
       }
-      
-      updateBlockerIfNeeded(visible: true)
-      authIfNeeded()
+    } catch {
+      Logger.log(error)
+      window?.rootViewController = StorageRecoveryVC { [weak self, weak scene] in
+        guard let scene else { return }
+        self?.connect(to: scene)
+      }
+      window?.makeKeyAndVisible()
     }
   }
-  
-  private func updateBlockerIfNeeded(visible: Bool) {
-    guard authWithFaceID else { return }
-    backgroundWindow.isHidden = !visible
+
+  private func authenticateAutomaticallyIfNeeded() {
+    guard lockState.shouldAuthenticateAutomatically else { return }
+    authenticate()
+  }
+
+  private func authenticate() {
+    guard authenticationTask == nil, let runtime, let generation = lockState.beginAuthentication() else { return }
+    updateBlocker()
+    authenticationTask = Task { [weak self] in
+      guard let self else { return }
+      let succeeded = await runtime.authenticator.auth(biometryOnly: false)
+      self.authenticationTask = nil
+      let accepted = self.lockState.completeAuthentication(succeeded: succeeded, generation: generation)
+      self.updateBlocker()
+      if !accepted { self.authenticateAutomaticallyIfNeeded() }
+    }
+  }
+
+  private func updateBlocker() {
+    backgroundWindow.isHidden = !lockState.blocksContent
+    (backgroundWindow.rootViewController as? BlockerVC)?.update(authenticating: lockState.phase == .authenticating)
   }
 }

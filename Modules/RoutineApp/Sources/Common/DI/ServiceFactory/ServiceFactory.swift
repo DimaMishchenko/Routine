@@ -1,17 +1,10 @@
 import Foundation
 
 final class ServiceFactory {
-  // MARK: - Dependencies
   private let sharedCoreDataStack: CoreDataStack
-  private let purchases: InAppPurchases
-  
-  // MARK: - Init
-  init(coreDataStack: CoreDataStack, purchases: InAppPurchases) {
+  init(coreDataStack: CoreDataStack) {
     sharedCoreDataStack = coreDataStack
-    self.purchases = purchases
   }
-  
-  // MARK: - Public
   func coreDataStack() -> CoreDataStack {
     sharedCoreDataStack
   }
@@ -34,9 +27,5 @@ final class ServiceFactory {
   
   func authenticator() -> Authenticator {
     AuthenticatorImpl()
-  }
-  
-  func inAppPurchases() -> InAppPurchases {
-    purchases
   }
 }

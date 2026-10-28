@@ -10,7 +10,6 @@ struct CalendarVM {
   }
 }
 
-@available(iOS 16.0, *)
 struct CalendarView: UIViewRepresentable {
   let viewModel: CalendarVM
   let onSelection: (Date) -> Void
@@ -42,7 +41,6 @@ struct CalendarView: UIViewRepresentable {
   }
 }
 
-@available(iOS 16.0, *)
 extension CalendarView {
   final class ContainerView: UIView {
     fileprivate let calendar = UICalendarView()
@@ -62,13 +60,10 @@ extension CalendarView {
   }
 
   final class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionMultiDateDelegate {
-    // MARK: - Properties
     fileprivate let calendar: Calendar
     fileprivate var viewModel: CalendarVM
     private let onSelection: (Date) -> Void
     private let onDeselection: (Date) -> Void
-
-    // MARK: - Init
     init(
       calendar: Calendar,
       viewModel: CalendarVM,
@@ -80,8 +75,6 @@ extension CalendarView {
       self.onSelection = onSelection
       self.onDeselection = onDeselection
     }
-
-    // MARK: - UICalendarViewDelegate
     func calendarView(
       _ calendarView: UICalendarView,
       decorationFor dateComponents: DateComponents
@@ -101,15 +94,11 @@ extension CalendarView {
 
       return nil
     }
-    
-    // MARK: - Private
     private func update(selection: UICalendarSelectionMultiDate) {
       selection.selectedDates = viewModel.selections
         .map { $0.date }
         .compactMap { calendar.dateComponents([.day, .month, .year], from: $0) }
     }
-
-    // MARK: - UICalendarSelectionMultiDateDelegate
     func multiDateSelection(
       _ selection: UICalendarSelectionMultiDate,
       didSelectDate dateComponents: DateComponents
@@ -143,8 +132,6 @@ extension CalendarView {
 }
 
 #if DEBUG
-// MARK: - Preview
-@available(iOS 16.0, *)
 struct CalendarView_Previews: PreviewProvider {
   static var previews: some View {
     CalendarView(

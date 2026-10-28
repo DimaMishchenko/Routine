@@ -9,47 +9,23 @@ enum ExternalLinksNavigator {
     #endif
   }
   
-  static func telegramSupport() {
-    let tgAppLink = URL(string: "tg://resolve?domain=\(Flag.tgSupportNick)")
-    
-    if canOpen(tgAppLink) {
-      open(with: tgAppLink)
-    } else {
-      open(with: URL(string: "https://github.com/DimaMishchenko/Routine/issues)"))
-    }
-  }
-  
-  static func twitter() {
-    open(with: Flag.twitterLink)
+  static func githubSupport() {
+    open(with: AppConfiguration.supportLink)
   }
   
   static func macApp() {
-    open(with: Flag.appStoreLink)
-  }
-  
-  static func appStore() {
-    open(with: Flag.appStoreLink)
+    open(with: AppConfiguration.appLink)
   }
   
   static func writeReview() {
     guard
-      let url = Flag.appStoreLink,
+      let url = AppConfiguration.appLink,
       var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     else { return }
-
-    components.queryItems = [
-      URLQueryItem(name: "action", value: "write-review")
-    ]
-
-    guard let writeReviewURL = components.url else { return }
-    open(with: writeReviewURL)
+    components.queryItems = [URLQueryItem(name: "action", value: "write-review")]
+    guard let reviewURL = components.url else { return }
+    open(with: reviewURL)
   }
-
-  // MARK: - Private
-  private static func canOpen(_ url: URL?) -> Bool {
-    url.flatMap { UIApplication.shared.canOpenURL($0) } ?? false
-  }
-  
   private static func open(with url: URL?) {
     url.flatMap {
       UIApplication.shared.open($0)

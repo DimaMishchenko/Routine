@@ -1,4 +1,3 @@
-import DeviceKit
 import MessageUI
 import UIKit
 
@@ -16,7 +15,7 @@ final class MailAssembly {
       $0.dismiss(animated: true)
     }
 
-    mailVC.setToRecipients([Flag.contactEmail])
+    mailVC.setToRecipients([AppConfiguration.contactEmail])
     mailVC.setSubject(subject)
     mailVC.setMessageBody(
       addDebugData ? (message + .newLine + debugInfo()) : message,
@@ -24,27 +23,20 @@ final class MailAssembly {
     )
     return mailVC
   }
-  
-  // MARK: - Private
   private func debugInfo() -> String {
     """
-    
-    
+
     Date: \(Date())
-    Device: \(Device.current.description)
+    Device: \(UIDevice.current.model)
     iOS version: \(UIDevice.current.systemVersion)
     App version: \(AppInfo.appVersion ?? .empty)
-    Identifier: \(UserIdentifier.current)
     """
   }
 }
 
 extension MailAssembly {
   final class MailComposeController: MFMailComposeViewController, MFMailComposeViewControllerDelegate {
-    // MARK: - Properties
     private let delegateProxy: (MFMailComposeViewController, MFMailComposeResult, Error?) -> Void
-    
-    // MARK: - Init
     fileprivate init(
       delegateProxy: @escaping (MFMailComposeViewController, MFMailComposeResult, Error?) -> Void
     ) {
@@ -58,8 +50,6 @@ extension MailAssembly {
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - MFMailComposeViewControllerDelegate
     func mailComposeController(
       _ controller: MFMailComposeViewController,
       didFinishWith result: MFMailComposeResult,

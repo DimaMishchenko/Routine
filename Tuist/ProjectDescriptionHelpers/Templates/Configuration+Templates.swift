@@ -17,10 +17,6 @@ extension Configuration {
     configurations { _ in .routineTests() }
   }
   
-  public static func appExtension(_ appExtension: AppExtension) -> [Configuration] {
-    configurations { .appExtension(for: $0, appExtension: appExtension) }
-  }
-  
   // MARK: - Private
   private static func configurations(settingsProvider: (Environment) -> SettingsDictionary) -> [Configuration] {
     Environment.allCases.map { environment -> [Configuration] in

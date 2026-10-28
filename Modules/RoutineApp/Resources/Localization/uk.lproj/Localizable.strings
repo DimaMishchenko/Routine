@@ -1,8 +1,7 @@
 // MARK: - Common
 "routine" = "Рутини";
 "common.email" = "Електронна пошта";
-"common.telegram" = "Telegram";
-"common.twitter" = "Twitter";
+"common.github" = "GitHub";
 "common.times" = "рази";
 
 // MARK: - Navigation Bar
@@ -94,7 +93,6 @@
 "settings.row.language" = "Мова";
 "settings.row.notifications" = "Сповіщення";
 "settings.row.iCloudSync" = "Синхронізація з iCloud";
-"settings.row.premium" = "Преміум";
 "settings.row.appearance" = "Зовнішній вигляд";
 "settings.row.macOS" = "Routine на macOS";
 "settings.row.reportBug" = "Повідомити про помилку";
@@ -160,38 +158,13 @@
 "cloudInfo.errorHint.iCloudAccount" = "Схоже, що виникла проблема з вашим обліковим записом iCloud. Будь ласка, перейдіть до додатка Налаштування і перевірте, чи ви увійшли в систему, чи ваш обліковий запис доступний. Переконайтеся, що ваші облікові дані перевірені і доступ до вашого облікового запису не обмежено контролем батьківського контролю або програмним забезпеченням управління пристроями. Якщо у вас виникають проблеми, спробуйте вийти з облікового запису та знову увійти. Якщо проблема продовжується, зверніться до служби підтримки Apple для отримання подальшої допомоги.";
 "cloudInfo.errorHint.syncError" = "Не вдалося синхронізувати. Будь ласка, перейдіть до додатка Налаштування і перевірте, чи є проблема з вашим обліковим записом iCloud. Переконайтеся, що у вас достатньо місця для зберігання в iCloud та що ваше з'єднання з Інтернетом стабільне. Якщо проблема продовжується, зверніться до служби підтримки Apple для отримання подальшої допомоги.";
 
-// MARK: - Premium
-"premium.title" = "Routine Преміум";
 
-"premium.button.done" = "Готово";
-"premium.button.restore" = "Відновити";
-"premium.button.redeem" = "Активувати";
 
-"premium.item.unlimited.title" = "Необмежені рутини";
-"premium.item.unlimited.description" = "Додавайте стільки рутин, скільки потрібно, та переглядайте їх в одному зручному місці.";
-"premium.item.security.title" = "Підвищена безпека";
-"premium.item.security.description" = "Використовуйте біометричну автентифікацію для захисту всіх ваших даних.";
-"premium.item.reminders.title" = "Нагадування";
-"premium.item.reminders.description" = "Увімкніть нагадування, щоб впевнитися, що ніколи не пропустите сповіщення про ваші рутини.";
-"premium.item.creators.title" = "Підтримка розробників";
-"premium.item.creators.description" = "Routine був створений двома особами, і ваша підтримка є надзвичайно важливою.";
 
-"premium.offer.subscribe" = "Підписатися";
-"premium.offer.freeTrial" = "безкоштовний тестовий період!";
-"premium.offer.noOffers" = "Зараз немає доступних пропозицій.";
 
-"premium.purchased.status" = "Ваша підписка Routine Преміум активна.";
-"premium.purchased.manage" = "Керуйте своєю підпискою.";
 
-"premium.unavailable" = "Routine Преміум на даний момент недоступний 😞";
 
-"premium.period.day" = "день";
-"premium.period.week" = "тиждень";
-"premium.period.month" = "місяць";
-"premium.period.year" = "рік";
 
-"premium.privacyPolicy" = "Політика конфіденційності";
-"premium.termsOfUse" = "Умови користування";
 
 // MARK: - Reminders
 "reminder.body.0" = "Залишайтесь в тонусі сьогодні";
@@ -236,5 +209,9 @@
 "common.alert.deleteRoutine.title" = "Ви впевнені, що хочете видалити рутину?";
 "common.alert.deleteRoutine.message" = "Цю дію не можна відмінити";
 
-"common.alert.updateApp.title" = "Доступна нова версія Routine";
-"common.alert.updateApp.message" = "Бажаєте оновити додаток до останньої версії для поліпшення використання?";
+"lock.title" = "Routine заблоковано";
+"lock.unlock" = "Розблокувати";
+
+"storageError.title" = "Не вдалося відкрити ваші рутини";
+"storageError.message" = "Ваші наявні дані збережено. Спробуйте відкрити їх знову. Якщо проблема повторюється, зверніться до підтримки, перш ніж змінювати або перевстановлювати застосунок.";
+"storageError.retry" = "Спробувати знову";

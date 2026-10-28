@@ -2,47 +2,28 @@ import SafariServices
 import UIKit
 
 final class SettingsAssembly {
-  // MARK: - Dependencies
   private let assemblyFactory: AssemblyFactory
   private let serviceFactory: ServiceFactory
-  
-  // MARK: - Init
   init(assemblyFactory: AssemblyFactory, serviceFactory: ServiceFactory) {
     self.assemblyFactory = assemblyFactory
     self.serviceFactory = serviceFactory
   }
-  
-  // MARK: - Public
   // swiftlint:disable:next function_body_length
   func controller() -> UIViewController {
     let presenter = SettingsPresenterImpl(
       rowFactory: SettingsRowFactoryImpl(),
       appStateObserver: serviceFactory.appStateObserver(),
       notificationsHandler: serviceFactory.notificationsPermissionHandler(),
-      identifierCopyHandler: UserIdentifierCopyHandler(),
-      authenticator: serviceFactory.authenticator(),
-      inAppPurchases: serviceFactory.inAppPurchases()
+      authenticator: serviceFactory.authenticator()
     )
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
     
-    presenter.premium = { [weak vc, weak assemblyFactory] in
-      Task { [vc, assemblyFactory] in
-        guard let premiumVC = await assemblyFactory?.premium().controller() else { return }
-        await vc?.present(UINavigationController(rootViewController: premiumVC), animated: true)
-      }
-    }
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
-    presenter.telegramSupport = {
-      Analytics.send(.supportTG)
-      ExternalLinksNavigator.telegramSupport()
-    }
-    presenter.twitter = {
-      Analytics.send(.supportTwitter)
-      ExternalLinksNavigator.twitter()
+    presenter.githubSupport = {
+      ExternalLinksNavigator.githubSupport()
     }
     presenter.rateApp = {
-      Analytics.send(.rateApp)
       ExternalLinksNavigator.writeReview()
     }
 
@@ -51,19 +32,18 @@ final class SettingsAssembly {
         subject: subject,
         message: message,
         addDebugData: true,
-        onResult: { _, _ in Analytics.send(.supportMail) }
+        onResult: { _, _ in }
       )
       mailVC.flatMap { vc?.present($0, animated: true) }
     }
 
     presenter.share = { [weak assemblyFactory, weak vc] in
       guard
-        let url = Flag.appStoreLink,
+        let url = AppConfiguration.appLink,
         let shareVC = assemblyFactory?.share().controller(items: [url])
       else {
         return
       }
-      Analytics.send(.share)
       if UIDevice.current.userInterfaceIdiom != .phone {
         shareVC.popoverPresentationController?.sourceView = vc?.view
         shareVC.popoverPresentationController?.sourceRect = CGRect(
@@ -108,34 +88,31 @@ final class SettingsAssembly {
     }
 
     presenter.openMacApp = {
-      Analytics.send(.macLink)
       ExternalLinksNavigator.macApp()
     }
 
     presenter.privacyPolicy = { [weak vc] in
       Task { [vc] in
-        guard let url = Flag.privacyPolicyLink else { return }
+        guard let url = AppConfiguration.privacyPolicyLink else { return }
         let safariVC = await SFSafariViewController(
           url: url,
           configuration: with(.init()) {
             $0.entersReaderIfAvailable = true
           }
         )
-        Analytics.send(.privacyPolicy)
         await vc?.present(safariVC, animated: true)
       }
     }
     
     presenter.termsOfUse = { [weak vc] in
       Task { [vc] in
-        guard let url = Flag.termsOfUseLink else { return }
+        guard let url = AppConfiguration.termsOfUseLink else { return }
         let safariVC = await SFSafariViewController(
           url: url,
           configuration: with(.init()) {
             $0.entersReaderIfAvailable = true
           }
         )
-        Analytics.send(.termsOfUse)
         await vc?.present(safariVC, animated: true)
       }
     }

@@ -5,8 +5,6 @@ import UIKit
 
 protocol RoutineListPresenter {
   func viewDidLoad()
-  func viewDidAppear()
-  func closePremium()
   func addRoutine()
   func editRoutine(at section: RoutineList.Section, rowIndex: Int)
   func deleteRoutine(at section: RoutineList.Section, rowIndex: Int)
@@ -15,48 +13,32 @@ protocol RoutineListPresenter {
 }
 
 final class RoutineListPresenterImpl: RoutineListPresenter {
-  // MARK: - Dependencies
   weak var view: RoutineListViewInterface?
   private let store: RoutineStore
   private let itemFactory: RoutineListItemFactory
   private let appStateObserver: AppStateObserver
   private let notificationsHandler: NotificationsHandler
-  private let inAppPurchases: InAppPurchases
-  
-  // MARK: - Public Properties
-  var premium: (() -> Void)?
   var routineDetails: ((Routine, _ onEdit: @escaping () -> Void) -> Void)?
   var editRoutine: ((Routine, _ completion: @escaping (Routine) -> Void, _ onDelete: @escaping () -> Void) -> Void)?
   var addNewRoutine: ((_ completion: @escaping (Routine) -> Void) -> Void)?
-  var updateApp: (() -> Void)?
   var inAppReview: (() -> Void)?
-  
-  // MARK: - Private Properties
   private struct Section {
     let type: Frequency
     let routines: [Routine]
   }
   private var sections: [Section] = []
-  private var showPremium = true
-  private var updateAlertShown = false
   private var cancellables: Set<AnyCancellable> = []
-  
-  // MARK: - Init
   init(
     store: RoutineStore,
     itemFactory: RoutineListItemFactory,
     appStateObserver: AppStateObserver,
-    notificationsHandler: NotificationsHandler,
-    inAppPurchases: InAppPurchases
+    notificationsHandler: NotificationsHandler
   ) {
     self.store = store
     self.itemFactory = itemFactory
     self.appStateObserver = appStateObserver
     self.notificationsHandler = notificationsHandler
-    self.inAppPurchases = inAppPurchases
   }
- 
-  // MARK: - RoutineListPresenter
   func viewDidLoad() {
     clearNotifications()
     
@@ -64,14 +46,6 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       .on(.didBecomeActive)
       .sink { [weak self] in
         self?.clearNotifications()
-      }
-      .store(in: &cancellables)
-    
-    inAppPurchases.$subscribed
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        self?.showPremium = !$0
-        self?.reloadSnapshot()
       }
       .store(in: &cancellables)
     
@@ -93,28 +67,10 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
       .store(in: &cancellables)
   }
   
-  func viewDidAppear() {
-    checkAppUpdate()
-  }
-  
-  func closePremium() {
-    showPremium = false
-    reloadSnapshot()
-  }
-  
   func addRoutine() {
-    guard
-      inAppPurchases.subscribed ||
-      sections.reduce(into: Int.zero, { $0 += $1.routines.count }) < Flag.maxFreeRoutines
-    else {
-      premium?()
-      return
-    }
-    
     addNewRoutine? { [weak self] routine in
       Task(logError: true) { [self] in
         try await self?.store.save(routine)
-        Analytics.send(.createRoutine, parameters: [.frequency: routine.frequency.rawValue])
       }
     }
   }
@@ -151,7 +107,6 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     if editable.progress.goal.rawValue == editable.progress.current {
       view?.showConfetti(with: editable.emoji)
       IntentDonationHandler.donateComplete(editable.routine)
-      Analytics.send(.routineComplete, parameters: [.frequency: editable.frequency.rawValue])
       inAppReview?()
     }
   }
@@ -174,15 +129,10 @@ final class RoutineListPresenterImpl: RoutineListPresenter {
     }
   }
 }
-
-// MARK: - Private
 extension RoutineListPresenterImpl {
   private func reloadSnapshot() {
     view?.update(
       with: Snapshot {
-        itemFactory.premium(showBanner: showPremium) { [weak self] in
-          self?.premium?()
-        }
         itemFactory.daily(
           rows: rows(in: .daily),
           containsAnyItems: !sections.isEmpty
@@ -204,17 +154,13 @@ extension RoutineListPresenterImpl {
   }
   
   private func delete(routine: Routine) {
-    routine.reminders.forEach { notificationsHandler.delete($0) }
     Task(logError: true) {
       try await store.delete(routine)
-      Analytics.send(.deleteRoutine, parameters: [.frequency: routine.frequency.rawValue])
     }
   }
   
   private func routine(at section: RoutineList.Section, rowIndex: Int) -> Routine? {
     switch section {
-    case .premium:
-      return nil
     case .daily:
       return routines(in: .daily)?[safe: rowIndex]
     case .weekly:
@@ -240,23 +186,5 @@ extension RoutineListPresenterImpl {
   
   private func clearNotifications() {
     notificationsHandler.clearDelivered()
-  }
-  
-  private func checkAppUpdate() {
-    guard !updateAlertShown else { return }
-
-    guard
-      let latestVersion = Flag.currectAppVersion,
-      let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-      latestVersion.compare(appVersion, options: .numeric) == .orderedDescending
-    else { return }
-
-    updateAlertShown = true
-
-    view?.showAlert(
-      with: .appUpdate { [weak self] in
-        self?.updateApp?()
-      }
-    )
   }
 }

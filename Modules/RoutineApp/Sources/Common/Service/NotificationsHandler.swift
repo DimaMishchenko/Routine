@@ -4,88 +4,145 @@ import UserNotifications
 protocol NotificationsHandler {
   func isAuthorized() async -> Bool
   func request() async -> Bool
-  func schedule(_ reminders: [Reminder], title: String, body: String) async throws
-  func delete(_ reminder: Reminder)
+  func reconcile(_ routines: [Routine]) async throws
   func clearDelivered()
 }
 
+struct NotificationRequestsClient {
+  var pending: () async -> [UNNotificationRequest]
+  var add: (UNNotificationRequest) async throws -> Void
+  var remove: ([String]) -> Void
+
+  static var live: NotificationRequestsClient {
+    let center = UNUserNotificationCenter.current()
+    return NotificationRequestsClient(
+      pending: {
+        await withCheckedContinuation { continuation in
+          center.getPendingNotificationRequests { continuation.resume(returning: $0) }
+        }
+      },
+      add: { request in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+          center.add(request) { error in
+            if let error = error {
+              continuation.resume(throwing: error)
+            } else {
+              continuation.resume(returning: ())
+            }
+          }
+        }
+      },
+      remove: { center.removePendingNotificationRequests(withIdentifiers: $0) }
+    )
+  }
+}
+
 final class NotificationsHandlerImpl: NotificationsHandler {
-  // MARK: - Public
+  private let reconciler: ReminderReconciler
+
+  init(client: NotificationRequestsClient = .live) {
+    reconciler = ReminderReconciler(client: client)
+  }
+
   func isAuthorized() async -> Bool {
-    let status = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
-    return status == .authorized
-  }
-  
-  func request() async -> Bool {
-    do {
-      let result = try await UNUserNotificationCenter.current().requestAuthorization(
-        options: [.badge, .sound, .alert]
-      )
-      return result
-    } catch {
-      Logger.log(error)
-      return false
+    let settings = await withCheckedContinuation { continuation in
+      UNUserNotificationCenter.current().getNotificationSettings { continuation.resume(returning: $0) }
     }
+    return settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
   }
-  
-  func schedule(_ reminders: [Reminder], title: String, body: String) async throws {
-    try await withCheckedThrowingContinuation { continuation in
-      schedule(reminders, title: title, body: body) {
-        continuation.resume(with: $0)
+
+  func request() async -> Bool {
+    await withCheckedContinuation { continuation in
+      UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { allowed, _ in
+        continuation.resume(returning: allowed)
       }
     }
   }
-  
-  func delete(_ reminder: Reminder) {
-    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.uuid.uuidString])
+
+  func reconcile(_ routines: [Routine]) async throws {
+    try await reconciler.reconcile(routines)
   }
-  
+
   func clearDelivered() {
     UIApplication.shared.applicationIconBadgeNumber = .zero
     UNUserNotificationCenter.current().removeAllDeliveredNotifications()
   }
-  
-  // MARK: - Private
-  private func schedule(
-    _ reminders: [Reminder],
-    title: String,
-    body: String,
-    completion: @escaping (Result<Void, Error>) -> Void
-  ) {
-    UNUserNotificationCenter.current().getPendingNotificationRequests { [weak self] requests in
-      let currentUUIDs = requests.map { $0.identifier }
-      
-      reminders.forEach {
-        // clean old reminders
-        if currentUUIDs.contains($0.uuid.uuidString) { self?.delete($0) }
-        
-        // setup new
-        let content = with(UNMutableNotificationContent()) {
-          $0.title = title
-          $0.body = body
-          // TODO: - Increase on every new item
-          $0.badge = 1
-        }
-        
-        let trigger: UNNotificationTrigger
-        
-        switch $0.type {
-        case .daily(let daily):
-          var dateComponents = DateComponents()
-          dateComponents.hour = daily.hours
-          dateComponents.minute = daily.minutes
-          trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        }
-        
-        let request = UNNotificationRequest(identifier: $0.uuid.uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) {
-          guard let error = $0 else { return }
-          completion(.failure(error))
-        }
+
+  static func notification(for reminder: Reminder, title: String, body: String) -> UNNotificationRequest {
+    let content = UNMutableNotificationContent()
+    content.title = title
+    content.body = body
+    content.badge = 1
+    content.sound = .default
+    var components = DateComponents()
+    switch reminder.type {
+    case .daily(let daily):
+      components.hour = daily.hours
+      components.minute = daily.minutes
+    }
+    return UNNotificationRequest(
+      identifier: reminder.uuid.uuidString,
+      content: content,
+      trigger: UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+    )
+  }
+}
+
+private actor ReminderReconciler {
+  private let client: NotificationRequestsClient
+  private var latest: [Routine]?
+  private var running = false
+  private var waiters: [CheckedContinuation<Void, Error>] = []
+
+  init(client: NotificationRequestsClient) { self.client = client }
+
+  func reconcile(_ routines: [Routine]) async throws {
+    try await withCheckedThrowingContinuation { continuation in
+      latest = routines
+      waiters.append(continuation)
+      guard !running else { return }
+      running = true
+      Task { await drain() }
+    }
+  }
+
+  private func drain() async {
+    while let routines = latest {
+      latest = nil
+      let completing = waiters
+      waiters = []
+      do {
+        try await apply(routines)
+        completing.forEach { $0.resume(returning: ()) }
+      } catch {
+        completing.forEach { $0.resume(throwing: error) }
       }
-      
-      completion(.success(()))
+    }
+    running = false
+  }
+
+  private func apply(_ routines: [Routine]) async throws {
+    let body = NSLocalizedString("reminder.body.0", bundle: .module, comment: "")
+    let desired = routines.filter(\.remind).flatMap { routine in
+      routine.reminders.map {
+        NotificationsHandlerImpl.notification(for: $0, title: "\(routine.emoji) \(routine.name)", body: body)
+      }
+    }
+    let pending = await client.pending()
+    let desiredIDs = Set(desired.map(\.identifier))
+    client.remove(pending.filter { UUID(uuidString: $0.identifier) != nil && !desiredIDs.contains($0.identifier) }
+      .map(\.identifier))
+    for request in desired {
+      if let existing = pending.first(where: { $0.identifier == request.identifier }),
+         existing.content.title == request.content.title,
+         existing.content.body == request.content.body,
+         let current = existing.trigger as? UNCalendarNotificationTrigger,
+         let replacement = request.trigger as? UNCalendarNotificationTrigger,
+         current.dateComponents == replacement.dateComponents,
+         current.repeats == replacement.repeats {
+        continue
+      }
+      try await client.add(request)
     }
   }
 }

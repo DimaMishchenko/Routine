@@ -8,32 +8,22 @@ let project = Project(
     textSettings: .textSettings(indentWidth: 2, tabWidth: 2)
   ),
   packages: SPM.Package.packages,
-  settings: .settings(configurations: Configuration.project),
+  settings: .settings(configurations: Configuration.project, defaultConfiguration: "LocalDebug"),
   targets: [
     .routineApp(
       dependencies: [
-        .appExtension(.notificationsService),
         .sdk(name: "StoreKit", type: .framework),
         .spm(.pinLayout),
-        .spm(.deviceKit),
         .spm(.snapKit),
         .spm(.swipeCellKit),
         .spm(.spConfetti),
         .spm(.charts),
-        .spm(.keychainAccess),
         .spm(.popovers),
         .spm(.emojiPicker),
-        .spm(.ckSyncMonitor),
-        .spm(.revenueCat),
-        .spm(.firebase(.analytics)),
-        .spm(.firebase(.crashlytics)),
-        .spm(.firebase(.performance)),
-        .spm(.firebase(.messaging)),
-        .spm(.firebase(.remoteConfig))
+        .spm(.ckSyncMonitor)
       ]
     ),
-    .routineAppTests(),
-    .appExtension(.notificationsService)
+    .routineAppTests()
   ],
   schemes: Scheme.routine,
   fileHeaderTemplate: "",
