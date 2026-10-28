@@ -26,6 +26,7 @@ extension Target {
       destinations: [.iPhone, .iPad, .macCatalyst],
       product: .unitTests,
       bundleId: "com.dm.routine.app.tests",
+      deploymentTargets: .iOS("26.0"),
       infoPlist: .default,
       sources: ["Modules/RoutineApp/Tests/**"],
       dependencies: [

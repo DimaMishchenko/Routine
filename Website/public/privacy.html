@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy information for released Routine 1.0.4 and the Routine 1.1.0 free update in preparation, including the legacy service transition.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Privacy — Routine</title>
+  <link rel="canonical" href="https://dimamishchenko.github.io/Routine/privacy.html">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a class="brand" href="index.html" aria-label="Routine home"><span aria-hidden="true">R</span>Routine</a><nav aria-label="Main navigation"><a href="support.html">Support</a><a href="privacy.html" aria-current="page">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<main id="main"><p class="kicker">Your information</p><h1>Privacy policy</h1>
+<p class="updated">Updated 28 October 2026</p>
+<p>This page covers the released App Store version, Routine 1.0.4, and Routine 1.1.0, a free update currently being prepared. The 1.1.0 update has not shipped yet. The two versions have different integrations; the planned update’s privacy changes do not change the code already installed in 1.0.4.</p>
+<p><a href="#legacy-104">Released version 1.0.4</a> · <a href="#prepared-110">Update 1.1.0 in preparation</a> · <a href="support.html#subscription-transition">Subscription transition support</a></p>
+<section aria-labelledby="legacy-104"><h2 id="legacy-104">Released version 1.0.4</h2>
+<p>The legacy version included Firebase Analytics for app usage events, Firebase Crashlytics for crash diagnostics and Firebase Performance Monitoring. It also included Firebase Remote Config and Messaging. RevenueCat handled purchases and subscription access checks.</p>
+<p>The legacy app generated a random user identifier and stored it in the device keychain. Its source connected that identifier to Firebase Analytics, Crashlytics and RevenueCat. These statements describe the integrations in the older build; they do not assert which requests are succeeding today.</p>
+<p>The <a href="https://docs.google.com/document/d/1ZKcWXUuTRu_IR5YaDkmlmbJotkDfcA_3WO-BVXv5aKU/edit?usp=sharing">original privacy policy linked from the older App Store release</a> remains a reference for that release. This page adds the following service-transition information.</p>
+<h3>Legacy service transition on 28 October 2026</h3>
+<p>The developer removed the legacy Firebase and RevenueCat backend projects on 28 October 2026. Provider-side deletion completion and recovery options are still being investigated. Installed copies of 1.0.4 still contain the older SDKs and purchase checks. Removing backend projects does not establish that those clients have stopped attempting network requests, that all previously stored provider data has been deleted, or that subscription access is working.</p>
+<p>If you still use 1.0.4, contact <a href="mailto:dimasike.dev@gmail.com?subject=Routine%201.0.4%20privacy%20or%20access">dimasike.dev@gmail.com</a> with privacy, data or subscription-access questions. See the <a href="support.html#subscription-transition">subscription transition notice</a> for paid-access and Apple refund guidance. No provider retention period, completed deletion or recovery outcome is promised here.</p></section>
+<section aria-labelledby="prepared-110"><h2 id="prepared-110">Update 1.1.0 in preparation</h2>
+<p>The following describes the intended behavior of the unshipped 1.1.0 free update. It is not a claim that the released 1.0.4 app has no analytics or purchase integrations.</p>
+<h3>Routines and iCloud</h3><p>Routine stores routines, progress, history and reminder settings on your device. The local version keeps that information locally. Official versions with iCloud support can sync this information through Apple’s CloudKit using your iCloud account. Apple’s iCloud and device backup settings govern those services. Routine does not operate a separate account or synchronization server.</p>
+<h3>Reminders and app protection</h3><p>Reminders use local notifications with your permission. Face ID, Touch ID or device passcode authentication is handled by the operating system. Routine does not receive biometric templates. You can manage notification and authentication permissions in system settings.</p>
+<h3>No developer analytics or advertising</h3><p>The 1.1.0 update is being prepared without Firebase analytics, crash reporting, performance monitoring, remote configuration, remote push messaging, RevenueCat, purchases, a paywall or a generated analytics user identifier. It is designed not to send routine data to those services. Local diagnostic logs may be produced by the app and operating system.</p>
+<h3>Contacting support</h3><p>If you choose to contact support from the app, the email draft includes the date, device model, iOS version and app version to help diagnose the issue. Review or remove that text before sending. Support receives only the information you choose to send by email.</p><p>Email, GitHub and App Store links open external services when you choose them. Their own privacy policies apply. Do not include private routine information in public issues.</p>
+<h3>Deleting data</h3><p>Deleting the app removes its local app container. CloudKit data and iCloud backups may remain under your Apple account. Manage these through Apple’s iCloud storage settings. Uninstalling does not promise deletion of cloud data or backups.</p>
+</section>
+<h2>These web pages</h2><p>These pages add no analytics scripts, advertisements, cookies or tracking pixels. When these pages are served by GitHub Pages, GitHub may process connection and usage information under the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
+<h2>Questions</h2><p>Email <a href="mailto:dimasike.dev@gmail.com">dimasike.dev@gmail.com</a> for privacy questions.</p></main>
+<footer><p>Routine · Simple, native habit tracking.</p><p><a href="mailto:dimasike.dev@gmail.com">Contact support</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></footer>
+</body>
+</html>

@@ -1,46 +1,80 @@
+require "fileutils"
+require "plist"
+require "shellwords"
+
+skip_docs
+
+ROUTINE_ROOT = File.expand_path("..", __dir__)
+
+def routine_release_options(options)
+  environment = options.fetch(:environment, "prod").to_s
+  destination = options.fetch(:destination, "ios").to_s
+  team = ENV.fetch("DEVELOPMENT_TEAM", "77X75EH6F4")
+  UI.user_error!("environment must be dev or prod") unless %w[dev prod].include?(environment)
+  UI.user_error!("destination must be ios or macos") unless %w[ios macos].include?(destination)
+  UI.user_error!("DEVELOPMENT_TEAM must be a ten-character Apple team ID") unless team.match?(/\A[A-Z0-9]{10}\z/)
+  build = ENV.fetch("TUIST_BUILD_NUMBER", "1")
+  UI.user_error!("TUIST_BUILD_NUMBER must be a positive integer") unless build.match?(/\A[1-9][0-9]*\z/)
+  root = ROUTINE_ROOT
+  version = File.read(File.join(root, "Modules/RoutineApp/app-version")).strip
+  UI.user_error!("app-version must contain a numeric release version") unless version.match?(/\A[0-9]+(?:\.[0-9]+){1,2}\z/)
+  output = File.join(root, ".artifacts/releases", environment, destination, "#{version}-#{build}")
+  archive = options[:archive_path] ? File.expand_path(options[:archive_path], root) : File.join(output, "Routine.xcarchive")
+  { root: root, environment: environment, destination: destination, team: team, output: output, archive: archive }
+end
+
+def routine_xcodebuild(arguments, log)
+  command = "#{Shellwords.join(['xcodebuild', *arguments])} 2>&1 | tee #{Shellwords.escape(log)} | xcbeautify"
+  Fastlane::Actions.sh("bash", "-o", "pipefail", "-c", command)
+end
+
+def routine_export(settings, destination)
+  archive_info = File.join(settings[:archive], "Info.plist")
+  UI.user_error!("Archive not found: #{settings[:archive]}") unless File.file?(archive_info)
+  properties = Plist.parse_xml(archive_info).fetch("ApplicationProperties", {})
+  UI.user_error!("Archive bundle ID does not match environment") unless properties["CFBundleIdentifier"] == "com.dm.routine.app.#{settings[:environment]}"
+  UI.user_error!("Archive team does not match DEVELOPMENT_TEAM") unless properties["Team"] == settings[:team]
+  application = File.join(settings[:archive], "Products", properties.fetch("ApplicationPath"))
+  info_path = File.join(application, settings[:destination] == "macos" ? "Contents/Info.plist" : "Info.plist")
+  UI.user_error!("Archive platform does not match destination") unless File.file?(info_path)
+  output = File.join(settings[:output], destination)
+  UI.user_error!("Output already exists; keep prior release evidence: #{output}") if File.exist?(output)
+  FileUtils.mkdir_p(settings[:output])
+  options_file = File.join(settings[:output], "#{destination}-options.plist")
+  File.write(options_file, {
+    "method" => "app-store-connect", "teamID" => settings[:team], "signingStyle" => "automatic",
+    "destination" => destination, "manageAppVersionAndBuildNumber" => false, "uploadSymbols" => destination == "upload"
+  }.to_plist)
+  routine_xcodebuild([
+    "-exportArchive", "-archivePath", settings[:archive], "-exportPath", output,
+    "-exportOptionsPlist", options_file, "-allowProvisioningUpdates"
+  ], File.join(settings[:output], "#{destination}.log"))
+end
+
 default_platform(:ios)
 
-desc "Build and upload a signed Dev or Prod archive using externally supplied credentials"
 platform :ios do
+  desc "Archive and export an App Store build using Xcode's existing account and automatic signing"
+  lane :export_app_store do |options|
+    settings = routine_release_options(options)
+    UI.user_error!("Archive already exists; preserve it or use another build number") if File.exist?(settings[:archive])
+    FileUtils.mkdir_p(settings[:output])
+    Dir.chdir(settings[:root]) { sh("make", "gen") }
+    destination = settings[:destination] == "macos" ? "generic/platform=macOS,variant=Mac Catalyst" : "generic/platform=iOS"
+    arguments = [
+      "archive", "-workspace", File.join(settings[:root], "Routine.xcworkspace"),
+      "-scheme", "RoutineApp #{settings[:environment].capitalize}", "-configuration", "#{settings[:environment].capitalize}Release",
+      "-destination", destination, "-archivePath", settings[:archive],
+      "-derivedDataPath", File.join(settings[:output], "DerivedData"), "-allowProvisioningUpdates",
+      "DEVELOPMENT_TEAM=#{settings[:team]}", "CODE_SIGN_STYLE=Automatic"
+    ]
+    arguments << "CODE_SIGN_IDENTITY=Apple Development" if settings[:destination] == "macos"
+    routine_xcodebuild(arguments, File.join(settings[:output], "archive.log"))
+    routine_export(settings, "export")
+  end
+
+  desc "Upload an existing reviewed archive to TestFlight after Apple agreements are checked"
   lane :upload_testflight do |options|
-    environment = options.fetch(:environment, "dev").to_s
-    UI.user_error!("environment must be dev or prod") unless %w[dev prod].include?(environment)
-    destination = options.fetch(:destination, "ios").to_s
-    UI.user_error!("destination must be ios or macos") unless %w[ios macos].include?(destination)
-    %w[ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_FILE DEVELOPMENT_TEAM MATCH_GIT_URL MATCH_PASSWORD].each do |name|
-      UI.user_error!("Missing #{name}") if ENV[name].to_s.empty?
-    end
-    UI.user_error!("DEVELOPMENT_TEAM must be a ten-character Apple team ID") unless ENV.fetch("DEVELOPMENT_TEAM").match?(/\A[A-Z0-9]{10}\z/)
-    key_file = File.expand_path(ENV.fetch("ASC_KEY_FILE"))
-    root = File.expand_path("..", __dir__)
-    UI.user_error!("Keep the API private key outside the repository") if key_file.start_with?(root + File::SEPARATOR)
-    UI.user_error!("ASC_KEY_FILE does not exist") unless File.file?(key_file)
-    api_key = app_store_connect_api_key(
-      key_id: ENV.fetch("ASC_KEY_ID"),
-      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
-      key_filepath: key_file
-    )
-    bundle_id = "com.dm.routine.app.#{environment}"
-    Dir.chdir(root) { sh("make", "gen") }
-    signing_options = {
-      type: "appstore", readonly: true, app_identifier: bundle_id, api_key: api_key,
-      platform: destination == "macos" ? "catalyst" : "ios"
-    }
-    signing_options[:additional_cert_types] = ["mac_installer_distribution"] if destination == "macos"
-    match(**signing_options)
-    build_app(
-      workspace: File.join(root, "Routine.xcworkspace"),
-      scheme: "RoutineApp #{environment.capitalize}",
-      configuration: "#{environment.capitalize}Release",
-      export_method: "app-store",
-      catalyst_platform: destination,
-      xcargs: "DEVELOPMENT_TEAM=#{ENV.fetch('DEVELOPMENT_TEAM')}",
-      output_directory: File.join(root, ".artifacts", destination)
-    )
-    upload_to_testflight(
-      api_key: api_key, app_identifier: bundle_id,
-      app_platform: destination == "macos" ? "osx" : "ios",
-      skip_waiting_for_build_processing: true
-    )
+    routine_export(routine_release_options(options), "upload")
   end
 end

@@ -52,9 +52,12 @@ Simulator tests cannot establish production CloudKit sync or signed device behav
 
 ## Releases
 
-The optional [Fastlane lane](fastlane/README.md) accepts credentials only from the
-environment and a private-key file outside this checkout. It archives and uploads
-when explicitly invoked; it does not commit, tag, push or submit for App Review.
+The optional [Fastlane lanes](fastlane/README.md) use Xcode's saved account and
+Automatic signing. The archive/export lane produces reviewable App Store artifacts;
+a separate lane uploads an existing archive only when explicitly invoked. No Match
+repository or API private key is required. Both iOS and universal Mac Catalyst
+App Store distribution exports have been validated with Xcode 27.1. The lanes do
+not commit, tag, push, accept agreements or submit for App Review.
 Run `make secrets` scans the working tree; `make secrets-history` scans all
 locally stored Git blobs, including unreachable historical copies. The scanner has
 limited high-confidence patterns and does not replace credential review.
