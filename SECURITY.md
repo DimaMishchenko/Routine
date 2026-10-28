@@ -15,18 +15,8 @@ If a credential is exposed, revoke it at the provider before removing it from th
 repository. Deleting a file or rewriting history does not revoke credentials or
 erase other clones, forks, caches and downloaded copies. Never reuse an exposed key.
 
-## Local checks
+## Repository protection
 
-```sh
-make secrets
-make secrets-history
-```
-
-The scanner checks a small set of high-confidence private-key and token formats,
-redacts values and makes no network requests. The history mode inspects all locally
-stored Git blobs, including unreachable objects. It is not an entropy scanner and
-cannot establish provider revocation or inspect remote copies, CI logs or caches.
-
-Before source publication, review a fresh intended publication clone and confirm
-that any previously exposed credentials are revoked. Review public documentation,
-assets and repository history as well as the latest working tree.
+GitHub secret scanning and push protection are enabled for this repository.
+These checks supplement careful credential handling; they do not establish
+whether an exposed credential has been revoked at its provider.

@@ -8,7 +8,6 @@ Boot a simulator owned by your task and use its exact identifier:
 
 ```sh
 mise exec -- make test SIMULATOR_UDID=YOUR_SIMULATOR_UDID
-make secrets
 ```
 
 Run the native Mac Catalyst tests separately:
@@ -19,7 +18,7 @@ xcodebuild test -workspace Routine.xcworkspace -scheme 'RoutineApp Local' \
   -destination 'platform=macOS,variant=Mac Catalyst' 2>&1 | xcbeautify
 ```
 
-The suite covers local and legacy persistence, explicit history deletion, reminder reconciliation, authentication state, one-time launch presentation, native calendar sizing and state, chart lifetime, and description-cell reuse. Use `make secrets-history` for the additional local Git blob scan before a public-source review.
+The suite covers local and legacy persistence, explicit history deletion, reminder reconciliation, authentication state, one-time launch presentation, native calendar sizing and state, chart lifetime, and description-cell reuse.
 
 ## Native regression pass
 

@@ -21,9 +21,9 @@ compatibility unless a change explains why those targets must move.
 Use an owned simulator by UDID. Stop only simulators and helpers you created; never
 restart global simulator services as a troubleshooting shortcut.
 
-Run `make secrets` before sharing a change. Follow [Security](SECURITY.md) for
-sensitive findings and publication checks. Changes to dependencies must retain
-their licenses and update [third-party notices](THIRD_PARTY_NOTICES.md).
+Follow [Security](SECURITY.md) for sensitive findings and credential handling.
+Dependency changes must retain their licenses and update
+[third-party notices](THIRD_PARTY_NOTICES.md).
 
 Contributions to project code are provided under the [MIT license](LICENSE).
 Use [GitHub issues](https://github.com/DimaMishchenko/Routine/issues) to report a
