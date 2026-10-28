@@ -5,13 +5,6 @@ on:
 permissions:
   contents: read
 jobs:
-  secrets:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: make secrets secrets-history
   ios:
     runs-on: macos-latest
     steps:
