@@ -11,6 +11,7 @@ protocol RoutineListViewInterface: AnyObject {
 }
 
 final class RoutineListVC: UIViewController {
+  var onSettings: (() -> Void)?
   private let presenter: RoutineListPresenter
   private lazy var contentView = RoutineListView()
   init(presenter: RoutineListPresenter) {
@@ -39,11 +40,57 @@ final class RoutineListVC: UIViewController {
         return RoutineAppStrings.Localizable.RoutineList.title
       }
     }()
-    contentView.onAdd = { [weak self] in self?.presenter.addRoutine() }
+    let settingsButton = UIBarButtonItem(
+      image: UIImage(systemName: "gearshape"),
+      style: .plain,
+      target: self,
+      action: #selector(showSettings)
+    )
+    settingsButton.accessibilityLabel = RoutineAppStrings.Localizable.Settings.title
+    settingsButton.accessibilityIdentifier = "routineList.settings"
+    navigationItem.leftBarButtonItem = settingsButton
+
+    let addButton: UIBarButtonItem
+    #if targetEnvironment(macCatalyst)
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "plus"), for: .normal)
+    button.tintColor = .white
+    button.backgroundColor = .systemBlue
+    button.layer.cornerRadius = 18
+    button.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      button.widthAnchor.constraint(equalToConstant: 36),
+      button.heightAnchor.constraint(equalToConstant: 36)
+    ])
+    button.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
+    button.accessibilityIdentifier = "routineList.add"
+    button.addTarget(self, action: #selector(addRoutine), for: .touchUpInside)
+    addButton = UIBarButtonItem(customView: button)
+    #else
+    addButton = UIBarButtonItem(
+      image: UIImage(systemName: "plus"),
+      style: .prominent,
+      target: self,
+      action: #selector(addRoutine)
+    )
+    #endif
+    addButton.tintColor = .systemBlue
+    addButton.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
+    addButton.accessibilityIdentifier = "routineList.add"
+    navigationItem.rightBarButtonItem = addButton
+
     contentView.onEdit = { [weak self] in self?.presenter.editRoutine(at: $0, rowIndex: $1) }
     contentView.onDelete = { [weak self] in self?.presenter.deleteRoutine(at: $0, rowIndex: $1) }
     contentView.onIncreaseProgress = { [weak self] in self?.presenter.increaseProgress(at: $0, rowIndex: $1) }
     contentView.onDecreaseProgress = { [weak self] in self?.presenter.decreaseProgress(at: $0, rowIndex: $1) }
+  }
+
+  @objc private func showSettings() {
+    onSettings?()
+  }
+
+  @objc private func addRoutine() {
+    presenter.addRoutine()
   }
 }
 extension RoutineListVC: RoutineListViewInterface {

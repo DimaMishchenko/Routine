@@ -1,46 +1,42 @@
 import Foundation
 
-@MainActor protocol NavigationViewModel: ObservableObject {
-  var items: [Navigation.ItemVM] { get }
-  var selectedItem: Navigation.ItemVM? { get set }
-  var selectedItemPublisher: Published<Navigation.ItemVM?>.Publisher { get }
-  func viewDidLoad()
-}
-
-final class NavigationViewModelImpl: NavigationViewModel {
-  // MARK: - MenuViewModel
-  var items: [Navigation.ItemVM] = [
-    Navigation.ItemVM(
-      type: .home,
-      title: RoutineAppStrings.Localizable.Tabbar.Tab.routines,
-      image: RoutineAppAsset.Icon.home.image,
-      selectedImage: RoutineAppAsset.Icon.homeSelected.image
-    ),
-    Navigation.ItemVM(
-      type: .settings,
-      title: RoutineAppStrings.Localizable.Tabbar.Tab.settings,
-      image: RoutineAppAsset.Icon.settings.image,
-      selectedImage: RoutineAppAsset.Icon.settingsSelected.image
-    )
-  ]
-
-  @Published var selectedItem: Navigation.ItemVM?
-  var selectedItemPublisher: Published<Navigation.ItemVM?>.Publisher { $selectedItem }
-
-  var showTutorial: (() -> Void)?
-  @Defaults(key: .firstLaunch, initial: true) private var firstLaunch: Bool
-
-  init() {
-    selectedItem = items.first
+@MainActor final class NavigationViewModelImpl {
+  enum Presentation: Equatable {
+    case tutorial
+    case freeAnnouncement
   }
 
-  func viewDidLoad() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-      if self.firstLaunch {
-        self.firstLaunch = false
-        self.showTutorial?()
-      }
+  private let defaults: UserDefaults
+  private var presenting = false
+
+  init(defaults: UserDefaults = .standard) {
+    self.defaults = defaults
+  }
+
+  func nextPresentation() -> Presentation? {
+    guard !presenting else { return nil }
+    if defaults.string(forKey: DefaultsKey.firstLaunch.rawValue) != "false" {
+      presenting = true
+      return .tutorial
     }
+    if !defaults.bool(forKey: "free.announcement.shown") {
+      presenting = true
+      return .freeAnnouncement
+    }
+    return nil
+  }
+
+  func completeTutorial() {
+    defaults.set("false", forKey: DefaultsKey.firstLaunch.rawValue)
+    presenting = false
+  }
+
+  func announcementDidAppear() {
+    defaults.set(true, forKey: "free.announcement.shown")
+  }
+
+  func completeAnnouncement() {
+    presenting = false
   }
 }
 

@@ -28,7 +28,7 @@
 // MARK: - RoutineList
 "routineList.title" = "Мої рутини";
 
-"routineList.row.empty.text" = "Поки немає жодних рутин.\nНатисніть кнопку плюс, щоб додати рутину! 👇";
+"routineList.row.empty.text" = "Звичок поки немає. Натисніть + на панелі інструментів, щоб додати першу.";
 
 "routineList.row.routine.goal.daily" = "СЬОГОДНІ";
 "routineList.row.routine.goal.weekly" = "ЦЬОГО ТИЖНЯ";
@@ -215,3 +215,31 @@
 "storageError.title" = "Не вдалося відкрити ваші рутини";
 "storageError.message" = "Ваші наявні дані збережено. Спробуйте відкрити їх знову. Якщо проблема повторюється, зверніться до підтримки, перш ніж змінювати або перевстановлювати застосунок.";
 "storageError.retry" = "Спробувати знову";
+
+"routineList.add" = "Додати звичку";
+
+"settings.section.authors" = "Автори";
+
+"settings.section.authorsFooter" = "Підтримайте Routine: стежте за авторами, поділіться застосунком або напишіть відгук.";
+
+"settings.row.acknowledgements" = "Подяки";
+
+"acknowledgements.title" = "Подяки";
+
+"freeAnnouncement.title" = "Routine тепер безкоштовний";
+
+"freeAnnouncement.message" = "Усі інструменти для формування звичок — тепер без підписок і покупок.";
+
+"freeAnnouncement.features" = "Необмежена кількість звичок, нагадування, статистика прогресу, синхронізація iCloud і захист застосунку.";
+
+"freeAnnouncement.support" = "Подобається Routine? Підтримайте нас: стежте за нашою роботою, поділіться застосунком або залиште відгук.";
+
+"freeAnnouncement.continue" = "Створімо звичку";
+
+"freeAnnouncement.dima" = "Діма в X";
+
+"freeAnnouncement.misha" = "Міша в X";
+
+"routineList.action.increaseProgress" = "Збільшити прогрес";
+
+"routineList.action.decreaseProgress" = "Зменшити прогрес";

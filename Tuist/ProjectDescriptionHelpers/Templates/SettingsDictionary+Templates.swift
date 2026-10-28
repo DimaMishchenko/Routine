@@ -33,7 +33,11 @@ extension SettingsDictionary {
   }
 
   public static func routineTests() -> SettingsDictionary {
-    ["TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Routine.app/Routine"]
+    [
+      "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Routine.app/Routine",
+      "TEST_HOST[sdk=macosx*]": "$(BUILT_PRODUCTS_DIR)/Routine.app/Contents/MacOS/Routine",
+      "MACOSX_DEPLOYMENT_TARGET": "26.0"
+    ]
   }
 
   private static func routineBundleId(for environment: Environment) -> String {

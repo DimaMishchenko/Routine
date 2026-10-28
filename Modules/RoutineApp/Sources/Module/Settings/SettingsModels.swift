@@ -3,6 +3,12 @@ import Foundation
 enum Settings {
   struct Section: Hashable {
     let model: GroupSupplementaryVM
+    let footer: String?
+
+    init(model: GroupSupplementaryVM, footer: String? = nil) {
+      self.model = model
+      self.footer = footer
+    }
   }
   struct Row {
     let type: RowType

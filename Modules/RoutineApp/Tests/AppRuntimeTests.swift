@@ -2,6 +2,18 @@
 import XCTest
 
 final class AppRuntimeTests: XCTestCase {
+  @MainActor func testRuntimePreparesMonitoringBeforeOpeningStorage() throws {
+    var events: [String] = []
+    let runtime = AppRuntime(prepareStorage: { events.append("monitoring") }, makeServices: {
+      events.append("storage")
+      return try ServiceFactory(coreDataStack: CoreDataStack(storage: .inMemory))
+    })
+    XCTAssertTrue(events.isEmpty)
+    _ = try runtime.serviceFactory()
+    _ = try runtime.serviceFactory()
+    XCTAssertEqual(events, ["monitoring", "storage"])
+  }
+
   @MainActor func testRuntimeDefersOpeningStorageAndSharesTheSuccessfulFactory() throws {
     var openings = 0
     let runtime = AppRuntime {

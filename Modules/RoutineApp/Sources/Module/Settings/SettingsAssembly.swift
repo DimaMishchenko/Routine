@@ -19,6 +19,22 @@ final class SettingsAssembly {
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
     
+    presenter.openAuthor = { url in
+      Task { @MainActor in
+        UIApplication.shared.open(url)
+      }
+    }
+    presenter.openAcknowledgements = { [weak vc] in
+      Task { @MainActor [weak vc] in
+        let acknowledgementsVC = AcknowledgementsVC()
+        if let navigationController = vc?.navigationController {
+          navigationController.pushViewController(acknowledgementsVC, animated: true)
+        } else {
+          vc?.present(UINavigationController(rootViewController: acknowledgementsVC), animated: true)
+        }
+      }
+    }
+
     presenter.openSettings = { ExternalLinksNavigator.systemSettings() }
     presenter.githubSupport = {
       ExternalLinksNavigator.githubSupport()

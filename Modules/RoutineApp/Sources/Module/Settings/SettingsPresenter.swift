@@ -24,6 +24,8 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openMacApp: (() -> Void)?
   var privacyPolicy: (() -> Void)?
   var termsOfUse: (() -> Void)?
+  var openAuthor: ((URL) -> Void)?
+  var openAcknowledgements: (() -> Void)?
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
   private var cancellables: Set<AnyCancellable> = []
   init(
@@ -151,6 +153,21 @@ final class SettingsPresenterImpl: SettingsPresenter {
         )
         
         Item(
+          section: .init(
+            model: .init(title: RoutineAppStrings.Localizable.Settings.Section.authors),
+            footer: RoutineAppStrings.Localizable.Settings.Section.authorsFooter
+          ),
+          rows: [
+            rowFactory.authorRow(name: "Dima Mishchenko", url: AppConfiguration.dimaAuthorLink) { [weak self] url in
+              self?.openAuthor?(url)
+            },
+            rowFactory.authorRow(name: "Misha", url: AppConfiguration.mishaAuthorLink) { [weak self] url in
+              self?.openAuthor?(url)
+            }
+          ]
+        )
+
+        Item(
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.security)),
           rows: [
             rowFactory.faceID(biometryType: authenticator.biometryType, isEnabled: useFaceID)
@@ -162,6 +179,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
           rows: [
             rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
             rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
+            rowFactory.acknowledgementsRow { [weak self] in self?.openAcknowledgements?() },
             rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
             rowFactory.appVersionRow()
           ]

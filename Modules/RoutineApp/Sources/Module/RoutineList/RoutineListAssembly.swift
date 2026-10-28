@@ -17,6 +17,11 @@ final class RoutineListAssembly {
     )
     let vc = RoutineListVC(presenter: presenter)
     presenter.view = vc
+
+    vc.onSettings = { [weak vc, weak assemblyFactory] in
+      guard let settingsVC = assemblyFactory?.settings().controller() else { return }
+      vc?.navigationController?.pushViewController(settingsVC, animated: true)
+    }
     
     presenter.editRoutine = { [weak vc, weak assemblyFactory] routine, completion, onDelete in
       let editVC = assemblyFactory?.routineEdit().controller(

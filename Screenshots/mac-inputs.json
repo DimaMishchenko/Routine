@@ -1,0 +1,22 @@
+{
+  "locales": [
+    "en",
+    "uk",
+    "zh-Hans",
+    "hi",
+    "es",
+    "fr",
+    "bn",
+    "pt-BR",
+    "ru",
+    "id",
+    "de",
+    "ja"
+  ],
+  "devices": [
+    {
+      "name": "mac",
+      "directory": ".artifacts/modernization/mac-capture"
+    }
+  ]
+}

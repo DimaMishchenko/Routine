@@ -3,15 +3,12 @@ import UIKit
 
 final class RoutineListView: UIView {
   private var initialLayout = Once()
-  var onAdd: (() -> Void)?
-  
   var onEdit: ((RoutineList.Section, Int) -> Void)?
   var onDelete: ((RoutineList.Section, Int) -> Void)?
   var onIncreaseProgress: ((RoutineList.Section, Int) -> Void)?
   var onDecreaseProgress: ((RoutineList.Section, Int) -> Void)?
   private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
-  private lazy var addButton = createAddButton()
   override func layoutSubviews() {
     super.layoutSubviews()
     initialLayout.once { setupUI() }
@@ -70,11 +67,6 @@ extension RoutineListView {
   
   private func updateLayout() {
     collectionView.pin.all()
-    addButton.pin
-      .size(Size.Button.big2)
-      .bottom(pin.safeArea)
-      .right(pin.safeArea)
-      .margin(Inset.Padding.small)
   }
   
   private func position(for cell: UICollectionViewCell?) -> (section: RoutineList.Section, row: Int)? {
@@ -155,14 +147,6 @@ extension RoutineListView {
       $0.register(RoutineCell.self)
       $0.register(GroupSupplementary.self)
       addSubview($0)
-    }
-  }
-  
-  private func createAddButton() -> UIButton {
-    with(UIButton()) {
-      addSubview($0)
-      $0.setImage(RoutineAppAsset.Icon.add.image, for: .normal)
-      $0.on { [weak self] in self?.onAdd?() }
     }
   }
 }

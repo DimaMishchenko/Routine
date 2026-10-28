@@ -1,0 +1,24 @@
+{
+  "devices": [
+    {
+      "name": "iphone",
+      "directory": ".artifacts/modernization/iphone",
+      "overrides": {
+        "zh-Hans": ".artifacts/modernization/chinese-validated-ios27"
+      }
+    },
+    {
+      "name": "ipad",
+      "directory": ".artifacts/modernization/ipad"
+    },
+    {
+      "name": "duo-closed",
+      "directory": ".artifacts/modernization/duo"
+    },
+    {
+      "name": "duo-open",
+      "directory": ".artifacts/modernization/duo",
+      "suffix": "-unfolded"
+    }
+  ]
+}

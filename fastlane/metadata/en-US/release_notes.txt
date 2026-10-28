@@ -1,4 +1,4 @@
-Routine is now free and open source.
+Routine is now free.
 
 All features are available to everyone, including unlimited routines, reminders and biometric app locking. In-app purchases, analytics and third-party crash reporting have been removed.
 

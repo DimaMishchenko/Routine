@@ -1,4 +1,3 @@
-import SnapKit
 import SwiftUI
 
 struct CalendarVM {
@@ -15,20 +14,35 @@ struct CalendarView: UIViewRepresentable {
   let onSelection: (Date) -> Void
   let onDeselection: (Date) -> Void
 
-  func makeUIView(context: Context) -> ContainerView {
-    with(ContainerView()) {
-      $0.calendar.calendar = context.coordinator.calendar
+  func makeUIView(context: Context) -> UICalendarView {
+    with(UICalendarView()) {
+      $0.calendar = context.coordinator.calendar
+      $0.delegate = context.coordinator
+      $0.selectionBehavior = UICalendarSelectionMultiDate(delegate: context.coordinator)
     }
   }
 
-  func updateUIView(_ container: ContainerView, context: Context) {
+  func updateUIView(_ calendarView: UICalendarView, context: Context) {
+    let previousSelections = context.coordinator.viewModel.selections
     context.coordinator.viewModel = viewModel
-    container.calendar.delegate = context.coordinator
-    container.calendar.selectionBehavior = with(UICalendarSelectionMultiDate(delegate: context.coordinator)) {
-      $0.selectedDates = viewModel.selections
-        .map { $0.date }
-        .compactMap { context.coordinator.calendar.dateComponents([.day, .month, .year], from: $0) }
+    let selectedDates = viewModel.selections.map {
+      context.coordinator.calendar.dateComponents([.day, .month, .year], from: $0.date)
     }
+    if let selection = calendarView.selectionBehavior as? UICalendarSelectionMultiDate,
+      selection.selectedDates != selectedDates {
+      selection.setSelectedDates(selectedDates, animated: false)
+    }
+    calendarView.reloadDecorations(
+      forDateComponents: (previousSelections + viewModel.selections).map {
+        context.coordinator.calendar.dateComponents([.day, .month, .year], from: $0.date)
+      },
+      animated: false
+    )
+  }
+
+  func sizeThatFits(_ proposal: ProposedViewSize, uiView: UICalendarView, context: Context) -> CGSize? {
+    let size = uiView.intrinsicContentSize
+    return CGSize(width: min(proposal.width ?? size.width, size.width), height: size.height)
   }
 
   func makeCoordinator() -> Coordinator {
@@ -42,23 +56,6 @@ struct CalendarView: UIViewRepresentable {
 }
 
 extension CalendarView {
-  final class ContainerView: UIView {
-    fileprivate let calendar = UICalendarView()
-
-    override init(frame: CGRect) {
-      super.init(frame: .zero)
-      addSubview(calendar)
-      calendar.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-    }
-
-    @available(*, unavailable, message: "Not supported")
-    required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-    }
-  }
-
   final class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionMultiDateDelegate {
     fileprivate let calendar: Calendar
     fileprivate var viewModel: CalendarVM
@@ -136,8 +133,7 @@ struct CalendarView_Previews: PreviewProvider {
   static var previews: some View {
     CalendarView(
       viewModel: .init(
-        // swiftlint:disable:next force_unwrapping
-        selections: [Date(), Date().byAddingDay!, Date().byAddingDay!.byAddingDay!].map {
+        selections: (0..<3).compactMap { Calendar.app.date(byAdding: .day, value: $0, to: Date()) }.map {
           .init(emoji: "✅", date: $0)
         }
       ),

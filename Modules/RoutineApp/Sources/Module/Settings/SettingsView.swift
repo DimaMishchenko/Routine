@@ -36,7 +36,7 @@ extension SettingsView {
   private func createDataSource() -> DataSource<Settings.Section?, Settings.Row> {
     let dataSource = DataSource<Settings.Section?, Settings.Row>(
       collectionView: collectionView
-    ) { collectionView, indexPath, row -> UICollectionViewCell? in
+    ) { [weak self] collectionView, indexPath, row -> UICollectionViewCell? in
       switch row.type {
       case .value(let viewModel):
         return collectionView.dequeue(ValueCell.self, with: viewModel, for: indexPath)
@@ -53,6 +53,21 @@ extension SettingsView {
     }
     
     dataSource.supplementaryViewProvider = { [weak dataSource] collectionView, kind, indexPath in
+      if kind == UICollectionView.elementKindSectionFooter {
+        let cell = collectionView.dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: String(describing: UICollectionViewListCell.self),
+          for: indexPath
+        )
+        if let listCell = cell as? UICollectionViewListCell {
+          var configuration = UIListContentConfiguration.footer()
+          configuration.text = dataSource?.section(at: indexPath.section)?.footer
+          listCell.contentConfiguration = configuration
+          listCell.backgroundConfiguration = .clear()
+        }
+        return cell
+      }
+
       guard
         kind == UICollectionView.elementKindSectionHeader,
         let model = dataSource?.section(at: indexPath.section)?.model
@@ -74,6 +89,7 @@ extension SettingsView {
     let configuration = with(UICollectionLayoutListConfiguration(appearance: .insetGrouped)) {
       $0.backgroundColor = Color.Background.default
       $0.headerMode = .supplementary
+      $0.footerMode = .supplementary
       $0.separatorConfiguration.bottomSeparatorInsets = .init(top: .zero, leading: 62, bottom: .zero, trailing: .zero)
     }
     
@@ -81,6 +97,7 @@ extension SettingsView {
       $0.delegate = self
       $0.register(GroupSupplementary.self, kind: UICollectionView.elementKindSectionHeader)
       $0.register(UICollectionViewListCell.self, kind: UICollectionView.elementKindSectionHeader)
+      $0.register(UICollectionViewListCell.self, kind: UICollectionView.elementKindSectionFooter)
       $0.register(ValueCell.self)
       $0.register(SwitchCell.self)
       addSubview($0)

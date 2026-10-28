@@ -8,16 +8,12 @@ protocol RoutineEditViewInterface: AnyObject {
 }
 
 final class RoutineEditVC: UIViewController {
-  // MARK: - Dependencies
   private let presenter: RoutineEditPresenter
   
-  // MARK: - Properties
   var emojiSourceView: UIView? { contentView.emojiSourceView }
   
-  // MARK: - Private Properties
   private lazy var contentView = RoutineEditView()
   
-  // MARK: - Init
   init(presenter: RoutineEditPresenter) {
     self.presenter = presenter
     super.init(nibName: nil, bundle: nil)
@@ -28,7 +24,6 @@ final class RoutineEditVC: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Life Cycle
   override func loadView() {
     view = contentView
   }
@@ -41,7 +36,6 @@ final class RoutineEditVC: UIViewController {
   }
 }
 
-// MARK: - RoutineEditViewInterface
 extension RoutineEditVC: RoutineEditViewInterface {
   func update(title: String) {
     self.title = title
@@ -60,7 +54,6 @@ extension RoutineEditVC: RoutineEditViewInterface {
   }
 }
 
-// MARK: - Actions
 extension RoutineEditVC {
   @objc private func cancel() {
     presenter.cancelEdit()
@@ -71,7 +64,6 @@ extension RoutineEditVC {
   }
 }
 
-// MARK: - Private
 extension RoutineEditVC {
   private func setupUI() {
     setupNavBar()
@@ -87,16 +79,13 @@ extension RoutineEditVC {
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: RoutineAppStrings.Localizable.NavBar.save,
-      style: .done,
+      style: .prominent,
       target: self,
       action: #selector(save)
     )
   }
   
   private func setupActions() {
-    contentView.onSave = { [weak self] in
-      self?.presenter.save()
-    }
     contentView.onDelete = { [weak self] in
       self?.presenter.delete()
     }

@@ -26,11 +26,11 @@ struct StatsView: View {
         .foregroundColor(SwiftUI.Color(Color.Text.value))
         .font(Font.system(size: .callout, weight: .regular))
     }
+    .multilineTextAlignment(.center)
   }
 }
 
 #if DEBUG
-// MARK: - Preview
 struct StatsView_Previews: PreviewProvider {
   static var previews: some View {
     StatsView(

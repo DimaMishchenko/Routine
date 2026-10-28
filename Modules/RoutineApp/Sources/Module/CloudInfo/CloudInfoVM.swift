@@ -11,40 +11,45 @@ import UIKit.UIImage
 }
 
 final class CloudInfoViewModelImpl: CloudInfoViewModel {
-  // MARK: - Properties
   private(set) var cloudStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.iCloudStatus)
   private(set) var importStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.importStatus)
   private(set) var exportStatusVM = CloudInfo.StatusVM(title: RoutineAppStrings.Localizable.CloudInfo.Row.exportStatus)
-  private(set) var errorHint: String?
+  @Published private(set) var errorHint: String?
   
   private var cancellables: Set<AnyCancellable> = []
   
-  init() {
-    SyncMonitor.shared.objectWillChange
+  init(monitor: SyncMonitor = .shared) {
+    updateErrorHint(monitor: monitor)
+    monitor.objectWillChange
+      .receive(on: DispatchQueue.main)
       .sink { [weak self] in
-        if SyncMonitor.shared.networkAvailable == false {
-          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.noNetwork
-        } else if SyncMonitor.shared.iCloudAccountStatus != .available {
-          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.iCloudAccount
-        } else if SyncMonitor.shared.syncError {
-          self?.errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.syncError
-          SyncMonitor.shared.lastError.flatMap { Logger.log($0) }
-        } else {
-          self?.errorHint = nil
-        }
+        self?.updateErrorHint(monitor: monitor)
       }
       .store(in: &cancellables)
     
-    observe(SyncMonitor.shared.$setupState.eraseToAnyPublisher()) { [weak self] in
+    observe(monitor.$setupState.eraseToAnyPublisher()) { [weak self] in
       self?.cloudStatusVM.state = $0
     }
     
-    observe(SyncMonitor.shared.$importState.eraseToAnyPublisher()) { [weak self] in
+    observe(monitor.$importState.eraseToAnyPublisher()) { [weak self] in
       self?.importStatusVM.state = $0
     }
     
-    observe(SyncMonitor.shared.$exportState.eraseToAnyPublisher()) { [weak self] in
+    observe(monitor.$exportState.eraseToAnyPublisher()) { [weak self] in
       self?.exportStatusVM.state = $0
+    }
+  }
+
+  private func updateErrorHint(monitor: SyncMonitor) {
+    if monitor.networkAvailable == false {
+      errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.noNetwork
+    } else if monitor.iCloudAccountStatus != .available {
+      errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.iCloudAccount
+    } else if monitor.syncError {
+      errorHint = RoutineAppStrings.Localizable.CloudInfo.ErrorHint.syncError
+      monitor.lastError.flatMap { Logger.log($0) }
+    } else {
+      errorHint = nil
     }
   }
   

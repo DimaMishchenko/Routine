@@ -1,53 +1,49 @@
 import SwiftUI
 
 struct TutorialView<VM: TutorialViewModel>: View {
-  // MARK: - Dependencies
   @ObservedObject private var viewModel: VM
 
-  // MARK: - Private Properties
   @State private var actionTitle: String
   @State private var showsFeatures = false
 
-  // MARK: - Init
   init(viewModel: VM) {
     self.viewModel = viewModel
     actionTitle = viewModel.welcomeVM.actionTitle
   }
 
-  // MARK: - Public
   var body: some View {
     GeometryReader { geometry in
-      VStack {
-        Spacer()
-        if !showsFeatures {
-          WelcomeView(vm: viewModel.welcomeVM, width: geometry.size.width)
-        } else {
-          FeaturesView(vm: viewModel.featuresVM)
-        }
-        Spacer()
-        Button(
-          action: {
-            actionTitle = viewModel.featuresVM.actionTitle
-            if !showsFeatures {
-              showsFeatures = true
-            } else {
-              viewModel.close()
-            }
-          },
-          label: {
-            Text(actionTitle)
-              .font(SwiftUI.Font(Font.system(.body, weight: .medium)))
-              .frame(maxWidth: .infinity, maxHeight: Size.Button.big)
-              .foregroundColor(SwiftUI.Color(Color.Text.light))
-              .background(SwiftUI.Color(Color.Button.default))
-              .cornerRadius(Size.CornerRadius.buttonBig)
-              .contentShape(Rectangle())
+      ScrollView {
+        Group {
+          if showsFeatures {
+            FeaturesView(vm: viewModel.featuresVM)
+          } else {
+            WelcomeView(vm: viewModel.welcomeVM, width: min(geometry.size.width, 560))
           }
-        )
+        }
+        .frame(maxWidth: 512)
+        .padding(24)
+        .frame(maxWidth: .infinity, minHeight: geometry.size.height)
       }
-      .padding(Inset.Padding.default)
-      .frame(width: geometry.size.width)
     }
+    .safeAreaInset(edge: .bottom) {
+      Button(actionTitle) {
+        if showsFeatures {
+          viewModel.close()
+        } else {
+          showsFeatures = true
+          actionTitle = viewModel.featuresVM.actionTitle
+        }
+      }
+      .font(.headline)
+      .buttonStyle(.borderedProminent)
+      .controlSize(.large)
+      .padding()
+      .frame(maxWidth: .infinity)
+      .background(.regularMaterial)
+    }
+    .background(SwiftUI.Color(Color.Background.default))
+    .tint(SwiftUI.Color(Color.tint))
   }
 
   struct WelcomeView: View {
@@ -130,7 +126,6 @@ struct TutorialView<VM: TutorialViewModel>: View {
 }
 
 #if DEBUG
-// MARK: - Preview
 struct TutorialView_Previews: PreviewProvider {
   static var previews: some View {
     TutorialView(viewModel: VMMock())

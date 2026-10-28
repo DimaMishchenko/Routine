@@ -25,6 +25,24 @@ UI framework or migrate users to a new database.
   `SceneDelegate` maps those states to an opaque blocker and native authentication.
   Returning to the foreground alone never unlocks protected content.
 
+## Navigation and launch presentation
+
+The application assembles one navigation stack for routines and Settings on every
+platform. The routines screen exposes Settings and Add as toolbar actions; screen
+assemblies connect feature outputs without a second tab or sidebar controller.
+
+`NavigationViewModelImpl` owns the onboarding/free-announcement sequence and its
+local completion preferences. The root navigation controller presents only while
+its scene content is unlocked and attached to a window. New installations finish
+onboarding first; existing installations see the free announcement on launch.
+The announcement becomes seen only when its view actually appears. Settings can
+replay onboarding without resetting either launch preference.
+
+The calendar owns one native selection controller through its SwiftUI coordinator.
+Updates reconcile selected dates and decorations while preserving the visible
+month. Its representable uses the native calendar's intrinsic size rather than
+stretching the seven-column grid to the host's width.
+
 ## Storage contracts
 
 Local is the default contributor build. It uses Application Support SQLite with

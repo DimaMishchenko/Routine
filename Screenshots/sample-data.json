@@ -1,0 +1,98 @@
+{
+  "en": {
+    "Read every day": {"name": "Read every day", "description": "Make a little time for a good book."},
+    "Morning stretch": {"name": "Morning stretch", "description": "A gentle start to the day."},
+    "Drink more water": {"name": "Drink more water", "description": "Stay refreshed throughout the day."},
+    "Evening walk": {"name": "Evening walk", "description": "Fresh air and a moment to unwind."},
+    "Practice Spanish": {"name": "Practice Spanish", "description": "Build confidence, one day at a time."},
+    "Plan tomorrow": {"name": "Plan tomorrow", "description": "End the day with a clear plan."}
+  },
+  "uk": {
+    "Read every day": {"name": "Читати щодня", "description": "Знайдіть трохи часу для гарної книжки."},
+    "Morning stretch": {"name": "Ранкова розминка", "description": "Легкий початок дня."},
+    "Drink more water": {"name": "Пити більше води", "description": "Підтримуйте водний баланс протягом дня."},
+    "Evening walk": {"name": "Вечірня прогулянка", "description": "Свіже повітря й час для відпочинку."},
+    "Practice Spanish": {"name": "Вивчати іспанську", "description": "Ставайте впевненішими день за днем."},
+    "Plan tomorrow": {"name": "Планувати завтра", "description": "Завершуйте день із чітким планом."}
+  },
+  "zh-Hans": {
+    "Read every day": {"name": "每天阅读", "description": "每天留一点时间，读一本好书。"},
+    "Morning stretch": {"name": "晨间拉伸", "description": "轻松开启新的一天。"},
+    "Drink more water": {"name": "多喝水", "description": "及时补充水分，让一天保持清爽。"},
+    "Evening walk": {"name": "晚间散步", "description": "呼吸新鲜空气，放松片刻。"},
+    "Practice Spanish": {"name": "练习西班牙语", "description": "每天进步一点，逐渐建立自信。"},
+    "Plan tomorrow": {"name": "规划明天", "description": "以清晰的计划结束一天。"}
+  },
+  "hi": {
+    "Read every day": {"name": "हर दिन पढ़ें", "description": "किसी अच्छी किताब के लिए थोड़ा समय निकालें।"},
+    "Morning stretch": {"name": "सुबह स्ट्रेचिंग करें", "description": "दिन की शुरुआत आराम से करें।"},
+    "Drink more water": {"name": "ज़्यादा पानी पिएँ", "description": "पूरे दिन तरोताज़ा रहें।"},
+    "Evening walk": {"name": "शाम को टहलें", "description": "खुली हवा में कुछ पल सुकून के बिताएँ।"},
+    "Practice Spanish": {"name": "स्पेनिश का अभ्यास करें", "description": "हर दिन थोड़ा और आत्मविश्वास बढ़ाएँ।"},
+    "Plan tomorrow": {"name": "कल की योजना बनाएँ", "description": "एक स्पष्ट योजना के साथ दिन समाप्त करें।"}
+  },
+  "es": {
+    "Read every day": {"name": "Leer cada día", "description": "Dedica un momento a un buen libro."},
+    "Morning stretch": {"name": "Estiramientos matutinos", "description": "Empieza el día con calma."},
+    "Drink more water": {"name": "Beber más agua", "description": "Mantente hidratado durante el día."},
+    "Evening walk": {"name": "Paseo al atardecer", "description": "Aire fresco y un momento para desconectar."},
+    "Practice Spanish": {"name": "Practicar español", "description": "Gana confianza, día a día."},
+    "Plan tomorrow": {"name": "Planificar mañana", "description": "Termina el día con un plan claro."}
+  },
+  "fr": {
+    "Read every day": {"name": "Lire chaque jour", "description": "Accordez-vous un moment avec un bon livre."},
+    "Morning stretch": {"name": "Étirements du matin", "description": "Commencez la journée en douceur."},
+    "Drink more water": {"name": "Boire plus d’eau", "description": "Restez bien hydraté tout au long de la journée."},
+    "Evening walk": {"name": "Promenade du soir", "description": "Un peu d’air frais et un moment pour souffler."},
+    "Practice Spanish": {"name": "Pratiquer l’espagnol", "description": "Prenez confiance, jour après jour."},
+    "Plan tomorrow": {"name": "Préparer demain", "description": "Terminez la journée avec un plan clair."}
+  },
+  "bn": {
+    "Read every day": {"name": "প্রতিদিন পড়ুন", "description": "একটি ভালো বই পড়ার জন্য একটু সময় রাখুন।"},
+    "Morning stretch": {"name": "সকালে স্ট্রেচিং করুন", "description": "দিনটি শুরু করুন ধীরে সুস্থে।"},
+    "Drink more water": {"name": "বেশি পানি পান করুন", "description": "সারা দিন সতেজ থাকুন।"},
+    "Evening walk": {"name": "সন্ধ্যায় হাঁটুন", "description": "খোলা হাওয়ায় কিছুটা সময় আরাম করুন।"},
+    "Practice Spanish": {"name": "স্প্যানিশ চর্চা করুন", "description": "প্রতিদিন একটু একটু করে আত্মবিশ্বাস বাড়ান।"},
+    "Plan tomorrow": {"name": "আগামীকালের পরিকল্পনা", "description": "একটি স্পষ্ট পরিকল্পনা নিয়ে দিন শেষ করুন।"}
+  },
+  "pt-BR": {
+    "Read every day": {"name": "Ler todos os dias", "description": "Reserve um tempinho para um bom livro."},
+    "Morning stretch": {"name": "Alongamento matinal", "description": "Comece o dia com tranquilidade."},
+    "Drink more water": {"name": "Beber mais água", "description": "Mantenha-se hidratado durante o dia."},
+    "Evening walk": {"name": "Caminhada ao entardecer", "description": "Ar fresco e um momento para relaxar."},
+    "Practice Spanish": {"name": "Praticar espanhol", "description": "Ganhe confiança, um dia de cada vez."},
+    "Plan tomorrow": {"name": "Planejar o amanhã", "description": "Termine o dia com um plano claro."}
+  },
+  "ru": {
+    "Read every day": {"name": "Читать каждый день", "description": "Найдите немного времени для хорошей книги."},
+    "Morning stretch": {"name": "Утренняя разминка", "description": "Мягкое начало дня."},
+    "Drink more water": {"name": "Пить больше воды", "description": "Поддерживайте водный баланс в течение дня."},
+    "Evening walk": {"name": "Вечерняя прогулка", "description": "Свежий воздух и немного времени для отдыха."},
+    "Practice Spanish": {"name": "Практиковать испанский", "description": "Обретайте уверенность день за днём."},
+    "Plan tomorrow": {"name": "Планировать завтра", "description": "Завершайте день с чётким планом."}
+  },
+  "id": {
+    "Read every day": {"name": "Membaca setiap hari", "description": "Luangkan sedikit waktu untuk buku yang bagus."},
+    "Morning stretch": {"name": "Peregangan pagi", "description": "Awali hari dengan santai."},
+    "Drink more water": {"name": "Minum lebih banyak air", "description": "Tetap segar sepanjang hari."},
+    "Evening walk": {"name": "Jalan sore", "description": "Udara segar dan waktu sejenak untuk bersantai."},
+    "Practice Spanish": {"name": "Berlatih bahasa Spanyol", "description": "Bangun kepercayaan diri, hari demi hari."},
+    "Plan tomorrow": {"name": "Merencanakan besok", "description": "Akhiri hari dengan rencana yang jelas."}
+  },
+  "de": {
+    "Read every day": {"name": "Jeden Tag lesen", "description": "Nimm dir etwas Zeit für ein gutes Buch."},
+    "Morning stretch": {"name": "Morgens dehnen", "description": "Ein sanfter Start in den Tag."},
+    "Drink more water": {"name": "Mehr Wasser trinken", "description": "Bleib den ganzen Tag gut mit Wasser versorgt."},
+    "Evening walk": {"name": "Abendspaziergang", "description": "Frische Luft und ein Moment zum Abschalten."},
+    "Practice Spanish": {"name": "Spanisch üben", "description": "Werde jeden Tag ein bisschen sicherer."},
+    "Plan tomorrow": {"name": "Morgen planen", "description": "Beende den Tag mit einem klaren Plan."}
+  },
+  "ja": {
+    "Read every day": {"name": "毎日読書する", "description": "良い本を読む時間を少しつくりましょう。"},
+    "Morning stretch": {"name": "朝のストレッチ", "description": "一日をゆったり始めましょう。"},
+    "Drink more water": {"name": "水をもっと飲む", "description": "こまめな水分補給で一日を快適に。"},
+    "Evening walk": {"name": "夕方の散歩", "description": "新鮮な空気を吸って、ひと息つきましょう。"},
+    "Practice Spanish": {"name": "スペイン語を練習する", "description": "一日ずつ、自信を育てましょう。"},
+    "Plan tomorrow": {"name": "明日の計画を立てる", "description": "明日の予定を整えて一日を終えましょう。"}
+  }
+}

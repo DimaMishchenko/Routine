@@ -7,8 +7,7 @@ All features are free:
 • Sync routines across your Apple devices with iCloud.
 • Use light or dark appearance on iPhone, iPad and Mac.
 
-No subscriptions, in-app purchases, app account or third-party analytics. Routine is open source.
+No subscriptions, in-app purchases, app account or third-party analytics.
 
 Support: dimasike.dev@gmail.com
-Source: https://github.com/DimaMishchenko/Routine
 Privacy: https://github.com/DimaMishchenko/Routine/blob/main/PRIVACY.md

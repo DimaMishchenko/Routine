@@ -28,7 +28,7 @@
 // MARK: - RoutineList
 "routineList.title" = "My routines";
 
-"routineList.row.empty.text" = "There are no routines yet.\nClick the plus button to add one! 👇";
+"routineList.row.empty.text" = "No routines yet. Tap + in the toolbar to add your first.";
 
 "routineList.row.routine.goal.daily" = "TODAY";
 "routineList.row.routine.goal.weekly" = "THIS WEEK";
@@ -215,3 +215,31 @@
 "storageError.title" = "Unable to open your routines";
 "storageError.message" = "Your existing data has been preserved. Try opening it again. If this continues, contact support before changing or reinstalling the app.";
 "storageError.retry" = "Try again";
+
+"routineList.add" = "Add routine";
+
+"settings.section.authors" = "Made by";
+
+"settings.section.authorsFooter" = "Support Routine by following its authors, sharing the app, or writing a review.";
+
+"settings.row.acknowledgements" = "Acknowledgements";
+
+"acknowledgements.title" = "Acknowledgements";
+
+"freeAnnouncement.title" = "Routine is free";
+
+"freeAnnouncement.message" = "All the tools for building your habits, now without subscriptions or purchases.";
+
+"freeAnnouncement.features" = "Unlimited routines, reminders, progress insights, iCloud sync and app protection.";
+
+"freeAnnouncement.support" = "Enjoying Routine? Support us by following our work, sharing the app or leaving a review.";
+
+"freeAnnouncement.continue" = "Let’s build a habit";
+
+"freeAnnouncement.dima" = "Dima on X";
+
+"freeAnnouncement.misha" = "Misha on X";
+
+"routineList.action.increaseProgress" = "Increase progress";
+
+"routineList.action.decreaseProgress" = "Decrease progress";

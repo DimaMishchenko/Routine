@@ -8,18 +8,12 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
   
   @ObservedObject private var viewModel: VM
   @State private var chartType = ChartType.bar
+  @SwiftUI.Environment(\.dynamicTypeSize) private var dynamicTypeSize
   
   init(viewModel: VM) {
     self.viewModel = viewModel
   }
   
-  private var calendarHeight: CGFloat {
-    let size = UIScreen.main.bounds.size
-    let width = min(size.width, size.height)
-    if width >= 414 { return 430 }
-    return width <= 375 ? 380 : 400
-  }
-
   var body: some View {
     ScrollView {
       VStack(spacing: Inset.Padding.big) {
@@ -36,7 +30,9 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
           
           Spacer(minLength: Inset.Padding.default)
           LazyVGrid(
-            columns: [GridItem(.flexible(), spacing: Inset.Padding.default), GridItem(.flexible())],
+            columns: dynamicTypeSize.isAccessibilitySize
+              ? [GridItem(.flexible())]
+              : [GridItem(.flexible(), spacing: Inset.Padding.default), GridItem(.flexible())],
             spacing: Inset.Padding.default
           ) {
             ForEach(viewModel.statsVMs) {
@@ -56,9 +52,7 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
             onSelection: { viewModel.select(date: $0) },
             onDeselection: { viewModel.deselect(date: $0) }
           )
-          .frame(
-            height: calendarHeight
-          )
+          .frame(maxWidth: .infinity)
         }
         Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.charts) {
           VStack(spacing: Inset.Padding.default) {

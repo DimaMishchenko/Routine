@@ -97,3 +97,11 @@ fastlane/test_output/
 .build/
 .artifacts/
 Tuist/.build/
+
+# Local release planning
+RELEASE_CHECKLIST.md
+release_checklist*
+
+# Python tooling
+__pycache__/
+*.py[cod]

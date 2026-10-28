@@ -1,21 +1,33 @@
-import PinLayout
 import Popovers
+import SnapKit
 import SwiftUI
 import UIKit
 
 final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigurable {
-  // MARK: - Properties
   var valueTitleProvider: ((Value, _ isPicker: Bool) -> String)?
   var onValueChanged: ((Value) -> Void)?
   
-  // MARK: - UI Properties
   private lazy var iconImageView = createIconImageView()
   private lazy var titleLabel = createTitleLabel()
   private lazy var valueButton = createValueButton()
+  private let labelsStack = UIStackView()
+  private var valueWidthConstraint: NSLayoutConstraint?
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupLayout()
+    updateLabelLayout()
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (cell: PickerCell, _: UITraitCollection) in
+      cell.updateLabelLayout()
+    }
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
   
-  // MARK: - ModelConfigurable
   func update(with model: PickerCellVM<Value>) {
     iconImageView.image = model.icon
+    iconImageView.isHidden = model.icon == nil
     titleLabel.text = model.title
     valueButton.setTitle(valueTitleProvider?(model.selected, false) ?? "\(model.selected)", for: .normal)
     
@@ -50,40 +62,34 @@ final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigur
     }
   }
   
-  // MARK: - Override
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    layoutViews()
-  }
-  
-  // MARK: - Private
-  private func layoutViews() {
-    // icon
-    iconImageView.pin
-      .vCenter()
-      .left(Inset.Padding.default)
-      .size(Size.Icon.default)
-    
-    // value
-    valueButton.pin
-      .vCenter()
-      .right(Inset.Padding.default)
-      .maxWidth(50%)
-      .sizeToFit()
-    
-    // title
-    let titlePin = titleLabel.pin
-      .top()
-      .bottom()
-      .before(of: valueButton)
-    
-    if iconImageView.image == nil {
-      titlePin.left(Inset.Padding.default)
-    } else {
-      titlePin.after(of: iconImageView).marginLeft(Inset.Padding.default)
+  private func setupLayout() {
+    labelsStack.addArrangedSubview(titleLabel)
+    labelsStack.addArrangedSubview(valueButton)
+    labelsStack.spacing = Inset.Padding.small
+    let row = UIStackView(arrangedSubviews: [iconImageView, labelsStack])
+    row.spacing = Inset.Padding.default
+    row.alignment = .center
+    contentView.addSubview(row)
+    iconImageView.snp.makeConstraints { $0.size.equalTo(Size.Icon.default).priority(999) }
+    row.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(Inset.Padding.default)
+      $0.top.bottom.equalToSuperview().inset(Inset.Padding.small)
+      $0.height.greaterThanOrEqualTo(Size.View.cellDefault - 2 * Inset.Padding.small)
     }
+    valueWidthConstraint = valueButton.widthAnchor.constraint(
+      lessThanOrEqualTo: labelsStack.widthAnchor,
+      multiplier: 0.5
+    )
   }
-  
+
+  private func updateLabelLayout() {
+    let accessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    labelsStack.axis = accessibilitySize ? .vertical : .horizontal
+    labelsStack.alignment = accessibilitySize ? .leading : .center
+    valueWidthConstraint?.isActive = !accessibilitySize
+    valueButton.contentHorizontalAlignment = accessibilitySize ? .leading : .trailing
+  }
+
   private func createIconImageView() -> UIImageView {
     with(UIImageView()) {
       contentView.addSubview($0)
@@ -94,7 +100,10 @@ final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigur
     with(UILabel()) {
       $0.font = Font.system(.body, weight: .regular)
       $0.textColor = Color.Text.default
-      $0.textAlignment = .left
+      $0.textAlignment = .natural
+      $0.numberOfLines = .zero
+      $0.adjustsFontForContentSizeCategory = true
+      $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
       contentView.addSubview($0)
     }
   }
@@ -102,18 +111,20 @@ final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigur
   private func createValueButton() -> UIButton {
     with(UIButton(type: .system)) {
       $0.titleLabel?.font = Font.system(.body, weight: .regular)
-      $0.titleLabel?.textAlignment = .right
+      $0.titleLabel?.textAlignment = .natural
+      $0.titleLabel?.numberOfLines = .zero
+      $0.titleLabel?.adjustsFontForContentSizeCategory = true
+      $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
       $0.tintColor = Color.Button.default
       contentView.addSubview($0)
     }
   }
   
-  // MARK: - WheelView
-  private struct WheelView<Value: Hashable>: SwiftUI.View {
-    let values: [Value]
-    @State var selected: Value
-    let valueTitleProvider: (Value) -> String
-    let onChange: (Value) -> Void
+  private struct WheelView<Choice: Hashable>: SwiftUI.View {
+    let values: [Choice]
+    @State var selected: Choice
+    let valueTitleProvider: (Choice) -> String
+    let onChange: (Choice) -> Void
     
     var body: some SwiftUI.View {
       Picker("", selection: $selected) {
@@ -141,7 +152,7 @@ final class PickerCell<Value: Hashable>: UICollectionViewListCell, ModelConfigur
           ),
         alignment: .top
       )
-      .onChange(of: selected) { value in
+      .onChange(of: selected) { _, value in
         onChange(value)
       }
     }

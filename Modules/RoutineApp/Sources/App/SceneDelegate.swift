@@ -12,11 +12,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private var authenticationTask: Task<Void, Never>?
   var window: UIWindow?
 
-  private lazy var backgroundWindow: UIWindow = with(UIWindow(frame: UIScreen.main.bounds)) {
-    $0.windowScene = window?.windowScene
-    $0.rootViewController = BlockerAssembly().controller { [weak self] in self?.authenticate() }
-    $0.windowLevel = .alert
-  }
+  private var backgroundWindow: UIWindow?
 
   @Defaults(key: .useFaceID, initial: false) private var authWithFaceID: Bool
 
@@ -29,6 +25,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     LegacyTrackingCleanup.removeIdentifier()
     CommonAppearance.setup(for: scene)
     window = UIWindow(windowScene: scene)
+    backgroundWindow = with(UIWindow(windowScene: scene)) {
+      $0.rootViewController = BlockerAssembly().controller { [weak self] in self?.authenticate() }
+      $0.windowLevel = .alert
+    }
     connect(to: scene)
     CommonAppearance.setupTheme()
   }
@@ -108,7 +108,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   private func updateBlocker() {
-    backgroundWindow.isHidden = !lockState.blocksContent
-    (backgroundWindow.rootViewController as? BlockerVC)?.update(authenticating: lockState.phase == .authenticating)
+    backgroundWindow?.isHidden = !lockState.blocksContent
+    (window?.rootViewController as? RoutineNavigationController)?.setContentAvailable(
+      !lockState.blocksContent && window?.windowScene?.activationState == .foregroundActive
+    )
+    (backgroundWindow?.rootViewController as? BlockerVC)?.update(authenticating: lockState.phase == .authenticating)
   }
 }

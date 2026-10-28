@@ -1,6 +1,6 @@
 # Routine
 
-Routine is a free, open-source routine and habit tracker for iPhone and iPad, with
+Routine is a free routine and habit tracker for iPhone and iPad, with
 Mac Catalyst support. Create routines, track goals and history, schedule local
 reminders, and protect the app with device authentication. Every feature is
 available without a subscription or app account.
@@ -11,7 +11,7 @@ Use macOS with Xcode and an installed iOS Simulator runtime. The revival is bein
 validated with Xcode 27.1 (27A9275), Swift 5 language mode, and Tuist 4.209.0.
 The minimum deployment target is iOS/iPadOS 26.0. The standalone Mac app uses
 Catalyst to reuse the UIKit interface.
-Validation on iOS 27 simulators does not establish runtime testing on iOS 26.
+The test suite runs on the minimum iOS 26 runtime and newer simulators, including iPhone Duo.
 Install [mise](https://mise.jdx.dev/) and `xcbeautify`, then:
 
 ```sh
@@ -33,8 +33,9 @@ To run tests, create/boot your own simulator and pass its exact UDID:
 mise exec -- make test SIMULATOR_UDID=YOUR_SIMULATOR_UDID
 ```
 
-`make test` uses the already generated project. The XCTest suite covers persistence
-and reminder planning. Build Catalyst with:
+`make test` uses the already generated project. The XCTest suite covers persistence,
+reminder reconciliation, app protection, one-time launch presentations and native
+calendar layout/state. See [Testing](TESTING.md) for the native regression pass and platform limits. Build Catalyst with:
 
 ```sh
 mise exec -- make build DESTINATION='generic/platform=macOS,variant=Mac Catalyst'
@@ -48,7 +49,11 @@ Apple Developer provisioning, iCloud containers, push capability, and a developm
 team selected in Xcode. Local data and official-app data are intentionally separate.
 Local builds cannot access the official CloudKit containers. For a fork, supply your
 own bundle IDs, entitlement/container IDs and provisioning before enabling sync.
-Simulator tests cannot establish production CloudKit sync or signed device behavior.
+Prod builds explicitly use the Production CloudKit environment; Dev builds explicitly use Development.
+Dev exists for cloud testing with a separate app identity, App Group store and container, not for feature differences.
+Keep experimental cloud data in Dev: a development-signed Prod build still opens the real Prod App Group store.
+A signed Mac build can verify real CloudKit setup, import and export; simulator tests alone cannot.
+Cross-device synchronization requires a second signed client on the same account.
 
 ## Releases
 

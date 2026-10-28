@@ -2,7 +2,6 @@ import SnapKit
 import UIKit
 
 final class CountingLabel: UIView {
-  // MARK: - Public Properties
   var font: UIFont {
     get { label.font }
     set { label.font = newValue }
@@ -19,13 +18,10 @@ final class CountingLabel: UIView {
   var steps: Int = 20
   var animationDuration: TimeInterval = 0.3
   
-  // MARK: - UI Properties
   private lazy var label = createLabel()
   
-  // MARK: - Private Properties
   private var currentValue: Double = .zero
   
-  // MARK: - Public
   func update(to value: Double, round: Bool, animated: Bool) {
     if animated {
       let current = currentValue
@@ -46,10 +42,13 @@ final class CountingLabel: UIView {
     currentValue = value
   }
   
-  // MARK: - Private
   private func createLabel() -> UILabel {
     with(UILabel()) {
       addSubview($0)
+      $0.textAlignment = .center
+      $0.adjustsFontSizeToFitWidth = true
+      $0.minimumScaleFactor = 0.25
+      $0.adjustsFontForContentSizeCategory = true
       $0.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
   }

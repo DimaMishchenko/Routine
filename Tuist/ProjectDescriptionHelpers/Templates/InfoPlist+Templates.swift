@@ -10,7 +10,17 @@ extension InfoPlist {
         "UIMainStoryboardFile": "",
         "UILaunchStoryboardName": "LaunchScreen",
         "ENVIRONMENT": "${ENVIRONMENT}",
-        "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ],
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ],
         "LSApplicationCategoryType": "public.app-category.productivity",
         "ITSAppUsesNonExemptEncryption": false,
         "NSFaceIDUsageDescription": "By enabling Face ID, you can secure access to the app with biometric authentication. This means that only you, using your face, will be able to access the app and your information will be protected.",

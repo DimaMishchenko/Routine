@@ -7,8 +7,7 @@
 • Синхронізація між пристроями Apple через iCloud.
 • Світла й темна теми на iPhone, iPad і Mac.
 
-Без підписок, покупок у застосунку, окремого облікового запису чи сторонньої аналітики. Routine має відкритий вихідний код.
+Без підписок, покупок у застосунку, окремого облікового запису чи сторонньої аналітики.
 
 Підтримка: dimasike.dev@gmail.com
-Код: https://github.com/DimaMishchenko/Routine
 Конфіденційність: https://github.com/DimaMishchenko/Routine/blob/main/PRIVACY.md

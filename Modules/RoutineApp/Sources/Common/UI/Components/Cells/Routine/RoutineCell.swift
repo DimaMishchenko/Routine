@@ -3,13 +3,11 @@ import SwipeCellKit
 import UIKit
 
 final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
-  // MARK: - Public Properties
   var onEdit: (() -> Void)?
   var onDelete: (() -> Void)?
   var onIncrease: (() -> Void)?
   var onDecrease: (() -> Void)?
   
-  // MARK: - UI Properties
   private lazy var containerView = createContainerView()
   private lazy var emojiLabel = createEmojiLabel()
   private lazy var titleLabel = createTitleLabel()
@@ -18,14 +16,36 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
   private lazy var progress = createProgress()
   private lazy var progressTapGesture = UITapGestureRecognizer(target: self, action: #selector(increaseProgress))
   
-  // MARK: - Private Properties
   private var updateInProgress = false
   
-  // MARK: - Init
   override init(frame: CGRect) {
     super.init(frame: frame)
     delegate = self
     updateBackgroundConfiguration()
+    isAccessibilityElement = true
+    accessibilityTraits = .button
+    accessibilityCustomActions = [
+      UIAccessibilityCustomAction(
+        name: RoutineAppStrings.Localizable.RoutineList.Action.increaseProgress,
+        target: self,
+        selector: #selector(accessibilityIncreaseProgress)
+      ),
+      UIAccessibilityCustomAction(
+        name: RoutineAppStrings.Localizable.RoutineList.Action.decreaseProgress,
+        target: self,
+        selector: #selector(accessibilityDecreaseProgress)
+      ),
+      UIAccessibilityCustomAction(
+        name: RoutineAppStrings.Localizable.NavBar.edit,
+        target: self,
+        selector: #selector(accessibilityEdit)
+      ),
+      UIAccessibilityCustomAction(
+        name: RoutineAppStrings.Localizable.RoutineEdit.Button.delete,
+        target: self,
+        selector: #selector(accessibilityDelete)
+      )
+    ]
   }
   
   @available(*, unavailable, message: "Not supported")
@@ -33,11 +53,12 @@ final class RoutineCell: SwipeCollectionViewCell, ModelConfigurable {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - ModelConfigurable
   func update(with model: RoutineCellVM) {
     emojiLabel.text = model.emoji
     titleLabel.text = model.title
     goalLabel.text = model.goal
+    accessibilityLabel = "\(model.emoji) \(model.title)"
+    accessibilityValue = model.goal
     progress.update(progress: model.progressPercent, animated: false)
   }
   
@@ -88,15 +109,35 @@ extension RoutineCell: SwipeCollectionViewCellDelegate {
   }
 }
 
-// MARK: - Actions
 extension RoutineCell {
   @objc private func increaseProgress() {
     guard !updateInProgress else { return }
     onIncrease?()
   }
+
+  @objc private func accessibilityIncreaseProgress() -> Bool {
+    guard !updateInProgress else { return false }
+    onIncrease?()
+    return true
+  }
+
+  @objc private func accessibilityDecreaseProgress() -> Bool {
+    guard !updateInProgress else { return false }
+    onDecrease?()
+    return true
+  }
+
+  @objc private func accessibilityEdit() -> Bool {
+    onEdit?()
+    return true
+  }
+
+  @objc private func accessibilityDelete() -> Bool {
+    onDelete?()
+    return true
+  }
 }
   
-// MARK: - Private
 extension RoutineCell {
   private func updateBackgroundConfiguration() {
     backgroundConfiguration = .clear()
@@ -118,7 +159,10 @@ extension RoutineCell {
   private func createEmojiLabel() -> UILabel {
     with(UILabel()) {
       $0.font = Font.system(.body, weight: .regular)
-      $0.textAlignment = .left
+      $0.adjustsFontForContentSizeCategory = true
+      $0.adjustsFontSizeToFitWidth = true
+      $0.minimumScaleFactor = 0.3
+      $0.textAlignment = .natural
       containerView.addSubview($0)
       
       $0.snp.makeConstraints {
@@ -132,14 +176,17 @@ extension RoutineCell {
   private func createTitleLabel() -> UILabel {
     with(UILabel()) {
       $0.font = Font.system(.title3, weight: .semibold)
+      $0.adjustsFontForContentSizeCategory = true
+      $0.numberOfLines = .zero
       $0.textColor = Color.Text.default
-      $0.textAlignment = .left
+      $0.textAlignment = .natural
       containerView.addSubview($0)
       
       $0.snp.makeConstraints {
         $0.leading.equalTo(emojiLabel.snp.trailing).offset(Inset.Padding.small)
         $0.trailing.lessThanOrEqualTo(undoButton.snp.leading)
-        $0.centerY.equalTo(emojiLabel)
+        $0.top.equalTo(emojiLabel)
+        $0.height.greaterThanOrEqualTo(Size.Button.small)
       }
     }
   }
@@ -147,12 +194,14 @@ extension RoutineCell {
   private func createGoalLabel() -> UILabel {
     with(UILabel()) {
       $0.font = Font.system(.footnote, weight: .semibold)
-      $0.textAlignment = .left
+      $0.adjustsFontForContentSizeCategory = true
+      $0.numberOfLines = .zero
+      $0.textAlignment = .natural
       $0.textColor = Color.Text.value
       containerView.addSubview($0)
       
       $0.snp.makeConstraints {
-        $0.top.equalTo(emojiLabel.snp.bottom).offset(Inset.Padding.small)
+        $0.top.equalTo(titleLabel.snp.bottom).offset(Inset.Padding.small)
         $0.leading.equalToSuperview().offset(Inset.Padding.default)
         $0.trailing.lessThanOrEqualTo(undoButton.snp.leading)
         $0.bottom.equalToSuperview().offset(-Inset.Padding.small)

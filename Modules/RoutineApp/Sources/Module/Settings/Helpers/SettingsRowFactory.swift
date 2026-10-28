@@ -1,4 +1,5 @@
 import Foundation
+import UIKit.UIImage
 
 protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
@@ -13,6 +14,8 @@ protocol SettingsRowFactory {
   func privacyPolicy(action: @escaping () -> Void) -> Settings.Row
   func termsOfUse(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
+  func authorRow(name: String, url: URL?, action: @escaping (URL) -> Void) -> Settings.Row
+  func acknowledgementsRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow() -> Settings.Row
 }
 
@@ -177,6 +180,33 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
     )
   }
   
+  func authorRow(name: String, url: URL?, action: @escaping (URL) -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: name,
+          value: .text(url?.lastPathComponent),
+          icon: UIImage(systemName: "person.crop.circle"),
+          accessory: url == nil ? .none : .disclosure
+        )
+      ),
+      action: url.map { url in { action(url) } }
+    )
+  }
+
+  func acknowledgementsRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Localizable.Settings.Row.acknowledgements,
+          icon: RoutineAppAsset.Icon.terms.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+
   func appVersionRow() -> Settings.Row {
     .init(
       .value(
