@@ -1,56 +1,33 @@
 # Routine
 
-A native habit tracker for iPhone, iPad and Mac. Set daily, weekly or monthly goals,
-record your progress and make room for the routines that matter to you.
+A native habit tracker for iPhone, iPad and Mac, with daily, weekly and monthly goals.
 
-**Fully free. Unlimited routines. No subscription, purchases or app account.**
-All features in this source version are available to everyone, including local
-reminders, progress history, appearance settings and app protection.
+[![CI](https://github.com/DimaMishchenko/Routine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/DimaMishchenko/Routine/actions/workflows/ci.yml)
+[![MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Maintenance mode](https://img.shields.io/badge/status-maintenance%20mode-yellow)](CONTRIBUTING.md)
+![iOS 26+](https://img.shields.io/badge/iOS-26%2B-blue)
+![macOS 26+](https://img.shields.io/badge/macOS-26%2B-blue)
 
-> **Release status:** the free 1.1.0 update is being prepared and has not shipped
-> yet. Routine is currently unavailable on the App Store. The previously released
-> version, 1.0.4, may have different features, purchases and privacy behavior.
+[Website](https://dimamishchenko.github.io/Routine/) · [Report a bug](https://github.com/DimaMishchenko/Routine/issues)
+
+**Fully free. Unlimited routines. No purchases, subscriptions, analytics or app account.**
+Track progress, explore your history, set local reminders and protect the app with
+Face ID, Touch ID or your passcode. Store data locally or use supported iCloud sync.
+
+> The free 1.1.0 update has not shipped yet. Routine is currently unavailable on the
+> App Store; existing 1.0.4 installations may have different features and privacy behavior.
 
 <p>
-  <img src="Website/public/assets/routine-iphone.webp" width="220" alt="Routine on iPhone with sample habits and their progress">
-  <img src="Website/public/assets/routine-mac.webp" width="530" alt="Routine on Mac with the same native habit-tracking interface">
+  <img src="Website/public/assets/routine-iphone.webp" width="180" alt="Routine on iPhone with fictional sample habits">
+  <img src="Website/public/assets/routine-mac.webp" width="435" alt="Routine on Mac with fictional sample habits">
 </p>
 
-*Native app previews with fictional sample routines.*
+**Maintenance mode:** fixes, platform compatibility and security take priority.
+Major new features are not planned; support and review have no guaranteed schedule.
 
-## A little progress, every day
+## Run locally
 
-- **Your routines, your pace.** Choose a goal and a daily, weekly or monthly schedule;
-  personalize routines with an emoji and description.
-- **See what adds up.** Track completed goals and explore your history in the calendar
-  and progress charts.
-- **A gentle reminder.** Schedule optional local notifications on your device.
-- **Keep it personal.** Protect the app with Face ID, Touch ID or your device passcode.
-- **At home on your devices.** Use the native iPhone and iPad interface or the Mac
-  Catalyst app, with light and dark appearance.
-- **Your data stays yours.** Store routines locally; official signed builds also
-  support sync through your own iCloud account. There is no separate Routine account.
-
-The upcoming version contains no Firebase, RevenueCat, advertising trackers or
-purchase system. Read [Privacy](PRIVACY.md) for storage, iCloud and permission details.
-
-## Maintenance mode
-
-**Routine is in maintenance mode.** Work focuses on bug fixes, compatibility with
-supported Apple platforms and security issues. Major new features are not actively
-planned, and support or contribution reviews may take time; there is no guaranteed
-response or release schedule.
-
-For help, email [dimasike.dev@gmail.com](mailto:dimasike.dev@gmail.com).
-Report sensitive vulnerabilities privately as described in [Security](SECURITY.md).
-See [Contributing](CONTRIBUTING.md) before preparing a change.
-
-## Build locally
-
-Use macOS with **Xcode 27.1**, an iOS Simulator runtime and **Tuist 4.209.0**
-(pinned in `mise.toml`). This version targets **iOS/iPadOS 26+** and **macOS 26+**
-through Mac Catalyst. Install [mise](https://mise.jdx.dev/) and
-[xcbeautify](https://github.com/cpisciotta/xcbeautify), then run:
+Install Xcode 27.1, [mise](https://mise.jdx.dev/) and [xcbeautify](https://github.com/cpisciotta/xcbeautify):
 
 ```sh
 mise install
@@ -58,51 +35,7 @@ mise exec -- make build
 open Routine.xcworkspace
 ```
 
-`make build` generates the workspace before building. Select **RoutineApp Local**
-in Xcode and choose an iOS Simulator. This scheme uses a separate bundle ID and
-local Core Data storage. You can build it without an Apple account, developer team,
-CloudKit entitlements or service credentials. Dependencies are pinned in the
-manifests and `.package.resolved`.
+Choose **RoutineApp Local** and an iOS 26+ simulator. No Apple account is required.
+See [Contributing](CONTRIBUTING.md) for cloud builds and [Testing](TESTING.md) for verification.
 
-Run tests against a simulator you own and have booted, using its exact UDID:
-
-```sh
-mise exec -- make test SIMULATOR_UDID=YOUR_SIMULATOR_UDID
-```
-
-Build the Mac Catalyst target with:
-
-```sh
-mise exec -- make build DESTINATION='generic/platform=macOS,variant=Mac Catalyst'
-```
-
-### Cloud sync
-
-**RoutineApp Dev** and **RoutineApp Prod** need matching Apple Developer provisioning,
-CloudKit containers and a development team. Local builds cannot access official
-cloud data. Forks must supply their own bundle IDs, containers and provisioning.
-
-Dev uses a separate app identity, App Group store and **Development** CloudKit
-environment for cloud testing. Prod uses the official app's store and **Production**
-CloudKit environment, including when development-signed. Keep test data in Dev.
-Real synchronization needs signed clients; simulator tests alone do not establish
-cross-device sync.
-
-## Project guide
-
-- [Architecture](ARCHITECTURE.md): app composition, UIKit/SwiftUI boundaries,
-  persistence and CloudKit ownership.
-- [Testing](TESTING.md): automated checks, native verification and platform limits.
-- [Contributing](CONTRIBUTING.md): change scope, validation and simulator ownership.
-- [Privacy](PRIVACY.md): data storage, permissions and external services.
-- [Security](SECURITY.md): private reports and credential checks.
-- [Third-party notices](THIRD_PARTY_NOTICES.md): dependency licenses and attribution.
-- [Website](Website/README.md): local preview and static hosting contents.
-
-## License
-
-Routine's project code is licensed under the [MIT license](LICENSE), with the
-original copyright attribution retained. Dependencies keep their own licenses;
-redistributions must also preserve the [third-party notices](THIRD_PARTY_NOTICES.md).
-
-Source code is available on [GitHub](https://github.com/DimaMishchenko/Routine).
+[Architecture](ARCHITECTURE.md) · [Privacy](PRIVACY.md) · [Security reports](SECURITY.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
