@@ -1,5 +1,6 @@
 require "fileutils"
 require "plist"
+require "open3"
 require "shellwords"
 
 skip_docs
@@ -28,6 +29,15 @@ def routine_xcodebuild(arguments, log)
   Fastlane::Actions.sh("bash", "-o", "pipefail", "-c", command)
 end
 
+def routine_validate_mac_resources(application)
+  Dir.glob(File.join(application, "Contents/Resources/**/*.bundle")).each do |bundle|
+    info = [File.join(bundle, "Contents/Info.plist"), File.join(bundle, "Info.plist")].find { |path| File.file?(path) }
+    next unless info && !Plist.parse_xml(info).key?("CFBundleExecutable")
+    _, _, status = Open3.capture3("codesign", "-d", bundle)
+    UI.user_error!("Codeless resource bundle is separately signed: #{bundle}. Remove global signing identity overrides and rebuild; Xcode must seal resources with the app signature.") if status.success?
+  end
+end
+
 def routine_export(settings, destination)
   archive_info = File.join(settings[:archive], "Info.plist")
   UI.user_error!("Archive not found: #{settings[:archive]}") unless File.file?(archive_info)
@@ -37,6 +47,7 @@ def routine_export(settings, destination)
   application = File.join(settings[:archive], "Products", properties.fetch("ApplicationPath"))
   info_path = File.join(application, settings[:destination] == "macos" ? "Contents/Info.plist" : "Info.plist")
   UI.user_error!("Archive platform does not match destination") unless File.file?(info_path)
+  routine_validate_mac_resources(application) if settings[:destination] == "macos"
   output = File.join(settings[:output], destination)
   UI.user_error!("Output already exists; keep prior release evidence: #{output}") if File.exist?(output)
   FileUtils.mkdir_p(settings[:output])
@@ -68,7 +79,6 @@ platform :ios do
       "-derivedDataPath", File.join(settings[:output], "DerivedData"), "-allowProvisioningUpdates",
       "DEVELOPMENT_TEAM=#{settings[:team]}", "CODE_SIGN_STYLE=Automatic"
     ]
-    arguments << "CODE_SIGN_IDENTITY=Apple Development" if settings[:destination] == "macos"
     routine_xcodebuild(arguments, File.join(settings[:output], "archive.log"))
     routine_export(settings, "export")
   end

@@ -18,7 +18,8 @@ extension SettingsDictionary {
       "PRODUCT_NAME": "Routine",
       "PRODUCT_BUNDLE_IDENTIFIER": .string(routineBundleId(for: environment)),
       "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
-      "DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": false
+      "DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": false,
+      "CODE_SIGN_IDENTITY[sdk=macosx*]": "Apple Development"
     ]
     switch environment {
     case .local:
