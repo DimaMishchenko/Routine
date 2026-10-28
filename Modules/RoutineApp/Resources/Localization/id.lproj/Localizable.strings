@@ -148,6 +148,7 @@
 "routineList.add" = "Tambah rutinitas";
 "settings.section.authors" = "Dibuat oleh";
 "settings.section.authorsFooter" = "Dukung Routine dengan mengikuti pembuatnya, membagikan aplikasi, atau menulis ulasan.";
+"settings.row.openSource" = "Sumber terbuka";
 "settings.row.acknowledgements" = "Ucapan terima kasih";
 "acknowledgements.title" = "Ucapan terima kasih";
 "freeAnnouncement.title" = "Routine kini gratis";

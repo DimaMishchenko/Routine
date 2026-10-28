@@ -1,0 +1,10 @@
+O Routine agora é totalmente gratuito. Todos os recursos estão disponíveis sem assinaturas ou compras dentro do app, e as ferramentas de análise de terceiros foram removidas.
+
+• Interface mais simples, com Ajustes e um botão Adicionar em destaque na barra de ferramentas.
+• Boas-vindas exibidas uma única vez, com links para os autores.
+• Dez novos idiomas de interface, além de inglês e ucraniano.
+• Melhorias no calendário, na edição, no teclado e nos layouts com texto grande.
+• Agradecimentos às bibliotecas e informações atualizadas de autores e suporte.
+• Indicação mais confiável do status do iCloud.
+
+Seus hábitos e histórico existentes são preservados. Esta versão requer iOS/iPadOS 26, macOS 26 ou posterior.

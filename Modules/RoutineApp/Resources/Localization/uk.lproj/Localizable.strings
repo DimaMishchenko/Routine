@@ -222,6 +222,7 @@
 
 "settings.section.authorsFooter" = "Підтримайте Routine: стежте за авторами, поділіться застосунком або напишіть відгук.";
 
+"settings.row.openSource" = "Відкритий код";
 "settings.row.acknowledgements" = "Подяки";
 
 "acknowledgements.title" = "Подяки";

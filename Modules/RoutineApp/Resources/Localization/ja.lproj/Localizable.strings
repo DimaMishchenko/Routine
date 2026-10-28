@@ -148,6 +148,7 @@
 "routineList.add" = "習慣を追加";
 "settings.section.authors" = "開発者";
 "settings.section.authorsFooter" = "開発者のフォロー、アプリの共有、レビューの投稿でRoutineを応援してください。";
+"settings.row.openSource" = "オープンソース";
 "settings.row.acknowledgements" = "謝辞";
 "acknowledgements.title" = "謝辞";
 "freeAnnouncement.title" = "Routineが無料になりました";

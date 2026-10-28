@@ -1,74 +1,109 @@
 # Routine
 
-Routine is a free routine and habit tracker for iPhone and iPad, with
-Mac Catalyst support. Create routines, track goals and history, schedule local
-reminders, and protect the app with device authentication. Every feature is
-available without a subscription or app account.
+A native habit tracker for iPhone, iPad and Mac. Set daily, weekly or monthly goals,
+record your progress and make room for the routines that matter to you.
+
+**Fully free. Unlimited routines. No subscription, purchases or app account.**
+All features in this source version are available to everyone, including local
+reminders, progress history, appearance settings and app protection.
+
+> **Release status:** the free 1.1.0 update is being prepared and has not shipped
+> yet. Routine is currently unavailable on the App Store. The previously released
+> version, 1.0.4, may have different features, purchases and privacy behavior.
+
+<p>
+  <img src="Website/public/assets/routine-iphone.webp" width="220" alt="Routine on iPhone with sample habits and their progress">
+  <img src="Website/public/assets/routine-mac.webp" width="530" alt="Routine on Mac with the same native habit-tracking interface">
+</p>
+
+*Native app previews with fictional sample routines.*
+
+## A little progress, every day
+
+- **Your routines, your pace.** Choose a goal and a daily, weekly or monthly schedule;
+  personalize routines with an emoji and description.
+- **See what adds up.** Track completed goals and explore your history in the calendar
+  and progress charts.
+- **A gentle reminder.** Schedule optional local notifications on your device.
+- **Keep it personal.** Protect the app with Face ID, Touch ID or your device passcode.
+- **At home on your devices.** Use the native iPhone and iPad interface or the Mac
+  Catalyst app, with light and dark appearance.
+- **Your data stays yours.** Store routines locally; official signed builds also
+  support sync through your own iCloud account. There is no separate Routine account.
+
+The upcoming version contains no Firebase, RevenueCat, advertising trackers or
+purchase system. Read [Privacy](PRIVACY.md) for storage, iCloud and permission details.
+
+## Maintenance mode
+
+**Routine is in maintenance mode.** Work focuses on bug fixes, compatibility with
+supported Apple platforms and security issues. Major new features are not actively
+planned, and support or contribution reviews may take time; there is no guaranteed
+response or release schedule.
+
+For help, email [dimasike.dev@gmail.com](mailto:dimasike.dev@gmail.com).
+Report sensitive vulnerabilities privately as described in [Security](SECURITY.md).
+See [Contributing](CONTRIBUTING.md) before preparing a change.
 
 ## Build locally
 
-Use macOS with Xcode and an installed iOS Simulator runtime. The revival is being
-validated with Xcode 27.1 (27A9275), Swift 5 language mode, and Tuist 4.209.0.
-The minimum deployment target is iOS/iPadOS 26.0. The standalone Mac app uses
-Catalyst to reuse the UIKit interface.
-The test suite runs on the minimum iOS 26 runtime and newer simulators, including iPhone Duo.
-Install [mise](https://mise.jdx.dev/) and `xcbeautify`, then:
+Use macOS with **Xcode 27.1**, an iOS Simulator runtime and **Tuist 4.209.0**
+(pinned in `mise.toml`). This version targets **iOS/iPadOS 26+** and **macOS 26+**
+through Mac Catalyst. Install [mise](https://mise.jdx.dev/) and
+[xcbeautify](https://github.com/cpisciotta/xcbeautify), then run:
 
 ```sh
 mise install
-mise exec -- make gen
 mise exec -- make build
 open Routine.xcworkspace
 ```
 
-Select **RoutineApp Local** in Xcode. Local builds use an isolated bundle ID,
-local Core Data storage, and no developer team or CloudKit entitlements. They do
-not need Firebase, RevenueCat, signing certificates, API private keys, Ruby, CocoaPods
-or an Apple account. Dependency versions, including DGCharts 5.1.0 and SnapKit 5.7.1, are pinned;
-`.package.resolved` retains the transitive resolution. SwiftLint is optional.
+`make build` generates the workspace before building. Select **RoutineApp Local**
+in Xcode and choose an iOS Simulator. This scheme uses a separate bundle ID and
+local Core Data storage. You can build it without an Apple account, developer team,
+CloudKit entitlements or service credentials. Dependencies are pinned in the
+manifests and `.package.resolved`.
 
-To run tests, create/boot your own simulator and pass its exact UDID:
+Run tests against a simulator you own and have booted, using its exact UDID:
 
 ```sh
 mise exec -- make test SIMULATOR_UDID=YOUR_SIMULATOR_UDID
 ```
 
-`make test` uses the already generated project. The XCTest suite covers persistence,
-reminder reconciliation, app protection, one-time launch presentations and native
-calendar layout/state. See [Testing](TESTING.md) for the native regression pass and platform limits. Build Catalyst with:
+Build the Mac Catalyst target with:
 
 ```sh
 mise exec -- make build DESTINATION='generic/platform=macOS,variant=Mac Catalyst'
 ```
 
-## Cloud sync and device signing
+### Cloud sync
 
-The **RoutineApp Dev** and **RoutineApp Prod** schemes preserve the original bundle
-IDs and CloudKit entitlement files for the official app. They require matching
-Apple Developer provisioning, iCloud containers, push capability, and a development
-team selected in Xcode. Local data and official-app data are intentionally separate.
-Local builds cannot access the official CloudKit containers. For a fork, supply your
-own bundle IDs, entitlement/container IDs and provisioning before enabling sync.
-Prod builds explicitly use the Production CloudKit environment; Dev builds explicitly use Development.
-Dev exists for cloud testing with a separate app identity, App Group store and container, not for feature differences.
-Keep experimental cloud data in Dev: a development-signed Prod build still opens the real Prod App Group store.
-A signed Mac build can verify real CloudKit setup, import and export; simulator tests alone cannot.
-Cross-device synchronization requires a second signed client on the same account.
+**RoutineApp Dev** and **RoutineApp Prod** need matching Apple Developer provisioning,
+CloudKit containers and a development team. Local builds cannot access official
+cloud data. Forks must supply their own bundle IDs, containers and provisioning.
 
-## Releases
+Dev uses a separate app identity, App Group store and **Development** CloudKit
+environment for cloud testing. Prod uses the official app's store and **Production**
+CloudKit environment, including when development-signed. Keep test data in Dev.
+Real synchronization needs signed clients; simulator tests alone do not establish
+cross-device sync.
 
-The optional [Fastlane lanes](fastlane/README.md) use Xcode's saved account and
-Automatic signing. The archive/export lane produces reviewable App Store artifacts;
-a separate lane uploads an existing archive only when explicitly invoked. No Match
-repository or API private key is required. Both iOS and universal Mac Catalyst
-App Store distribution exports have been validated with Xcode 27.1. The lanes do
-not commit, tag, push, accept agreements or submit for App Review.
-Run `make secrets` scans the working tree; `make secrets-history` scans all
-locally stored Git blobs, including unreachable historical copies. The scanner has
-limited high-confidence patterns and does not replace credential review.
+## Project guide
 
-## Privacy and contributions
+- [Architecture](ARCHITECTURE.md): app composition, UIKit/SwiftUI boundaries,
+  persistence and CloudKit ownership.
+- [Testing](TESTING.md): automated checks, native verification and platform limits.
+- [Contributing](CONTRIBUTING.md): change scope, validation and simulator ownership.
+- [Privacy](PRIVACY.md): data storage, permissions and external services.
+- [Security](SECURITY.md): private reports and credential checks.
+- [Third-party notices](THIRD_PARTY_NOTICES.md): dependency licenses and attribution.
+- [Website](Website/README.md): local preview and static hosting contents.
 
-See [Privacy](PRIVACY.md), [Contributing](CONTRIBUTING.md), and
-[Security](SECURITY.md). Routine uses the [MIT license](LICENSE); bundled libraries
-retain their [own licenses](THIRD_PARTY_NOTICES.md).
+## License
+
+Routine's project code is licensed under the [MIT license](LICENSE), with the
+original copyright attribution retained. Dependencies keep their own licenses;
+redistributions must also preserve the [third-party notices](THIRD_PARTY_NOTICES.md).
+
+The repository is currently private. Applying the MIT license does not mean a
+public source release is available; repository publication will be reviewed separately.

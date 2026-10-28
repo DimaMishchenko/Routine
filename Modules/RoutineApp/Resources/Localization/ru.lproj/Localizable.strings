@@ -148,6 +148,7 @@
 "routineList.add" = "Добавить привычку";
 "settings.section.authors" = "Авторы";
 "settings.section.authorsFooter" = "Поддержите Routine: подпишитесь на авторов, поделитесь приложением или напишите отзыв.";
+"settings.row.openSource" = "Открытый исходный код";
 "settings.row.acknowledgements" = "Благодарности";
 "acknowledgements.title" = "Благодарности";
 "freeAnnouncement.title" = "Routine бесплатно";

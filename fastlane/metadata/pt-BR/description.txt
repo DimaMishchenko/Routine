@@ -1,0 +1,21 @@
+Crie hábitos no seu ritmo. O Routine ajuda você a acompanhar metas diárias, semanais e mensais, registrar seu progresso e consultar seu histórico no calendário e em gráficos.
+
+Todos os recursos são gratuitos:
+• Crie hábitos ilimitados com emoji, descrição e uma meta que combine com o seu dia.
+• Registre seu progresso e desfaça uma conclusão quando precisar.
+• Configure lembretes locais opcionais.
+• Consulte o histórico dos seus hábitos e as estatísticas de progresso.
+• Proteja o app com Face ID, Touch ID ou o código do dispositivo.
+• Sincronize seus dispositivos Apple pela sua própria conta do iCloud.
+• Use uma interface nativa no iPhone, iPad e Mac, com aparência clara e escura.
+
+Sem assinaturas, compras dentro do app, conta separada do Routine ou análise de dados por terceiros.
+
+O Routine tem código aberto sob a licença MIT. Confira o código no GitHub:
+https://github.com/DimaMishchenko/Routine
+
+O Routine está em modo de manutenção, com foco em correções essenciais e compatibilidade.
+
+Requer iOS/iPadOS 26, macOS 26 ou posterior. Interface disponível em inglês, ucraniano, chinês simplificado, hindi, espanhol, francês, bengali, português do Brasil, russo, indonésio, alemão e japonês.
+
+Suporte: dimasike.dev@gmail.com

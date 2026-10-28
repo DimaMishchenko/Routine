@@ -148,6 +148,7 @@
 "routineList.add" = "आदत जोड़ें";
 "settings.section.authors" = "इनकी बनाई हुई";
 "settings.section.authorsFooter" = "लेखकों को फ़ॉलो करके, ऐप शेयर करके या समीक्षा लिखकर Routine का समर्थन करें।";
+"settings.row.openSource" = "ओपन सोर्स";
 "settings.row.acknowledgements" = "आभार";
 "acknowledgements.title" = "आभार";
 "freeAnnouncement.title" = "Routine अब मुफ़्त है";

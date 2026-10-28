@@ -25,6 +25,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var privacyPolicy: (() -> Void)?
   var termsOfUse: (() -> Void)?
   var openAuthor: ((URL) -> Void)?
+  var openSource: (() -> Void)?
   var openAcknowledgements: (() -> Void)?
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
   private var cancellables: Set<AnyCancellable> = []
@@ -179,6 +180,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
           rows: [
             rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
             rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
+            rowFactory.openSourceRow { [weak self] in self?.openSource?() },
             rowFactory.acknowledgementsRow { [weak self] in self?.openAcknowledgements?() },
             rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
             rowFactory.appVersionRow()

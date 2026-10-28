@@ -1,0 +1,10 @@
+Routine ahora es completamente gratis. Todas las funciones están disponibles sin suscripciones ni compras dentro de la app y se han eliminado las analíticas de terceros.
+
+• Interfaz más sencilla con Ajustes y un botón Añadir destacado en la barra de herramientas.
+• Bienvenida que se muestra una sola vez, con enlaces a los autores.
+• Diez nuevos idiomas de interfaz, además de inglés y ucraniano.
+• Mejoras en el calendario, la edición, el teclado y los diseños con texto grande.
+• Agradecimientos a las bibliotecas e información actualizada de autores y asistencia.
+• Información del estado de iCloud más fiable.
+
+Tus hábitos y tu historial se conservan. Esta versión requiere iOS/iPadOS 26, macOS 26 o posterior.

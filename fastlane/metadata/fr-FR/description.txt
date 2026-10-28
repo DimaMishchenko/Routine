@@ -1,0 +1,21 @@
+Créez des habitudes à votre rythme. Routine vous aide à suivre vos objectifs quotidiens, hebdomadaires et mensuels, à enregistrer vos progrès et à consulter votre historique dans un calendrier et des graphiques.
+
+Toutes les fonctionnalités sont gratuites :
+• Créez autant d’habitudes que vous le souhaitez, avec un emoji, une description et un objectif adapté.
+• Enregistrez vos progrès et annulez une validation si nécessaire.
+• Programmez des rappels locaux facultatifs.
+• Consultez l’historique de vos habitudes et vos statistiques de progression.
+• Protégez l’app avec Face ID, Touch ID ou le code de votre appareil.
+• Synchronisez vos appareils Apple avec votre propre compte iCloud.
+• Profitez d’une interface native sur iPhone, iPad et Mac, en mode clair ou sombre.
+
+Sans abonnement, achat intégré, compte Routine distinct ni analyse par des services tiers.
+
+Routine est un logiciel libre sous licence MIT. Consultez le code sur GitHub :
+https://github.com/DimaMishchenko/Routine
+
+Routine est en phase de maintenance, consacrée aux corrections essentielles et à la compatibilité.
+
+Nécessite iOS/iPadOS 26, macOS 26 ou une version ultérieure. Interface disponible en anglais, ukrainien, chinois simplifié, hindi, espagnol, français, bengali, portugais du Brésil, russe, indonésien, allemand et japonais.
+
+Assistance : dimasike.dev@gmail.com

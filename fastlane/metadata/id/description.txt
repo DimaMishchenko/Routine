@@ -1,0 +1,21 @@
+Bangun kebiasaan sesuai ritme Anda. Routine membantu Anda memantau target harian, mingguan, dan bulanan, mencatat progres, serta meninjau riwayat melalui kalender dan grafik.
+
+Semua fitur tersedia gratis:
+• Buat kebiasaan tanpa batas dengan emoji, deskripsi, dan target yang sesuai.
+• Catat progres dan batalkan tanda selesai saat diperlukan.
+• Atur pengingat lokal opsional.
+• Lihat riwayat kebiasaan dan statistik progres.
+• Lindungi app dengan Face ID, Touch ID, atau kode sandi perangkat.
+• Sinkronkan antarperangkat Apple melalui akun iCloud Anda sendiri.
+• Gunakan antarmuka native di iPhone, iPad, dan Mac, dengan tampilan terang dan gelap.
+
+Tanpa langganan, pembelian dalam app, akun Routine terpisah, atau analitik pihak ketiga.
+
+Routine bersifat sumber terbuka dengan lisensi MIT. Lihat kodenya di GitHub:
+https://github.com/DimaMishchenko/Routine
+
+Routine berada dalam tahap pemeliharaan, dengan fokus pada perbaikan penting dan kompatibilitas.
+
+Memerlukan iOS/iPadOS 26, macOS 26, atau lebih baru. Antarmuka tersedia dalam bahasa Inggris, Ukraina, Tionghoa Sederhana, Hindi, Spanyol, Prancis, Bengali, Portugis Brasil, Rusia, Indonesia, Jerman, dan Jepang.
+
+Dukungan: dimasike.dev@gmail.com

@@ -1,0 +1,10 @@
+Routine kini sepenuhnya gratis. Semua fitur tersedia tanpa langganan atau pembelian dalam app, dan analitik pihak ketiga telah dihapus.
+
+• Antarmuka lebih sederhana dengan Pengaturan dan tombol Tambah yang menonjol di bar alat.
+• Layar sambutan yang tampil sekali, dengan tautan ke pembuat app.
+• Sepuluh bahasa antarmuka baru, selain bahasa Inggris dan Ukraina.
+• Peningkatan kalender, pengeditan, papan ketik, dan tata letak teks besar.
+• Pengakuan pustaka serta informasi pembuat dan dukungan yang diperbarui.
+• Tampilan status iCloud yang lebih andal.
+
+Kebiasaan dan riwayat Anda tetap tersimpan. Versi ini memerlukan iOS/iPadOS 26, macOS 26, atau lebih baru.

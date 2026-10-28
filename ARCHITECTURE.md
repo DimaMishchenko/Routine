@@ -1,8 +1,7 @@
 # Architecture
 
-Routine keeps its existing UIKit screens, Combine observation and Core Data model.
-SwiftUI supplies selected charts and controls. This revival does not replace the
-UI framework or migrate users to a new database.
+Routine uses UIKit screens, Combine observation and Core Data persistence.
+SwiftUI supplies selected charts and controls.
 
 ## Ownership
 

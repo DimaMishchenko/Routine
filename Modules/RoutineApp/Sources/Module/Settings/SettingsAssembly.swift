@@ -24,6 +24,13 @@ final class SettingsAssembly {
         UIApplication.shared.open(url)
       }
     }
+    presenter.openSource = {
+      AppConfiguration.sourceLinkURL.map { url in
+        Task { @MainActor in
+          UIApplication.shared.open(url)
+        }
+      }
+    }
     presenter.openAcknowledgements = { [weak vc] in
       Task { @MainActor [weak vc] in
         let acknowledgementsVC = AcknowledgementsVC()

@@ -40,6 +40,38 @@ final class FreeAppTests: XCTestCase {
     await fulfillment(of: [enabled], timeout: 2)
   }
 
+  @MainActor func testSettingsOpenSourceRowTriggersRepositoryAction() async {
+    let snapshotLoaded = expectation(description: "Settings source row loaded")
+    var openSourceRequested = false
+    let view = FreeSettingsView { snapshot in
+      let sourceRows = snapshot.items.flatMap { $0.rows }.filter { row in
+        if case .value(let model) = row.type {
+          return model.title == RoutineAppStrings.Localizable.Settings.Row.openSource
+        }
+        return false
+      }
+      XCTAssertEqual(sourceRows.count, 1)
+      if let row = sourceRows.first, case .value(let model) = row.type {
+        XCTAssertEqual(model.value, .text(RoutineAppStrings.Localizable.Common.github))
+        XCTAssertEqual(model.accessory, .disclosure)
+        row.action?()
+      }
+      snapshotLoaded.fulfill()
+    }
+    let presenter = SettingsPresenterImpl(
+      rowFactory: SettingsRowFactoryImpl(),
+      appStateObserver: FreeAppStateObserver(),
+      notificationsHandler: FreeNotificationsHandler(),
+      authenticator: UnavailableBiometricsAuthenticator()
+    )
+    presenter.view = view
+    presenter.openSource = { openSourceRequested = true }
+    presenter.viewDidLoad()
+    await fulfillment(of: [snapshotLoaded], timeout: 2)
+    XCTAssertTrue(openSourceRequested)
+    XCTAssertEqual(AppConfiguration.sourceLinkURL?.absoluteString, "https://github.com/DimaMishchenko/Routine")
+  }
+
   func testUnavailableBiometricsDoesNotDisableExistingProtection() {
     let defaults = UserDefaults.standard
     let originalPreference = defaults.object(forKey: "use.faceid")

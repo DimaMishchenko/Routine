@@ -148,6 +148,7 @@
 "routineList.add" = "Adicionar rotina";
 "settings.section.authors" = "Criado por";
 "settings.section.authorsFooter" = "Apoie o Routine seguindo os autores, compartilhando o app ou escrevendo uma avaliação.";
+"settings.row.openSource" = "Código aberto";
 "settings.row.acknowledgements" = "Agradecimentos";
 "acknowledgements.title" = "Agradecimentos";
 "freeAnnouncement.title" = "Routine é grátis";

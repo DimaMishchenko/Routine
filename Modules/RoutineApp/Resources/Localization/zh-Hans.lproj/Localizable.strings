@@ -148,6 +148,7 @@
 "routineList.add" = "添加习惯";
 "settings.section.authors" = "开发者";
 "settings.section.authorsFooter" = "关注开发者、分享 App 或撰写评价，支持 Routine。";
+"settings.row.openSource" = "开源代码";
 "settings.row.acknowledgements" = "致谢";
 "acknowledgements.title" = "致谢";
 "freeAnnouncement.title" = "Routine 免费了";

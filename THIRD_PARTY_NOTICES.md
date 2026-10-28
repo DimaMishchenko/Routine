@@ -1,8 +1,10 @@
 # Third-party notices
 
-License texts from the exact dependency versions in `.package.resolved`. Preserve
-these notices when redistributing this software. Routine's MIT license does not
-replace dependency licenses.
+License texts from the eight runtime package versions in `.package.resolved`,
+plus the separately adapted Then helper and documentation in `With.swift`.
+Preserve these notices when redistributing this software. Routine's MIT license
+does not replace third-party licenses. The app bundles these acknowledgements in
+`Modules/RoutineApp/Resources/ThirdPartyAcknowledgements.txt`.
 
 ## DGCharts 5.1.0
 
@@ -369,6 +371,39 @@ MIT License
 Copyright (c) 2017 Jeremy Koch
 
 http://jerkoch.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Then — adapted helper and documentation
+
+The `with` helpers and documentation in
+`Modules/RoutineApp/Sources/Common/Helpers/With.swift` are adapted from
+[Then](https://github.com/devxoul/Then/blob/master/Sources/Then/Then.swift).
+Then is not an additional package dependency. Its
+[upstream MIT notice](https://github.com/devxoul/Then/blob/master/LICENSE)
+is retained below and in the bundled acknowledgements.
+
+```text
+The MIT License (MIT)
+
+Copyright (c) 2015 Suyeol Jeon (xoul.kr)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

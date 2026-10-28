@@ -222,6 +222,7 @@
 
 "settings.section.authorsFooter" = "Support Routine by following its authors, sharing the app, or writing a review.";
 
+"settings.row.openSource" = "Open source";
 "settings.row.acknowledgements" = "Acknowledgements";
 
 "acknowledgements.title" = "Acknowledgements";

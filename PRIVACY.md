@@ -25,9 +25,13 @@ before sending. Email, GitHub and App Store links open external services
 only when you choose them; their own privacy policies apply. Do not put private
 routine information into public GitHub issues.
 
-Deleting the app removes its local app container. CloudKit data and iCloud backups
-may remain under your Apple account; manage these through Apple's iCloud storage
-settings. Uninstalling does not promise deletion of cloud data or backups.
+Deleting Routine does not guarantee removal of every copy of your data. On
+iPhone and iPad, deleting the app normally removes its app-local data. On Mac,
+removing the app can leave local app-container and shared App Group data behind.
+CloudKit data and iCloud backups may also remain under your Apple account; manage
+these separately through Apple’s iCloud storage settings. Contact support if you
+need help identifying stored Routine data before removing it. See
+[Apple’s Mac uninstall guidance](https://support.apple.com/en-us/102610).
 
 For privacy questions contact dimasike.dev@gmail.com.
 

@@ -1,13 +1,21 @@
-Build routines at your own pace. Routine helps you track daily, weekly and monthly goals, record progress and see your history in a calendar and charts.
+Build habits at your own pace. Routine helps you track daily, weekly and monthly goals, record progress, and explore your history in a calendar and charts.
 
-All features are free:
-• Create unlimited routines and customize goals.
-• Schedule local reminders.
+Every feature is available for free:
+• Create unlimited routines with an emoji, description and a goal that fits your day.
+• Track progress and undo a completion when you need to.
+• Schedule optional local reminders.
+• Explore your routine history and progress insights.
 • Protect the app with Face ID, Touch ID or your device passcode.
-• Sync routines across your Apple devices with iCloud.
-• Use light or dark appearance on iPhone, iPad and Mac.
+• Sync across your Apple devices through your own iCloud account.
+• Use a native interface on iPhone, iPad and Mac, with light and dark appearance.
 
-No subscriptions, in-app purchases, app account or third-party analytics.
+No subscriptions, in-app purchases, separate Routine account or third-party analytics.
+
+Routine is open source under the MIT license. Explore the code on GitHub:
+https://github.com/DimaMishchenko/Routine
+
+Routine is in maintenance mode, with a focus on essential fixes and compatibility.
+
+Requires iOS/iPadOS 26 or macOS 26 or later. Supports English, Ukrainian, Simplified Chinese, Hindi, Spanish, French, Bengali, Brazilian Portuguese, Russian, Indonesian, German and Japanese.
 
 Support: dimasike.dev@gmail.com
-Privacy: https://github.com/DimaMishchenko/Routine/blob/main/PRIVACY.md

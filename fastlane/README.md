@@ -1,96 +1,54 @@
-fastlane documentation
-----
+# Release automation
 
-# Installation
+Local development needs neither Ruby nor an Apple account. For release automation,
+install the Gemfile dependencies with `bundle install`, use Tuist through mise,
+and install `xcbeautify`. Xcode must already be signed into an authorized Apple
+Developer account. The lanes use automatic signing; keep credentials in Xcode
+and Keychain. See [Security](../SECURITY.md).
 
-Make sure you have the latest version of the Xcode command line tools installed:
+## Select a candidate
 
-```sh
-xcode-select --install
-```
+Set `Modules/RoutineApp/app-version` before generating. Set `TUIST_BUILD_NUMBER`
+to an unused positive integer; Mac builds must also increase beyond earlier Mac
+uploads across marketing versions. Keep the same value for export and upload.
+The lanes do not modify either value.
 
-For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
+Outputs live under `.artifacts/releases/ENV/DESTINATION/VERSION-BUILD/`.
+Existing archives and export/upload directories are preserved; choose a new build
+number for a replacement candidate. A fork must supply its own provisioning,
+bundle IDs and CloudKit configuration; `DEVELOPMENT_TEAM` overrides the team.
 
-# Available Actions
+## Archive and export
 
-### upload_tf_routine_dev
-
-```sh
-[bundle exec] fastlane upload_tf_routine_dev
-```
-
-Upload RoutineApp Dev to Testflight
-
-
-
-Parameters
-
-- version (required) - build version
-
-### upload_tf_routine_prod
+After setting the candidate's version and build number:
 
 ```sh
-[bundle exec] fastlane upload_tf_routine_prod
+mise exec -- bundle exec fastlane ios export_app_store environment:prod destination:ios
+mise exec -- bundle exec fastlane ios export_app_store environment:prod destination:macos
 ```
 
-Upload RoutineApp Prod to Testflight
+These commands generate, archive and export without uploading. `macos` selects
+universal Mac Catalyst; `environment:dev` selects the separate Dev configuration.
+Review the signed app, production push/CloudKit entitlements, provisioning and Mac
+installer signature. Do not use a global `CODE_SIGN_IDENTITY` override: codeless
+SwiftPM resource bundles must be sealed by the enclosing app's signature.
 
-----
+## Upload a reviewed archive
 
-
-## iOS
-
-### ios upload_tf_routine
+Check Apple agreements and retain the same `TUIST_BUILD_NUMBER` before uploading:
 
 ```sh
-[bundle exec] fastlane ios upload_tf_routine
+mise exec -- bundle exec fastlane ios upload_testflight environment:prod destination:ios
+mise exec -- bundle exec fastlane ios upload_testflight environment:prod destination:macos
 ```
 
-Upload RoutineApp to Testflight
+Upload uses an existing archive and does not rebuild. An optional
+`archive_path:/absolute/path/to/Routine.xcarchive` selects another reviewed archive.
+The lane checks its bundle ID, team and platform, and rejects separately signed
+codeless Mac resource bundles.
 
-
-
-Parameters
-
-- version (required) - build version
-
-- bundle_id (required) - app bundle id
-
-- scheme (required) - app scheme
-
-- extensionIds (required) - app extension bundle ids
-
-- groups (optional) - tester groups to assign
-
-----
-
-
-## Mac
-
-### mac upload_tf_routine
-
-```sh
-[bundle exec] fastlane mac upload_tf_routine
-```
-
-Upload RoutineApp to Testflight
-
-
-
-Parameters
-
-- version (required) - build version
-
-- bundle_id (required) - app bundle id
-
-- scheme (required) - app scheme
-
-- groups (optional) - tester groups to assign
-
-----
-
-This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
-
-More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
-
-The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
+Upload transfers the candidate to App Store Connect. Confirm server processing,
+export compliance and TestFlight installation separately; transfer success does
+not prove installability. The lanes do not accept agreements, add testers, submit
+App Review, release the app or change Git refs. Account login or legal acceptance
+requires owner action. `skip_docs` preserves this manually maintained guide.

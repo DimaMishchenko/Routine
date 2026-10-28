@@ -16,6 +16,7 @@ protocol SettingsRowFactory {
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
   func authorRow(name: String, url: URL?, action: @escaping (URL) -> Void) -> Settings.Row
   func acknowledgementsRow(action: @escaping () -> Void) -> Settings.Row
+  func openSourceRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow() -> Settings.Row
 }
 
@@ -200,6 +201,20 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.acknowledgements,
           icon: RoutineAppAsset.Icon.terms.image,
+          accessory: .disclosure
+        )
+      ),
+      action: action
+    )
+  }
+
+  func openSourceRow(action: @escaping () -> Void) -> Settings.Row {
+    .init(
+      .value(
+        .init(
+          title: RoutineAppStrings.Localizable.Settings.Row.openSource,
+          value: .text(RoutineAppStrings.Localizable.Common.github),
+          icon: UIImage(systemName: "chevron.left.forwardslash.chevron.right"),
           accessory: .disclosure
         )
       ),
