@@ -12,6 +12,7 @@ final class TextViewCell: UICollectionViewCell, ModelConfigurable {
   
   // MARK: - ModelConfigurable
   func update(with model: TextViewCellVM) {
+    if textView.text != model.text { textView.text = model.text }
     textView.placeholder = model.placeholder
   }
 }

@@ -13,6 +13,7 @@ extension UITextView {
     }
     set {
       placeholderLabel.text = newValue
+      placeholderLabel.isHidden = !text.isEmpty
       placeholderLabel.sizeToFit()
     }
   }
