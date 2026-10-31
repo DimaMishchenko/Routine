@@ -27,7 +27,8 @@ SwiftUI supplies selected charts and controls.
 ## Navigation and launch presentation
 
 The application assembles one navigation stack for routines and Settings on every
-platform. The routines screen exposes Settings and Add as toolbar actions; screen
+platform. The routines screen exposes Settings in the toolbar and Add at the bottom
+center on iOS/iPadOS (in the toolbar on Mac Catalyst); screen
 assemblies connect feature outputs without a second tab or sidebar controller.
 
 `NavigationViewModelImpl` owns the onboarding/free-announcement sequence and its
