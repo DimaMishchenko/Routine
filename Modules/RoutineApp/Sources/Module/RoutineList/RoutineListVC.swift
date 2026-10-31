@@ -50,7 +50,6 @@ final class RoutineListVC: UIViewController {
     settingsButton.accessibilityIdentifier = "routineList.settings"
     navigationItem.leftBarButtonItem = settingsButton
 
-    let addButton: UIBarButtonItem
     #if targetEnvironment(macCatalyst)
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -65,19 +64,14 @@ final class RoutineListVC: UIViewController {
     button.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
     button.accessibilityIdentifier = "routineList.add"
     button.addTarget(self, action: #selector(addRoutine), for: .touchUpInside)
-    addButton = UIBarButtonItem(customView: button)
-    #else
-    addButton = UIBarButtonItem(
-      image: UIImage(systemName: "plus"),
-      style: .prominent,
-      target: self,
-      action: #selector(addRoutine)
-    )
-    #endif
+    let addButton = UIBarButtonItem(customView: button)
     addButton.tintColor = .systemBlue
     addButton.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
     addButton.accessibilityIdentifier = "routineList.add"
     navigationItem.rightBarButtonItem = addButton
+    #else
+    contentView.onAdd = { [weak self] in self?.addRoutine() }
+    #endif
 
     contentView.onEdit = { [weak self] in self?.presenter.editRoutine(at: $0, rowIndex: $1) }
     contentView.onDelete = { [weak self] in self?.presenter.deleteRoutine(at: $0, rowIndex: $1) }
