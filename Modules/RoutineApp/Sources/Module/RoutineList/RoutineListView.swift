@@ -7,6 +7,11 @@ final class RoutineListView: UIView {
   var onDelete: ((RoutineList.Section, Int) -> Void)?
   var onIncreaseProgress: ((RoutineList.Section, Int) -> Void)?
   var onDecreaseProgress: ((RoutineList.Section, Int) -> Void)?
+  #if !targetEnvironment(macCatalyst)
+  var onAdd: (() -> Void)?
+  private let addButtonSize: CGFloat = 56
+  private lazy var addButton = createAddButton()
+  #endif
   private lazy var collectionView = createCollectionView()
   private lazy var dataSource = createDataSource()
   override func layoutSubviews() {
@@ -66,8 +71,31 @@ extension RoutineListView {
   }
   
   private func updateLayout() {
+    #if targetEnvironment(macCatalyst)
     collectionView.pin.all()
+    #else
+    let bottomSpacing = safeAreaInsets.bottom + Inset.Padding.default
+    collectionView.pin.top().horizontally().bottom(bottomSpacing + addButtonSize + Inset.Padding.default)
+    addButton.pin.size(addButtonSize).hCenter().bottom(bottomSpacing)
+    #endif
   }
+
+  #if !targetEnvironment(macCatalyst)
+  private func createAddButton() -> UIButton {
+    var configuration = UIButton.Configuration.prominentGlass()
+    configuration.image = UIImage(systemName: "plus")
+    configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+    configuration.baseBackgroundColor = .systemBlue
+    configuration.baseForegroundColor = .white
+    configuration.cornerStyle = .capsule
+    configuration.contentInsets = .zero
+    let button = UIButton(configuration: configuration, primaryAction: UIAction { [weak self] _ in self?.onAdd?() })
+    button.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
+    button.accessibilityIdentifier = "routineList.add"
+    addSubview(button)
+    return button
+  }
+  #endif
   
   private func position(for cell: UICollectionViewCell?) -> (section: RoutineList.Section, row: Int)? {
     guard
