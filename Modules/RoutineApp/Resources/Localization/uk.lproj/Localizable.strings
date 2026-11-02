@@ -1,31 +1,25 @@
-// MARK: - Common
 "routine" = "Рутини";
 "common.email" = "Електронна пошта";
 "common.github" = "GitHub";
 "common.times" = "рази";
 
-// MARK: - Navigation Bar
 "navBar.save" = "Зберегти";
 "navBar.cancel" = "Скасувати";
 "navBar.close" = "Закрити";
 "navBar.edit" = "Редагувати";
 
-// MARK: - Alert
 "alert.ok" = "Oк";
 "alert.yes" = "Так";
 "alert.cancel" = "Скасувати";
 "alert.remove" = "Видалити";
 
-// MARK: - Frequency
 "frequency.daily" = "Щоденно";
 "frequency.weekly" = "Щотижня";
 "frequency.monthly" = "Щомісячно";
 
-// MARK: - TabBar
 "tabbar.tab.routines" = "Мої рутини";
 "tabbar.tab.settings" = "Налаштування";
 
-// MARK: - RoutineList
 "routineList.title" = "Мої рутини";
 
 "routineList.row.empty.text" = "Звичок поки немає. Натисніть + на панелі інструментів, щоб додати першу.";
@@ -34,7 +28,6 @@
 "routineList.row.routine.goal.weekly" = "ЦЬОГО ТИЖНЯ";
 "routineList.row.routine.goal.monthly" = "ЦЬОГО МІСЯЦЯ";
 
-// MARK: - RoutineEdit
 "routineEdit.title.create" = "Додати рутину";
 "routineEdit.title.edit" = "Редагувати рутину";
 
@@ -57,7 +50,6 @@
 "routineEdit.alert.notificationsDiabled.title" = "Сповіщення вимкнено";
 "routineEdit.alert.notificationsDiabled.message" = "Додаток не може надсилати сповіщення, оскільки вони вимкнені. Спочатку увімкніть їх на сторінці налаштувань.";
 
-// MARK: - RoutineDetails
 "routineDetails.title" = "Деталі рутини";
 "routineDetails.section.overview" = "Огляд";
 "routineDetails.section.calendar" = "Календар";
@@ -81,7 +73,6 @@
 "routineDetails.alert.adjustError.title" = "Не вдалося змінити прогрес";
 "routineDetails.alert.adjustError.description" = "На жаль, ми не змогли оновити ваш прогрес наразі. Будь ласка, спробуйте ще раз пізніше.";
 
-// MARK: - Settings
 "settings.title" = "Налаштування";
 
 "settings.section.app" = "Додаток";
@@ -124,7 +115,6 @@
 "settings.mail.reportBug.subject" = "Звіт про помилку в Routine";
 "settings.mail.reportBug.message" = "Будь ласка, опишіть помилку.";
 
-// MARK: - Tutorial
 "tutorial.welcome.titlePrefix" = "Ласкаво просимо в";
 "tutorial.welcome.message" = "Routine - це простий і повністю нативний додаток для відстеження ваших звичок в одному місці.";
 "tutorial.welcome.action" = "Продовжити";
@@ -139,15 +129,14 @@
 "tutorial.features.overview.message" = "Чітко бачте, як ваші рутини поліпшуються з часом за допомогою детальних діаграм";
 "tutorial.features.action" = "Почати";
 
-// MARK: - Appearance
 "appearance.title" = "Зовнішній вигляд";
+"appearance.text.confettiAnimation" = "Анімація конфеті";
 
 "appearance.text.light" = "Світлий";
 "appearance.text.dark" = "Темний";
 "appearance.text.useDeviceSettings" = "Використовувати налаштування пристрою";
 "appearance.text.hint" = "Ми будемо використовувати світлий або темний вигляд на основі налаштувань системи вашого пристрою";
 
-// MARK: - CloudInfo
 "cloudInfo.title" = "iCloud";
 
 "cloudInfo.row.iCloudStatus" = "Стан підключення iCloud";
@@ -166,7 +155,6 @@
 
 
 
-// MARK: - Reminders
 "reminder.body.0" = "Залишайтесь в тонусі сьогодні";
 "reminder.body.1" = "Ви здатні на це";
 "reminder.body.2" = "Так тримати";
@@ -178,34 +166,28 @@
 "reminder.body.8" = "Не дозволяйте сьогодні стати днем, коли ви порушите свою серію, продовжуйте у тому ж дусі";
 "reminder.body.9" = "Ви зможете це зробити! Зосередьтеся на своїх рутинах сьогодні";
 
-// MARK: - Shortcuts
 "${applicationName} shortcut.IRP.title" = "${applicationName} тест";
 
-// MARK: - Intents
 "intent.routine.type" = "Рутина";
 "intent.category.tracking" = "Відстеження рутин";
 
 "intent.parameter.routines.title" = "Рутини";
 "intent.parameter.routines.description" = "Список рутин";
 
-// MARK: - IncreaseRoutineProgressIntent
 "intent.IRP.title" = "Збільшити прогрес рутин";
 "intent.IRP.description" = "Збільшує прогрес рутини на 1. Ви можете використовувати цю дію, щоб швидко оновити свій прогрес і залишатися на шляху до досягнення цілей.";
 "intent.IRP.summaryPrefix ${routines}" = "Збільшити прогрес для ${routines}";
 "intent.IRP.result.noItems" = "Немає чого оновлювати";
 "intent.IRP.result.success" = "Прогрес успішно збільшено";
 
-// MARK: - CompleteRoutineIntent
 "intent.CR.title" = "Завершити рутини";
 "intent.CR.description" = "Завершити рутини, якщо вони ще не були завершені. Ви можете використовувати цю дію, щоб швидко оновити свій прогрес і залишатися на шляху до досягнення цілей.";
 "intent.CR.summaryPrefix ${routines}" = "Завершити наступні ${routines}";
 "intent.CR.result.noItems" = "Немає чого завершувати";
 "intent.CR.result.success" = "Успішно завершено";
 
-// MARK: - FaceID
 "faceID.requestReason" = "Будь ласка, увійдіть, щоб використовувати додаток";
 
-// MARK: - Common
 "common.alert.deleteRoutine.title" = "Ви впевнені, що хочете видалити рутину?";
 "common.alert.deleteRoutine.message" = "Цю дію не можна відмінити";
 
@@ -227,13 +209,26 @@
 
 "acknowledgements.title" = "Подяки";
 
+"support.title" = "Підтримати Routine";
+"support.review" = "Відгук";
+"support.story.title" = "Привіт!";
+"support.story.beginning" = "Ми почали створювати Routine у червні 2021 року, щоб формувати звички було простіше.";
+"support.story.pause" = "Ми опублікували його в App Store, але щоденних справ побільшало, і ми не змогли приділяти йому стільки часу, скільки він заслуговував.";
+"support.story.return" = "Тепер ми повертаємо Routine — цілком безкоштовно. Усі функції доступні без підписок і покупок.";
+"settings.section.support" = "Підтримка";
+"tutorial.features.unlimited.title" = "Необмежені рутини";
+"tutorial.features.unlimited.message" = "Додавайте стільки рутин, скільки потрібно, та переглядайте їх в одному зручному місці.";
+"tutorial.features.security.title" = "Підвищена безпека";
+"tutorial.features.security.message" = "Використовуйте біометричну автентифікацію для захисту всіх ваших даних.";
+"tutorial.features.reminders.title" = "Нагадування";
+"tutorial.features.reminders.message" = "Увімкніть нагадування, щоб впевнитися, що ніколи не пропустите сповіщення про ваші рутини.";
 "freeAnnouncement.title" = "Routine тепер безкоштовний";
 
 "freeAnnouncement.message" = "Усі інструменти для формування звичок — тепер без підписок і покупок.";
 
 "freeAnnouncement.features" = "Необмежена кількість звичок, нагадування, статистика прогресу, синхронізація iCloud і захист застосунку.";
 
-"freeAnnouncement.support" = "Подобається Routine? Підтримайте нас: стежте за нашою роботою, поділіться застосунком або залиште відгук.";
+"freeAnnouncement.support" = "Щоб підтримати нас, підпишіться на нас в X і перегляньте інші наші проєкти. Також будемо вдячні, якщо поділитеся Routine або залишите відгук.";
 
 "freeAnnouncement.continue" = "Створімо звичку";
 

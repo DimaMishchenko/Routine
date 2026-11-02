@@ -2,7 +2,6 @@ import UIKit
 
 enum Size {}
 
-// MARK: - CornerRadius
 extension Size {
   enum CornerRadius {}
 }
@@ -15,16 +14,23 @@ extension Size.CornerRadius {
   static let barsInChart: CGFloat = 12
 }
 
-// MARK: - View
 extension Size {
   enum View {}
 }
 
 extension Size.View {
   static let cellDefault: CGFloat = 44
+  static let contentMaxWidth: CGFloat = 760
+
+  static func contentWidth(for availableWidth: CGFloat) -> CGFloat {
+    #if targetEnvironment(macCatalyst)
+    min(availableWidth, contentMaxWidth)
+    #else
+    availableWidth > 1100 ? contentMaxWidth : availableWidth
+    #endif
+  }
 }
 
-// MARK: - Button
 extension Size {
   enum Button {}
 }
@@ -36,7 +42,6 @@ extension Size.Button {
   static let small: CGFloat = 24
 }
 
-// MARK: - Icon
 extension Size {
   enum Icon {}
 }

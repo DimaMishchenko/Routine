@@ -93,7 +93,15 @@ extension SettingsView {
       $0.separatorConfiguration.bottomSeparatorInsets = .init(top: .zero, leading: 62, bottom: .zero, trailing: .zero)
     }
     
-    return with(UICollectionView(layout: .list(using: configuration))) {
+    let layout = UICollectionViewCompositionalLayout { _, environment in
+      let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: environment)
+      let width = environment.container.effectiveContentSize.width
+      let inset = (width - Size.View.contentWidth(for: width)) / 2
+      section.contentInsets.leading += inset
+      section.contentInsets.trailing += inset
+      return section
+    }
+    return with(UICollectionView(layout: layout)) {
       $0.delegate = self
       $0.register(GroupSupplementary.self, kind: UICollectionView.elementKindSectionHeader)
       $0.register(UICollectionViewListCell.self, kind: UICollectionView.elementKindSectionHeader)

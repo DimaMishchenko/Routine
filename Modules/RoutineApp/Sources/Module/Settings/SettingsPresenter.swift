@@ -24,7 +24,7 @@ final class SettingsPresenterImpl: SettingsPresenter {
   var openMacApp: (() -> Void)?
   var privacyPolicy: (() -> Void)?
   var termsOfUse: (() -> Void)?
-  var openAuthor: ((URL) -> Void)?
+  var openSupport: (() -> Void)?
   var openSource: (() -> Void)?
   var openAcknowledgements: (() -> Void)?
   @Defaults(key: .useFaceID, initial: false) private var useFaceID: Bool
@@ -131,6 +131,13 @@ final class SettingsPresenterImpl: SettingsPresenter {
         #endif
         
         Item(
+          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.security)),
+          rows: [
+            rowFactory.faceID(biometryType: authenticator.biometryType, isEnabled: useFaceID)
+          ]
+        )
+
+        Item(
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.feedback)),
           rows: [
             rowFactory.reportBugRow { [weak self] in
@@ -154,35 +161,18 @@ final class SettingsPresenterImpl: SettingsPresenter {
         )
         
         Item(
-          section: .init(
-            model: .init(title: RoutineAppStrings.Localizable.Settings.Section.authors),
-            footer: RoutineAppStrings.Localizable.Settings.Section.authorsFooter
-          ),
-          rows: [
-            rowFactory.authorRow(name: "Dima Mishchenko", url: AppConfiguration.dimaAuthorLink) { [weak self] url in
-              self?.openAuthor?(url)
-            },
-            rowFactory.authorRow(name: "Misha", url: AppConfiguration.mishaAuthorLink) { [weak self] url in
-              self?.openAuthor?(url)
-            }
-          ]
-        )
-
-        Item(
-          section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.security)),
-          rows: [
-            rowFactory.faceID(biometryType: authenticator.biometryType, isEnabled: useFaceID)
-          ]
+          section: .init(model: .init(title: String(localized: "settings.section.support"))),
+          rows: [rowFactory.supportRow { [weak self] in self?.openSupport?() }]
         )
 
         Item(
           section: .init(model: .init(title: RoutineAppStrings.Localizable.Settings.Section.more)),
           rows: [
-            rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
-            rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
+            rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
             rowFactory.openSourceRow { [weak self] in self?.openSource?() },
             rowFactory.acknowledgementsRow { [weak self] in self?.openAcknowledgements?() },
-            rowFactory.onboardingRow { [weak self] in self?.openTutorial?() },
+            rowFactory.privacyPolicy { [weak self] in self?.privacyPolicy?() },
+            rowFactory.termsOfUse { [weak self] in self?.termsOfUse?() },
             rowFactory.appVersionRow()
           ]
         )

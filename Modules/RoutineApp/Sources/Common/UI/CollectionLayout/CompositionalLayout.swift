@@ -1,13 +1,12 @@
 import UIKit
 
 final class CompositionalLayout: UICollectionViewCompositionalLayout {
-  // MARK: - Constants
   private enum Constants {
     static let backgroundKind = "groupLayoutSectionBackground"
   }
   
-  // MARK: - Init
   init(
+    centersContent: Bool = false,
     itemContentInset: NSDirectionalEdgeInsets = .zero,
     itemEdgeSpacing: NSCollectionLayoutEdgeSpacing? = nil,
     interSectionSpacing: CGFloat = Inset.Padding.default,
@@ -25,20 +24,23 @@ final class CompositionalLayout: UICollectionViewCompositionalLayout {
       subitems: [item]
     )
     
-    let backgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: Constants.backgroundKind)
-    backgroundDecoration.contentInsets = NSDirectionalEdgeInsets(
-      top: .zero,
-      leading: Inset.Padding.default,
-      bottom: .zero,
-      trailing: Inset.Padding.default
-    )
-    
     let configuration = UICollectionViewCompositionalLayoutConfiguration()
     configuration.interSectionSpacing = interSectionSpacing
     
     super.init(
-      sectionProvider: { index, _ in
+      sectionProvider: { index, environment in
+        let width = environment.container.effectiveContentSize.width
+        let inset = centersContent ? (width - Size.View.contentWidth(for: width)) / 2 : 0
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets.leading = inset
+        section.contentInsets.trailing = inset
+        let backgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: Constants.backgroundKind)
+        backgroundDecoration.contentInsets = NSDirectionalEdgeInsets(
+          top: .zero,
+          leading: inset + Inset.Padding.default,
+          bottom: .zero,
+          trailing: inset + Inset.Padding.default
+        )
         section.decorationItems = applyGroupBackground(index) ? [backgroundDecoration] : []
         section.boundarySupplementaryItems = supplementaryItems(index)
         return section

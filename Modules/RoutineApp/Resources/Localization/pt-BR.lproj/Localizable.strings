@@ -1,4 +1,3 @@
-// Routine localization: pt-BR
 "routine" = "Routine";
 "common.email" = "E-mail";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "Veja a evolução das suas rotinas ao longo do tempo com gráficos detalhados";
 "tutorial.features.action" = "Começar";
 "appearance.title" = "Aparência";
+"appearance.text.confettiAnimation" = "Animação de confete";
 "appearance.text.light" = "Clara";
 "appearance.text.dark" = "Escura";
 "appearance.text.useDeviceSettings" = "Usar ajustes do dispositivo";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "Código aberto";
 "settings.row.acknowledgements" = "Agradecimentos";
 "acknowledgements.title" = "Agradecimentos";
+"support.title" = "Apoie o Routine";
+"support.review" = "Avaliar";
+"support.story.title" = "Olá!";
+"support.story.beginning" = "Começamos a criar o Routine em junho de 2021 para tornar a criação de hábitos mais simples.";
+"support.story.pause" = "Publicamos o app na App Store, mas a vida ficou corrida e não conseguimos dedicar a ele o tempo que merecia.";
+"support.story.return" = "Agora estamos trazendo o Routine de volta, totalmente grátis. Todos os recursos estão incluídos, sem assinaturas nem compras.";
+"settings.section.support" = "Apoio";
+"tutorial.features.unlimited.title" = "Rotinas ilimitadas";
+"tutorial.features.unlimited.message" = "Adicione quantas rotinas quiser e veja todas em um só lugar.";
+"tutorial.features.reminders.title" = "Lembretes";
+"tutorial.features.reminders.message" = "Ative os lembretes para não perder nenhuma notificação das suas rotinas.";
+"tutorial.features.security.title" = "Mais segurança";
+"tutorial.features.security.message" = "Ative a autenticação biométrica para proteger todas as suas informações.";
 "freeAnnouncement.title" = "Routine é grátis";
 "freeAnnouncement.message" = "Todas as ferramentas para criar hábitos, agora sem assinaturas ou compras.";
 "freeAnnouncement.features" = "Rotinas ilimitadas, lembretes, análises de progresso, sincronização com iCloud e proteção do app.";
-"freeAnnouncement.support" = "Gostando do Routine? Apoie nosso trabalho: siga os autores, compartilhe o app ou deixe uma avaliação.";
+"freeAnnouncement.support" = "Para nos apoiar, siga a gente no X e conheça nossos outros projetos. Compartilhar o Routine ou deixar uma avaliação também significa muito para nós.";
 "freeAnnouncement.continue" = "Vamos criar um hábito";
 "freeAnnouncement.dima" = "Dima no X";
 "freeAnnouncement.misha" = "Misha no X";

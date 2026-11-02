@@ -7,9 +7,16 @@ import Foundation
 }
 
 final class TutorialViewModelImpl: TutorialViewModel {
+  private let environment: Environment
+
   var onClose: (() -> Void)?
   lazy var welcomeVM = createWelcomVM()
   lazy var featuresVM = createFeaturesVM()
+
+  init(environment: Environment = .current) {
+    self.environment = environment
+  }
+
   func close() { onClose?() }
   private func createWelcomVM() -> Tutorial.WelcomeVM {
     let title = RoutineAppStrings.Localizable.Tutorial.Welcome.titlePrefix + " " + RoutineAppStrings.Localizable.routine
@@ -38,16 +45,31 @@ final class TutorialViewModelImpl: TutorialViewModel {
           description: RoutineAppStrings.Localizable.Tutorial.Features.Maintain.message
         ),
         .init(
+          icon: RoutineAppAsset.Icon.add.image,
+          title: RoutineAppStrings.Localizable.Tutorial.Features.Unlimited.title,
+          description: RoutineAppStrings.Localizable.Tutorial.Features.Unlimited.message
+        ),
+        .init(
+          icon: RoutineAppAsset.Icon.notification.image,
+          title: RoutineAppStrings.Localizable.Tutorial.Features.Reminders.title,
+          description: RoutineAppStrings.Localizable.Tutorial.Features.Reminders.message
+        ),
+        .init(
           icon: RoutineAppAsset.Icon.tutorialChart.image,
           title: RoutineAppStrings.Localizable.Tutorial.Features.Overview.title,
           description: RoutineAppStrings.Localizable.Tutorial.Features.Overview.message
+        ),
+        .init(
+          icon: RoutineAppAsset.Icon.faceID.image,
+          title: RoutineAppStrings.Localizable.Tutorial.Features.Security.title,
+          description: RoutineAppStrings.Localizable.Tutorial.Features.Security.message
         )
       ] + cloudFeatures()
     )
   }
 
   private func cloudFeatures() -> [Tutorial.FeatureVM] {
-    guard Environment.current != .local else { return [] }
+    guard environment != .local else { return [] }
     return [
       .init(
         icon: RoutineAppAsset.Icon.tutorialCloud.image,

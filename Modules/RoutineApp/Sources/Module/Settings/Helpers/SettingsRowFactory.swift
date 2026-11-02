@@ -1,5 +1,5 @@
 import Foundation
-import UIKit.UIImage
+import UIKit
 
 protocol SettingsRowFactory {
   func languageRow(action: @escaping () -> Void) -> Settings.Row
@@ -14,7 +14,7 @@ protocol SettingsRowFactory {
   func privacyPolicy(action: @escaping () -> Void) -> Settings.Row
   func termsOfUse(action: @escaping () -> Void) -> Settings.Row
   func onboardingRow(action: @escaping () -> Void) -> Settings.Row
-  func authorRow(name: String, url: URL?, action: @escaping (URL) -> Void) -> Settings.Row
+  func supportRow(action: @escaping () -> Void) -> Settings.Row
   func acknowledgementsRow(action: @escaping () -> Void) -> Settings.Row
   func openSourceRow(action: @escaping () -> Void) -> Settings.Row
   func appVersionRow() -> Settings.Row
@@ -29,7 +29,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.language,
           value: .text(Locale.current.localizedString(forLanguageCode: code)?.capitalized),
-          icon: RoutineAppAsset.Icon.language.image,
+          icon: icon("globe", color: .systemBlue),
           accessory: .disclosure
         )
       ),
@@ -43,7 +43,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.notifications,
           state: isAuthorized,
-          icon: RoutineAppAsset.Icon.notification.image
+          icon: icon("bell.badge", color: .systemRed)
         ),
         .notifications
       )
@@ -55,7 +55,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.iCloudSync,
-          icon: RoutineAppAsset.Icon.iCloud.image,
+          icon: icon("icloud", color: .systemBlue),
           accessory: .disclosure
         )
       ),
@@ -68,7 +68,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.appearance,
-          icon: RoutineAppAsset.Icon.appearance.image,
+          icon: icon("circle.lefthalf.filled", color: .systemIndigo),
           accessory: .disclosure
         )
       ),
@@ -81,7 +81,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.macOS,
-          icon: RoutineAppAsset.Icon.macApp.image,
+          icon: icon("desktopcomputer", color: .systemCyan),
           accessory: .disclosure
         )
       ),
@@ -94,7 +94,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.reportBug,
-          icon: RoutineAppAsset.Icon.report.image,
+          icon: icon("ladybug", color: .systemOrange),
           accessory: .disclosure
         )
       ),
@@ -107,7 +107,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.writeReview,
-          icon: RoutineAppAsset.Icon.review.image,
+          icon: icon("star", color: .systemYellow),
           accessory: .disclosure
         )
       ),
@@ -120,7 +120,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.shareApp,
-          icon: RoutineAppAsset.Icon.share.image,
+          icon: icon("square.and.arrow.up", color: .systemBlue),
           accessory: .disclosure
         )
       ),
@@ -136,7 +136,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
             RoutineAppStrings.Localizable.Settings.Row.faceID :
             RoutineAppStrings.Localizable.Settings.Row.touchID,
           state: isEnabled,
-          icon: RoutineAppAsset.Icon.faceID.image
+          icon: icon(biometryType == .faceID ? "faceid" : "touchid", color: .systemGreen)
         ),
         .faceID
       )
@@ -148,7 +148,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.privacyPolicy,
-          icon: RoutineAppAsset.Icon.terms.image,
+          icon: icon("hand.raised", color: .systemIndigo),
           accessory: .disclosure
         )
       ),
@@ -161,7 +161,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.termsOfUse,
-          icon: RoutineAppAsset.Icon.terms.image,
+          icon: icon("doc.text", color: .systemBrown),
           accessory: .disclosure
         )
       ),
@@ -174,24 +174,24 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.onboarding,
-          icon: RoutineAppAsset.Icon.onboarding.image
+          icon: icon("sparkles", color: .systemPurple),
+          accessory: .disclosure
         )
       ),
       action: action
     )
   }
   
-  func authorRow(name: String, url: URL?, action: @escaping (URL) -> Void) -> Settings.Row {
+  func supportRow(action: @escaping () -> Void) -> Settings.Row {
     .init(
       .value(
         .init(
-          title: name,
-          value: .text(url?.lastPathComponent),
-          icon: UIImage(systemName: "person.crop.circle"),
-          accessory: url == nil ? .none : .disclosure
+          title: String(localized: "support.title"),
+          icon: icon("heart", color: .systemPink),
+          accessory: .disclosure
         )
       ),
-      action: url.map { url in { action(url) } }
+      action: action
     )
   }
 
@@ -200,7 +200,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.acknowledgements,
-          icon: RoutineAppAsset.Icon.terms.image,
+          icon: icon("text.book.closed", color: .systemOrange),
           accessory: .disclosure
         )
       ),
@@ -214,7 +214,7 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.openSource,
           value: .text(RoutineAppStrings.Localizable.Common.github),
-          icon: UIImage(systemName: "chevron.left.forwardslash.chevron.right"),
+          icon: icon("chevron.left.forwardslash.chevron.right", color: .systemTeal),
           accessory: .disclosure
         )
       ),
@@ -228,9 +228,16 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.appVersion,
           value: .text(AppInfo.appVersion, style: .bold),
-          icon: RoutineAppAsset.Icon.appversion.image
+          icon: icon("info.circle", color: .systemGray)
         )
       )
     )
+  }
+
+  private func icon(_ name: String, color: UIColor) -> UIImage? {
+    let configuration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+      .applying(UIImage.SymbolConfiguration.preferringMonochrome())
+    return UIImage(systemName: name, withConfiguration: configuration)?
+      .withTintColor(color, renderingMode: .alwaysOriginal)
   }
 }

@@ -1,31 +1,25 @@
-// MARK: - Common
 "routine" = "Routine";
 "common.email" = "Email";
 "common.github" = "GitHub";
 "common.times" = "times";
 
-// MARK: - Navigation Bar
 "navBar.save" = "Save";
 "navBar.cancel" = "Cancel";
 "navBar.close" = "Close";
 "navBar.edit" = "Edit";
 
-// MARK: - Alert
 "alert.ok" = "Ok";
 "alert.yes" = "Yes";
 "alert.cancel" = "Cancel";
 "alert.remove" = "Remove";
 
-// MARK: - Frequency
 "frequency.daily" = "Daily";
 "frequency.weekly" = "Weekly";
 "frequency.monthly" = "Monthly";
 
-// MARK: - TabBar
 "tabbar.tab.routines" = "My Routines";
 "tabbar.tab.settings" = "Settings";
 
-// MARK: - RoutineList
 "routineList.title" = "My routines";
 
 "routineList.row.empty.text" = "No routines yet. Tap + in the toolbar to add your first.";
@@ -34,7 +28,6 @@
 "routineList.row.routine.goal.weekly" = "THIS WEEK";
 "routineList.row.routine.goal.monthly" = "THIS MONTH";
 
-// MARK: - RoutineEdit
 "routineEdit.title.create" = "Add a routine";
 "routineEdit.title.edit" = "Edit routine";
 
@@ -57,7 +50,6 @@
 "routineEdit.alert.notificationsDiabled.title" = "Notifications disabled";
 "routineEdit.alert.notificationsDiabled.message" = "Application can't send notifications because they are disabled. Please first enable them on the settings page.";
 
-// MARK: - RoutineDetails
 "routineDetails.title" = "Routine details";
 "routineDetails.section.overview" = "Overview";
 "routineDetails.section.calendar" = "Calendar";
@@ -81,7 +73,6 @@
 "routineDetails.alert.adjustError.title" = "Progress adjust failed";
 "routineDetails.alert.adjustError.description" = "Sorry, we couldn't update your progress at this time. Please try again later.";
 
-// MARK: - Settings
 "settings.title" = "Settings";
 
 "settings.section.app" = "App";
@@ -124,7 +115,6 @@
 "settings.mail.reportBug.subject" = "Routine bug report";
 "settings.mail.reportBug.message" = "Please describe a bug.";
 
-// MARK: - Tutorial
 "tutorial.welcome.titlePrefix" = "Welcome to";
 "tutorial.welcome.message" = "Routine is a simple and fully native app for tracking your habits in one place.";
 "tutorial.welcome.action" = "Continue";
@@ -139,15 +129,14 @@
 "tutorial.features.overview.message" = "Clearly see how your routines improved over time with detailed charts";
 "tutorial.features.action" = "Get started";
 
-// MARK: - Appearance
 "appearance.title" = "Appearance";
+"appearance.text.confettiAnimation" = "Confetti animation";
 
 "appearance.text.light" = "Light";
 "appearance.text.dark" = "Dark";
 "appearance.text.useDeviceSettings" = "Use device settings";
 "appearance.text.hint" = "We'll use Light or Dark appearance based on your device's system settings";
 
-// MARK: - CloudInfo
 "cloudInfo.title" = "iCloud";
 
 "cloudInfo.row.iCloudStatus" = "iCloud connection status";
@@ -166,7 +155,6 @@
 
 
 
-// MARK: - Reminders
 "reminder.body.0" = "Stay on track today";
 "reminder.body.1" = "You can do it";
 "reminder.body.2" = "Keep it up";
@@ -178,34 +166,28 @@
 "reminder.body.8" = "Don't let today be the day you break your streak, keep it up";
 "reminder.body.9" = "You've got this! Stay focused on your routine today";
 
-// MARK: - Shortcuts
 "${applicationName} shortcut.IRP.title" = "${applicationName} test";
 
-// MARK: - Intents
 "intent.routine.type" = "Routine";
 "intent.category.tracking" = "Routine Tracking";
 
 "intent.parameter.routines.title" = "Routines";
 "intent.parameter.routines.description" = "List of Routines";
 
-// MARK: - IncreaseRoutineProgressIntent
 "intent.IRP.title" = "Increase Routines progress";
 "intent.IRP.description" = "Increases the progress of Routines by 1. You can use this action to quickly update your progress and stay on track with your Routines.";
 "intent.IRP.summaryPrefix ${routines}" = "Increase progress for ${routines}";
 "intent.IRP.result.noItems" = "Nothing to update";
 "intent.IRP.result.success" = "Progress increased successfully";
 
-// MARK: - CompleteRoutineIntent
 "intent.CR.title" = "Complete Routines";
 "intent.CR.description" = "Complete Routines if still needs to be finished. You can use this action to quickly update your progress and stay on track with your Routines.";
 "intent.CR.summaryPrefix ${routines}" = "Complete following ${routines}";
 "intent.CR.result.noItems" = "Nothing to complete";
 "intent.CR.result.success" = "Completed successfully";
 
-// MARK: - FaceID
 "faceID.requestReason" = "Please log in to use an app";
 
-// MARK: - Common
 "common.alert.deleteRoutine.title" = "Are you sure you want to remove the routine?";
 "common.alert.deleteRoutine.message" = "It can not be restored";
 
@@ -227,13 +209,26 @@
 
 "acknowledgements.title" = "Acknowledgements";
 
+"support.title" = "Support Routine";
+"support.review" = "Review";
+"support.story.title" = "Hello!";
+"support.story.beginning" = "We started building Routine in June 2021 to make building habits feel simple.";
+"support.story.pause" = "We published it on the App Store, but life got busy and we couldn’t give it the time it deserved.";
+"support.story.return" = "Now we’re bringing Routine back, completely free. Every feature is included, with no subscriptions or purchases.";
+"settings.section.support" = "Support";
+"tutorial.features.unlimited.title" = "Unlimited routines";
+"tutorial.features.unlimited.message" = "Add as many routines as you wish and view them in one convenient place.";
+"tutorial.features.security.title" = "Enhanced security";
+"tutorial.features.security.message" = "Enable biometric authentication to secure all of your information.";
+"tutorial.features.reminders.title" = "Reminders";
+"tutorial.features.reminders.message" = "Enable reminders to ensure you never miss a notification of your routine.";
 "freeAnnouncement.title" = "Routine is free";
 
 "freeAnnouncement.message" = "All the tools for building your habits, now without subscriptions or purchases.";
 
 "freeAnnouncement.features" = "Unlimited routines, reminders, progress insights, iCloud sync and app protection.";
 
-"freeAnnouncement.support" = "Enjoying Routine? Support us by following our work, sharing the app or leaving a review.";
+"freeAnnouncement.support" = "To support us, follow us on X and check out our other projects. Sharing Routine or leaving a review also means a lot.";
 
 "freeAnnouncement.continue" = "Let’s build a habit";
 

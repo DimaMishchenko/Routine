@@ -59,11 +59,13 @@ extension RoutineEditView {
   
   private func updateLayout() {
     let bottomOffset: CGFloat = pin.safeArea.bottom == .zero ? Inset.Padding.default : pin.safeArea.bottom
+    let contentWidth = Size.View.contentWidth(for: bounds.width)
+    collectionView.contentInset = collectionContentInset()
     
     deleteButton.pin
       .bottom(bottomOffset)
-      .left(Inset.Padding.default)
-      .right(Inset.Padding.default)
+      .width(contentWidth - 2 * Inset.Padding.default)
+      .hCenter()
       .height(Size.Button.big)
   }
   
@@ -173,6 +175,7 @@ extension RoutineEditView {
   
   private func createLayout() -> CompositionalLayout {
     CompositionalLayout(
+      centersContent: true,
       itemContentInset: NSDirectionalEdgeInsets(
         top: .zero,
         leading: Inset.Padding.default,

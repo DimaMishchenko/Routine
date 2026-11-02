@@ -1,4 +1,3 @@
-// Routine localization: ja
 "routine" = "Routine";
 "common.email" = "メール";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "詳しいグラフで、習慣の変化や成長を確認できます";
 "tutorial.features.action" = "はじめる";
 "appearance.title" = "外観";
+"appearance.text.confettiAnimation" = "紙吹雪のアニメーション";
 "appearance.text.light" = "ライト";
 "appearance.text.dark" = "ダーク";
 "appearance.text.useDeviceSettings" = "デバイスの設定を使用";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "オープンソース";
 "settings.row.acknowledgements" = "謝辞";
 "acknowledgements.title" = "謝辞";
+"support.title" = "Routineを応援";
+"support.review" = "レビュー";
+"support.story.title" = "こんにちは！";
+"support.story.beginning" = "習慣づくりをシンプルにするため、2021年6月にRoutineの開発を始めました。";
+"support.story.pause" = "App Storeで公開しましたが、日々の生活が忙しくなり、アプリに十分な時間をかけられなくなりました。";
+"support.story.return" = "今、Routineが完全無料で帰ってきます。すべての機能を利用でき、サブスクリプションも購入もありません。";
+"settings.section.support" = "サポート";
+"tutorial.features.unlimited.title" = "無制限のルーティン";
+"tutorial.features.unlimited.message" = "好きなだけルーティンを追加して、ひとつの場所でまとめて確認できます。";
+"tutorial.features.reminders.title" = "リマインダー";
+"tutorial.features.reminders.message" = "リマインダーを有効にして、ルーティンの通知を見逃さないようにしましょう。";
+"tutorial.features.security.title" = "セキュリティの強化";
+"tutorial.features.security.message" = "生体認証を有効にして、すべての情報を保護しましょう。";
 "freeAnnouncement.title" = "Routineが無料になりました";
 "freeAnnouncement.message" = "習慣づくりに必要なすべてのツールを、サブスクリプションや購入なしで。";
 "freeAnnouncement.features" = "習慣の登録数は無制限。リマインダー、進捗分析、iCloud同期、アプリの保護も利用できます。";
-"freeAnnouncement.support" = "Routineを気に入っていただけましたか？活動のフォロー、アプリの共有、レビューの投稿で応援してください。";
+"freeAnnouncement.support" = "応援していただけるなら、Xで私たちをフォローして、ほかのプロジェクトもご覧ください。Routineの共有やレビューの投稿も、とても励みになります。";
 "freeAnnouncement.continue" = "習慣をつくりましょう";
 "freeAnnouncement.dima" = "XのDima";
 "freeAnnouncement.misha" = "XのMisha";

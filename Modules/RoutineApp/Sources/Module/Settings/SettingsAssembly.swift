@@ -1,4 +1,5 @@
 import SafariServices
+import SwiftUI
 import UIKit
 
 final class SettingsAssembly {
@@ -19,9 +20,12 @@ final class SettingsAssembly {
     let vc = SettingsVC(presenter: presenter)
     presenter.view = vc
     
-    presenter.openAuthor = { url in
-      Task { @MainActor in
-        UIApplication.shared.open(url)
+    presenter.openSupport = { [weak vc] in
+      Task { @MainActor [weak vc] in
+        let supportVC = UIHostingController(rootView: FreeAnnouncementView(context: .support, onContinue: {}))
+        supportVC.title = ""
+        supportVC.navigationItem.largeTitleDisplayMode = .never
+        vc?.navigationController?.pushViewController(supportVC, animated: true)
       }
     }
     presenter.openSource = {

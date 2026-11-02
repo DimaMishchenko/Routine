@@ -1,4 +1,3 @@
-// Routine localization: de
 "routine" = "Routine";
 "common.email" = "E-Mail";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "Sieh dir mit detaillierten Diagrammen an, wie sich deine Routinen im Laufe der Zeit verbessern";
 "tutorial.features.action" = "Los geht’s";
 "appearance.title" = "Erscheinungsbild";
+"appearance.text.confettiAnimation" = "Konfetti-Animation";
 "appearance.text.light" = "Hell";
 "appearance.text.dark" = "Dunkel";
 "appearance.text.useDeviceSettings" = "Geräteeinstellungen verwenden";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "Quelloffen";
 "settings.row.acknowledgements" = "Danksagungen";
 "acknowledgements.title" = "Danksagungen";
+"support.title" = "Routine unterstützen";
+"support.review" = "Bewerten";
+"support.story.title" = "Hallo!";
+"support.story.beginning" = "Wir haben im Juni 2021 begonnen, Routine zu entwickeln, um den Aufbau von Gewohnheiten einfach zu machen.";
+"support.story.pause" = "Wir veröffentlichten sie im App Store. Doch dann kam der Alltag dazwischen, und wir konnten ihr nicht die Zeit widmen, die sie verdient hatte.";
+"support.story.return" = "Jetzt bringen wir Routine zurück, völlig kostenlos. Alle Funktionen sind enthalten, ohne Abonnements oder Käufe.";
+"settings.section.support" = "Unterstützung";
+"tutorial.features.unlimited.title" = "Unbegrenzte Routinen";
+"tutorial.features.unlimited.message" = "Füge beliebig viele Routinen hinzu und behalte sie an einem Ort im Blick.";
+"tutorial.features.reminders.title" = "Erinnerungen";
+"tutorial.features.reminders.message" = "Aktiviere Erinnerungen, damit du keine Benachrichtigung zu deinen Routinen verpasst.";
+"tutorial.features.security.title" = "Mehr Sicherheit";
+"tutorial.features.security.message" = "Schütze alle deine Informationen mit biometrischer Authentifizierung.";
 "freeAnnouncement.title" = "Routine ist kostenlos";
 "freeAnnouncement.message" = "Alle Werkzeuge für deine Gewohnheiten, jetzt ohne Abos oder Käufe.";
 "freeAnnouncement.features" = "Unbegrenzte Routinen, Erinnerungen, Fortschrittsanalysen, iCloud-Synchronisierung und App-Schutz.";
-"freeAnnouncement.support" = "Gefällt dir Routine? Unterstütze uns, indem du unsere Arbeit verfolgst, die App teilst oder eine Bewertung schreibst.";
+"freeAnnouncement.support" = "Unterstütze uns, indem du uns auf X folgst und unsere anderen Projekte ansiehst. Auch Routine zu teilen oder eine Bewertung zu hinterlassen bedeutet uns viel.";
 "freeAnnouncement.continue" = "Lass uns eine Gewohnheit aufbauen";
 "freeAnnouncement.dima" = "Dima auf X";
 "freeAnnouncement.misha" = "Misha auf X";
