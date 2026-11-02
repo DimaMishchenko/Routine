@@ -1,0 +1,27 @@
+{
+  "fill": {
+    "automatic-gradient": "extended-srgb:0.07000,0.38000,1.00000,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "RoutineR.png",
+          "name": "Routine R"
+        }
+      ],
+      "name": "Letter",
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": ["macOS"]
+  }
+}

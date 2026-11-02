@@ -31,6 +31,20 @@ Run [tests and native checks](TESTING.md) before preparing a change. Do not comm
 generated projects, workspaces, build outputs, credentials, provisioning profiles
 or personal signing settings. Keep `.package.resolved` aligned with dependency changes.
 
+### App icons
+
+iPhone and iPad use the existing `AppIcon.appiconset`. Mac Catalyst uses
+`Modules/RoutineApp/Resources/RoutineMac.icon`, included only for Catalyst by the
+Tuist resource filter and selected through the macOS SDK app-icon setting.
+Regenerate the workspace after changing the manifest or adding icon layers.
+
+Edit the Mac icon in Xcode's Icon Composer. Its background and foreground R are
+separate; the R layer is extracted from the original 1024-pixel iOS artwork.
+Keep the foreground transparent and let the system apply the outer rounded mask.
+Do not reintroduce the padded, already-rounded legacy Mac tile as a layer.
+Verify the compiled Catalyst app in the Dock, not only the Composer preview, and
+build iOS to confirm its selected icon remains `AppIcon`.
+
 ### Cloud builds
 
 **RoutineApp Dev** and **RoutineApp Prod** require matching Apple Developer
