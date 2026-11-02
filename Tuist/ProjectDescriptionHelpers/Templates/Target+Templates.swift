@@ -10,7 +10,16 @@ extension Target {
       deploymentTargets: .iOS("26.0"),
       infoPlist: .routineApp,
       sources: "Modules/RoutineApp/Sources/**",
-      resources: "Modules/RoutineApp/Resources/**",
+      resources: [
+        .glob(
+          pattern: "Modules/RoutineApp/Resources/**",
+          excluding: ["Modules/RoutineApp/Resources/RoutineMac.icon"]
+        ),
+        .glob(
+          pattern: "Modules/RoutineApp/Resources/RoutineMac.icon",
+          inclusionCondition: .when([.catalyst])
+        )
+      ],
       scripts: [
         .swiftlint
       ],
