@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AppearanceView<VM: AppearanceViewModel>: View {
-  // MARK: - Dependencies
   @ObservedObject private var viewModel: VM
   @State private var isSystemSettings: Bool
   
@@ -10,14 +9,13 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
     self.isSystemSettings = viewModel.theme == .system
   }
   
-  // MARK: - Public
   var body: some View {
     List {
       Section {
         Cell(
           isSelected: viewModel.theme == .light,
-          imageName: RoutineAppAsset.Icon.light.name,
-          selectedImageName: RoutineAppAsset.Icon.lightSelected.name,
+          symbolName: "sun.max",
+          color: .orange,
           text: RoutineAppStrings.Localizable.Appearance.Text.light
         ).onTapGesture {
           viewModel.theme = .light
@@ -25,8 +23,8 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
         
         Cell(
           isSelected: viewModel.theme == .dark,
-          imageName: RoutineAppAsset.Icon.dark.name,
-          selectedImageName: RoutineAppAsset.Icon.darkSelected.name,
+          symbolName: "moon",
+          color: .indigo,
           text: RoutineAppStrings.Localizable.Appearance.Text.dark
         ).onTapGesture {
           viewModel.theme = .dark
@@ -39,6 +37,7 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
             RoutineAppStrings.Localizable.Appearance.Text.useDeviceSettings,
             isOn: $isSystemSettings
           )
+          .toggleStyle(.switch)
           .onChange(of: viewModel.theme) { newValue in
             isSystemSettings = newValue == .system
           }
@@ -52,19 +51,35 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
         Text(RoutineAppStrings.Localizable.Appearance.Text.hint)
           .font(Font.system(size: .caption1, weight: .medium))
       }
+
+      Section {
+        Toggle(
+          RoutineAppStrings.Localizable.Appearance.Text.confettiAnimation,
+          isOn: $viewModel.confettiEnabled
+        )
+        .toggleStyle(.switch)
+      }
     }
     .listStyle(.insetGrouped)
+    .containerRelativeFrame(.horizontal) { width, _ in Size.View.contentWidth(for: width) }
+    .frame(maxWidth: .infinity)
+    .background(SwiftUI.Color(Color.Background.default))
   }
   
   private struct Cell: View {
     let isSelected: Bool
-    let imageName: String
-    let selectedImageName: String
+    let symbolName: String
+    let color: SwiftUI.Color
     let text: String
     
     var body: some View {
       HStack(spacing: .zero) {
-        Image(isSelected ? selectedImageName : imageName)
+        Image(systemName: symbolName)
+          .font(.system(size: 22, weight: .regular))
+          .symbolRenderingMode(.monochrome)
+          .foregroundStyle(color)
+          .frame(width: 30, height: 30)
+          .accessibilityHidden(true)
           .padding(.trailing, Inset.Padding.default)
         Text(text)
         Spacer()
@@ -79,7 +94,6 @@ struct AppearanceView<VM: AppearanceViewModel>: View {
 }
 
 #if DEBUG
-// MARK: - Preview
 struct AppearanceView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
@@ -90,6 +104,7 @@ struct AppearanceView_Previews: PreviewProvider {
   
   class VMMock: AppearanceViewModel {
     @Published var theme: Theme = .system
+    @Published var confettiEnabled = true
   }
 }
 #endif

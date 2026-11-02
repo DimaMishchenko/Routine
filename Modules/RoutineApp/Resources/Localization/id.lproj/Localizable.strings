@@ -1,4 +1,3 @@
-// Routine localization: id
 "routine" = "Routine";
 "common.email" = "Email";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "Lihat perkembangan rutinitas dari waktu ke waktu melalui grafik terperinci";
 "tutorial.features.action" = "Mulai";
 "appearance.title" = "Tampilan";
+"appearance.text.confettiAnimation" = "Animasi konfeti";
 "appearance.text.light" = "Terang";
 "appearance.text.dark" = "Gelap";
 "appearance.text.useDeviceSettings" = "Gunakan pengaturan perangkat";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "Sumber terbuka";
 "settings.row.acknowledgements" = "Ucapan terima kasih";
 "acknowledgements.title" = "Ucapan terima kasih";
+"support.title" = "Dukung Routine";
+"support.review" = "Ulasan";
+"support.story.title" = "Halo!";
+"support.story.beginning" = "Kami mulai membangun Routine pada Juni 2021 agar membangun kebiasaan terasa mudah.";
+"support.story.pause" = "Kami merilisnya di App Store, tetapi kesibukan hidup menyita waktu dan kami tidak bisa memberikan waktu yang semestinya untuk aplikasi ini.";
+"support.story.return" = "Sekarang kami menghadirkan kembali Routine, sepenuhnya gratis. Semua fitur disertakan, tanpa langganan atau pembelian.";
+"settings.section.support" = "Dukungan";
+"tutorial.features.unlimited.title" = "Rutinitas tanpa batas";
+"tutorial.features.unlimited.message" = "Tambahkan rutinitas sebanyak yang Anda inginkan dan lihat semuanya di satu tempat.";
+"tutorial.features.reminders.title" = "Pengingat";
+"tutorial.features.reminders.message" = "Aktifkan pengingat agar Anda tidak melewatkan notifikasi rutinitas.";
+"tutorial.features.security.title" = "Keamanan tambahan";
+"tutorial.features.security.message" = "Aktifkan autentikasi biometrik untuk melindungi semua informasi Anda.";
 "freeAnnouncement.title" = "Routine kini gratis";
 "freeAnnouncement.message" = "Semua alat untuk membangun kebiasaan, kini tanpa langganan atau pembelian.";
 "freeAnnouncement.features" = "Rutinitas tanpa batas, pengingat, wawasan progres, sinkronisasi iCloud, dan perlindungan aplikasi.";
-"freeAnnouncement.support" = "Suka Routine? Dukung kami dengan mengikuti karya kami, membagikan aplikasi, atau menulis ulasan.";
+"freeAnnouncement.support" = "Untuk mendukung kami, ikuti kami di X dan lihat proyek kami yang lain. Membagikan Routine atau menulis ulasan juga sangat berarti bagi kami.";
 "freeAnnouncement.continue" = "Mari bangun kebiasaan";
 "freeAnnouncement.dima" = "Dima di X";
 "freeAnnouncement.misha" = "Misha di X";

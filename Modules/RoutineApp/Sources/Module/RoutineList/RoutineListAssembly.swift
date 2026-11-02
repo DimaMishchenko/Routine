@@ -29,7 +29,7 @@ final class RoutineListAssembly {
         onSave: { completion($0) },
         onDelete: { onDelete() }
       )
-      editVC.flatMap { vc?.present(UINavigationController(rootViewController: $0), animated: true) }
+      editVC.flatMap { vc?.present(ReadableNavigationController(rootViewController: $0), animated: true) }
     }
     presenter.addNewRoutine = { [weak vc, weak assemblyFactory] completion in
       let editVC = assemblyFactory?.routineEdit().controller(
@@ -37,14 +37,18 @@ final class RoutineListAssembly {
         onSave: { completion($0) },
         onDelete: {}
       )
-      editVC.flatMap { vc?.present(UINavigationController(rootViewController: $0), animated: true) }
+      editVC.flatMap { vc?.present(ReadableNavigationController(rootViewController: $0), animated: true) }
     }
     presenter.routineDetails = { [weak vc, weak assemblyFactory] routine, onEdit in
-      Task { [vc, assemblyFactory] in
-        guard let detailsVC = await assemblyFactory?.routineDetails().controller(with: routine, onEdit: onEdit) else {
+      Task { @MainActor [vc, assemblyFactory] in
+        guard let detailsVC = assemblyFactory?.routineDetails().controller(with: routine, onEdit: onEdit) else {
           return
         }
-        await vc?.present(UINavigationController(rootViewController: detailsVC), animated: true)
+        let navigation = ReadableNavigationController(rootViewController: detailsVC)
+        navigation.modalPresentationStyle = .pageSheet
+        navigation.sheetPresentationController?.prefersPageSizing = true
+        navigation.sheetPresentationController?.detents = [.large()]
+        vc?.present(navigation, animated: true)
       }
     }
     presenter.inAppReview = {

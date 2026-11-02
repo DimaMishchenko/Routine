@@ -39,6 +39,7 @@ final class SwitchCell: UICollectionViewCell, ModelConfigurable {
   }
 
   private func setupUI() {
+    switchView.preferredStyle = .sliding
     iconImageView.contentMode = .scaleAspectFit
     iconImageView.snp.makeConstraints { $0.size.equalTo(Size.Icon.default).priority(999) }
 

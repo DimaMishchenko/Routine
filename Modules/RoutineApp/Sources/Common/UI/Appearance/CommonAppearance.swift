@@ -1,5 +1,9 @@
 import UIKit
 
+@MainActor protocol NavigationContentLayout {
+  var navigationContentInset: CGFloat { get }
+}
+
 enum CommonAppearance {
   static func setup(for scene: UIWindowScene) {
     UINavigationBar.appearance().prefersLargeTitles = true
@@ -17,16 +21,9 @@ enum CommonAppearance {
     
 #if targetEnvironment(macCatalyst)
     scene.titlebar?.titleVisibility = .hidden
-    let defaultSize = CGSize(width: 1200, height: 750)
-    scene.sizeRestrictions?.minimumSize = defaultSize
-    scene.sizeRestrictions?.maximumSize = defaultSize
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      scene.sizeRestrictions?.minimumSize = CGSize(width: 400, height: 250)
-      scene.sizeRestrictions?.maximumSize = CGSize(
-        width: CGFloat.greatestFiniteMagnitude,
-        height: CGFloat.greatestFiniteMagnitude
-      )
-    }
+    UINavigationBar.appearance().preferredBehavioralStyle = .pad
+    scene.sizeRestrictions?.minimumSize = CGSize(width: 480, height: 560)
+    scene.sizeRestrictions?.maximumSize = CGSize(width: 1000, height: 900)
 #endif
   }
   

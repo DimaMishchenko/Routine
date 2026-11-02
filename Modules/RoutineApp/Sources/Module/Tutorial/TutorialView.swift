@@ -18,29 +18,42 @@ struct TutorialView<VM: TutorialViewModel>: View {
           if showsFeatures {
             FeaturesView(vm: viewModel.featuresVM)
           } else {
-            WelcomeView(vm: viewModel.welcomeVM, width: min(geometry.size.width, 560))
+            WelcomeView(vm: viewModel.welcomeVM)
           }
         }
         .frame(maxWidth: 512)
-        .padding(24)
-        .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+        .padding(.horizontal, 24)
+        .padding(.top, showsFeatures ? 48 : 32)
+        .padding(.bottom, showsFeatures ? 24 : 32)
+        .frame(
+          maxWidth: .infinity,
+          minHeight: geometry.size.height,
+          alignment: showsFeatures ? .top : .center
+        )
       }
     }
     .safeAreaInset(edge: .bottom) {
-      Button(actionTitle) {
+      Button {
         if showsFeatures {
           viewModel.close()
         } else {
           showsFeatures = true
           actionTitle = viewModel.featuresVM.actionTitle
         }
+      } label: {
+        Text(actionTitle)
+          .multilineTextAlignment(.center)
+          .fixedSize(horizontal: false, vertical: true)
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 8)
       }
       .font(.headline)
-      .buttonStyle(.borderedProminent)
+      .buttonStyle(.glassProminent)
       .controlSize(.large)
-      .padding()
+      .frame(maxWidth: 480)
+      .padding(.horizontal, 24)
+      .padding(.vertical, 16)
       .frame(maxWidth: .infinity)
-      .background(.regularMaterial)
     }
     .background(SwiftUI.Color(Color.Background.default))
     .tint(SwiftUI.Color(Color.tint))
@@ -48,29 +61,25 @@ struct TutorialView<VM: TutorialViewModel>: View {
 
   struct WelcomeView: View {
     let vm: Tutorial.WelcomeVM
-    let width: CGFloat
 
     var body: some View {
-      VStack(spacing: Inset.Padding.small) {
+      VStack(spacing: 16) {
         Image(uiImage: vm.icon)
           .resizable()
           .cornerRadius(20)
-          .frame(width: 96, height: 96)
+          .frame(width: 80, height: 80)
+          .accessibilityHidden(true)
 
-        Spacer().frame(height: Inset.Padding.default)
+        VStack(spacing: 12) {
+          Text(AttributedString(vm.title))
+            .font(.system(.largeTitle, design: .rounded, weight: .bold))
 
-        UIKitLabel {
-          $0.attributedText = vm.title
-          $0.textAlignment = .center
-          $0.numberOfLines = .zero
-          $0.font = Font.system(.largeTitle, weight: .bold)
-          $0.preferredMaxLayoutWidth = width - Inset.Padding.big
+          Text(vm.description)
+            .font(.body)
+            .foregroundColor(SwiftUI.Color(Color.Text.value))
         }
-        .fixedSize()
-
-        Text(vm.description)
-          .multilineTextAlignment(.center)
-          .foregroundColor(SwiftUI.Color(Color.Text.value))
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
       }
     }
   }
@@ -79,20 +88,20 @@ struct TutorialView<VM: TutorialViewModel>: View {
     let vm: Tutorial.FeaturesVM
 
     var body: some View {
-      VStack(spacing: .zero) {
-        VStack(spacing: Inset.Padding.small) {
+      VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 12) {
           Text(vm.title)
-            .multilineTextAlignment(.center)
-            .font(SwiftUI.Font(Font.system(.largeTitle, weight: .bold)))
+            .font(.system(.largeTitle, design: .rounded, weight: .bold))
 
           Text(vm.message)
-            .multilineTextAlignment(.center)
+            .font(.body)
             .foregroundColor(SwiftUI.Color(Color.Text.value))
         }
-
-        Spacer().frame(height: Inset.Padding.big)
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
         
-        VStack(spacing: Inset.Padding.default) {
+        VStack(spacing: 12) {
           ForEach(vm.features) {
             FeatureView(vm: $0)
           }
@@ -102,25 +111,32 @@ struct TutorialView<VM: TutorialViewModel>: View {
   }
 
   struct FeatureView: View {
+    @SwiftUI.Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let vm: Tutorial.FeatureVM
 
     var body: some View {
-      HStack(spacing: Inset.Padding.default) {
+      let layout = dynamicTypeSize.isAccessibilitySize
+        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+        : AnyLayout(HStackLayout(alignment: .top, spacing: 16))
+
+      layout {
         Image(uiImage: vm.icon)
           .resizable()
           .frame(width: 40, height: 40)
 
         VStack(alignment: .leading, spacing: Inset.Padding.extraSmall) {
           Text(vm.title)
-            .font(SwiftUI.Font(Font.system(.body, weight: .semibold)))
+            .font(.system(.body, design: .rounded, weight: .semibold))
           
           Text(vm.description)
-            .font(SwiftUI.Font(Font.system(.body, weight: .regular)))
+            .font(.body)
             .foregroundColor(SwiftUI.Color(Color.Text.value))
         }
-
-        Spacer()
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity, alignment: .leading)
       }
+      .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 }
@@ -128,41 +144,7 @@ struct TutorialView<VM: TutorialViewModel>: View {
 #if DEBUG
 struct TutorialView_Previews: PreviewProvider {
   static var previews: some View {
-    TutorialView(viewModel: VMMock())
-  }
-  
-  class VMMock: TutorialViewModel {
-    let welcomeVM = Tutorial.WelcomeVM(
-      icon: RoutineAppAsset.Icon.appIcon.image,
-      title: NSAttributedString(string: "Welcome to Routine"),
-      description: "Routine is a simple and fully native app for tracking your habits in one place.",
-      actionTitle: "Continue"
-    )
-    
-    let featuresVM = Tutorial.FeaturesVM(
-      title: "Stay productive wherever you are",
-      message: "Routine helps you create and maintain habits and allows you to achieve your goals.",
-      actionTitle: "Get started",
-      features: [
-        .init(
-          icon: RoutineAppAsset.Icon.tutorialCheckmark.image,
-          title: "Unlimited routines",
-          description: "You can create an unlimited number of routines"
-        ),
-        .init(
-          icon: RoutineAppAsset.Icon.tutorialCloud.image,
-          title: "iCloud sync",
-          description: "Backup your data on any device – iPhone, iPad, and MacOS"
-        ),
-        .init(
-          icon: RoutineAppAsset.Icon.tutorialChart.image,
-          title: "Overview",
-          description: "Clearly see how your routines improved over time with detailed charts"
-        )
-      ]
-    )
-
-    func close() {}
+    TutorialView(viewModel: TutorialViewModelImpl())
   }
 }
 #endif

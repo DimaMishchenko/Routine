@@ -1,4 +1,3 @@
-// Routine localization: bn
 "routine" = "Routine";
 "common.email" = "ইমেইল";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "বিস্তারিত চার্টে দেখুন সময়ের সঙ্গে আপনার অভ্যাসের কতটা উন্নতি হয়েছে";
 "tutorial.features.action" = "শুরু করুন";
 "appearance.title" = "চেহারা";
+"appearance.text.confettiAnimation" = "কনফেটি অ্যানিমেশন";
 "appearance.text.light" = "হালকা";
 "appearance.text.dark" = "গাঢ়";
 "appearance.text.useDeviceSettings" = "ডিভাইসের সেটিংস ব্যবহার করুন";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "ওপেন সোর্স";
 "settings.row.acknowledgements" = "কৃতজ্ঞতা";
 "acknowledgements.title" = "কৃতজ্ঞতা";
+"support.title" = "Routine-কে সমর্থন করুন";
+"support.review" = "রিভিউ";
+"support.story.title" = "হ্যালো!";
+"support.story.beginning" = "অভ্যাস গড়ে তোলা সহজ করে তুলতে আমরা ২০২১ সালের জুন মাসে Routine তৈরি করা শুরু করি।";
+"support.story.pause" = "আমরা এটি App Store-এ প্রকাশ করি, কিন্তু জীবনের ব্যস্ততা বেড়ে যায়, আর অ্যাপটির প্রাপ্য সময় আমরা দিতে পারিনি।";
+"support.story.return" = "এখন আমরা Routine-কে ফিরিয়ে আনছি, সম্পূর্ণ বিনামূল্যে। সব ফিচারই অন্তর্ভুক্ত, কোনো সাবস্ক্রিপশন বা কেনাকাটা নেই।";
+"settings.section.support" = "সহায়তা";
+"tutorial.features.unlimited.title" = "সীমাহীন রুটিন";
+"tutorial.features.unlimited.message" = "যত ইচ্ছা রুটিন যোগ করুন এবং সব এক জায়গায় দেখুন।";
+"tutorial.features.reminders.title" = "অনুস্মারক";
+"tutorial.features.reminders.message" = "আপনার রুটিনের বিজ্ঞপ্তি যেন বাদ না পড়ে, তার জন্য অনুস্মারক চালু করুন।";
+"tutorial.features.security.title" = "উন্নত নিরাপত্তা";
+"tutorial.features.security.message" = "আপনার সব তথ্য সুরক্ষিত রাখতে বায়োমেট্রিক প্রমাণীকরণ চালু করুন।";
 "freeAnnouncement.title" = "Routine এখন বিনামূল্যে";
 "freeAnnouncement.message" = "অভ্যাস গড়ে তোলার সব সরঞ্জাম, এখন কোনো সাবস্ক্রিপশন বা কেনাকাটা ছাড়াই।";
 "freeAnnouncement.features" = "সীমাহীন অভ্যাস, রিমাইন্ডার, অগ্রগতির বিশ্লেষণ, iCloud সিঙ্ক এবং অ্যাপের সুরক্ষা।";
-"freeAnnouncement.support" = "Routine ভালো লাগছে? আমাদের কাজ ফলো করে, অ্যাপ শেয়ার করে বা রিভিউ লিখে আমাদের সমর্থন করুন।";
+"freeAnnouncement.support" = "আমাদের সমর্থন করতে X-এ আমাদের ফলো করুন এবং আমাদের অন্য প্রকল্পগুলো দেখুন। Routine শেয়ার করলে বা একটি রিভিউ লিখলেও আমাদের অনেক ভালো লাগবে।";
 "freeAnnouncement.continue" = "আসুন একটি অভ্যাস গড়ি";
 "freeAnnouncement.dima" = "X-এ Dima";
 "freeAnnouncement.misha" = "X-এ Misha";

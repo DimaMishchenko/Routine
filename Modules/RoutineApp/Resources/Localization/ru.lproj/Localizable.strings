@@ -1,4 +1,3 @@
-// Routine localization: ru
 "routine" = "Routine";
 "common.email" = "Электронная почта";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "Следите за развитием своих привычек с помощью подробных графиков";
 "tutorial.features.action" = "Начать";
 "appearance.title" = "Оформление";
+"appearance.text.confettiAnimation" = "Анимация конфетти";
 "appearance.text.light" = "Светлое";
 "appearance.text.dark" = "Тёмное";
 "appearance.text.useDeviceSettings" = "Как на устройстве";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "Открытый исходный код";
 "settings.row.acknowledgements" = "Благодарности";
 "acknowledgements.title" = "Благодарности";
+"support.title" = "Поддержать Routine";
+"support.review" = "Отзыв";
+"support.story.title" = "Привет!";
+"support.story.beginning" = "Мы начали создавать Routine в июне 2021 года, чтобы формировать привычки было проще.";
+"support.story.pause" = "Мы опубликовали его в App Store, но повседневных забот стало больше, и мы не смогли уделять ему столько времени, сколько оно заслуживало.";
+"support.story.return" = "Теперь мы возвращаем Routine — совершенно бесплатно. Все функции доступны без подписок и покупок.";
+"settings.section.support" = "Поддержка";
+"tutorial.features.unlimited.title" = "Неограниченные рутины";
+"tutorial.features.unlimited.message" = "Добавляйте столько рутин, сколько нужно, и просматривайте их в одном удобном месте.";
+"tutorial.features.reminders.title" = "Напоминания";
+"tutorial.features.reminders.message" = "Включите напоминания, чтобы не пропускать уведомления о ваших рутинах.";
+"tutorial.features.security.title" = "Повышенная безопасность";
+"tutorial.features.security.message" = "Включите биометрическую аутентификацию, чтобы защитить все ваши данные.";
 "freeAnnouncement.title" = "Routine бесплатно";
 "freeAnnouncement.message" = "Все инструменты для создания привычек — теперь без подписок и покупок.";
 "freeAnnouncement.features" = "Неограниченное число привычек, напоминания, статистика прогресса, синхронизация iCloud и защита приложения.";
-"freeAnnouncement.support" = "Нравится Routine? Поддержите нас: следите за нашей работой, поделитесь приложением или оставьте отзыв.";
+"freeAnnouncement.support" = "Чтобы поддержать нас, подпишитесь на нас в X и посмотрите другие наши проекты. Мы также будем благодарны, если вы поделитесь Routine или оставите отзыв.";
 "freeAnnouncement.continue" = "Создадим привычку";
 "freeAnnouncement.dima" = "Дима в X";
 "freeAnnouncement.misha" = "Миша в X";

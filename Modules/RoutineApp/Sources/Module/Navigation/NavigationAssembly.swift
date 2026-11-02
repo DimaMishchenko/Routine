@@ -34,7 +34,27 @@ final class NavigationAssembly {
   }
 }
 
-final class RoutineNavigationController: UINavigationController {
+class ReadableNavigationController: UINavigationController {
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    viewRespectsSystemMinimumLayoutMargins = false
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    let width = navigationBar.bounds.width
+    let contentInset = (topViewController as? NavigationContentLayout)?.navigationContentInset ?? Inset.Padding.default
+    let inset = (width - Size.View.contentWidth(for: width)) / 2 + contentInset
+    navigationBar.directionalLayoutMargins = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: inset,
+      bottom: 0,
+      trailing: inset
+    )
+  }
+}
+
+final class RoutineNavigationController: ReadableNavigationController {
   var onAppear: (() -> Void)?
 
   private var contentAvailable = false

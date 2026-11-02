@@ -15,7 +15,18 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
   }
   
   var body: some View {
-    ScrollView {
+    GeometryReader { geometry in
+      ScrollView {
+        content
+          .frame(width: Size.View.contentWidth(for: geometry.size.width))
+          .frame(maxWidth: .infinity)
+      }
+    }
+    .background(SwiftUI.Color(Color.Background.default))
+    .onAppear { viewModel.loadDetails() }
+  }
+
+  private var content: some View {
       VStack(spacing: Inset.Padding.big) {
         Section(title: RoutineAppStrings.Localizable.RoutineDetails.Section.overview, drawGroup: false) {
           if !viewModel.description.isEmpty {
@@ -107,9 +118,6 @@ struct RoutineDetailsView<VM: RoutineDetailsViewModel>: View {
         }
       }
       .padding(Inset.Padding.default)
-    }
-    .background(SwiftUI.Color(Color.Background.default))
-    .onAppear { viewModel.loadDetails() }
   }
 
   private struct Section<Content>: View where Content: View {

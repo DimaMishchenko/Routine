@@ -71,18 +71,20 @@ extension RoutineEditVC {
   
   private func setupNavBar() {
     navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.Localizable.NavBar.cancel,
+      image: UIImage(systemName: "xmark"),
       style: .plain,
       target: self,
       action: #selector(cancel)
     )
+    navigationItem.leftBarButtonItem?.accessibilityLabel = RoutineAppStrings.Localizable.NavBar.cancel
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: RoutineAppStrings.Localizable.NavBar.save,
+      image: UIImage(systemName: "checkmark"),
       style: .prominent,
       target: self,
       action: #selector(save)
     )
+    navigationItem.rightBarButtonItem?.accessibilityLabel = RoutineAppStrings.Localizable.NavBar.save
   }
   
   private func setupActions() {

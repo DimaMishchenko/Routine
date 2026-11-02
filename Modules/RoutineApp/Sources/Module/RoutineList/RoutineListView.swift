@@ -123,6 +123,7 @@ extension RoutineListView {
   
   private func createCollectionView() -> UICollectionView {
     let layout = CompositionalLayout(
+      centersContent: true,
       itemContentInset: NSDirectionalEdgeInsets(
         top: .zero,
         leading: Inset.Padding.default,

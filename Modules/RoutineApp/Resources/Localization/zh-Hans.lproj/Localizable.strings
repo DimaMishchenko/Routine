@@ -1,4 +1,3 @@
-// Routine localization: zh-Hans
 "routine" = "Routine";
 "common.email" = "电子邮件";
 "common.github" = "GitHub";
@@ -101,6 +100,7 @@
 "tutorial.features.overview.message" = "通过详细图表，清晰了解习惯随时间的变化";
 "tutorial.features.action" = "开始使用";
 "appearance.title" = "外观";
+"appearance.text.confettiAnimation" = "彩纸动画";
 "appearance.text.light" = "浅色";
 "appearance.text.dark" = "深色";
 "appearance.text.useDeviceSettings" = "跟随设备设置";
@@ -151,10 +151,23 @@
 "settings.row.openSource" = "开源代码";
 "settings.row.acknowledgements" = "致谢";
 "acknowledgements.title" = "致谢";
+"support.title" = "支持 Routine";
+"support.review" = "评价";
+"support.story.title" = "你好！";
+"support.story.beginning" = "我们于 2021 年 6 月开始开发 Routine，希望让养成习惯变得简单。";
+"support.story.pause" = "我们在 App Store 发布了它，但后来生活忙碌起来，没能投入这款 App 应得的时间。";
+"support.story.return" = "现在，我们让 Routine 回归，完全免费。所有功能均已包含，无需订阅或购买。";
+"settings.section.support" = "支持";
+"tutorial.features.unlimited.title" = "无限量日常习惯";
+"tutorial.features.unlimited.message" = "按需添加任意数量的日常习惯，并在一处集中查看。";
+"tutorial.features.reminders.title" = "提醒";
+"tutorial.features.reminders.message" = "启用提醒，不错过任何日常习惯通知。";
+"tutorial.features.security.title" = "增强安全性";
+"tutorial.features.security.message" = "启用生物识别认证，保护您的所有信息。";
 "freeAnnouncement.title" = "Routine 免费了";
 "freeAnnouncement.message" = "养成习惯所需的所有工具，现在无需订阅或购买。";
 "freeAnnouncement.features" = "无限习惯、提醒、进度分析、iCloud 同步和 App 保护。";
-"freeAnnouncement.support" = "喜欢 Routine？关注我们的工作、分享 App 或留下评价，支持我们。";
+"freeAnnouncement.support" = "想支持我们，可以在 X 上关注我们，看看我们的其他项目。分享 Routine 或留下评价，对我们来说也意义重大。";
 "freeAnnouncement.continue" = "一起养成好习惯";
 "freeAnnouncement.dima" = "X 上的 Dima";
 "freeAnnouncement.misha" = "X 上的 Misha";

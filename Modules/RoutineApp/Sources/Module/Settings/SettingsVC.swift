@@ -5,14 +5,12 @@ import UIKit
   func showAlert(with viewModel: Alert.VM)
 }
 
-final class SettingsVC: UIViewController {
-  // MARK: - Dependencies
+final class SettingsVC: UIViewController, NavigationContentLayout {
+  var navigationContentInset: CGFloat { 20 }
   private let presenter: SettingsPresenter
   
-  // MARK: - Private Properties
   private lazy var contentView = SettingsView()
   
-  // MARK: - Init
   init(presenter: SettingsPresenter) {
     self.presenter = presenter
     super.init(nibName: nil, bundle: nil)
@@ -23,7 +21,6 @@ final class SettingsVC: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Life Cycle
   override func loadView() {
     view = contentView
   }
@@ -35,7 +32,6 @@ final class SettingsVC: UIViewController {
   }
 }
 
-// MARK: - SettingsViewInterface
 extension SettingsVC: SettingsViewInterface {
   func update(with snapshot: Snapshot<Settings.Section?, Settings.Row>) {
     contentView.update(with: snapshot)
@@ -46,7 +42,6 @@ extension SettingsVC: SettingsViewInterface {
   }
 }
 
-// MARK: - Private
 extension SettingsVC {
   private func setupUI() {
     title = RoutineAppStrings.Localizable.Settings.title

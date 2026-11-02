@@ -1,11 +1,10 @@
 import SwiftUI
 import UIKit
 
-final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<AppearanceView<VM>> {
-  // MARK: - Dependencies
+final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<AppearanceView<VM>>, NavigationContentLayout {
+  var navigationContentInset: CGFloat { 20 }
   private let viewModel: VM
   
-  // MARK: - Init
   init(viewModel: VM) {
     self.viewModel = viewModel
     super.init(rootView: AppearanceView(viewModel: viewModel))
@@ -16,7 +15,6 @@ final class AppearanceVC<VM: AppearanceViewModel>: UIHostingController<Appearanc
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Life Cycle  
   override func viewDidLoad() {
     super.viewDidLoad()
     title = RoutineAppStrings.Localizable.Appearance.title

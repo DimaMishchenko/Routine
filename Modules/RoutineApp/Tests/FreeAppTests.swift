@@ -1,9 +1,45 @@
 import Combine
 import Foundation
 @testable import Routine
+import SPConfetti
+import UIKit
 import XCTest
 
 final class FreeAppTests: XCTestCase {
+  @MainActor func testAddRoutineUsesNativeSymbolButton() throws {
+    let presenter = RoutineListPresenterImpl(
+      store: FreeRoutineStore(routines: []),
+      itemFactory: RoutineListItemFactoryImpl(),
+      appStateObserver: FreeAppStateObserver(),
+      notificationsHandler: FreeNotificationsHandler()
+    )
+    let controller = RoutineListVC(presenter: presenter)
+    controller.loadViewIfNeeded()
+    let add = try XCTUnwrap(controller.navigationItem.rightBarButtonItem)
+    XCTAssertNil(add.customView)
+    XCTAssertNotNil(add.image)
+    XCTAssertEqual(add.style, .prominent)
+    XCTAssertEqual(add.accessibilityLabel, RoutineAppStrings.Localizable.RoutineList.add)
+  }
+
+  @MainActor func testRoutineEditorUsesAccessibleSymbolButtons() throws {
+    let presenter = RoutineEditPresenterImpl(
+      moduleType: .new,
+      itemFactory: RoutineEditItemFactoryImpl(),
+      notificationsHandler: FreeNotificationsHandler()
+    )
+    let controller = RoutineEditVC(presenter: presenter)
+    controller.loadViewIfNeeded()
+    let cancel = try XCTUnwrap(controller.navigationItem.leftBarButtonItem)
+    let save = try XCTUnwrap(controller.navigationItem.rightBarButtonItem)
+    XCTAssertNil(cancel.title)
+    XCTAssertNil(save.title)
+    XCTAssertNotNil(cancel.image)
+    XCTAssertNotNil(save.image)
+    XCTAssertEqual(cancel.accessibilityLabel, RoutineAppStrings.Localizable.NavBar.cancel)
+    XCTAssertEqual(save.accessibilityLabel, RoutineAppStrings.Localizable.NavBar.save)
+  }
+
   func testCreatingRoutineRemainsAvailableAfterTwentyExistingRoutines() {
     let presenter = RoutineListPresenterImpl(
       store: FreeRoutineStore(routines: (0..<20).map { _ in .new }),
@@ -72,6 +108,71 @@ final class FreeAppTests: XCTestCase {
     XCTAssertEqual(AppConfiguration.sourceLinkURL?.absoluteString, "https://github.com/DimaMishchenko/Routine")
   }
 
+  @MainActor func testSettingsOnlyShowsICloudInCloudEnabledBuilds() async {
+    let loaded = expectation(description: "Settings cloud availability loaded")
+    let view = FreeSettingsView { snapshot in
+      let cloudRows = snapshot.items.flatMap { $0.rows }.filter { row in
+        guard case .value(let model) = row.type else { return false }
+        return model.title == RoutineAppStrings.Localizable.Settings.Row.iCloudSync
+      }
+      XCTAssertEqual(cloudRows.count, Environment.current == .local ? 0 : 1)
+      loaded.fulfill()
+    }
+    let presenter = SettingsPresenterImpl(
+      rowFactory: SettingsRowFactoryImpl(),
+      appStateObserver: FreeAppStateObserver(),
+      notificationsHandler: FreeNotificationsHandler(),
+      authenticator: UnavailableBiometricsAuthenticator()
+    )
+    presenter.view = view
+    presenter.viewDidLoad()
+    await fulfillment(of: [loaded], timeout: 2)
+  }
+
+  @MainActor func testSettingsSupportPrecedesMoreAndReplacesAuthorRows() async {
+    let loaded = expectation(description: "Settings support row loaded")
+    var supportRequested = false
+    let view = FreeSettingsView { snapshot in
+      let titles = snapshot.items.flatMap { $0.rows }.compactMap { row -> String? in
+        guard case .value(let model) = row.type else { return nil }
+        return model.title
+      }
+      XCTAssertFalse(titles.contains("Dima Mishchenko"))
+      XCTAssertFalse(titles.contains("Misha"))
+      XCTAssertEqual(Array(titles.suffix(7)), [
+        String(localized: "support.title"),
+        RoutineAppStrings.Localizable.Settings.Row.onboarding,
+        RoutineAppStrings.Localizable.Settings.Row.openSource,
+        RoutineAppStrings.Localizable.Settings.Row.acknowledgements,
+        RoutineAppStrings.Localizable.Settings.Row.privacyPolicy,
+        RoutineAppStrings.Localizable.Settings.Row.termsOfUse,
+        RoutineAppStrings.Localizable.Settings.Row.appVersion
+      ])
+      let sectionTitles = snapshot.items.compactMap { $0.section?.model.title }
+      XCTAssertEqual(Array(sectionTitles.suffix(4)), [
+        RoutineAppStrings.Localizable.Settings.Section.security,
+        RoutineAppStrings.Localizable.Settings.Section.feedback,
+        String(localized: "settings.section.support"),
+        RoutineAppStrings.Localizable.Settings.Section.more
+      ])
+      snapshot.items.first {
+        $0.section?.model.title == String(localized: "settings.section.support")
+      }?.rows.first?.action?()
+      loaded.fulfill()
+    }
+    let presenter = SettingsPresenterImpl(
+      rowFactory: SettingsRowFactoryImpl(),
+      appStateObserver: FreeAppStateObserver(),
+      notificationsHandler: FreeNotificationsHandler(),
+      authenticator: UnavailableBiometricsAuthenticator()
+    )
+    presenter.view = view
+    presenter.openSupport = { supportRequested = true }
+    presenter.viewDidLoad()
+    await fulfillment(of: [loaded], timeout: 2)
+    XCTAssertTrue(supportRequested)
+  }
+
   func testUnavailableBiometricsDoesNotDisableExistingProtection() {
     let defaults = UserDefaults.standard
     let originalPreference = defaults.object(forKey: "use.faceid")
@@ -123,6 +224,66 @@ final class FreeAppTests: XCTestCase {
     presenter.faceIDStateUpdateRequest(false)
     await fulfillment(of: [enabled], timeout: 2)
     XCTAssertTrue(authenticationRequested)
+  }
+}
+
+@MainActor extension FreeAppTests {
+  func testConfettiIsEnabledWithoutSavedPreference() {
+    withConfettiPreference {
+      UserDefaults.standard.removeObject(forKey: DefaultsKey.confettiEnabled.rawValue)
+      XCTAssertTrue(Confetti.isEnabled)
+      XCTAssertTrue(AppearanceViewModelImpl().confettiEnabled)
+    }
+  }
+
+  func testAppearancePersistsConfettiSelection() {
+    withConfettiPreference {
+      Confetti.isEnabled = true
+      let model = AppearanceViewModelImpl()
+      model.confettiEnabled = false
+      XCTAssertFalse(Confetti.isEnabled)
+      let reopenedModel = AppearanceViewModelImpl()
+      XCTAssertFalse(reopenedModel.confettiEnabled)
+      reopenedModel.confettiEnabled = true
+      XCTAssertTrue(Confetti.isEnabled)
+      XCTAssertTrue(AppearanceViewModelImpl().confettiEnabled)
+    }
+  }
+
+  func testConfettiOnlyEmitsWhenEnabled() throws {
+    try withConfettiPreference {
+      let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+      let previousKeyWindow = scene.keyWindow
+      let window = UIWindow(windowScene: scene)
+      window.rootViewController = UIViewController()
+      window.makeKeyAndVisible()
+      defer {
+        SPConfetti.stopAnimating()
+        window.isHidden = true
+        previousKeyWindow?.makeKey()
+      }
+      SPConfetti.stopAnimating()
+      Confetti.isEnabled = false
+      Confetti.run(with: "🎉")
+      XCTAssertFalse(SPConfetti.isReleasesParticles)
+      Confetti.isEnabled = true
+      Confetti.run(with: "🎉")
+      XCTAssertTrue(SPConfetti.isReleasesParticles)
+    }
+  }
+
+  private func withConfettiPreference(_ body: () throws -> Void) rethrows {
+    let defaults = UserDefaults.standard
+    let key = DefaultsKey.confettiEnabled.rawValue
+    let original = defaults.object(forKey: key)
+    defer {
+      if let original {
+        defaults.set(original, forKey: key)
+      } else {
+        defaults.removeObject(forKey: key)
+      }
+    }
+    try body()
   }
 }
 

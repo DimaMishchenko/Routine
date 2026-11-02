@@ -50,30 +50,12 @@ final class RoutineListVC: UIViewController {
     settingsButton.accessibilityIdentifier = "routineList.settings"
     navigationItem.leftBarButtonItem = settingsButton
 
-    let addButton: UIBarButtonItem
-    #if targetEnvironment(macCatalyst)
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(systemName: "plus"), for: .normal)
-    button.tintColor = .white
-    button.backgroundColor = .systemBlue
-    button.layer.cornerRadius = 18
-    button.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      button.widthAnchor.constraint(equalToConstant: 36),
-      button.heightAnchor.constraint(equalToConstant: 36)
-    ])
-    button.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
-    button.accessibilityIdentifier = "routineList.add"
-    button.addTarget(self, action: #selector(addRoutine), for: .touchUpInside)
-    addButton = UIBarButtonItem(customView: button)
-    #else
-    addButton = UIBarButtonItem(
+    let addButton = UIBarButtonItem(
       image: UIImage(systemName: "plus"),
       style: .prominent,
       target: self,
       action: #selector(addRoutine)
     )
-    #endif
     addButton.tintColor = .systemBlue
     addButton.accessibilityLabel = RoutineAppStrings.Localizable.RoutineList.add
     addButton.accessibilityIdentifier = "routineList.add"
