@@ -16,6 +16,7 @@ final class RoutineEditView: UIView {
   
   private var initialLayout = Once()
   private var showsDeleteButton = false
+  private var collectionBottomConstraint: Constraint?
   
   var emojiSourceView: UIView? { emojiCell?.valueSourceView }
   private weak var emojiCell: ValueCell?
@@ -25,9 +26,9 @@ final class RoutineEditView: UIView {
   private lazy var deleteButton = createDeleteButton()
   
   override func layoutSubviews() {
-    super.layoutSubviews()
     initialLayout.once { setupUI() }
     updateLayout()
+    super.layoutSubviews()
   }
 }
 
@@ -35,7 +36,7 @@ extension RoutineEditView {
   func updateDelete(visibility isVisible: Bool) {
     showsDeleteButton = isVisible
     deleteButton.isHidden = !isVisible
-    collectionView.contentInset = collectionContentInset()
+    setNeedsLayout()
     layoutIfNeeded()
   }
   
@@ -60,13 +61,16 @@ extension RoutineEditView {
   private func updateLayout() {
     let bottomOffset: CGFloat = pin.safeArea.bottom == .zero ? Inset.Padding.default : pin.safeArea.bottom
     let contentWidth = Size.View.contentWidth(for: bounds.width)
-    collectionView.contentInset = collectionContentInset()
     
     deleteButton.pin
       .bottom(bottomOffset)
       .width(contentWidth - 2 * Inset.Padding.default)
       .hCenter()
       .height(Size.Button.big)
+
+    collectionBottomConstraint?.update(
+      offset: showsDeleteButton ? deleteButton.frame.minY - bounds.maxY - Inset.Padding.small : .zero
+    )
   }
   
   private func createDataSource() -> DataSource<RoutineEdit.Section, RoutineEdit.Row> {
@@ -142,7 +146,12 @@ extension RoutineEditView {
   private func createCollectionView() -> UICollectionView {
     with(UICollectionView(layout: createLayout())) {
       $0.delegate = self
-      $0.contentInset = collectionContentInset()
+      $0.contentInset = .init(
+        top: Inset.Padding.default,
+        left: .zero,
+        bottom: Inset.Padding.default,
+        right: .zero
+      )
       $0.backgroundColor = Color.Background.default
       $0.delaysContentTouches = false
       $0.keyboardDismissMode = .interactive
@@ -159,18 +168,10 @@ extension RoutineEditView {
       addSubview($0)
       $0.snp.makeConstraints {
         $0.top.leading.trailing.equalToSuperview()
-        $0.bottom.equalTo(keyboardLayoutGuide.snp.top)
+        $0.bottom.equalTo(keyboardLayoutGuide.snp.top).priority(.high)
+        collectionBottomConstraint = $0.bottom.lessThanOrEqualToSuperview().constraint
       }
     }
-  }
-  
-  private func collectionContentInset() -> UIEdgeInsets {
-    .init(
-      top: Inset.Padding.default,
-      left: .zero,
-      bottom: Inset.Padding.default + (showsDeleteButton ? Size.Button.big + Inset.Padding.small : 0),
-      right: .zero
-    )
   }
   
   private func createLayout() -> CompositionalLayout {
@@ -192,6 +193,7 @@ extension RoutineEditView {
   private func createDeleteButton() -> UIButton {
     with(UIButton(type: .system)) {
       insertSubview($0, aboveSubview: collectionView)
+      $0.isHidden = !showsDeleteButton
       $0.on { [weak self] in self?.onDelete?() }
       $0.setTitle(RoutineAppStrings.Localizable.RoutineEdit.Button.delete, for: .normal)
       $0.titleLabel?.font = Font.system(.body, weight: .medium)
