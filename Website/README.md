@@ -1,7 +1,53 @@
 # Routine website
 
 A static information site with local system fonts, CSS and native previews using
-fictional sample routines. No build step, vendor scripts or analytics are required.
+fictional sample routines. Python's standard library builds localized HTML from
+plain-text catalogs. Generation needs no external dependencies. Production pages
+use the explicitly configured Cloudflare Web Analytics beacon.
+
+## Localized sources and generation
+
+`locales/en.json` owns the English message contract: English msgid to identical
+English plain text. Every other catalog must contain exactly the same keys and
+nonempty translated strings. `templates/` owns the approved homepage, support
+and privacy markup. `{{t:"English msgid"}}` inserts HTML-escaped plain text in
+text or attribute contexts, never translated HTML. JSON-LD is serialized separately
+with escaped HTML delimiters, including its translated SoftwareApplication
+description. Keep the catalog message set and template usage synchronized.
+
+The locale set must exactly match
+`Modules/RoutineApp/Resources/Localization/*.lproj`: `bn`, `de`, `en`, `es`, `fr`,
+`hi`, `id`, `ja`, `pt-BR`, `ru`, `uk`, `zh-Hans`. The builder fails before writing
+anything if a catalog is absent, malformed, incomplete or contains unknown or
+duplicate keys. There is no English fallback or placeholder publication.
+
+```sh
+python3 Tools/build-website.py
+python3 Tools/build-website.py --check
+python3 Tools/validate-website.py
+```
+
+Commit generated pages alongside source changes. `--check` never writes and fails
+on byte-level drift, missing output or unexpected public files. The validator also
+checks this source-to-output match. CI checks generated output rather than silently
+rebuilding it, and validates the deploy job's checked-out payload before upload.
+
+English home/support/privacy stay at the root; the eleven other locales use
+`/{locale}/`, `/{locale}/support.html` and `/{locale}/privacy.html`. The sitemap has
+exactly 36 indexable canonical URLs. Every page declares its language, OG locale
+and reciprocal full hreflang set, including itself and English `x-default`.
+Home JSON-LD uses the page's language, canonical URL and translated description.
+The root-only `terms.html` remains the existing English Apple EULA redirect.
+
+A compact header `details` picker shows the current language code and opens a
+two-column list of autonyms with same-page links. It works without JavaScript;
+the local deferred `navigation.js` adds outside-click and Escape dismissal and
+closes the other header popup when one opens. It uses no automatic redirects,
+cookies, storage or analytics. Controls have 44px minimum targets; narrow screens
+place Support and Privacy in a separate compact menu to keep the header on one line.
+GitHub uses an accessible icon link beside the language picker on every screen size.
+The shared composition and official badge stay English and unchanged; alt and
+social descriptions come from each catalog. There is no footer.
 
 ## Preview
 
@@ -46,7 +92,8 @@ deployments. Repository Pages settings own the custom domain. No `CNAME` file
 is included in the public allowlist. These instructions do not change cloud
 configuration or publish the local working tree.
 
-The site uses these thirteen ordinary files from `public/`:
+The exact public allowlist contains 48 ordinary files: these root/shared files
+plus three generated HTML pages in each of the eleven non-English directories:
 
 ```text
 index.html
@@ -54,6 +101,8 @@ privacy.html
 support.html
 terms.html
 styles.css
+navigation.js
+analytics.js
 robots.txt
 sitemap.xml
 assets/routine-iphone.webp
@@ -71,7 +120,9 @@ source, credentials, raw captures or build artifacts. The README also uses the
 preview images, so keep their paths stable.
 
 Run `python3 Tools/validate-website.py` from the repository root before pushing.
-The validator checks the exact public file allowlist, rejects symbolic and hard
+The validator checks exact app/catalog locale coverage and message parity,
+same-page picker links, reciprocal alternate targets and generated-file drift.
+It checks the exact public file/directory allowlist, rejects symbolic and hard
 links, and verifies local HTML/CSS targets and HTML fragments. It also checks
 page-specific titles/descriptions, custom-domain canonicals, consistent OG/Twitter
 metadata and local social images, the descriptive homepage JSON-LD, unrestricted
@@ -104,7 +155,14 @@ Ordinary crawlable HTML, working links, canonical URLs and a sitemap are the
 discoverability foundation. No special AI file is required; `llms.txt` is omitted.
 Neither metadata nor an optional AI summary file guarantees rankings, indexing,
 AI inclusion or rich results. Crawlers remain allowed; there are no new
-training-policy directives, executable scripts or analytics.
+training-policy directives. Page content and language links remain static HTML.
+The local header-menu enhancement and analytics loader are the only executable
+scripts included in the page source. The loader adds Cloudflare's exact account
+beacon only on HTTPS `routine.dimasike.com`, never localhost, HTTP or previews.
+The public ingestion token is not an API credential. Website analytics is separate
+from the app, which does not include developer analytics. Each localized privacy
+page discloses website analytics. Keep manual snippet installation enabled for
+the Routine analytics registration to avoid duplicate automatic injection.
 
 At the November 3, 2026 source review, version 1.1.0 (build 24) had not shipped
 and the app was removed from sale. The homepage download link uses the app’s configured

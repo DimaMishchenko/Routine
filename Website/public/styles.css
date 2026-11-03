@@ -56,6 +56,22 @@ figure img { display: block; max-width: 100%; object-fit: contain; }
 .document h2 { font-size: 1.3rem; margin: 2rem 0 .75rem; }
 .document p, .document li { overflow-wrap: anywhere; }
 .updated { color: var(--muted); font-size: .95rem; }
+.header-actions { display: flex; align-items: center; gap: .5rem; }
+.primary-nav { margin-right: .75rem; }
+.language-picker, .site-menu { position: relative; flex: 0 0 auto; font-size: .85rem; line-height: 1.5; }
+.language-picker summary, .site-menu summary, .github-link { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: .5rem .65rem; cursor: pointer; border: 1px solid var(--line); border-radius: 12px; list-style: none; font-weight: 700; }
+.github-link { flex: 0 0 44px; width: 44px; height: 44px; padding: 0; color: var(--foreground); text-decoration: none; }
+.github-link:hover { background: #eaf1ff; color: var(--link); }
+.github-link:focus-visible { border-radius: 12px; }
+.language-picker summary::-webkit-details-marker, .site-menu summary::-webkit-details-marker { display: none; }
+.language-picker summary:focus-visible, .site-menu summary:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.language-picker ul, .site-menu nav { position: absolute; right: 0; top: calc(100% + .5rem); z-index: 10; display: grid; gap: .15rem; width: min(280px, calc(100vw - 2rem)); max-height: min(420px, calc(100dvh - 110px)); overflow-y: auto; padding: .5rem; margin: 0; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 40px #23304a20; }
+.language-picker ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.language-picker a, .site-menu nav a { display: flex; align-items: center; min-width: 44px; min-height: 44px; padding: .5rem .65rem; border-radius: 9px; text-decoration: none; color: var(--foreground); white-space: normal; overflow-wrap: anywhere; }
+.language-picker a:hover, .language-picker a[aria-current="page"], .site-menu nav a:hover, .site-menu nav a[aria-current="page"] { background: #eaf1ff; color: var(--link); }
+.site-menu { display: none; }
+nav a, .brand { min-height: 44px; min-width: 44px; }
+main { overflow-wrap: anywhere; }
 
 @media (max-width: 950px) {
   .intro { gap: 2rem; }
@@ -83,4 +99,10 @@ figure img { display: block; max-width: 100%; object-fit: contain; }
   .features strong { font-size: .94rem; }
   .devices-preview { padding: .75rem .25rem; border-radius: 24px; }
   .document { padding-block: 2rem; }
+  .header-actions { gap: .5rem; }
+  header .primary-nav { display: none; }
+  .site-menu { display: block; }
+  .site-menu summary { font-size: 1.3rem; padding-block: .25rem; }
+  .site-menu nav { width: 220px; display: grid; font-size: .9rem; }
+  .language-picker li { max-width: 100%; }
 }

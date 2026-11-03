@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="{{locale}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{t:"Contact Routine support and get help with reminders, iCloud sync and app lock on iPhone, iPad and Mac."}}">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>{{t:"Support — Routine habit tracker"}}</title>
+  <link rel="canonical" href="{{canonical}}">
+  <meta property="og:locale" content="{{og_locale}}">
+{{alternates}}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{t:"Routine"}}">
+  <meta property="og:title" content="{{t:"Support — Routine habit tracker"}}">
+  <meta property="og:description" content="{{t:"Contact Routine support and get help with reminders, iCloud sync and app lock on iPhone, iPad and Mac."}}">
+  <meta property="og:url" content="{{canonical}}">
+  <meta property="og:image" content="https://routine.dimasike.com/assets/routine-icon.webp">
+  <meta property="og:image:alt" content="{{t:"Routine app icon"}}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{t:"Support — Routine habit tracker"}}">
+  <meta name="twitter:description" content="{{t:"Contact Routine support and get help with reminders, iCloud sync and app lock on iPhone, iPad and Mac."}}">
+  <meta name="twitter:image" content="https://routine.dimasike.com/assets/routine-icon.webp">
+  <meta name="twitter:image:alt" content="{{t:"Routine app icon"}}">
+  <link rel="icon" href="{{asset_prefix}}assets/routine-icon.webp">
+  <link rel="stylesheet" href="{{asset_prefix}}styles.css?v=header-icons">
+  <script src="{{asset_prefix}}navigation.js?v=header-picker" defer></script>
+  <script src="{{asset_prefix}}analytics.js?v=cloudflare-1" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">{{t:"Skip to content"}}</a>
+  <header>
+    <a class="brand" href="index.html" aria-label="{{t:"Routine home"}}"><img src="{{asset_prefix}}assets/routine-icon.webp" alt="" width="38" height="38">{{t:"Routine"}}</a>
+    <div class="header-actions">
+      {{site_navigation}}
+      {{github_link}}
+      {{language_picker}}
+    </div>
+  </header>
+  <main id="main" class="document">
+    <h1>{{t:"Support"}}</h1>
+    <p class="lead">{{t:"Need a hand? Email"}} <a href="mailto:dimasike.dev@gmail.com?subject=Routine%20support">{{t:"dimasike.dev@gmail.com"}}</a>{{t:"."}}</p>
+    <p>{{t:"Include your app version, device model and iOS, iPadOS or macOS version, plus what you expected and what happened. Hide personal routines in screenshots, and review any diagnostic text before sending. Never send passwords or verification codes."}}</p>
+    <p>{{t:"For a reproducible bug or feature suggestion, use"}} <a href="https://github.com/DimaMishchenko/Routine/issues">{{t:"GitHub Issues"}}</a>{{t:". Issues are public: keep private details in email."}}</p>
+    <h2>{{t:"Why am I not getting reminders?"}}</h2>
+    <p>{{t:"Check the routine’s reminder time and allow Routine notifications in system settings. Check whether Focus or a notification summary is delaying alerts."}}</p>
+    <h2>{{t:"Why aren’t my devices in sync?"}}</h2>
+    <p>{{t:"Check that each device uses the same Apple account with iCloud enabled and has an internet connection. If the problem continues, email support before deleting the app or its data."}}</p>
+    <h2>{{t:"How do I change app lock?"}}</h2>
+    <p>{{t:"Open Routine’s Settings to change authentication. Face ID, Touch ID or device passcode availability depends on your device and system settings."}}</p>
+  </main>
+</body>
+</html>

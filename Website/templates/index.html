@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="{{locale}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{t:"Routine is a free, open-source habit tracker for iPhone, iPad and Mac. Flexible goals, progress history, reminders and iCloud sync."}}">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>{{t:"Routine — habit tracker for iPhone, iPad and Mac"}}</title>
+  <link rel="canonical" href="{{canonical}}">
+  <meta property="og:locale" content="{{og_locale}}">
+{{alternates}}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{t:"Routine"}}">
+  <meta property="og:title" content="{{t:"Routine — habit tracker for iPhone, iPad and Mac"}}">
+  <meta property="og:description" content="{{t:"Routine is a free, open-source habit tracker for iPhone, iPad and Mac. Flexible goals, progress history, reminders and iCloud sync."}}">
+  <meta property="og:url" content="{{canonical}}">
+  <meta property="og:image" content="https://routine.dimasike.com/assets/routine-devices.webp">
+  <meta property="og:image:alt" content="{{t:"Routine on a MacBook, iPad and iPhone, showing example habits and progress"}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{t:"Routine — habit tracker for iPhone, iPad and Mac"}}">
+  <meta name="twitter:description" content="{{t:"Routine is a free, open-source habit tracker for iPhone, iPad and Mac. Flexible goals, progress history, reminders and iCloud sync."}}">
+  <meta name="twitter:image" content="https://routine.dimasike.com/assets/routine-devices.webp">
+  <meta name="twitter:image:alt" content="{{t:"Routine on a MacBook, iPad and iPhone, showing example habits and progress"}}">
+  {{structured_data}}
+  <link rel="icon" href="{{asset_prefix}}assets/routine-icon.webp">
+  <link rel="stylesheet" href="{{asset_prefix}}styles.css?v=header-icons">
+  <script src="{{asset_prefix}}navigation.js?v=header-picker" defer></script>
+  <script src="{{asset_prefix}}analytics.js?v=cloudflare-1" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">{{t:"Skip to content"}}</a>
+  <header>
+    <a class="brand" href="index.html" aria-label="{{t:"Routine home"}}"><img src="{{asset_prefix}}assets/routine-icon.webp" alt="" width="38" height="38">{{t:"Routine"}}</a>
+    <div class="header-actions">
+      {{site_navigation}}
+      {{github_link}}
+      {{language_picker}}
+    </div>
+  </header>
+  <main id="main">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <h1 id="intro-title">{{t:"Small steps."}}<br><span>{{t:"Your routine."}}</span></h1>
+        <p class="lead">{{t:"A simple habit tracker for iPhone, iPad and Mac. Set a goal, check in, and see your progress over time."}}</p>
+        <p><a class="app-store-link" href="https://apps.apple.com/app/id1643340709"><img src="{{asset_prefix}}assets/download-on-the-app-store.svg" alt="{{t:"Download on the App Store"}}" width="120" height="40"></a></p>
+      </div>
+      <figure class="devices-preview"><img src="{{asset_prefix}}assets/routine-devices.webp?v=clean-mac" alt="{{t:"Routine running on a MacBook, iPad and iPhone, showing example habits and progress"}}" width="2400" height="1550" fetchpriority="high"></figure>
+      <ul class="features">
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"🎯"}}</span><div><strong>{{t:"Goals that fit"}}</strong><span>{{t:"Daily, weekly or monthly."}}</span></div></li>
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"📈"}}</span><div><strong>{{t:"See your progress"}}</strong><span>{{t:"History, calendars and charts."}}</span></div></li>
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"🔔"}}</span><div><strong>{{t:"A timely nudge"}}</strong><span>{{t:"Reminders on your schedule."}}</span></div></li>
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"☁️"}}</span><div><strong>{{t:"Across your devices"}}</strong><span>{{t:"Stay in sync with iCloud."}}</span></div></li>
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"🔐"}}</span><div><strong>{{t:"Keep it personal"}}</strong><span>{{t:"Face ID, Touch ID or device lock."}}</span></div></li>
+          <li><span class="feature-emoji" aria-hidden="true">{{t:"💙"}}</span><div><strong>{{t:"Free. Open source."}}</strong><span>{{t:"No subscriptions, ads or analytics."}}</span></div></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -8,19 +8,21 @@ A native habit tracker for iPhone, iPad and Mac, with daily, weekly and monthly 
 ![iOS 26+](https://img.shields.io/badge/iOS-26%2B-blue)
 ![macOS 26+](https://img.shields.io/badge/macOS-26%2B-blue)
 
-[Website](https://dimamishchenko.github.io/Routine/) · [Report a bug](https://github.com/DimaMishchenko/Routine/issues)
+[Website](https://routine.dimasike.com) · [Support](https://routine.dimasike.com/support.html) · [Privacy policy](https://routine.dimasike.com/privacy.html) · [Report a bug](https://github.com/DimaMishchenko/Routine/issues)
 
 **Fully free. Unlimited routines. No purchases, subscriptions, analytics or app account.**
-Track progress, explore your history, set local reminders and protect the app with
-Face ID, Touch ID or your passcode. Store data locally or use supported iCloud sync.
 
 > The free 1.1.0 update has not shipped yet. Routine is currently unavailable on the
 > App Store; existing 1.0.4 installations may have different features and privacy behavior.
 
-<p>
-  <img src="Website/public/assets/routine-iphone.webp" width="180" alt="Routine on iPhone with fictional sample habits">
-  <img src="Website/public/assets/routine-mac.webp" width="435" alt="Routine on Mac with fictional sample habits">
-</p>
+![Routine on a MacBook, iPad and iPhone, showing example habits and progress](Website/public/assets/routine-devices.webp)
+
+- 🎯 Daily, weekly or monthly goals.
+- 📈 Progress history, calendars and charts.
+- 🔔 Local reminders on your schedule.
+- ☁️ Store data locally or use supported iCloud sync.
+- 🔐 Face ID, Touch ID or passcode protection.
+- 💙 Free and open source, with unlimited routines and no ads or analytics.
 
 **Maintenance mode:** fixes, platform compatibility and security take priority.
 Major new features are not planned; support and review have no guaranteed schedule.

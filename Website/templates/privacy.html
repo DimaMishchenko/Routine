@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="{{locale}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{t:"Privacy information for Routine 1.1.0: local storage, Apple iCloud, reminders, authentication and support."}}">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>{{t:"Privacy — Routine habit tracker"}}</title>
+  <link rel="canonical" href="{{canonical}}">
+  <meta property="og:locale" content="{{og_locale}}">
+{{alternates}}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{t:"Routine"}}">
+  <meta property="og:title" content="{{t:"Privacy — Routine habit tracker"}}">
+  <meta property="og:description" content="{{t:"Privacy information for Routine 1.1.0: local storage, Apple iCloud, reminders, authentication and support."}}">
+  <meta property="og:url" content="{{canonical}}">
+  <meta property="og:image" content="https://routine.dimasike.com/assets/routine-icon.webp">
+  <meta property="og:image:alt" content="{{t:"Routine app icon"}}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{t:"Privacy — Routine habit tracker"}}">
+  <meta name="twitter:description" content="{{t:"Privacy information for Routine 1.1.0: local storage, Apple iCloud, reminders, authentication and support."}}">
+  <meta name="twitter:image" content="https://routine.dimasike.com/assets/routine-icon.webp">
+  <meta name="twitter:image:alt" content="{{t:"Routine app icon"}}">
+  <link rel="icon" href="{{asset_prefix}}assets/routine-icon.webp">
+  <link rel="stylesheet" href="{{asset_prefix}}styles.css?v=header-icons">
+  <script src="{{asset_prefix}}navigation.js?v=header-picker" defer></script>
+  <script src="{{asset_prefix}}analytics.js?v=cloudflare-1" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">{{t:"Skip to content"}}</a>
+  <header>
+    <a class="brand" href="index.html" aria-label="{{t:"Routine home"}}"><img src="{{asset_prefix}}assets/routine-icon.webp" alt="" width="38" height="38">{{t:"Routine"}}</a>
+    <div class="header-actions">
+      {{site_navigation}}
+      {{github_link}}
+      {{language_picker}}
+    </div>
+  </header>
+  <main id="main" class="document">
+    <h1>{{t:"Privacy"}}</h1>
+    <p class="updated">{{t:"Routine 1.1.0 · Updated 3 November 2026"}}</p>
+    <h2>{{t:"Your routines and iCloud"}}</h2>
+    <p>{{t:"Your routines, progress, history and reminder settings are stored on your device. When iCloud is available, Routine can sync them through Apple’s CloudKit using your Apple account. Apple’s iCloud and backup settings govern those services. Routine has no separate account or synchronization server."}}</p>
+    <h2>{{t:"Reminders and app lock"}}</h2>
+    <p>{{t:"Reminders use local notifications with your permission. Face ID, Touch ID and device passcode authentication are handled by the operating system. Routine does not receive biometric templates. You can manage permissions in system settings."}}</p>
+    <h2>{{t:"Analytics and support"}}</h2>
+    <p>{{t:"Routine includes no developer analytics, advertising trackers or third-party crash reporting. The app and operating system may produce local diagnostic logs."}}</p>
+    <p>{{t:"If you choose to email support, the app’s draft includes the date, device model, operating system version and app version. Review or remove these details before sending. Support receives only what you choose to send; avoid private routine information. Email and GitHub have their own privacy policies, and GitHub issues are public."}}</p>
+    <h2>{{t:"Deleting data"}}</h2>
+    <p>{{t:"On iPhone and iPad, deleting the app normally removes app-local data. On Mac, removing the app can leave its local app-container and shared App Group data behind. CloudKit data and iCloud backups may remain under your Apple account and need separate management through Apple’s iCloud storage settings. Deleting the app does not guarantee deletion of every copy. Contact support for help identifying stored Routine data."}}</p>
+    <h2>{{t:"This website"}}</h2>
+    <p>{{t:"This website uses Cloudflare Web Analytics to measure visits and performance without analytics cookies. GitHub Pages hosts it and may process request information, including your IP address, to serve and secure the site. See"}} <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">{{t:"GitHub’s privacy statement"}}</a>{{t:"."}} <a href="https://developers.cloudflare.com/web-analytics/about/">{{t:"Cloudflare Web Analytics privacy"}}</a>{{t:"."}}</p>
+    <h2>{{t:"Contact"}}</h2>
+    <p>{{t:"For privacy questions, email"}} <a href="mailto:dimasike.dev@gmail.com">{{t:"dimasike.dev@gmail.com"}}</a>{{t:"."}}</p>
+  </main>
+</body>
+</html>
