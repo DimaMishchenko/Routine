@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://routine.dimasike.com/sitemap.xml
