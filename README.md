@@ -19,9 +19,7 @@ A native habit tracker for iPhone, iPad and Mac, with daily, weekly and monthly 
 - 🔐 Face ID, Touch ID or passcode protection.
 - 💙 Free and open source, with unlimited routines and no ads or analytics.
 
-> The free 1.1.0 update is not released yet. Routine is currently unavailable on the App Store.
-
-## Our story 👋
+## Story 👋
 
 We started building Routine in June 2021 to make building habits feel simple.
 We published it on the App Store, but life got busy and we couldn’t give it the time it deserved.
