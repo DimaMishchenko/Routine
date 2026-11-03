@@ -2,18 +2,7 @@
 
 A native habit tracker for iPhone, iPad and Mac, with daily, weekly and monthly goals.
 
-[![CI](https://github.com/DimaMishchenko/Routine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/DimaMishchenko/Routine/actions/workflows/ci.yml)
-[![MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Maintenance mode](https://img.shields.io/badge/status-maintenance%20mode-yellow)](CONTRIBUTING.md)
-![iOS 26+](https://img.shields.io/badge/iOS-26%2B-blue)
-![macOS 26+](https://img.shields.io/badge/macOS-26%2B-blue)
-
-[Website](https://routine.dimasike.com) · [Support](https://routine.dimasike.com/support.html) · [Privacy policy](https://routine.dimasike.com/privacy.html) · [Report a bug](https://github.com/DimaMishchenko/Routine/issues)
-
-**Fully free. Unlimited routines. No purchases, subscriptions, analytics or app account.**
-
-> The free 1.1.0 update has not shipped yet. Routine is currently unavailable on the
-> App Store; existing 1.0.4 installations may have different features and privacy behavior.
+[Website](https://routine.dimasike.com) · [Support](https://routine.dimasike.com/support.html) · [Privacy](https://routine.dimasike.com/privacy.html)
 
 ![Routine on a MacBook, iPad and iPhone, showing example habits and progress](Website/public/assets/routine-devices.webp)
 
@@ -24,20 +13,20 @@ A native habit tracker for iPhone, iPad and Mac, with daily, weekly and monthly 
 - 🔐 Face ID, Touch ID or passcode protection.
 - 💙 Free and open source, with unlimited routines and no ads or analytics.
 
-**Maintenance mode:** fixes, platform compatibility and security take priority.
-Major new features are not planned; support and review have no guaranteed schedule.
+> The free 1.1.0 update is not released yet. Routine is currently unavailable on the App Store.
 
-## Run locally
+## Our story 👋
 
-Install Xcode 27.1, [mise](https://mise.jdx.dev/) and [xcbeautify](https://github.com/cpisciotta/xcbeautify):
+We started building Routine in June 2021 to make building habits feel simple.
+We published it on the App Store, but life got busy and we couldn’t give it the time it deserved.
 
-```sh
-mise install
-mise exec -- make build
-open Routine.xcworkspace
-```
+Now we’re bringing Routine back, completely free. Every feature is included, with no subscriptions or purchases. 🌱
 
-Choose **RoutineApp Local** and an iOS 26+ simulator. No Apple account is required.
-See [Contributing](CONTRIBUTING.md) for cloud builds and [Testing](TESTING.md) for verification.
+Created by [Dima](https://x.com/dimasike_) and [Misha](https://x.com/mikemikovich24).
 
-[Architecture](ARCHITECTURE.md) · [Privacy](PRIVACY.md) · [Security reports](SECURITY.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+## Development
+
+Routine is in maintenance mode, focused on fixes, compatibility and security.
+See [Contributing](CONTRIBUTING.md) for setup and contribution guidelines, or [report a bug](https://github.com/DimaMishchenko/Routine/issues).
+
+[Architecture](ARCHITECTURE.md) · [Testing](TESTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
