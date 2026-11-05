@@ -17,7 +17,9 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Validate public files and links
+      - name: Check generated locale pages
+        run: python3 Tools/build-website.py --check
+      - name: Validate public files, catalogs and links
         run: python3 Tools/validate-website.py
 
   deploy:
@@ -41,6 +43,8 @@ jobs:
           persist-credentials: false
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Validate exact publication payload
+        run: python3 Tools/validate-website.py
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
