@@ -6,6 +6,18 @@ import UIKit
 import XCTest
 
 final class FreeAppTests: XCTestCase {
+  func testPrivacyPolicyUsesProductionWebsite() {
+    XCTAssertEqual(AppConfiguration.privacyPolicyLink?.absoluteString, "https://routine.dimasike.com/privacy.html")
+  }
+
+  func testFeedbackAndTermsKeepTheirDestinations() {
+    XCTAssertEqual(AppConfiguration.supportLink?.absoluteString, "https://github.com/DimaMishchenko/Routine/issues")
+    XCTAssertEqual(
+      AppConfiguration.termsOfUseLink?.absoluteString,
+      "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+    )
+  }
+
   @MainActor func testAddRoutineUsesNativeSymbolButton() throws {
     let presenter = RoutineListPresenterImpl(
       store: FreeRoutineStore(routines: []),
