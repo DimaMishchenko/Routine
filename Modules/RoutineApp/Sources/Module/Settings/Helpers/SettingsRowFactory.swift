@@ -213,7 +213,6 @@ final class SettingsRowFactoryImpl: SettingsRowFactory {
       .value(
         .init(
           title: RoutineAppStrings.Localizable.Settings.Row.openSource,
-          value: .text(RoutineAppStrings.Localizable.Common.github),
           icon: icon("chevron.left.forwardslash.chevron.right", color: .systemTeal),
           accessory: .disclosure
         )

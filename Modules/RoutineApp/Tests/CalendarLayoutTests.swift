@@ -4,6 +4,29 @@ import UIKit
 import XCTest
 
 @MainActor final class CalendarLayoutTests: XCTestCase {
+  func testIncompleteDecorationsAreNotSelectedAndDuplicateDaysSelectOnce() async throws {
+    let date = try XCTUnwrap(Calendar.app.date(from: DateComponents(year: 2025, month: 6, day: 12)))
+    let host = UIHostingController(rootView: calendar(selections: [
+      .init(emoji: "❌", date: date, isCompleted: false),
+      .init(emoji: "⚪️", date: date.addingTimeInterval(3600), isCompleted: false)
+    ]))
+    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 600, height: 900))
+    window.rootViewController = host
+    window.isHidden = false
+    defer { window.isHidden = true }
+    try await settle(host)
+    let native = try XCTUnwrap(findCalendar(in: host.view))
+    let selection = try XCTUnwrap(native.selectionBehavior as? UICalendarSelectionMultiDate)
+    XCTAssertTrue(selection.selectedDates.isEmpty)
+    native.setVisibleDateComponents(DateComponents(year: 2025, month: 6), animated: false)
+    host.rootView = calendar(selections: [
+      .init(emoji: "✅", date: date), .init(emoji: "✅", date: date.addingTimeInterval(3600))
+    ])
+    try await settle(host)
+    XCTAssertEqual(selection.selectedDates.map(\.day), [12])
+    XCTAssertEqual(native.visibleDateComponents.month, 6)
+  }
+
   func testWideDetailsCalendarKeepsNativeGridSize() async throws {
     let host = UIHostingController(rootView: calendar(selections: []).frame(width: 532))
     let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 600, height: 900))

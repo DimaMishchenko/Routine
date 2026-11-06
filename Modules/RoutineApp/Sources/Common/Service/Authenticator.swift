@@ -34,6 +34,16 @@ final class AuthenticatorImpl: Authenticator {
   func auth(biometryOnly: Bool) async -> Bool {
     let context = LAContext()
     defer { context.invalidate() }
+    return await withTaskCancellationHandler {
+      guard !Task.isCancelled else { return false }
+      let succeeded = await evaluate(context: context, biometryOnly: biometryOnly)
+      return succeeded && !Task.isCancelled
+    } onCancel: {
+      context.invalidate()
+    }
+  }
+
+  private func evaluate(context: LAContext, biometryOnly: Bool) async -> Bool {
     if biometryOnly { context.localizedFallbackTitle = .empty }
     let policy: LAPolicy = biometryOnly ? .deviceOwnerAuthenticationWithBiometrics : .deviceOwnerAuthentication
     do {
@@ -42,7 +52,7 @@ final class AuthenticatorImpl: Authenticator {
         localizedReason: RoutineAppStrings.Localizable.FaceID.requestReason
       )
     } catch {
-      guard biometryOnly, (error as? LAError)?.code == .biometryLockout else {
+      guard !Task.isCancelled, biometryOnly, (error as? LAError)?.code == .biometryLockout else {
         Logger.log(error)
         return false
       }

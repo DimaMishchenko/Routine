@@ -4,6 +4,58 @@ import CoreData
 import XCTest
 
 final class PersistenceTests: XCTestCase {
+  @MainActor func testCalendarCompletesExistingPartialDayWithoutDuplicatingHistory() async throws {
+    try await completeRecordedDay(result: 2)
+  }
+
+  @MainActor func testCalendarCompletesExistingSkippedDayWithoutDuplicatingHistory() async throws {
+    try await completeRecordedDay(result: 0)
+  }
+
+  @MainActor private func completeRecordedDay(result: Int) async throws {
+    let stack = try CoreDataStack(storage: .inMemory)
+    let store = CoreDataRoutineStore(coreDataStack: stack)
+    let yesterday = try XCTUnwrap(Calendar.app.date(byAdding: .day, value: -1, to: Date()))
+    let original = routine(date: yesterday, result: result)
+    try await store.save(original)
+    let saved = expectation(description: "Calendar completion saved")
+    let observation = store.observeAll()
+      .first(where: { $0.first?.history.contains(where: \.goalAchieved) == true })
+      .sink(receiveCompletion: { _ in }, receiveValue: { _ in saved.fulfill() })
+    let viewModel = RoutineDetailsViewModelImpl(routine: original, routineStore: store)
+    viewModel.showAlert = { $0.handler(.yes) }
+    viewModel.select(date: yesterday)
+    await fulfillment(of: [saved], timeout: 2)
+    let persisted = try await store.allRoutines()
+    XCTAssertEqual(persisted.first?.history.count, 1)
+    XCTAssertEqual(persisted.first?.history.first?.uuid, original.history.first?.uuid)
+    XCTAssertEqual(persisted.first?.history.first?.result, 5)
+    withExtendedLifetime((viewModel, observation)) {}
+  }
+
+  @MainActor func testCalendarDeselectionRemovesAllSameDayEntriesAndPreservesOtherDays() async throws {
+    let stack = try CoreDataStack(storage: .inMemory)
+    let store = CoreDataRoutineStore(coreDataStack: stack)
+    let yesterday = try XCTUnwrap(Calendar.app.date(byAdding: .day, value: -1, to: Date()))
+    var original = EditableRoutine(routine: routine(date: yesterday, result: 5))
+    let sameDay = Calendar.app.startOfDay(for: yesterday).addingTimeInterval(3600)
+    original.history.append(.init(uuid: UUID(), date: sameDay, goal: 5, result: 0))
+    let kept = History(uuid: UUID(), date: Date(), goal: 5, result: 2)
+    original.history.append(kept)
+    try await store.save(original.routine)
+    let removed = expectation(description: "Calendar day cleared")
+    let observation = store.observeAll()
+      .first(where: { $0.first?.history == [kept] })
+      .sink(receiveCompletion: { _ in }, receiveValue: { _ in removed.fulfill() })
+    let viewModel = RoutineDetailsViewModelImpl(routine: original.routine, routineStore: store)
+    viewModel.showAlert = { $0.handler(.yes) }
+    viewModel.deselect(date: yesterday)
+    await fulfillment(of: [removed], timeout: 2)
+    let persisted = try await store.allRoutines()
+    XCTAssertEqual(persisted.first?.history, [kept])
+    withExtendedLifetime((viewModel, observation)) {}
+  }
+
   func testLocalStorageDoesNotEnableCloudKit() throws {
     let stack = try CoreDataStack(storage: .inMemory)
     XCTAssertNil(stack.persistentContainer.persistentStoreDescriptions.first?.cloudKitContainerOptions)
@@ -155,7 +207,7 @@ final class PersistenceTests: XCTestCase {
     }
   }
 
-  private func routine(date: Date = Date()) -> Routine {
+  private func routine(date: Date = Date(), result: Int = 2) -> Routine {
     Routine(
       uuid: UUID(),
       name: "Read",
@@ -166,7 +218,7 @@ final class PersistenceTests: XCTestCase {
       progress: Progress(goal: 5, current: 2),
       remind: true,
       reminders: [Reminder(uuid: UUID(), type: .daily(.form(hours: 9, minutes: 30)))],
-      history: [History(uuid: UUID(), date: date, goal: 5, result: 2)]
+      history: [History(uuid: UUID(), date: date, goal: 5, result: result)]
     )
   }
 }

@@ -100,7 +100,8 @@ final class FreeAppTests: XCTestCase {
       }
       XCTAssertEqual(sourceRows.count, 1)
       if let row = sourceRows.first, case .value(let model) = row.type {
-        XCTAssertEqual(model.value, .text(RoutineAppStrings.Localizable.Common.github))
+        XCTAssertNil(model.value)
+        XCTAssertNotNil(model.icon)
         XCTAssertEqual(model.accessory, .disclosure)
         row.action?()
       }
