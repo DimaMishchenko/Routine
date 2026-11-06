@@ -2,6 +2,18 @@
 import XCTest
 
 final class AppLockStateTests: XCTestCase {
+  func testAuthenticationSuccessWhilePromptIsInactiveUnlocksOnActivation() throws {
+    var state = AppLockState()
+    state.activate(protectionEnabled: true)
+    let generation = try XCTUnwrap(state.beginAuthentication())
+    state.deactivate(protectionEnabled: true)
+    state.completeAuthentication(succeeded: true, generation: generation)
+    XCTAssertTrue(state.blocksContent)
+    state.activate(protectionEnabled: true)
+    XCTAssertFalse(state.blocksContent)
+    XCTAssertFalse(state.shouldAuthenticateAutomatically)
+  }
+
   func testColdStartStaysBlockedUntilAuthenticationSucceeds() throws {
     var state = AppLockState()
     state.activate(protectionEnabled: true)
@@ -61,5 +73,65 @@ final class AppLockStateTests: XCTestCase {
     XCTAssertFalse(state.blocksContent)
     XCTAssertFalse(state.shouldAuthenticateAutomatically)
     XCTAssertNil(state.beginAuthentication())
+  }
+  @MainActor func testBackgroundReleasesAttemptAndLateResultCannotClearReplacement() async {
+    var continuations: [CheckedContinuation<Bool, Never>] = []
+    var cancellations: [Bool] = []
+    let started = (0..<3).map { expectation(description: "Authentication \($0) started") }
+    let scene = SceneDelegate {
+      let result = await withCheckedContinuation { continuation in
+        continuations.append(continuation)
+        started[continuations.count - 1].fulfill()
+      }
+      cancellations.append(Task.isCancelled)
+      return result
+    }
+    scene.activateLock(protectionEnabled: true)
+    await fulfillment(of: [started[0]], timeout: 2)
+    scene.deactivateLock(protectionEnabled: true)
+    scene.backgroundLock()
+    scene.activateLock(protectionEnabled: true)
+    await fulfillment(of: [started[1]], timeout: 2)
+    continuations[0].resume(returning: true)
+    await drainTasks()
+    XCTAssertEqual(cancellations, [true])
+    XCTAssertTrue(scene.lockState.blocksContent)
+    XCTAssertEqual(scene.lockState.phase, .authenticating)
+    scene.authenticate()
+    await drainTasks()
+    XCTAssertEqual(continuations.count, 2)
+    continuations[1].resume(returning: false)
+    await drainTasks()
+    XCTAssertEqual(scene.lockState.phase, .locked)
+    scene.authenticate()
+    await fulfillment(of: [started[2]], timeout: 2)
+    continuations[2].resume(returning: true)
+    await drainTasks()
+    XCTAssertFalse(scene.lockState.blocksContent)
+  }
+
+  @MainActor func testPromptSuccessWhileInactiveRevealsContentOnlyAfterActivation() async {
+    let started = expectation(description: "Authentication started")
+    var completion: CheckedContinuation<Bool, Never>?
+    let scene = SceneDelegate {
+      await withCheckedContinuation { continuation in
+        completion = continuation
+        started.fulfill()
+      }
+    }
+    scene.activateLock(protectionEnabled: true)
+    await fulfillment(of: [started], timeout: 2)
+    scene.deactivateLock(protectionEnabled: true)
+    completion?.resume(returning: true)
+    await drainTasks()
+    XCTAssertTrue(scene.lockState.blocksContent)
+    scene.activateLock(protectionEnabled: true)
+    XCTAssertFalse(scene.lockState.blocksContent)
+  }
+
+  @MainActor private func drainTasks() async {
+    await withCheckedContinuation { continuation in
+      DispatchQueue.main.async { continuation.resume() }
+    }
   }
 }

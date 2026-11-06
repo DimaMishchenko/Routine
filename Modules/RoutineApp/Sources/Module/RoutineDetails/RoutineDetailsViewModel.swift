@@ -53,18 +53,31 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
   func select(date: Date) {
     guard date < Date(), !date.isInToday else { return }
     
-    adjustProgress(with: RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.add) {
-      $0.history.append(
-        .init(uuid: UUID(), date: date, goal: routine.progress.goal.rawValue, result: routine.progress.goal.rawValue)
-      )
+    let message = RoutineAppStrings.Localizable.RoutineDetails.Alert.ProgressAdjust.Description.add
+    adjustProgress(with: message) { editable in
+      let indices = editable.history.indices.filter { editable.history[$0].date.isInSameDay(as: date) }
+      if indices.isEmpty {
+        editable.history.append(
+          .init(uuid: UUID(), date: date, goal: routine.progress.goal.rawValue, result: routine.progress.goal.rawValue)
+        )
+      } else {
+        for index in indices {
+          let history = editable.history[index]
+          editable.history[index] = .init(
+            uuid: history.uuid, date: history.date, goal: history.goal, result: history.goal
+          )
+        }
+      }
     }
   }
 
   func deselect(date: Date) {
     guard
       !date.isInToday,
-      let history = routine.history.first(where: { $0.date.isInSameDay(as: date) })
+      date < Date(),
+      routine.history.contains(where: { $0.date.isInSameDay(as: date) })
     else { return }
+    let history = routine.history.filter { $0.date.isInSameDay(as: date) }
     let routineID = routine.uuid
     showAlert?(
       adjustProgressAlertVM(
@@ -73,7 +86,9 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
           guard let self else { return }
           Task(priority: .userInitiated) {
             do {
-              try await self.routineStore.removeHistory(id: history.uuid, from: routineID)
+              for item in history {
+                try await self.routineStore.removeHistory(id: item.uuid, from: routineID)
+              }
               let savedRoutines = try await self.routineStore.allRoutines()
               self.routine = savedRoutines.first(where: { $0.uuid == routineID }) ?? self.routine
               self.loadDetails()
@@ -131,7 +146,10 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
 
   private func loadCalendar() {
     calendarVM = CalendarVM(
-      selections: routine.history
+      selections: routine.history.sorted {
+        if $0.goalAchieved != $1.goalAchieved { return $0.goalAchieved }
+        return $0.result > $1.result
+      }
         .map { item in
           let emoji: String = {
             if item.goalAchieved {
@@ -142,7 +160,7 @@ final class RoutineDetailsViewModelImpl: RoutineDetailsViewModel {
               return "⚪️"
             }
           }()
-          return .init(emoji: emoji, date: item.date)
+          return .init(emoji: emoji, date: item.date, isCompleted: item.goalAchieved)
         }
     )
   }

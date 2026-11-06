@@ -6,6 +6,19 @@ struct CalendarVM {
   struct Selection {
     let emoji: String
     let date: Date
+    let isCompleted: Bool
+
+    init(emoji: String, date: Date, isCompleted: Bool = true) {
+      self.emoji = emoji
+      self.date = date
+      self.isCompleted = isCompleted
+    }
+  }
+
+  var selectedDates: [DateComponents] {
+    Array(Set(selections.filter(\.isCompleted).map {
+      Calendar.app.dateComponents([.day, .month, .year], from: $0.date)
+    })).sorted { ($0.year ?? 0, $0.month ?? 0, $0.day ?? 0) < ($1.year ?? 0, $1.month ?? 0, $1.day ?? 0) }
   }
 }
 
@@ -25,9 +38,7 @@ struct CalendarView: UIViewRepresentable {
   func updateUIView(_ calendarView: UICalendarView, context: Context) {
     let previousSelections = context.coordinator.viewModel.selections
     context.coordinator.viewModel = viewModel
-    let selectedDates = viewModel.selections.map {
-      context.coordinator.calendar.dateComponents([.day, .month, .year], from: $0.date)
-    }
+    let selectedDates = viewModel.selectedDates
     if let selection = calendarView.selectionBehavior as? UICalendarSelectionMultiDate,
       selection.selectedDates != selectedDates {
       selection.setSelectedDates(selectedDates, animated: false)
@@ -92,9 +103,7 @@ extension CalendarView {
       return nil
     }
     private func update(selection: UICalendarSelectionMultiDate) {
-      selection.selectedDates = viewModel.selections
-        .map { $0.date }
-        .compactMap { calendar.dateComponents([.day, .month, .year], from: $0) }
+      selection.selectedDates = viewModel.selectedDates
     }
     func multiDateSelection(
       _ selection: UICalendarSelectionMultiDate,

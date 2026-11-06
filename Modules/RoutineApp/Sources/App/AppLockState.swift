@@ -11,7 +11,7 @@ struct AppLockState {
   private var automaticAttemptAvailable = true
   private var generation = 0
 
-  var blocksContent: Bool { protectionEnabled && phase != .unlocked }
+  var blocksContent: Bool { protectionEnabled && (!isActive || phase != .unlocked) }
   var shouldAuthenticateAutomatically: Bool {
     protectionEnabled && isActive && phase == .locked && automaticAttemptAvailable
   }
@@ -57,7 +57,7 @@ struct AppLockState {
   @discardableResult
   mutating func completeAuthentication(succeeded: Bool, generation: Int) -> Bool {
     guard generation == self.generation, phase == .authenticating else { return false }
-    phase = succeeded && isActive ? .unlocked : .locked
+    phase = succeeded ? .unlocked : .locked
     return true
   }
 }

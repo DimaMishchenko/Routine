@@ -3,18 +3,27 @@ import UIKit
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private struct Runtime {
     let assemblyFactory: AssemblyFactory
-    let authenticator: Authenticator
     let historyUpdater: RoutineHistoryUpdater
   }
 
   private var runtime: Runtime?
-  private var lockState = AppLockState()
+  private(set) var lockState = AppLockState()
   private var authenticationTask: Task<Void, Never>?
+  private var authenticationOperation: (() async -> Bool)?
   var window: UIWindow?
 
   private var backgroundWindow: UIWindow?
 
   @Defaults(key: .useFaceID, initial: false) private var authWithFaceID: Bool
+
+  override init() {
+    super.init()
+  }
+
+  init(authenticate: @escaping () async -> Bool) {
+    authenticationOperation = authenticate
+    super.init()
+  }
 
   func scene(
     _ scene: UIScene,
@@ -35,20 +44,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func sceneWillResignActive(_ scene: UIScene) {
     guard runtime != nil else { return }
-    lockState.deactivate(protectionEnabled: authWithFaceID)
-    updateBlocker()
+    deactivateLock(protectionEnabled: authWithFaceID)
   }
 
   func sceneDidEnterBackground(_ scene: UIScene) {
-    lockState.enterBackground()
-    updateBlocker()
+    backgroundLock()
   }
 
   func sceneDidBecomeActive(_ scene: UIScene) {
     guard runtime != nil else { return }
-    lockState.activate(protectionEnabled: authWithFaceID)
-    updateBlocker()
-    authenticateAutomaticallyIfNeeded()
+    activateLock(protectionEnabled: authWithFaceID)
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {
@@ -56,8 +61,24 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
+    backgroundLock()
+  }
+
+  func activateLock(protectionEnabled: Bool) {
+    lockState.activate(protectionEnabled: protectionEnabled)
+    updateBlocker()
+    authenticateAutomaticallyIfNeeded()
+  }
+
+  func deactivateLock(protectionEnabled: Bool) {
+    lockState.deactivate(protectionEnabled: protectionEnabled)
+    updateBlocker()
+  }
+
+  func backgroundLock() {
     lockState.enterBackground()
     authenticationTask?.cancel()
+    authenticationTask = nil
     updateBlocker()
   }
 
@@ -66,9 +87,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       let serviceFactory = try AppRuntime.shared.serviceFactory()
       let assemblyFactory = AssemblyFactory(serviceFactory: serviceFactory)
       let historyUpdater = serviceFactory.routineHistoryUpdater()
+      let authenticator = serviceFactory.authenticator()
+      authenticationOperation = { await authenticator.auth(biometryOnly: false) }
       runtime = Runtime(
         assemblyFactory: assemblyFactory,
-        authenticator: serviceFactory.authenticator(),
         historyUpdater: historyUpdater
       )
       lockState.configure(protectionEnabled: authWithFaceID)
@@ -94,12 +116,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     authenticate()
   }
 
-  private func authenticate() {
-    guard authenticationTask == nil, let runtime, let generation = lockState.beginAuthentication() else { return }
+  func authenticate() {
+    guard authenticationTask == nil, let operation = authenticationOperation,
+      let generation = lockState.beginAuthentication() else { return }
     updateBlocker()
     authenticationTask = Task { [weak self] in
       guard let self else { return }
-      let succeeded = await runtime.authenticator.auth(biometryOnly: false)
+      let succeeded = await operation()
+      guard !Task.isCancelled else { return }
       self.authenticationTask = nil
       let accepted = self.lockState.completeAuthentication(succeeded: succeeded, generation: generation)
       self.updateBlocker()
