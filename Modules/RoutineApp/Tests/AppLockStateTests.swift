@@ -93,20 +93,19 @@ final class AppLockStateTests: XCTestCase {
     scene.activateLock(protectionEnabled: true)
     await fulfillment(of: [started[1]], timeout: 2)
     continuations[0].resume(returning: true)
-    await drainTasks()
+    await waitUntil { cancellations == [true] }
     XCTAssertEqual(cancellations, [true])
     XCTAssertTrue(scene.lockState.blocksContent)
     XCTAssertEqual(scene.lockState.phase, .authenticating)
     scene.authenticate()
-    await drainTasks()
     XCTAssertEqual(continuations.count, 2)
     continuations[1].resume(returning: false)
-    await drainTasks()
+    await waitUntil { scene.lockState.phase == .locked }
     XCTAssertEqual(scene.lockState.phase, .locked)
     scene.authenticate()
     await fulfillment(of: [started[2]], timeout: 2)
     continuations[2].resume(returning: true)
-    await drainTasks()
+    await waitUntil { scene.lockState.phase == .unlocked }
     XCTAssertFalse(scene.lockState.blocksContent)
   }
 
@@ -123,15 +122,14 @@ final class AppLockStateTests: XCTestCase {
     await fulfillment(of: [started], timeout: 2)
     scene.deactivateLock(protectionEnabled: true)
     completion?.resume(returning: true)
-    await drainTasks()
+    await waitUntil { scene.lockState.phase == .unlocked }
     XCTAssertTrue(scene.lockState.blocksContent)
     scene.activateLock(protectionEnabled: true)
     XCTAssertFalse(scene.lockState.blocksContent)
   }
 
-  @MainActor private func drainTasks() async {
-    await withCheckedContinuation { continuation in
-      DispatchQueue.main.async { continuation.resume() }
-    }
+  @MainActor private func waitUntil(_ condition: @escaping () -> Bool) async {
+    let completed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in condition() }, object: nil)
+    await fulfillment(of: [completed], timeout: 2)
   }
 }
