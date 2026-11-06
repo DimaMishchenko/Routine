@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "क्या आप वाकई यह आदत हटाना चाहते हैं?";
 "common.alert.deleteRoutine.message" = "इसे वापस नहीं लाया जा सकेगा";
 "lock.title" = "Routine लॉक है";
-"lock.unlock" = "अनलॉक करें";
 "storageError.title" = "आपकी आदतें खोली नहीं जा सकीं";
 "storageError.message" = "आपका मौजूदा डेटा सुरक्षित है। इसे दोबारा खोलने की कोशिश करें। समस्या बनी रहे तो ऐप में बदलाव करने या उसे फिर से इंस्टॉल करने से पहले सहायता से संपर्क करें।";
 "storageError.retry" = "फिर कोशिश करें";

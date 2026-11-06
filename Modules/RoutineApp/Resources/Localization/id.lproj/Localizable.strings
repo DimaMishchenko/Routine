@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "Yakin ingin menghapus rutinitas ini?";
 "common.alert.deleteRoutine.message" = "Rutinitas tidak dapat dipulihkan";
 "lock.title" = "Routine terkunci";
-"lock.unlock" = "Buka kunci";
 "storageError.title" = "Rutinitas Anda tidak dapat dibuka";
 "storageError.message" = "Data Anda tetap tersimpan. Coba buka lagi. Jika masalah berlanjut, hubungi dukungan sebelum mengubah atau menginstal ulang aplikasi.";
 "storageError.retry" = "Coba lagi";

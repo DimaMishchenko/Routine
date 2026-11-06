@@ -2,6 +2,26 @@
 import XCTest
 
 final class AppLockStateTests: XCTestCase {
+  func testAcceptedSuccessSurvivesRepeatedInactiveCallbacksUntilBackground() throws {
+    for succeedsWhileInactive in [false, true] {
+      var state = AppLockState()
+      state.activate(protectionEnabled: true)
+      let generation = try XCTUnwrap(state.beginAuthentication())
+      if succeedsWhileInactive { state.deactivate(protectionEnabled: true) }
+      state.completeAuthentication(succeeded: true, generation: generation)
+      state.deactivate(protectionEnabled: true)
+      state.deactivate(protectionEnabled: true)
+      XCTAssertTrue(state.blocksContent)
+      state.activate(protectionEnabled: true)
+      XCTAssertFalse(state.blocksContent)
+      XCTAssertFalse(state.shouldAuthenticateAutomatically)
+      state.enterBackground()
+      state.activate(protectionEnabled: true)
+      XCTAssertTrue(state.blocksContent)
+      XCTAssertTrue(state.shouldAuthenticateAutomatically)
+    }
+  }
+
   func testAuthenticationSuccessWhilePromptIsInactiveUnlocksOnActivation() throws {
     var state = AppLockState()
     state.activate(protectionEnabled: true)
@@ -33,6 +53,12 @@ final class AppLockStateTests: XCTestCase {
     state.completeAuthentication(succeeded: false, generation: generation)
     XCTAssertTrue(state.blocksContent)
     XCTAssertFalse(state.shouldAuthenticateAutomatically)
+    XCTAssertNil(state.beginAuthentication())
+    state.deactivate(protectionEnabled: true)
+    state.activate(protectionEnabled: true)
+    XCTAssertNil(state.beginAuthentication())
+    state.enterBackground()
+    state.activate(protectionEnabled: true)
     XCTAssertNotNil(state.beginAuthentication())
   }
 
@@ -47,12 +73,14 @@ final class AppLockStateTests: XCTestCase {
     XCTAssertTrue(state.shouldAuthenticateAutomatically)
   }
 
-  func testReactivationAloneDoesNotUnlockProtectedContent() throws {
+  func testBackgroundRequiresFreshAuthenticationAfterSuccess() throws {
     var state = AppLockState()
     state.activate(protectionEnabled: true)
     let generation = try XCTUnwrap(state.beginAuthentication())
     state.completeAuthentication(succeeded: true, generation: generation)
     state.deactivate(protectionEnabled: true)
+    XCTAssertTrue(state.blocksContent)
+    state.enterBackground()
     state.activate(protectionEnabled: true)
     XCTAssertTrue(state.blocksContent)
     XCTAssertTrue(state.shouldAuthenticateAutomatically)
@@ -97,12 +125,14 @@ final class AppLockStateTests: XCTestCase {
     XCTAssertEqual(cancellations, [true])
     XCTAssertTrue(scene.lockState.blocksContent)
     XCTAssertEqual(scene.lockState.phase, .authenticating)
-    scene.authenticate()
+    scene.activateLock(protectionEnabled: true)
     XCTAssertEqual(continuations.count, 2)
     continuations[1].resume(returning: false)
     await waitUntil { scene.lockState.phase == .locked }
     XCTAssertEqual(scene.lockState.phase, .locked)
-    scene.authenticate()
+    scene.deactivateLock(protectionEnabled: true)
+    scene.backgroundLock()
+    scene.activateLock(protectionEnabled: true)
     await fulfillment(of: [started[2]], timeout: 2)
     continuations[2].resume(returning: true)
     await waitUntil { scene.lockState.phase == .unlocked }
@@ -123,6 +153,11 @@ final class AppLockStateTests: XCTestCase {
     scene.deactivateLock(protectionEnabled: true)
     completion?.resume(returning: true)
     await waitUntil { scene.lockState.phase == .unlocked }
+    XCTAssertTrue(scene.lockState.blocksContent)
+    scene.deactivateLock(protectionEnabled: true)
+    scene.activateLock(protectionEnabled: true)
+    XCTAssertFalse(scene.lockState.blocksContent)
+    scene.deactivateLock(protectionEnabled: true)
     XCTAssertTrue(scene.lockState.blocksContent)
     scene.activateLock(protectionEnabled: true)
     XCTAssertFalse(scene.lockState.blocksContent)

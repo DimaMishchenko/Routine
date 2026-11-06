@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "Tem certeza de que deseja remover a rotina?";
 "common.alert.deleteRoutine.message" = "Ela não poderá ser recuperada";
 "lock.title" = "Routine está bloqueado";
-"lock.unlock" = "Desbloquear";
 "storageError.title" = "Não foi possível abrir suas rotinas";
 "storageError.message" = "Seus dados foram preservados. Tente abri-los novamente. Se o problema continuar, entre em contato com o suporte antes de modificar ou reinstalar o app.";
 "storageError.retry" = "Tentar novamente";

@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "确定要移除此习惯吗？";
 "common.alert.deleteRoutine.message" = "移除后无法恢复";
 "lock.title" = "Routine 已锁定";
-"lock.unlock" = "解锁";
 "storageError.title" = "无法打开你的习惯";
 "storageError.message" = "你的现有数据已保留。请尝试重新打开。如果问题仍然存在，请先联系支持，再修改或重新安装 App。";
 "storageError.retry" = "重试";

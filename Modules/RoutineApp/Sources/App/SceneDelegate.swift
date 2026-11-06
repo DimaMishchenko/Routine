@@ -35,7 +35,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     CommonAppearance.setup(for: scene)
     window = UIWindow(windowScene: scene)
     backgroundWindow = with(UIWindow(windowScene: scene)) {
-      $0.rootViewController = BlockerAssembly().controller { [weak self] in self?.authenticate() }
+      $0.rootViewController = BlockerAssembly().controller()
       $0.windowLevel = .alert
     }
     connect(to: scene)
@@ -113,10 +113,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   private func authenticateAutomaticallyIfNeeded() {
     guard lockState.shouldAuthenticateAutomatically else { return }
-    authenticate()
-  }
-
-  func authenticate() {
     guard authenticationTask == nil, let operation = authenticationOperation,
       let generation = lockState.beginAuthentication() else { return }
     updateBlocker()
@@ -136,6 +132,5 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     (window?.rootViewController as? RoutineNavigationController)?.setContentAvailable(
       !lockState.blocksContent && window?.windowScene?.activationState == .foregroundActive
     )
-    (backgroundWindow?.rootViewController as? BlockerVC)?.update(authenticating: lockState.phase == .authenticating)
   }
 }
