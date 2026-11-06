@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "আপনি কি নিশ্চিত যে এই অভ্যাসটি সরিয়ে দিতে চান?";
 "common.alert.deleteRoutine.message" = "এটি আর ফিরিয়ে আনা যাবে না";
 "lock.title" = "Routine লক করা আছে";
-"lock.unlock" = "আনলক করুন";
 "storageError.title" = "আপনার অভ্যাসগুলো খোলা যায়নি";
 "storageError.message" = "আপনার আগের তথ্য সংরক্ষিত আছে। আবার খোলার চেষ্টা করুন। সমস্যা চলতে থাকলে অ্যাপে পরিবর্তন করা বা আবার ইনস্টল করার আগে সহায়তার সঙ্গে যোগাযোগ করুন।";
 "storageError.retry" = "আবার চেষ্টা করুন";

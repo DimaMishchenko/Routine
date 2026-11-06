@@ -33,10 +33,6 @@ struct AppLockState {
   mutating func deactivate(protectionEnabled: Bool) {
     configure(protectionEnabled: protectionEnabled)
     isActive = false
-    if phase == .unlocked {
-      phase = .locked
-      automaticAttemptAvailable = true
-    }
   }
 
   mutating func enterBackground() {
@@ -47,7 +43,7 @@ struct AppLockState {
   }
 
   mutating func beginAuthentication() -> Int? {
-    guard protectionEnabled, isActive, phase != .authenticating else { return nil }
+    guard shouldAuthenticateAutomatically else { return nil }
     generation += 1
     phase = .authenticating
     automaticAttemptAvailable = false

@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "Möchtest du diese Routine wirklich entfernen?";
 "common.alert.deleteRoutine.message" = "Sie kann nicht wiederhergestellt werden";
 "lock.title" = "Routine ist gesperrt";
-"lock.unlock" = "Entsperren";
 "storageError.title" = "Deine Routinen können nicht geöffnet werden";
 "storageError.message" = "Deine vorhandenen Daten wurden erhalten. Versuche erneut, sie zu öffnen. Wenn das Problem weiterhin besteht, wende dich an den Support, bevor du die App änderst oder neu installierst.";
 "storageError.retry" = "Erneut versuchen";

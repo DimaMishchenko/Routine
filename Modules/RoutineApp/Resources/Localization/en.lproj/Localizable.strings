@@ -192,7 +192,6 @@
 "common.alert.deleteRoutine.message" = "It can not be restored";
 
 "lock.title" = "Routine is locked";
-"lock.unlock" = "Unlock";
 
 "storageError.title" = "Unable to open your routines";
 "storageError.message" = "Your existing data has been preserved. Try opening it again. If this continues, contact support before changing or reinstalling the app.";

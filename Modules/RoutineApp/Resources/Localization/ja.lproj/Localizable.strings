@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "この習慣を削除してもよろしいですか？";
 "common.alert.deleteRoutine.message" = "削除すると元に戻せません";
 "lock.title" = "Routineはロックされています";
-"lock.unlock" = "ロック解除";
 "storageError.title" = "習慣を開けませんでした";
 "storageError.message" = "既存のデータは保持されています。もう一度開いてみてください。問題が続く場合は、アプリの変更や再インストールを行う前に、サポートにお問い合わせください。";
 "storageError.retry" = "もう一度試す";

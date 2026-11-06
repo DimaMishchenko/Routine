@@ -141,7 +141,6 @@
 "common.alert.deleteRoutine.title" = "Voulez-vous vraiment supprimer cette routine ?";
 "common.alert.deleteRoutine.message" = "Elle ne pourra pas être récupérée";
 "lock.title" = "Routine est verrouillée";
-"lock.unlock" = "Déverrouiller";
 "storageError.title" = "Impossible d’ouvrir vos routines";
 "storageError.message" = "Vos données ont été conservées. Réessayez de les ouvrir. Si le problème persiste, contactez l’assistance avant de modifier ou de réinstaller l’app.";
 "storageError.retry" = "Réessayer";
