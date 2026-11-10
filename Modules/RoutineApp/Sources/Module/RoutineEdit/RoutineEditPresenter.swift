@@ -90,7 +90,7 @@ final class RoutineEditPresenterImpl: RoutineEditPresenter {
       updateRemindMeState(false)
       return
     }
-    Task(priority: .userInitiated) {
+    Task(priority: .userInitiated) { @MainActor in
       if await notificationsHandler.isAuthorized() {
         updateRemindMeState(!currentState)
       } else if await notificationsHandler.request() {
